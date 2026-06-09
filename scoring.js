@@ -29,6 +29,18 @@
 
 const SCORING = { exact: 3, goalDifference: 2, outcome: 1 };
 
+// Knockout point values (see the rules panel + scorePick below).
+const KO_SCORING = {
+  exact: 4,             // outright winner guess, exact score before penalties
+  goalDifference: 3,    // outright winner guess, correct winner + goal difference
+  winner: 2,            // outright winner guess, correct winner only
+  shootoutCalled: 1,    // outright winner guess, went to penalties, your team advanced
+  drawBase: 2,          // draw guess that really was a draw after extra time
+  drawExactBonus: 1,    // + your exact (draw) score was right
+  drawPenBonus: 1,      // + you also picked the correct penalty winner
+  penWinnerDecisive: 1, // draw guess, game decided in 90/120', your pen pick advanced
+};
+
 function isKnockout(m) {
   const s = m && m.stage;
   return !!(s && (s.knockout || (s.slug && s.slug !== 'group-stage')));
@@ -60,18 +72,18 @@ function scorePick(guess, m) {
   if (gHome !== gAway) {
     // (a) picked an outright winner
     const predWinner = gHome > gAway ? 'home' : 'away';
-    if (pens) return predWinner === advancer ? 1 : 0;       // went to pens; right side advanced
+    if (pens) return predWinner === advancer ? KO_SCORING.shootoutCalled : 0;   // went to pens; right side advanced
     if (predWinner !== advancer) return 0;
-    if (exact) return 4;
-    if ((gHome - gAway) === (aHome - aAway)) return 3;      // correct goal difference
-    return 2;                                               // correct winner only
+    if (exact) return KO_SCORING.exact;
+    if ((gHome - gAway) === (aHome - aAway)) return KO_SCORING.goalDifference;   // correct goal difference
+    return KO_SCORING.winner;                               // correct winner only
   }
 
   // (b) picked a draw + a penalty winner
   const penPick = guess.penaltyWinner;                      // 'home' | 'away'
-  if (!pens) return penPick === advancer ? 1 : 0;           // decisive game; you called the advancer
-  let pts = 2;                                              // correctly predicted a draw
-  if (exact) pts += 1;                                      // exact draw score
-  if (penPick === advancer) pts += 1;                       // correct penalty winner
+  if (!pens) return penPick === advancer ? KO_SCORING.penWinnerDecisive : 0;     // decisive game; you called the advancer
+  let pts = KO_SCORING.drawBase;                            // correctly predicted a draw
+  if (exact) pts += KO_SCORING.drawExactBonus;              // exact draw score
+  if (penPick === advancer) pts += KO_SCORING.drawPenBonus; // correct penalty winner
   return pts;
 }

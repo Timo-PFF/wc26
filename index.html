@@ -111,6 +111,14 @@
   .meta-row .countdown { color: var(--accent); font-weight: 600; font-variant-numeric: tabular-nums; }
   .meta-row .countdown.soon { color: var(--accent2); }   /* within 48h → yellow/orange */
   .done { grid-column: 1 / -1; font-size: .78rem; color: var(--accent2); margin-top: 6px; font-weight: 600; }
+  /* Full scoring rules panel (login tab) */
+  .scoring-rules { margin-top: 14px; }
+  .scoring-rules .rules-title { margin: 0 0 8px; font-size: 1.05rem; }
+  .scoring-rules .rules-sub { margin: 12px 0 4px; font-weight: 700; color: var(--accent2); }
+  .scoring-rules .rules-mode { margin: 10px 0 3px; font-size: .9rem; color: var(--muted); }
+  .scoring-rules .rules-note { margin: 6px 0; font-size: .82rem; color: var(--muted); line-height: 1.4; }
+  .scoring-rules .rules-list { margin: 0; padding-left: 20px; font-size: .9rem; line-height: 1.55; }
+  .scoring-rules .rules-list b { color: var(--accent); font-variant-numeric: tabular-nums; }
   /* "France win 4:3 on penalties" caption under a knockout result in the game view */
   .pen-result { grid-column: 1 / -1; text-align: center; font-size: .82rem; color: var(--accent); font-weight: 600; margin-top: -6px; }
   /* Knockout penalty-winner picker (shown when the pick is a draw) */
@@ -293,6 +301,7 @@
       </form>
       <div id="addMsg" class="msg"></div>
     </div>
+    <div id="scoringRules" class="card scoring-rules"></div>
   </section>
 
   <!-- PREDICT -->
@@ -337,7 +346,6 @@
 
   <!-- STANDINGS -->
   <section id="standings" style="display:none">
-    <div class="sub" id="scoringNote" style="margin-bottom:10px"></div>
     <div class="card">
       <div id="standingsMeta" class="sub" style="margin-bottom:10px"></div>
       <table>
@@ -420,7 +428,7 @@
     // The fixtures file may override the title; otherwise use the localized one.
     document.getElementById('title').textContent = FIXTURE_TITLE ? '⚽ ' + FIXTURE_TITLE : t('appTitle');
     document.title = FIXTURE_TITLE || t('docTitle');
-    updateScoringNote();
+    renderScoringRules();
     updatePlayerBadge();
     updateClock();
     // The "only upcoming" checkbox label carries the current threshold (e.g. "120h").
@@ -428,9 +436,11 @@
     if (upLbl) upLbl.textContent = t('onlyUpcoming')(Math.round(COUNTDOWN_SOON_MS / (60 * 60 * 1000)));
   }
 
-  function updateScoringNote() {
-    document.getElementById('scoringNote').innerHTML =
-      t('scoringNote')(SCORING.exact, SCORING.goalDifference, SCORING.outcome);
+  // Full scoring rules panel (group + knockout), shown in the login tab. Point
+  // values come straight from the SCORING / KO_SCORING constants in scoring.js.
+  function renderScoringRules() {
+    const el = document.getElementById('scoringRules');
+    if (el) el.innerHTML = t('scoringRules')(SCORING, KO_SCORING);
   }
 
   // Read the three pick-tab filter checkboxes and re-render.
@@ -689,7 +699,7 @@
       const fx = await (await fetch(fixturesUrl + '?t=' + Date.now())).json();
       MATCHES = fx.matches || [];
       if (fx.title) { FIXTURE_TITLE = fx.title; applyLabels(); }
-      updateScoringNote();
+      renderScoringRules();
       renderMatches();
     } catch (e) {
       document.getElementById('matches').innerHTML =
