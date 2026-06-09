@@ -111,12 +111,17 @@
   .meta-row .countdown { color: var(--accent); font-weight: 600; font-variant-numeric: tabular-nums; }
   .meta-row .countdown.soon { color: var(--accent2); }   /* within 48h → yellow/orange */
   .done { grid-column: 1 / -1; font-size: .78rem; color: var(--accent2); margin-top: 6px; font-weight: 600; }
+  /* "France win 4:3 on penalties" caption under a knockout result in the game view */
+  .pen-result { grid-column: 1 / -1; text-align: center; font-size: .82rem; color: var(--accent); font-weight: 600; margin-top: -6px; }
   /* Knockout penalty-winner picker (shown when the pick is a draw) */
   .penrow { grid-column: 1 / -1; display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; margin-top: 8px; }
   .penlabel { font-size: .8rem; color: var(--muted); }
   .penbtn { padding: 5px 12px; border: 1px solid var(--line); background: var(--card); color: var(--ink);
     border-radius: 999px; cursor: pointer; font-size: .82rem; }
   .penbtn.active { background: var(--accent); color: #06281b; border-color: var(--accent); font-weight: 600; }
+  /* Penalty-winner badge shown next to a knockout draw guess in the picks tables */
+  .pen-tag { display: inline-flex; align-items: center; gap: 2px; margin-left: 4px; padding: 1px 6px;
+    border: 1px solid var(--line); border-radius: 999px; font-size: .72rem; color: var(--muted); white-space: nowrap; }
   /* Locked-game reveal: tap the note to see everyone's picks */
   .reveal { grid-column: 1 / -1; margin-top: 6px; }
   .reveal summary { font-size: .78rem; color: var(--accent2); font-weight: 600; cursor: pointer; }
@@ -205,6 +210,9 @@
   .schedule-table .game img.flag { width: 18px; height: 18px; object-fit: contain;
     vertical-align: middle; border-radius: 2px; margin: 0 4px; }
   .schedule-table .score { color: var(--accent2); font-weight: 700; padding: 0 3px; font-variant-numeric: tabular-nums; }
+  /* Shootout winner's goal tally in the matrix score — the whole score is already
+     bold, so highlight + underline the winner's side to mark the penalty winner */
+  .schedule-table .score b { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
   .section-row th { text-align: left; background: var(--bg); color: var(--ink); font-size: .9rem;
     position: sticky; left: 0; padding-top: 14px; }
   .totals-row td { border-bottom: 2px solid var(--line); }
@@ -588,6 +596,52 @@
   function isStarted(m)    { const d = kickoffDate(m.date); return d ? d.getTime() <= Date.now() : false; }
   // Picks are locked once a game has a result OR has kicked off.
   function isLocked(m)     { return isFinished(m) || isStarted(m); }
+
+  // For a penalty-decided knockout game, the shootout outcome from the winner's
+  // perspective; null for any other game. shootout tallies may be absent.
+  function shootoutResult(m) {
+    if (!m || (m.decidedBy || 'regulation') !== 'penalties' || !m.winner) return null;
+    const winSide  = m.winner === 'home' ? m.home : m.away;
+    const loseSide = m.winner === 'home' ? m.away : m.home;
+    const winSO    = winSide  && winSide.shootout  != null ? winSide.shootout  : null;
+    const loseSO   = loseSide && loseSide.shootout != null ? loseSide.shootout : null;
+    return { winSide, loseSide, winSO, loseSO };
+  }
+
+  // How a knockout game was decided, as plain text:
+  // penalties → "France win 4:3 on penalties"; extra time → "a.e.t." / "n.V.".
+  // Empty for regulation results and group games.
+  function resultNoteText(m) {
+    if (!isKnockout(m) || !isFinished(m)) return '';
+    const decided = m.decidedBy || 'regulation';
+    if (decided === 'penalties') {
+      const so = shootoutResult(m);
+      if (!so) return '';
+      const name = teamName(so.winSide);
+      return (so.winSO != null && so.loseSO != null)
+        ? t('wonOnPens')(name, so.winSO, so.loseSO)
+        : t('wonOnPensNoScore')(name);
+    }
+    if (decided === 'extra_time') return t('afterExtraTime');
+    return '';
+  }
+
+  // Full-width caption for the game view (penalties get a ⚽ marker).
+  function resultNote(m) {
+    const txt = resultNoteText(m);
+    if (!txt) return '';
+    const icon = (m.decidedBy === 'penalties') ? '⚽ ' : '';
+    return '<div class="pen-result">' + icon + escapeHtml(txt) + '</div>';
+  }
+
+  // Final score for the matrix row header, with the shootout winner's goal tally
+  // bolded when a knockout draw was decided on penalties.
+  function finalScoreHtml(m, hs, as) {
+    const so = shootoutResult(m);
+    let h = String(hs), a = String(as);
+    if (so) { if (m.winner === 'home') h = '<b>' + h + '</b>'; else a = '<b>' + a + '</b>'; }
+    return h + '–' + a;
+  }
 
   // "2026-06-11T19:00Z" → a Date. ESPN omits seconds, which some browsers won't
   // parse, so normalise to "...:00Z" first. Returns null on a missing/bad value.
@@ -1118,8 +1172,10 @@
           escapeHtml(m.id) + '" data-side="' + side + '" ' + (locked ? 'disabled' : '') + ' />';
 
         // Locked games show a note (final score, or "kicked off") that expands
-        // to reveal everyone's picks (+ points once the game has a score).
-        const note = finished ? t('finalLocked')(hs, as) : t('startedLocked');
+        // to reveal everyone's picks (+ points once the game has a score). For a
+        // knockout result, append how it was decided (penalties / extra time).
+        let note = finished ? t('finalLocked')(hs, as) : t('startedLocked');
+        if (finished) { const rn = resultNoteText(m); if (rn) note += ' — ' + rn; }
         const lockBlock = locked
           ? '<details class="reveal" ontoggle="revealPicks(this, \'' + escapeHtml(m.id) + '\')">' +
             '<summary>' + escapeHtml(note) + ' <span class="reveal-hint">' + escapeHtml(t('showPicks')) +
@@ -1178,6 +1234,20 @@
     if (m) el.querySelector('.reveal-body').innerHTML = buildPicksList(m);
   }
 
+  // A guess as shown in the picks tables. For a knockout draw guess we also
+  // surface who the player picked to win the shootout (otherwise two identical
+  // "1–1" guesses can score differently with no visible reason).
+  function formatGuessCell(g, m) {
+    if (!g) return '—';
+    let s = g.home + '–' + g.away;
+    if (isKnockout(m) && g.home === g.away && g.penaltyWinner) {
+      const side = g.penaltyWinner === 'home' ? m.home : m.away;
+      s += ' <span class="pen-tag" title="' + escapeHtml(t('penaltyWinner')) + '">⚽ ' +
+        escapeHtml(teamAbbr(side)) + '</span>';
+    }
+    return s;
+  }
+
   // Table of every player's guess for match m, with points once it's scored.
   function buildPicksList(m) {
     const hs = homeScore(m), as = awayScore(m);
@@ -1197,7 +1267,7 @@
       (scored ? '<th class="num">' + escapeHtml(t('thPts')) + '</th>' : '') + '</tr>';
     const body = rows.map(r =>
       '<tr><td>' + escapeHtml(r.player) + '</td>' +
-      '<td class="guess">' + (r.guess ? r.guess.home + '–' + r.guess.away : '—') + '</td>' +
+      '<td class="guess">' + formatGuessCell(r.guess, m) + '</td>' +
       (scored ? '<td class="num ' + ptsClass(r.pts) + '">' + (r.pts == null ? '—' : r.pts) + '</td>' : '') +
       '</tr>'
     ).join('');
@@ -1361,12 +1431,20 @@
       });
       series[p] = arr;
     });
-    players.sort((a, b) => series[b][N] - series[a][N] || a.localeCompare(b));   // leader first
+    // Each player's colour is fixed by their position in the Players sheet (with
+    // any guess-only names appended alphabetically), so it stays the same no
+    // matter how the current standings shuffle. Guard against an empty divisor.
+    const extras = [...new Set(guesses.map(g => g.player))].filter(p => !cfgPlayers.includes(p)).sort();
+    const paletteOrder = [...cfgPlayers, ...extras];
+    const hueOf = {};
+    paletteOrder.forEach((p, i) => { hueOf[p] = Math.round(i * 360 / (paletteOrder.length || 1)); });
+
+    players.sort((a, b) => series[b][N] - series[a][N] || a.localeCompare(b));   // leader first (draw/legend order only)
 
     const labels = [];
     for (let i = 0; i <= N; i++) labels.push(i === 0 ? '' : String(i));
-    const datasets = players.map((p, i) => {
-      const hue = Math.round(i * 360 / players.length);
+    const datasets = players.map(p => {
+      const hue = hueOf[p];
       return { label: p, data: series[p], _hue: hue,
         borderColor: chartColor(hue), backgroundColor: chartColor(hue),
         borderWidth: 2, pointRadius: 0, pointHoverRadius: 4, tension: 0.15 };
@@ -1591,6 +1669,7 @@
           '<div class="pick vs-cell"><div class="vs">–</div></div>' +
           '<div class="pick"><span class="rscore">' + as + '</span></div>' +
           teamCell(m.away, 'away') +
+          resultNote(m) +
           '<details class="reveal"' + (SCHEDULE_FILTER ? ' open' : '') + ' ontoggle="revealPicks(this, \'' + escapeHtml(m.id) + '\')">' +
             '<summary>' + escapeHtml(t('showPicks')) + '</summary>' +
             '<div class="reveal-body">' + (SCHEDULE_FILTER ? buildPicksList(m) : '') + '</div></details>' +
@@ -1620,7 +1699,7 @@
       const g = (lut[p] || {})[m.id];
       if (!g) return '<td><div class="pcell"><span class="g pts-none">—</span></div></td>';
       const pts = scorePick(g, m);
-      return '<td><div class="pcell"><span class="g">' + g.home + '–' + g.away +
+      return '<td><div class="pcell"><span class="g">' + formatGuessCell(g, m) +
         '</span><span class="p ' + ptsClass(pts) + '">' + pts + '</span></div></td>';
     };
 
@@ -1647,7 +1726,8 @@
         const hs = homeScore(m), as = awayScore(m);
         html += '<tr><td class="game">' +
           flag(m.home) + escapeHtml(teamAbbr(m.home)) +
-          ' <span class="score">' + hs + '–' + as + '</span> ' +
+          ' <span class="score"' + (shootoutResult(m) ? ' title="' + escapeHtml(t('penaltyWinner')) + '"' : '') +
+          '>' + finalScoreHtml(m, hs, as) + '</span> ' +
           escapeHtml(teamAbbr(m.away)) + flag(m.away) + '</td>' +
           players.map(p => cell(p, m, hs, as)).join('') +
           '</tr>';

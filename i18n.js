@@ -65,6 +65,9 @@ const I18N = {
     noMatches: 'No matches set up yet.',
     matchCount: n => n + ' match(es)',
     finalLocked: (h, a) => 'Final: ' + h + '–' + a + ' (picks locked)',
+    wonOnPens: (team, w, l) => team + ' win ' + w + ':' + l + ' on penalties',
+    wonOnPensNoScore: team => team + ' win on penalties',
+    afterExtraTime: 'a.e.t.',
     vs: 'vs',
     scoringNote: (x, g, o) => 'Scoring: <b>' + x + '</b> exact score · <b>' + g +
       '</b> right winner + goal difference · <b>' + o +
@@ -127,6 +130,9 @@ const I18N = {
     noMatches: 'Noch keine Spiele angelegt.',
     matchCount: n => n + (n === 1 ? ' Spiel' : ' Spiele'),
     finalLocked: (h, a) => 'Endstand: ' + h + '–' + a + ' (Tipps gesperrt)',
+    wonOnPens: (team, w, l) => team + ' gewinnt ' + w + ':' + l + ' im Elfmeterschießen',
+    wonOnPensNoScore: team => team + ' gewinnt im Elfmeterschießen',
+    afterExtraTime: 'n.V.',
     vs: 'gegen',
     scoringNote: (x, g, o) => 'Wertung: <b>' + x + '</b> exaktes Ergebnis · <b>' + g +
       '</b> Sieger + Tordifferenz · <b>' + o +
