@@ -50,6 +50,7 @@
   .viewtoggle button.active { background: var(--accent); color: #06281b; font-weight: 600; border-color: var(--accent); }
   .topbar { display: flex; justify-content: space-between; align-items: center;
     gap: 8px 12px; flex-wrap: wrap; margin: 10px 2px 0; }
+  .topbar-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .topbar-right { display: flex; align-items: center; gap: 10px 14px; flex-wrap: wrap; }
   .badge { background: var(--card); border: 1px solid var(--accent); color: var(--ink);
     border-radius: 999px; padding: 6px 14px; font-size: .85rem; cursor: pointer; }
@@ -178,7 +179,10 @@
 <main>
   <!-- Global bar: who you're playing as + reload + language (shown on every tab) -->
   <div class="topbar">
-    <button id="playerBadge" class="badge" onclick="showTab('who')" style="display:none"></button>
+    <span class="topbar-left">
+      <button id="playerBadge" class="badge" onclick="showTab('who')" style="display:none"></button>
+      <button id="logoutBtn" class="reload-btn" onclick="logout()" data-i18n="logout" style="display:none">Log out</button>
+    </span>
     <div class="topbar-right">
       <div class="viewtoggle" id="viewToggle">
         <span class="vt-label" data-i18n="viewLabel">View:</span>
@@ -458,6 +462,12 @@
   function addMsg(text, kind) { showMsg('addMsg', text, kind); } // in the add-name card
   function clearMsg(id) { const el = document.getElementById(id); el.textContent = ''; el.className = 'msg'; }
 
+  // Session token persistence (keeps you logged in across refreshes).
+  const TOKEN_KEY = 'wc26_token';
+  function loadToken()  { try { return localStorage.getItem(TOKEN_KEY); } catch (e) { return null; } }
+  function saveToken(t) { try { localStorage.setItem(TOKEN_KEY, t); } catch (e) {} }
+  function clearToken() { try { localStorage.removeItem(TOKEN_KEY); } catch (e) {} }
+
   // ---- ESPN-schema accessors ----------------------------------------------
   // Names/logos/scores live on nested home/away objects; isolate that here so
   // the rest of the code doesn't care about the feed shape.
@@ -520,6 +530,13 @@
       document.getElementById('lgDe').classList.toggle('active', LANG === 'de');
     }
     applyLabels();   // paint all static labels in the chosen language
+    // If a session is saved, show a placeholder badge right away while we verify
+    // the token and fetch the sheet (resumeSession resolves it to the name).
+    if (loadToken() && !SCRIPT_URL.startsWith('PASTE')) {
+      const badge = document.getElementById('playerBadge');
+      badge.textContent = t('retrievingLogin');
+      badge.style.display = '';
+    }
     if (SCRIPT_URL.startsWith('PASTE')) {
       document.getElementById('matches').innerHTML =
         '<div class="card" style="color:var(--bad)">' + escapeHtml(t('setScriptUrl')) + '</div>';
@@ -543,7 +560,8 @@
     if (!SCRIPT_URL.startsWith('PASTE')) {
       try {
         setPlayers(await loadPlayers());   // public list for the dropdown
-        // guesses + submit stay gated until a player logs in
+        await resumeSession();             // stay logged in across refreshes
+        // submit stays gated until a player logs in / resumes
       } catch (e) {
         msg(t('couldNotLoadPlayers'), 'err');
       }
@@ -582,7 +600,8 @@
       });
       const data = await res.json();
       if (data.ok) {
-        AUTH = { name: data.name, password: pw };   // log them in with the password they just set
+        AUTH = { name: data.name, token: data.token };   // logged in with a session token
+        saveToken(data.token);
         guessesLoaded = false;
         clearMsg('addMsg');   // drop any earlier error
         input.value = ''; pwInput.value = '';
@@ -623,7 +642,8 @@
       });
       const data = await res.json();
       if (data.ok) {
-        AUTH = { name: data.name, password: pw };
+        AUTH = { name: data.name, token: data.token };
+        saveToken(data.token);
         guessesLoaded = false;
         clearMsg('addMsg');   // drop any earlier "wrong password" error
         document.getElementById('loginPw').value = '';
@@ -638,6 +658,41 @@
       addMsg(t('addFailed'), 'err');
     }
     btn.disabled = false;
+  }
+
+  // On load, restore a saved session token so the user stays logged in.
+  async function resumeSession() {
+    const tok = loadToken();
+    if (!tok || SCRIPT_URL.startsWith('PASTE')) return;
+    try {
+      const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'resume', token: tok }) });
+      const data = await res.json();
+      if (data.ok) {
+        AUTH = { name: data.name, token: data.token };
+        saveToken(data.token);          // sliding expiry
+        guessesLoaded = false;
+        document.getElementById('submitBtn').disabled = false;
+        await syncPlayer();
+        showTab('predict');
+      } else {
+        clearToken();                   // expired / invalid → forget it
+        updatePlayerBadge();            // remove the "retrieving" placeholder
+      }
+    } catch (e) {
+      updatePlayerBadge();              // transient/offline — clear placeholder, keep token for next load
+    }
+  }
+
+  function logout() {
+    AUTH = null;
+    clearToken();
+    guessesLoaded = false;
+    SHEET.guesses = [];
+    document.getElementById('submitBtn').disabled = true;
+    document.getElementById('player').value = '';
+    applyUserPicks(null, []);   // clear inputs
+    updatePlayerBadge();        // hide badge + logout button
+    showTab('who');
   }
 
   // Public player list (for the dropdown) — cached; force=true refetches.
@@ -658,7 +713,7 @@
     if (guessesLoaded && !force) return SHEET.guesses;
     const res = await fetch(SCRIPT_URL, {
       method: 'POST',
-      body: JSON.stringify({ action: 'guesses', name: AUTH.name, password: AUTH.password })
+      body: JSON.stringify({ action: 'guesses', token: AUTH.token })
     });
     const data = await res.json();
     SHEET.guesses = data.ok ? (data.guesses || []) : [];
@@ -737,8 +792,9 @@
 
   function updatePlayerBadge() {
     const badge = document.getElementById('playerBadge');
-    if (AUTH) { badge.innerHTML = t('playAs')(escapeHtml(AUTH.name)); badge.style.display = ''; }
-    else { badge.textContent = ''; badge.style.display = 'none'; }
+    const lo = document.getElementById('logoutBtn');
+    if (AUTH) { badge.innerHTML = t('playAs')(escapeHtml(AUTH.name)); badge.style.display = ''; if (lo) lo.style.display = ''; }
+    else { badge.textContent = ''; badge.style.display = 'none'; if (lo) lo.style.display = 'none'; }
   }
 
   // Group matches into ordered sections: each group letter, then each knockout
@@ -1012,11 +1068,11 @@
     try {
       const res = await fetch(SCRIPT_URL, {
         method: 'POST',
-        body: JSON.stringify({ player: player, password: AUTH.password, guesses: guesses }) // text/plain → no CORS preflight
+        body: JSON.stringify({ token: AUTH.token, guesses: guesses }) // text/plain → no CORS preflight
       });
       const data = await res.json();
       if (data.ok) { updateCacheGuesses(player, guesses); msg(t('saved')(data.saved), 'ok'); }
-      else if (data.error === 'bad_password') msg(t('badPassword'), 'err');
+      else if (data.error === 'bad_password' || data.error === 'unauthorized') { logout(); addMsg(t('loginFirst'), 'err'); }
       else if (data.error === 'not_joined') msg(t('submitErrNotJoined'), 'err');
       else msg(t('errorPrefix')(data.error || t('unknown')), 'err');
     } catch (e) {

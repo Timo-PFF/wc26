@@ -18,18 +18,24 @@
  * sheet, behind a public endpoint with no rate-limiting. Fine for stopping
  * casual sabotage in a family pool; not real security.
  *
+ * Auth: addPlayer/auth return a session `token` (HMAC-signed, 30-day, sliding).
+ * The client stores it and sends `token` on later requests instead of the
+ * password (stays logged in across refreshes). token OR name+password accepted.
+ *
  * API:
  *   GET  ?action=config   -> { players: [...] }                  (who has joined; public)
- *   POST { action:'guesses', name, password } -> { ok, guesses } | { ok:false, error }
- *          Auth'd + PRIVATE: returns the caller's own picks plus everyone's picks
- *          for LOCKED games only (lock state from FIXTURES_URL). No public read.
- *   POST { action:'addPlayer', name, password } -> { ok, name, players } | { ok:false, error }
- *          error CODE: 'empty' | 'no_password' | 'not_eligible' | 'duplicate'.
- *   POST { action:'auth', name, password } -> { ok, name } | { ok:false, error }
+ *   POST { action:'auth', name, password } -> { ok, name, token } | { ok:false, error }
  *          error CODE: 'no_password' | 'not_joined' | 'bad_password'. A player
  *          with no hash yet sets their password on first auth.
- *   POST { player, password, guesses:[{matchId,home,away}] } -> { ok, saved }
- *          | { ok:false, error:'not_joined'|'bad_password' }
+ *   POST { action:'resume', token } -> { ok, name, token } | { ok:false, error }
+ *          re-issues a fresh token; error CODE: 'expired' | 'not_joined'.
+ *   POST { action:'guesses', token } (or name+password) -> { ok, guesses } | { ok:false, error }
+ *          Auth'd + PRIVATE: returns the caller's own picks plus everyone's picks
+ *          for LOCKED games only (lock state from FIXTURES_URL). No public read.
+ *   POST { action:'addPlayer', name, password } -> { ok, name, token, players } | { ok:false, error }
+ *          error CODE: 'empty' | 'no_password' | 'not_eligible' | 'duplicate'.
+ *   POST { token (or player+password), guesses:[{matchId,home,away}] } -> { ok, saved }
+ *          | { ok:false, error:'bad_password' }
  */
 
 // URL of the hosted fixtures JSON. The backend fetches it to learn which games
@@ -68,7 +74,8 @@ function doPost(e) {
     var body = JSON.parse(e.postData.contents);
     if (body.action === 'addPlayer') return json(addPlayer(body.name, body.password));
     if (body.action === 'auth') return json(authPlayer(body.name, body.password));
-    if (body.action === 'guesses') return json(getGuessesFor(body.name, body.password));
+    if (body.action === 'resume') return json(resumeSession(body.token));
+    if (body.action === 'guesses') return json(getGuessesFor(body));
     return json(savePicks(body));
   } catch (err) {
     return json({ ok: false, error: String(err) });
@@ -92,7 +99,8 @@ function addPlayer(rawName, password) {
 
   var sheet = ss().getSheetByName('Players');
   sheet.getRange(sheet.getLastRow() + 1, 1, 1, 2).setValues([[canonical, md5(password)]]);
-  return { ok: true, name: canonical, players: readColumn('Players', 0, 1).filter(String) };
+  return { ok: true, name: canonical, token: issueToken(canonical),
+           players: readColumn('Players', 0, 1).filter(String) };
 }
 
 // ---- Authenticate a returning player --------------------------------------
@@ -106,10 +114,20 @@ function authPlayer(rawName, password) {
   if (!p) return { ok: false, error: 'not_joined' };
   if (!p.hash) {                                     // first-time: claim the password
     ss().getSheetByName('Players').getRange(p.row, 2).setValue(md5(pw));
-    return { ok: true, name: p.name };
+    return { ok: true, name: p.name, token: issueToken(p.name) };
   }
   if (p.hash !== md5(pw)) return { ok: false, error: 'bad_password' };
-  return { ok: true, name: p.name };
+  return { ok: true, name: p.name, token: issueToken(p.name) };
+}
+
+// Validate a saved session token and (if good) re-issue a fresh one so active
+// users stay logged in (sliding expiry).
+function resumeSession(token) {
+  var name = verifyToken(token);
+  if (!name) return { ok: false, error: 'expired' };
+  var p = getPlayer(name);
+  if (!p) return { ok: false, error: 'not_joined' };
+  return { ok: true, name: p.name, token: issueToken(p.name) };
 }
 
 // ---- Save picks (password-gated) ------------------------------------------
@@ -117,11 +135,10 @@ function authPlayer(rawName, password) {
 function savePicks(body) {
   var guesses = body.guesses || [];
 
-  // Must be a joined player AND present the matching password. Use the
-  // canonical spelling so guesses line up with the player list.
-  var p = getPlayer(String(body.player || '').trim());
-  if (!p) return { ok: false, error: 'not_joined' };
-  if (!p.hash || p.hash !== md5(String(body.password || ''))) return { ok: false, error: 'bad_password' };
+  // Must be authenticated (session token or password). Use the canonical
+  // spelling so guesses line up with the player list.
+  var p = resolvePlayer(body);
+  if (!p) return { ok: false, error: 'bad_password' };
   var player = p.name;
 
   var sheet = ss().getSheetByName('Guesses');
@@ -171,6 +188,57 @@ function getPlayer(name) {
   return null;
 }
 
+// ---- Sessions (HMAC-signed tokens — "stay logged in") ---------------------
+// A token is  base64(name).expiryMs.base64(HMAC_SHA256(secret, "base64(name).expiryMs")).
+// Stateless: no session table — we just re-verify the signature + expiry. The
+// secret lives in Script Properties (auto-created once). Rotating it logs
+// everyone out. Tokens can't be individually revoked before they expire.
+
+var SESSION_DAYS = 30;
+
+function sessionSecret() {
+  var props = PropertiesService.getScriptProperties();
+  var s = props.getProperty('SESSION_SECRET');
+  if (!s) { s = Utilities.getUuid() + Utilities.getUuid(); props.setProperty('SESSION_SECRET', s); }
+  return s;
+}
+
+function sign(payload) {
+  return Utilities.base64Encode(
+    Utilities.computeHmacSha256Signature(payload, sessionSecret(), Utilities.Charset.UTF_8));
+}
+
+function issueToken(name) {
+  var payload = Utilities.base64Encode(name, Utilities.Charset.UTF_8) + '.' +
+    (new Date().getTime() + SESSION_DAYS * 24 * 60 * 60 * 1000);
+  return payload + '.' + sign(payload);
+}
+
+// Returns the canonical name if the token's signature is valid and unexpired, else null.
+function verifyToken(token) {
+  if (!token) return null;
+  var parts = String(token).split('.');
+  if (parts.length !== 3) return null;
+  var payload = parts[0] + '.' + parts[1];
+  if (sign(payload) !== parts[2]) return null;                 // tampered / wrong secret
+  if (new Date().getTime() > Number(parts[1])) return null;    // expired
+  try {
+    return Utilities.newBlob(Utilities.base64Decode(parts[0])).getDataAsString('UTF-8');
+  } catch (e) { return null; }
+}
+
+// Identify the requesting player from a session token (preferred) or a
+// name+password pair. Returns the {row, name, hash} record or null.
+function resolvePlayer(body) {
+  if (body && body.token) {
+    var name = verifyToken(body.token);
+    return name ? getPlayer(name) : null;
+  }
+  var p = getPlayer(String((body && (body.player || body.name)) || '').trim());
+  if (!p || !p.hash || p.hash !== md5(String((body && body.password) || ''))) return null;
+  return p;
+}
+
 // Canonical spelling of `name` in a single-column tab (header in row 1),
 // matched case-insensitively, or null if it isn't there.
 function findCanonical(tabName, name) {
@@ -215,9 +283,9 @@ function getGuesses() {
 // Authenticated, privacy-filtered guesses: the caller's OWN picks (any state)
 // plus everyone's picks for games that are already LOCKED (scored / kicked off).
 // Unplayed games stay private — other players' picks for them are never sent.
-function getGuessesFor(rawName, password) {
-  var p = getPlayer(String(rawName || '').trim());
-  if (!p || !p.hash || p.hash !== md5(String(password || ''))) return { ok: false, error: 'bad_password' };
+function getGuessesFor(body) {
+  var p = resolvePlayer(body);
+  if (!p) return { ok: false, error: 'unauthorized' };
   var locked = lockedMatchIds() || {};   // {} when fixtures are unknown → only own picks
   var mine = normalize(p.name);
   var out = getGuesses().filter(function (g) {
@@ -263,6 +331,14 @@ function testFetch() {
   Logger.log('HTTP ' + resp.getResponseCode() + ', ' + resp.getContentText().length + ' chars');
   var locked = lockedMatchIds();
   Logger.log('lockedKnown=' + (locked !== null) + ' count=' + (locked ? Object.keys(locked).length : 0));
+}
+
+// One-off: run from the editor to authorize Script Properties (the session
+// secret store) and confirm token issue/verify works. Check the Execution log.
+function testToken() {
+  var tok = issueToken('TestUser');
+  Logger.log('token: ' + tok);
+  Logger.log('verify (expect TestUser): ' + verifyToken(tok));
 }
 
 function removePlayerGuesses(sheet, player, idMap) {
