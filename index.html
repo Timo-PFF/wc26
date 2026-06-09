@@ -140,7 +140,7 @@
   .penbtn { padding: 5px 12px; border: 1px solid var(--line); background: var(--card); color: var(--ink);
     border-radius: 999px; cursor: pointer; font-size: .82rem; }
   .penbtn.active { background: var(--accent); color: #06281b; border-color: var(--accent); font-weight: 600; }
-  /* Penalty-winner badge shown next to a knockout draw guess in the picks tables */
+  /* Penalty-winner badge next to a knockout draw guess in the roomy by-game lists */
   .pen-tag { display: inline-flex; align-items: center; gap: 2px; margin-left: 4px; padding: 1px 6px;
     border: 1px solid var(--line); border-radius: 999px; font-size: .72rem; color: var(--muted); white-space: nowrap; }
   /* Locked-game reveal: tap the note to see everyone's picks */
@@ -231,9 +231,9 @@
   .schedule-table .game img.flag { width: 18px; height: 18px; object-fit: contain;
     vertical-align: middle; border-radius: 2px; margin: 0 4px; }
   .schedule-table .score { color: var(--accent2); font-weight: 700; padding: 0 3px; font-variant-numeric: tabular-nums; }
-  /* Shootout winner's goal tally in the matrix score — the whole score is already
-     bold, so highlight + underline the winner's side to mark the penalty winner */
-  .schedule-table .score b { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+  /* Penalty-winner marker on a score digit — used for actual results and for a
+     player's guessed penalty winner, in both the matrix and the picks tables */
+  .penw { color: var(--accent); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
   .section-row th { text-align: left; background: var(--bg); color: var(--ink); font-size: .9rem;
     position: sticky; left: 0; padding-top: 14px; }
   .totals-row td { border-bottom: 2px solid var(--line); }
@@ -731,13 +731,19 @@
     return '<div class="pen-result">' + icon + escapeHtml(txt) + '</div>';
   }
 
-  // Final score for the matrix row header, with the shootout winner's goal tally
-  // bolded when a knockout draw was decided on penalties.
-  function finalScoreHtml(m, hs, as) {
-    const so = shootoutResult(m);
-    let h = String(hs), a = String(as);
-    if (so) { if (m.winner === 'home') h = '<b>' + h + '</b>'; else a = '<b>' + a + '</b>'; }
+  // "h–a" with one side's goal tally marked (bold + underline + accent) to flag a
+  // penalty winner — used for both actual results and guessed penalty winners.
+  function scoreWithBold(home, away, side) {
+    let h = String(home), a = String(away);
+    if (side === 'home') h = '<b class="penw">' + h + '</b>';
+    else if (side === 'away') a = '<b class="penw">' + a + '</b>';
     return h + '–' + a;
+  }
+
+  // Final score for the matrix row header, with the shootout winner's goal tally
+  // marked when a knockout draw was decided on penalties.
+  function finalScoreHtml(m, hs, as) {
+    return shootoutResult(m) ? scoreWithBold(hs, as, m.winner) : (hs + '–' + as);
   }
 
   // "2026-06-11T19:00Z" → a Date. ESPN omits seconds, which some browsers won't
@@ -1331,9 +1337,8 @@
     if (m) el.querySelector('.reveal-body').innerHTML = buildPicksList(m);
   }
 
-  // A guess as shown in the picks tables. For a knockout draw guess we also
-  // surface who the player picked to win the shootout (otherwise two identical
-  // "1–1" guesses can score differently with no visible reason).
+  // A guess in the roomy by-game picks lists (Results "by game" + pick tab): show
+  // the chosen penalty winner as a labelled badge, since there's space for it.
   function formatGuessCell(g, m) {
     if (!g) return '—';
     let s = g.home + '–' + g.away;
@@ -1343,6 +1348,17 @@
         escapeHtml(teamAbbr(side)) + '</span>';
     }
     return s;
+  }
+
+  // A guess in the cramped Results matrix cell: mark the chosen penalty winner on
+  // the score digit (bold + underline + accent), matching how the actual result
+  // is shown there — no room for the badge.
+  function formatGuessCompact(g, m) {
+    if (!g) return '—';
+    if (isKnockout(m) && g.home === g.away && g.penaltyWinner) {
+      return scoreWithBold(g.home, g.away, g.penaltyWinner);
+    }
+    return g.home + '–' + g.away;
   }
 
   // Table of every player's guess for match m, with points once it's scored.
@@ -1796,7 +1812,7 @@
       const g = (lut[p] || {})[m.id];
       if (!g) return '<td><div class="pcell"><span class="g pts-none">—</span></div></td>';
       const pts = scorePick(g, m);
-      return '<td><div class="pcell"><span class="g">' + formatGuessCell(g, m) +
+      return '<td><div class="pcell"><span class="g">' + formatGuessCompact(g, m) +
         '</span><span class="p ' + ptsClass(pts) + '">' + pts + '</span></div></td>';
     };
 
