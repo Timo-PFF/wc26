@@ -14,16 +14,23 @@
     margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
     background: var(--bg); color: var(--ink); line-height: 1.5;
   }
-  header { padding: 24px 16px 8px; text-align: center; }
-  h1 { margin: 0 0 4px; font-size: 1.5rem; }
+  header { padding: 20px 0 8px; }
+  /* Title left, language flags top-right — aligned to the main panel's width */
+  .header-inner { max-width: 680px; margin: 0 auto; padding: 0 16px; display: flex;
+    align-items: center; justify-content: space-between; gap: 12px; }
+  .lang-toggle { flex: 0 0 auto; }
+  h1 { margin: 0; font-size: 1.5rem; }
   .sub { color: var(--muted); font-size: .9rem; }
   main { max-width: 680px; margin: 0 auto; padding: 16px; }
-  .tabs { display: flex; gap: 8px; margin: 12px 0 16px; }
+  /* Classic underlined tabs: text on a baseline, active tab gets an accent underline */
+  .tabs { display: flex; gap: 2px; margin: 12px 0 16px; border-bottom: 2px solid var(--line); }
   .tabs button {
-    flex: 1; min-width: 0; padding: 10px 4px; border: 1px solid var(--line); background: var(--card);
-    color: var(--ink); border-radius: 10px; cursor: pointer; font-size: .85rem;
+    flex: 1; min-width: 0; padding: 10px 4px; border: 0; border-bottom: 2px solid transparent;
+    margin-bottom: -2px; background: none; color: var(--muted); cursor: pointer; font-size: .85rem;
+    border-radius: 0; outline: none;
   }
-  .tabs button.active { background: var(--accent); color: #06281b; font-weight: 600; border-color: var(--accent); }
+  .tabs button:hover { color: var(--ink); }
+  .tabs button.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
   .viewtoggle { display: flex; align-items: center; gap: 8px; }
   .pickbar { display: flex; justify-content: space-between; align-items: center;
     gap: 8px 14px; flex-wrap: wrap; margin: 0 2px 12px; font-size: .85rem; color: var(--muted); }
@@ -48,10 +55,13 @@
     color: var(--ink); border-radius: 8px; cursor: pointer; font-size: .85rem;
   }
   .viewtoggle button.active { background: var(--accent); color: #06281b; font-weight: 600; border-color: var(--accent); }
-  .topbar { display: flex; justify-content: space-between; align-items: center;
-    gap: 8px 12px; flex-wrap: wrap; margin: 10px 2px 0; }
-  .topbar-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .topbar-right { display: flex; align-items: center; gap: 10px 14px; flex-wrap: wrap; }
+  /* Language flags: compact, dimmed when inactive, accent ring when active */
+  .viewtoggle button.lang-btn { padding: 3px; line-height: 0; background: var(--card); opacity: .45; }
+  .viewtoggle button.lang-btn.active { opacity: 1; background: var(--card); border-color: var(--accent); }
+  .viewtoggle button.lang-btn svg { display: block; border-radius: 2px; }
+  /* Two right-aligned rows: badge+logout above, view toggle+reload below */
+  .topbar { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; margin: 10px 2px 0; }
+  .topbar-row { display: flex; align-items: center; gap: 10px 14px; flex-wrap: wrap; justify-content: flex-end; }
   .badge { background: var(--card); border: 1px solid var(--accent); color: var(--ink);
     border-radius: 999px; padding: 6px 14px; font-size: .85rem; cursor: pointer; }
   .badge b { color: var(--accent); }
@@ -73,10 +83,13 @@
     overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
   /* password field with an inline show/hide toggle */
   .pw-wrap { position: relative; display: flex; flex: 1 1 120px; }
-  .pw-wrap input { flex: 1 1 auto; padding-right: 64px; }
-  .pw-toggle { position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
-    background: none; border: 0; color: var(--muted); cursor: pointer; font-size: .78rem; padding: 4px 6px; }
-  .pw-toggle:hover { color: var(--ink); }
+  .pw-wrap input { flex: 1 1 auto; padding-right: 38px; }
+  /* .pw-wrap prefix so these win over the bordered `.addrow button` rule */
+  .pw-wrap .pw-toggle { position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+    background: none; border: 0; outline: none; border-radius: 0; color: var(--muted);
+    cursor: pointer; padding: 4px; display: flex; align-items: center; }
+  .pw-wrap .pw-toggle:focus, .pw-wrap .pw-toggle:focus-visible { outline: none; }
+  .pw-wrap .pw-toggle:hover { color: var(--ink); }
   .addrow button {
     flex: 0 0 auto; padding: 10px 16px; border: 1px solid var(--accent); background: transparent;
     color: var(--accent); border-radius: 9px; cursor: pointer; font-size: .95rem; font-weight: 600;
@@ -270,27 +283,46 @@
 </head>
 <body>
 <header>
-  <h1 id="title" data-i18n="appTitle">⚽ World Cup Prediction Pool</h1>
-  <div class="sub" data-i18n="subtitle">Pick scores, earn points, win bragging rights.</div>
+  <div class="header-inner">
+    <h1 id="title" data-i18n="appTitle">⚽ World Cup Prediction Pool</h1>
+    <div class="viewtoggle lang-toggle">
+      <button id="lgEn" class="active lang-btn" onclick="setLang('en')" aria-label="English" title="English">
+        <svg width="26" height="13" viewBox="0 0 60 30" aria-hidden="true">
+          <clipPath id="ukS"><path d="M0,0 v30 h60 v-30 z"/></clipPath>
+          <clipPath id="ukT"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath>
+          <g clip-path="url(#ukS)">
+            <path d="M0,0 v30 h60 v-30 z" fill="#012169"/>
+            <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/>
+            <path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#ukT)" stroke="#C8102E" stroke-width="4"/>
+            <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+            <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/>
+          </g>
+        </svg>
+      </button>
+      <button id="lgDe" class="lang-btn" onclick="setLang('de')" aria-label="Deutsch" title="Deutsch">
+        <svg width="22" height="13" viewBox="0 0 5 3" aria-hidden="true">
+          <rect width="5" height="1" y="0" fill="#000"/>
+          <rect width="5" height="1" y="1" fill="#DD0000"/>
+          <rect width="5" height="1" y="2" fill="#FFCE00"/>
+        </svg>
+      </button>
+    </div>
+  </div>
 </header>
 
 <main>
-  <!-- Global bar: who you're playing as + reload + language (shown on every tab) -->
+  <!-- Global bar: who you're playing as, view toggle + reload (shown on every tab).
+       Stacked and right-aligned, sitting under the language flags in the header. -->
   <div class="topbar">
-    <span class="topbar-left">
+    <div class="topbar-row">
       <button id="playerBadge" class="badge" onclick="showTab('who')" style="display:none"></button>
       <button id="logoutBtn" class="reload-btn" onclick="logout()" data-i18n="logout" style="display:none">Log out</button>
-    </span>
-    <div class="topbar-right">
+    </div>
+    <div class="topbar-row">
       <div class="viewtoggle" id="viewToggle">
         <span class="vt-label" data-i18n="viewLabel">View:</span>
         <button id="vtGroup" class="active" onclick="setView('group')" data-i18n="byGroup">By group</button>
         <button id="vtDate" onclick="setView('date')" data-i18n="chronological">Chronological</button>
-      </div>
-      <div class="viewtoggle">
-        <span class="vt-label" data-i18n="langLabel">Language:</span>
-        <button id="lgEn" class="active" onclick="setLang('en')">English</button>
-        <button id="lgDe" onclick="setLang('de')">Deutsch</button>
       </div>
       <button id="reloadBtn" class="reload-btn" onclick="reloadData()" data-i18n="reloadData">↻ Reload data</button>
     </div>
@@ -314,7 +346,7 @@
         <input id="loginUser" type="text" class="visually-hidden" autocomplete="username" tabindex="-1" aria-hidden="true" />
         <span class="pw-wrap">
           <input id="loginPw" type="password" autocomplete="current-password" data-i18n-ph="passwordPlaceholder" placeholder="Password" />
-          <button type="button" class="pw-toggle" data-i18n="showPw" onclick="togglePw('loginPw', this)">Show</button>
+          <button type="button" class="pw-toggle" onclick="togglePw('loginPw', this)"></button>
         </span>
         <button id="loginBtn" type="submit" data-i18n="continueBtn">Continue</button>
       </form>
@@ -323,7 +355,7 @@
         <input id="newName" type="text" maxlength="40" autocomplete="username" data-i18n-ph="addNamePlaceholder" placeholder="Your name" />
         <span class="pw-wrap">
           <input id="newPw" type="password" maxlength="64" autocomplete="new-password" data-i18n-ph="passwordPlaceholder" placeholder="Password" />
-          <button type="button" class="pw-toggle" data-i18n="showPw" onclick="togglePw('newPw', this)">Show</button>
+          <button type="button" class="pw-toggle" onclick="togglePw('newPw', this)"></button>
         </span>
         <button id="addBtn" type="submit" data-i18n="addMe">Add me</button>
       </form>
@@ -389,8 +421,6 @@
     <div id="pointsChart"></div>
   </section>
 </main>
-
-<footer data-i18n="footer">Family &amp; friends pool · refresh standings any time</footer>
 
 <!-- Translation tables (I18N / STAGE_DE / DE_NAMES / translatePlaceholder).
      Must load before the inline script below, which reads them. -->
@@ -459,6 +489,12 @@
       const v = I18N[LANG][el.dataset.i18nPh];
       if (typeof v === 'string') el.placeholder = v;
     });
+    // Password reveal toggles: paint the eye icon for the current reveal state
+    // (also the initial render) with a localized aria-label / tooltip.
+    document.querySelectorAll('.pw-toggle').forEach(btn => {
+      const inp = btn.closest('.pw-wrap').querySelector('input');
+      setPwToggle(btn, inp.type === 'text');
+    });
     // The fixtures file may override the title; otherwise use the localized one.
     document.getElementById('title').textContent = FIXTURE_TITLE ? '⚽ ' + FIXTURE_TITLE : t('appTitle');
     document.title = FIXTURE_TITLE || t('docTitle');
@@ -485,14 +521,30 @@
     renderMatches();
   }
 
-  // Show/hide a password field. Keeps data-i18n in sync so a language switch
-  // keeps the label correct for the current state.
+  // Eye / eye-off icons (Feather) for the password reveal toggle.
+  const EYE_SVG = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" ' +
+    'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>';
+  const EYE_OFF_SVG = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" ' +
+    'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>' +
+    '<path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>' +
+    '<line x1="1" y1="1" x2="23" y2="23"/></svg>';
+
+  // Paint a reveal toggle for the given state (revealed = password is showing).
+  // The eye-off icon means "currently visible, click to hide".
+  function setPwToggle(btn, revealed) {
+    btn.innerHTML = revealed ? EYE_OFF_SVG : EYE_SVG;
+    btn.setAttribute('aria-label', t(revealed ? 'hidePw' : 'showPw'));
+    btn.setAttribute('title', t(revealed ? 'hidePw' : 'showPw'));
+  }
+
+  // Show/hide a password field, swapping the eye icon to match.
   function togglePw(id, btn) {
     const inp = document.getElementById(id);
-    const reveal = inp.type === 'password';
-    inp.type = reveal ? 'text' : 'password';
-    btn.dataset.i18n = reveal ? 'hidePw' : 'showPw';
-    btn.textContent = t(btn.dataset.i18n);
+    const revealed = inp.type === 'password';   // about to become visible
+    inp.type = revealed ? 'text' : 'password';
+    setPwToggle(btn, revealed);
   }
 
   // Group/stage filter chips (group view only). Lists every section from the
@@ -977,7 +1029,7 @@
     pw.value = '';
     pw.type = 'password';                                 // reset reveal state
     const tog = loginRow.querySelector('.pw-toggle');
-    if (tog) { tog.dataset.i18n = 'showPw'; tog.textContent = t('showPw'); }
+    if (tog) setPwToggle(tog, false);
     pw.focus();
   }
 

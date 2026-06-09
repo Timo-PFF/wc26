@@ -22,8 +22,7 @@
 const I18N = {
   en: {
     appTitle: '⚽ World Cup Prediction Pool', docTitle: 'World Cup Prediction Pool',
-    subtitle: 'Pick scores, earn points, win bragging rights.',
-    tabWho: 'Player', tabPredict: 'Make picks', tabSchedule: 'Results', tabGroups: 'Groups', tabKnockout: 'Knockout', tabStandings: 'Standings',
+    tabWho: 'Login', tabPredict: 'Make picks', tabSchedule: 'Results', tabGroups: 'Groups', tabKnockout: 'Knockout', tabStandings: 'Standings',
     svTable: 'Table', svGame: 'By game', filtered: 'Filtered', clearFilter: 'Clear filter',
     thTeam: 'Team', thPlayed: 'Pl', thGoals: 'Goals (+/−)', h2hTitle: 'Head-to-head',
     noGroups: 'No group games found.',
@@ -40,7 +39,7 @@ const I18N = {
     addErrDuplicate: 'That name has already joined — pick it above and enter its password.',
     addFailed: 'Could not add the name. Please try again.',
     viewLabel: 'View:', byGroup: 'By group', chronological: 'Chronological',
-    langLabel: 'Language:', reloadData: '↻ Reload data', logout: 'Logout',
+    reloadData: '↻ Reload data', logout: 'Logout',
     loadingMatches: 'Loading matches…', loading: 'Loading…',
     nowLabel: 'Now:', hideStarted: 'Hide started games', showLabel: 'Show:', showPicks: 'show picks',
     countdown: (d, h, m, s) => 'Starts in ' +
@@ -58,7 +57,6 @@ const I18N = {
     completedGames: n => n + ' completed game(s)',
     noCompleted: 'No completed games yet.',
     couldNotLoadSchedule: 'Could not load the schedule.',
-    footer: 'Family & friends pool · refresh standings any time',
     setScriptUrl: '⚠ Set SCRIPT_URL in index.html first (see SETUP.md).',
     couldNotLoadFixtures: url => 'Could not load ' + url + '.',
     couldNotLoadPlayers: 'Could not load the player list — check SCRIPT_URL and that access is "Anyone".',
@@ -115,8 +113,7 @@ const I18N = {
   },
   de: {
     appTitle: '⚽ WM-Tippspiel', docTitle: 'WM-Tippspiel',
-    subtitle: 'Tippe Ergebnisse, sammle Punkte, gewinne Ruhm.',
-    tabWho: 'Spieler', tabPredict: 'Tippen', tabSchedule: 'Ergebnisse', tabGroups: 'Gruppen', tabKnockout: 'K.-o.-Runde', tabStandings: 'Tabelle',
+    tabWho: 'Login', tabPredict: 'Tippen', tabSchedule: 'Ergebnisse', tabGroups: 'Gruppen', tabKnockout: 'K.-o.-Runde', tabStandings: 'Tabelle',
     svTable: 'Tabelle', svGame: 'Nach Spiel', filtered: 'Gefiltert', clearFilter: 'Filter entfernen',
     thTeam: 'Team', thPlayed: 'Sp', thGoals: 'Tore (+/−)', h2hTitle: 'Direkter Vergleich',
     noGroups: 'Keine Gruppenspiele gefunden.',
@@ -133,7 +130,7 @@ const I18N = {
     addErrDuplicate: 'Dieser Name ist schon dabei — wähle ihn oben und gib das Passwort ein.',
     addFailed: 'Name konnte nicht hinzugefügt werden. Bitte erneut versuchen.',
     viewLabel: 'Ansicht:', byGroup: 'Nach Gruppe', chronological: 'Chronologisch',
-    langLabel: 'Sprache:', reloadData: '↻ Daten neu laden', logout: 'Logout',
+    reloadData: '↻ Daten neu laden', logout: 'Logout',
     loadingMatches: 'Spiele werden geladen…', loading: 'Wird geladen…',
     nowLabel: 'Jetzt:', hideStarted: 'Begonnene ausblenden', showLabel: 'Anzeigen:', showPicks: 'Tipps anzeigen',
     countdown: (d, h, m, s) => 'Beginnt in ' +
@@ -151,7 +148,6 @@ const I18N = {
     completedGames: n => n + (n === 1 ? ' abgeschlossenes Spiel' : ' abgeschlossene Spiele'),
     noCompleted: 'Noch keine abgeschlossenen Spiele.',
     couldNotLoadSchedule: 'Spielplan konnte nicht geladen werden.',
-    footer: 'Pool für Familie & Freunde · Tabelle jederzeit aktualisieren',
     setScriptUrl: '⚠ Zuerst SCRIPT_URL in index.html setzen (siehe SETUP.md).',
     couldNotLoadFixtures: url => url + ' konnte nicht geladen werden.',
     couldNotLoadPlayers: 'Spielerliste konnte nicht geladen werden — prüfe SCRIPT_URL und ob der Zugriff auf „Anyone" steht.',
