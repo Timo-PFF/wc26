@@ -30,13 +30,13 @@
   .clocktext { font-variant-numeric: tabular-nums; }
   .hidetoggle { display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
   .hidetoggle input[type="checkbox"] { width: auto; padding: 0; margin: 0; cursor: pointer; }
+  .pickfilters { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
   .groupfilter { display: flex; flex-direction: column; gap: 8px; margin: 0 2px 12px; }
   .quickbtns { display: flex; flex-wrap: wrap; gap: 6px; }
   .quickbtn { padding: 4px 10px; border: 1px solid var(--line); background: var(--card);
     color: var(--ink); border-radius: 8px; cursor: pointer; font-size: .78rem; }
   .quickbtn:hover { border-color: var(--accent); }
-  .chiprow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
-  .chiprow .vt-label { margin-right: 2px; }
   #groupChips { display: flex; flex-wrap: wrap; gap: 6px; }
   .chip { padding: 4px 10px; border: 1px solid var(--line); background: var(--card); color: var(--muted);
     border-radius: 999px; cursor: pointer; font-size: .78rem; }
@@ -106,6 +106,8 @@
   .match input { text-align: center; padding: 8px; }
   .meta-row { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .75rem; color: var(--muted); margin-bottom: 4px; }
   .meta-row .odds { color: var(--accent2); }
+  .meta-row .countdown { color: var(--accent); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .meta-row .countdown.soon { color: var(--accent2); }   /* within 48h → yellow/orange */
   .done { grid-column: 1 / -1; font-size: .78rem; color: var(--accent2); margin-top: 6px; font-weight: 600; }
   /* Locked-game reveal: tap the note to see everyone's picks */
   .reveal { grid-column: 1 / -1; margin-top: 6px; }
@@ -235,19 +237,21 @@
   <section id="predict" style="display:none">
     <div class="pickbar">
       <span class="clocktext"><span data-i18n="nowLabel">Now:</span> <span id="clock"></span></span>
-      <label class="hidetoggle"><input type="checkbox" id="hideStarted" onchange="toggleHideStarted()" /> <span data-i18n="hideStarted">Hide started games</span></label>
+      <div class="pickfilters">
+        <label class="hidetoggle"><input type="checkbox" id="hideStarted" onchange="applyPickFilters()" /> <span data-i18n="hideStarted">Hide started games</span></label>
+        <label class="hidetoggle"><input type="checkbox" id="onlyUpcoming" onchange="applyPickFilters()" /> <span id="onlyUpcomingLbl">Show only upcoming games</span></label>
+        <label class="hidetoggle"><input type="checkbox" id="onlyNoPick" onchange="applyPickFilters()" /> <span data-i18n="onlyNoPicks">Show only games without picks</span></label>
+      </div>
     </div>
     <div id="groupFilter" class="groupfilter" style="display:none">
+      <span class="vt-label" data-i18n="showLabel">Show:</span>
       <div class="quickbtns">
         <button class="quickbtn" onclick="setGroupFilter('all')" data-i18n="qbShowAll">Show all</button>
         <button class="quickbtn" onclick="setGroupFilter('none')" data-i18n="qbHideAll">Hide all</button>
         <button class="quickbtn" onclick="setGroupFilter('groups')" data-i18n="qbGroupStage">Group stage</button>
         <button class="quickbtn" onclick="setGroupFilter('knockouts')" data-i18n="qbKnockouts">Knockouts</button>
       </div>
-      <div class="chiprow">
-        <span class="vt-label" data-i18n="showLabel">Show:</span>
-        <span id="groupChips"></span>
-      </div>
+      <span id="groupChips"></span>
     </div>
     <div id="matches"><div class="loading" data-i18n="loadingMatches">Loading matches…</div></div>
     <div id="msg" class="msg"></div>
@@ -315,6 +319,8 @@
   let HIDE_STARTED = false;  // pick tab: hide games that are scored / kicked off
   let lockSignature = '';    // ids of locked games at last render; drives auto-relock on the clock tick
   let HIDDEN_GROUPS = new Set();  // pick tab (group view): section keys toggled off
+  let ONLY_UPCOMING = false;      // pick tab: only games kicking off within COUNTDOWN_SOON_MS
+  let ONLY_NOPICK = false;        // pick tab: only games without a saved pick
   let AUTH = null;                // { name, password } once the player logs in / adds themselves
 
   function setView(mode) {
@@ -346,6 +352,9 @@
     updateScoringNote();
     updatePlayerBadge();
     updateClock();
+    // The "only upcoming" checkbox label carries the current threshold (e.g. "120h").
+    const upLbl = document.getElementById('onlyUpcomingLbl');
+    if (upLbl) upLbl.textContent = t('onlyUpcoming')(Math.round(COUNTDOWN_SOON_MS / (60 * 60 * 1000)));
   }
 
   function updateScoringNote() {
@@ -353,8 +362,11 @@
       t('scoringNote')(SCORING.exact, SCORING.goalDifference, SCORING.outcome);
   }
 
-  function toggleHideStarted() {
+  // Read the three pick-tab filter checkboxes and re-render.
+  function applyPickFilters() {
     HIDE_STARTED = document.getElementById('hideStarted').checked;
+    ONLY_UPCOMING = document.getElementById('onlyUpcoming').checked;
+    ONLY_NOPICK = document.getElementById('onlyNoPick').checked;
     renderMatches();
   }
 
@@ -406,11 +418,34 @@
       { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
   }
 
-  // Once a second: tick the clock, and (when the picks tab is open and the user
-  // isn't mid-typing) re-render if a game has just crossed its kickoff.
+  const COUNTDOWN_SOON_MS = 120 * 60 * 60 * 1000;   // within this window → highlight (120h for testing; 48h for prod)
+
+  // "Starts in 3h 12m" from ms-until-kickoff (two most-significant units).
+  function fmtCountdown(ms) {
+    const total = Math.max(0, Math.floor(ms / 1000));
+    const d = Math.floor(total / 86400);
+    const h = Math.floor((total % 86400) / 3600);
+    const m = Math.floor((total % 3600) / 60);
+    const s = total % 60;
+    return t('countdown')(d, h, m, s);
+  }
+
+  // Refresh every non-locked game's countdown text in place (no re-render).
+  function updateCountdowns() {
+    const now = Date.now();
+    document.querySelectorAll('#matches .countdown[data-ko]').forEach(el => {
+      const ms = Number(el.dataset.ko) - now;
+      el.textContent = fmtCountdown(ms);
+      el.classList.toggle('soon', ms <= COUNTDOWN_SOON_MS);
+    });
+  }
+
+  // Once a second: tick the clock + countdowns, and (when the picks tab is open
+  // and the user isn't mid-typing) re-render if a game has just crossed kickoff.
   function tick() {
     updateClock();
     if (document.getElementById('predict').style.display === 'none') return;
+    updateCountdowns();   // cheap text-only update, safe while typing
     const a = document.activeElement;
     if (a && a.matches && a.matches('#matches input')) return;
     const sig = MATCHES.filter(isLocked).map(m => m.id).join(',');
@@ -928,10 +963,23 @@
     lockSignature = MATCHES.filter(isLocked).map(m => m.id).join(',');
     renderGroupFilter();   // the per-group/stage chips (group view only)
 
-    // "Hide started games" drops scored / kicked-off games from the list.
-    const visible = HIDE_STARTED ? MATCHES.filter(m => !isLocked(m)) : MATCHES;
+    // Pick-tab filter checkboxes (each independent; they compose).
+    let visible = HIDE_STARTED ? MATCHES.filter(m => !isLocked(m)) : MATCHES;
+    if (ONLY_UPCOMING) {
+      const now = Date.now();
+      visible = visible.filter(m => {
+        if (isLocked(m)) return false;
+        const ko = kickoffDate(m.date);
+        return ko && ko.getTime() - now <= COUNTDOWN_SOON_MS;
+      });
+    }
+    if (ONLY_NOPICK) {
+      const picked = new Set((AUTH ? SHEET.guesses.filter(g => g.player === AUTH.name) : []).map(g => g.matchId));
+      visible = visible.filter(m => !picked.has(m.id));
+    }
     if (!visible.length) {
-      wrap.innerHTML = '<div class="card">' + escapeHtml(t('allStarted')) + '</div>';
+      const filtered = HIDE_STARTED || ONLY_UPCOMING || ONLY_NOPICK;
+      wrap.innerHTML = '<div class="card">' + escapeHtml(t(filtered ? 'noUpcomingMatch' : 'noMatches')) + '</div>';
       return;
     }
 
@@ -964,6 +1012,15 @@
         }
         const odds = oddsLabel(m.odds);
         if (odds) metaBits.push(odds);
+        // Live "Starts in …" countdown, shown first, for games not yet locked.
+        if (!locked) {
+          const ko = kickoffDate(m.date);
+          if (ko) {
+            const ms = ko.getTime() - Date.now();
+            metaBits.unshift('<span class="countdown' + (ms <= COUNTDOWN_SOON_MS ? ' soon' : '') +
+              '" data-ko="' + ko.getTime() + '">' + escapeHtml(fmtCountdown(ms)) + '</span>');
+          }
+        }
 
         // Vig-free win probabilities shown above each input (draw above "vs"),
         // rounded so the three percents add up to exactly 100.
@@ -1071,7 +1128,7 @@
         body: JSON.stringify({ token: AUTH.token, guesses: guesses }) // text/plain → no CORS preflight
       });
       const data = await res.json();
-      if (data.ok) { updateCacheGuesses(player, guesses); msg(t('saved')(data.saved), 'ok'); }
+      if (data.ok) { updateCacheGuesses(player, guesses); msg(t('saved')(data.saved), 'ok'); if (ONLY_NOPICK) renderMatches(); }
       else if (data.error === 'bad_password' || data.error === 'unauthorized') { logout(); addMsg(t('loginFirst'), 'err'); }
       else if (data.error === 'not_joined') msg(t('submitErrNotJoined'), 'err');
       else msg(t('errorPrefix')(data.error || t('unknown')), 'err');

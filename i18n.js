@@ -40,6 +40,11 @@ const I18N = {
     langLabel: 'Language:', reloadData: '↻ Reload data', logout: 'Logout',
     loadingMatches: 'Loading matches…', loading: 'Loading…',
     nowLabel: 'Now:', hideStarted: 'Hide started games', showLabel: 'Show:', showPicks: 'show picks',
+    countdown: (d, h, m, s) => 'Starts in ' +
+      (d > 0 ? d + 'd ' + h + 'h' : h > 0 ? h + 'h ' + m + 'm' : m + 'm ' + s + 's'),
+    onlyUpcoming: h => 'Show only upcoming games (' + h + 'h)',
+    onlyNoPicks: 'Show only games without picks',
+    noUpcomingMatch: 'No games match the filters.',
     qbShowAll: 'Show all', qbHideAll: 'Hide all', qbGroupStage: 'Group stage', qbKnockouts: 'Knockouts',
     startedLocked: 'Kicked off — picks locked', allStarted: 'No upcoming games to pick.',
     allHidden: 'All groups hidden — tap a chip above to show one.',
@@ -92,6 +97,11 @@ const I18N = {
     langLabel: 'Sprache:', reloadData: '↻ Daten neu laden', logout: 'Logout',
     loadingMatches: 'Spiele werden geladen…', loading: 'Wird geladen…',
     nowLabel: 'Jetzt:', hideStarted: 'Begonnene ausblenden', showLabel: 'Anzeigen:', showPicks: 'Tipps anzeigen',
+    countdown: (d, h, m, s) => 'Beginnt in ' +
+      (d > 0 ? d + ' T ' + h + ' Std' : h > 0 ? h + ' Std ' + m + ' Min' : m + ' Min ' + s + ' Sek'),
+    onlyUpcoming: h => 'Nur anstehende Spiele (' + h + ' Std)',
+    onlyNoPicks: 'Nur Spiele ohne Tipp',
+    noUpcomingMatch: 'Keine Spiele entsprechen den Filtern.',
     qbShowAll: 'Alle anzeigen', qbHideAll: 'Alle ausblenden', qbGroupStage: 'Gruppenphase', qbKnockouts: 'K.-o.-Runden',
     startedLocked: 'Angepfiffen — Tipps gesperrt', allStarted: 'Keine anstehenden Spiele zum Tippen.',
     allHidden: 'Alle Gruppen ausgeblendet — tippe oben auf einen Chip.',
