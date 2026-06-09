@@ -20,8 +20,8 @@
   main { max-width: 680px; margin: 0 auto; padding: 16px; }
   .tabs { display: flex; gap: 8px; margin: 12px 0 16px; }
   .tabs button {
-    flex: 1; min-width: 0; padding: 10px 6px; border: 1px solid var(--line); background: var(--card);
-    color: var(--ink); border-radius: 10px; cursor: pointer; font-size: .92rem;
+    flex: 1; min-width: 0; padding: 10px 4px; border: 1px solid var(--line); background: var(--card);
+    color: var(--ink); border-radius: 10px; cursor: pointer; font-size: .85rem;
   }
   .tabs button.active { background: var(--accent); color: #06281b; font-weight: 600; border-color: var(--accent); }
   .viewtoggle { display: flex; align-items: center; gap: 8px; }
@@ -104,6 +104,8 @@
     margin-bottom: 4px; line-height: 1.1; font-variant-numeric: tabular-nums; }
   .match .vs { text-align: center; color: var(--muted); padding-bottom: 8px; }
   .match input { text-align: center; padding: 8px; }
+  .match .rscore { display: block; text-align: center; font-size: 1.2rem; font-weight: 700;
+    color: var(--accent2); font-variant-numeric: tabular-nums; padding-bottom: 6px; }
   .meta-row { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .75rem; color: var(--muted); margin-bottom: 4px; }
   .meta-row .odds { color: var(--accent2); }
   .meta-row .countdown { color: var(--accent); font-weight: 600; font-variant-numeric: tabular-nums; }
@@ -140,6 +142,32 @@
   th { color: var(--muted); font-weight: 600; font-size: .8rem; text-transform: uppercase; }
   td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
   .rank1 td { color: var(--accent2); font-weight: 700; }
+  /* Groups tab: one league table per group */
+  .group-title { margin: 0 0 10px; font-size: 1.05rem; }
+  .group-table .gteam { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .group-table .gteam span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .group-table img.flag { width: 20px; height: 20px; object-fit: contain; border-radius: 3px;
+    background: #0d1426; flex: 0 0 auto; }
+  .group-table .goalcol { text-align: center; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .group-table .gpts { font-weight: 700; }
+  .group-table .ab-paren { color: var(--muted); font-weight: 400; }
+  /* Head-to-head grid */
+  .h2h-label { margin: 14px 0 6px; font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  .h2h-scroll { overflow-x: auto; }
+  .h2h-table { border-collapse: collapse; }
+  .h2h-table th, .h2h-table td { border: 1px solid var(--line); padding: 4px 6px; text-align: center;
+    white-space: nowrap; font-variant-numeric: tabular-nums; font-size: .85rem; }
+  .h2h-table .h2h-th img.flag { display: block; margin: 0 auto 2px; width: 18px; height: 18px; object-fit: contain; }
+  .h2h-table .h2h-th .ab { font-size: .68rem; color: var(--muted); }
+  .h2h-table .h2h-rowhead { text-align: left; }
+  .h2h-table .h2h-rowhead img.flag { width: 18px; height: 18px; object-fit: contain; vertical-align: middle; margin-right: 5px; }
+  .h2h-table .h2h-rowhead .ab { font-size: .8rem; }
+  .h2h-table .h2h-self { background: rgba(255,255,255,.05); }
+  .h2h-table .h2h-cell { cursor: pointer; }
+  .h2h-table .h2h-cell:hover { background: rgba(61,220,151,.12); color: var(--accent); }
+  .group-table .gteam { cursor: pointer; }
+  .group-table tbody tr:hover .gteam { color: var(--accent); }
+  .filter-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
   /* Schedule tab: one row per finished game, one column per player */
   .schedule-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .schedule-table { border-collapse: collapse; min-width: 100%; }
@@ -204,6 +232,7 @@
     <button id="tabWho" class="active" onclick="showTab('who')" data-i18n="tabWho">Player</button>
     <button id="tabPredict" onclick="showTab('predict')" data-i18n="tabPredict">Make picks</button>
     <button id="tabSchedule" onclick="showTab('schedule')" data-i18n="tabSchedule">Schedule</button>
+    <button id="tabGroups" onclick="showTab('groups')" data-i18n="tabGroups">Groups</button>
     <button id="tabStandings" onclick="showTab('standings')" data-i18n="tabStandings">Standings</button>
   </div>
 
@@ -260,8 +289,17 @@
 
   <!-- SCHEDULE (completed games + everyone's guesses) -->
   <section id="schedule" style="display:none">
+    <div class="viewtoggle" id="scheduleViewToggle" style="margin-bottom:10px">
+      <button id="svTable" class="active" onclick="setScheduleView('table')" data-i18n="svTable">Table</button>
+      <button id="svGame" onclick="setScheduleView('game')" data-i18n="svGame">By game</button>
+    </div>
     <div id="scheduleMeta" class="sub" style="margin-bottom:10px"></div>
     <div id="scheduleBody"><div class="loading" data-i18n="loading">Loading…</div></div>
+  </section>
+
+  <!-- GROUPS (live group tables from the fixtures) -->
+  <section id="groups" style="display:none">
+    <div id="groupsBody"><div class="loading" data-i18n="loading">Loading…</div></div>
   </section>
 
   <!-- STANDINGS -->
@@ -315,6 +353,8 @@
   let guessesLoaded = false;                 // private (auth'd) guesses loaded for the current login
   let FIXTURE_TITLE = null;  // set if the fixtures file carries its own title
   let VIEW_MODE = 'group';   // 'group' = by group/stage · 'date' = chronological
+  let SCHEDULE_VIEW = 'table';  // schedule tab layout: 'table' (matrix) | 'game' (read-only cards)
+  let SCHEDULE_FILTER = null;   // by-game view: null | {type:'match',id} | {type:'team',abbr}
   let LANG = 'en';           // 'en' | 'de' — affects all UI text + country names
   let HIDE_STARTED = false;  // pick tab: hide games that are scored / kicked off
   let lockSignature = '';    // ids of locked games at last render; drives auto-relock on the clock tick
@@ -470,6 +510,7 @@
     { name: 'who',       btn: 'tabWho' },
     { name: 'predict',   btn: 'tabPredict' },
     { name: 'schedule',  btn: 'tabSchedule',  onShow: () => loadSchedule() },
+    { name: 'groups',    btn: 'tabGroups',    onShow: () => renderGroups() },
     { name: 'standings', btn: 'tabStandings', onShow: () => loadStandings() },
   ];
 
@@ -1203,6 +1244,45 @@
   }
 
   // ---- Schedule tab: completed games, grouped by day, with every guess ------
+  function markScheduleViewButtons() {
+    document.getElementById('svTable').classList.toggle('active', SCHEDULE_VIEW === 'table');
+    document.getElementById('svGame').classList.toggle('active', SCHEDULE_VIEW === 'game');
+  }
+
+  function setScheduleView(mode) {
+    if (mode === SCHEDULE_VIEW) return;
+    SCHEDULE_VIEW = mode;
+    SCHEDULE_FILTER = null;   // a manual layout switch shows the full schedule
+    markScheduleViewButtons();
+    loadSchedule();           // re-render from cache
+  }
+
+  // From the Groups tab: jump to the schedule by-game view filtered to a game / team.
+  function showGameInSchedule(id) {
+    SCHEDULE_FILTER = { type: 'match', id: id };
+    SCHEDULE_VIEW = 'game';
+    markScheduleViewButtons();
+    showTab('schedule');
+  }
+  function showTeamInSchedule(abbr) {
+    SCHEDULE_FILTER = { type: 'team', abbr: abbr };
+    SCHEDULE_VIEW = 'game';
+    markScheduleViewButtons();
+    showTab('schedule');
+  }
+  function clearScheduleFilter() { SCHEDULE_FILTER = null; loadSchedule(); }
+
+  function scheduleFilterLabel() {
+    if (!SCHEDULE_FILTER) return '';
+    if (SCHEDULE_FILTER.type === 'match') {
+      const m = MATCHES.find(x => x.id === SCHEDULE_FILTER.id);
+      return m ? teamAbbr(m.home) + '–' + teamAbbr(m.away) : '';
+    }
+    const m = MATCHES.find(x => teamAbbr(x.home) === SCHEDULE_FILTER.abbr || teamAbbr(x.away) === SCHEDULE_FILTER.abbr);
+    if (m) return teamName(teamAbbr(m.home) === SCHEDULE_FILTER.abbr ? m.home : m.away);
+    return SCHEDULE_FILTER.abbr;
+  }
+
   async function loadSchedule() {
     const body = document.getElementById('scheduleBody');
     document.getElementById('scheduleMeta').textContent = '';
@@ -1231,8 +1311,7 @@
     return 'pts-zero';
   }
 
-  // Matrix: one row per completed game (grouped by day), one column per player.
-  // Each player cell stacks their guess over the points it earned.
+  // Render the schedule in the chosen layout (table matrix or by-game cards).
   function renderSchedule(cfgPlayers, guesses) {
     const body = document.getElementById('scheduleBody');
     const completed = MATCHES.filter(isFinished);
@@ -1241,7 +1320,56 @@
       body.innerHTML = '<div class="card">' + escapeHtml(t('noCompleted')) + '</div>';
       return;
     }
+    body.innerHTML = SCHEDULE_VIEW === 'game'
+      ? scheduleByGame(completed)
+      : scheduleTable(completed, cfgPlayers, guesses);
+  }
 
+  // By-game layout: read-only cards (like the pick tab) showing each final
+  // result, grouped by the current group/chronological view. Tap to see picks.
+  function scheduleByGame(completed) {
+    let games = completed;
+    let chip = '';
+    if (SCHEDULE_FILTER) {
+      if (SCHEDULE_FILTER.type === 'match') {
+        games = completed.filter(m => m.id === SCHEDULE_FILTER.id);
+      } else {
+        games = completed.filter(m => teamAbbr(m.home) === SCHEDULE_FILTER.abbr || teamAbbr(m.away) === SCHEDULE_FILTER.abbr);
+      }
+      chip = '<div class="filter-bar"><span class="vt-label">' + escapeHtml(t('filtered')) + ':</span>' +
+        '<button class="chip on" onclick="clearScheduleFilter()" title="' + escapeHtml(t('clearFilter')) + '">' +
+        escapeHtml(scheduleFilterLabel()) + ' ✕</button></div>';
+    }
+    if (!games.length) return chip + '<div class="card">' + escapeHtml(t('noCompleted')) + '</div>';
+
+    const sections = VIEW_MODE === 'date' ? sectionizeByDate(games) : sectionize(games);
+    return chip + sections.map(section => {
+      const head = '<div class="section-head"><h2>' + escapeHtml(section.title) + '</h2>' +
+        '<span class="count">' + escapeHtml(t('matchCount')(section.matches.length)) + '</span></div>';
+      const cards = section.matches.map(m => {
+        const hs = homeScore(m), as = awayScore(m);
+        const metaBits = [];
+        if (m.date) metaBits.push(escapeHtml(kickoffLabel(m.date)));
+        if (m.venue && m.venue.fullName) {
+          metaBits.push(escapeHtml([m.venue.fullName, m.venue.city, m.venue.country].filter(Boolean).join(', ')));
+        }
+        return '<div class="card match">' +
+          (metaBits.length ? '<div class="meta-row">' + metaBits.join('<span>·</span>') + '</div>' : '') +
+          teamCell(m.home, 'home') +
+          '<div class="pick"><span class="rscore">' + hs + '</span></div>' +
+          '<div class="pick vs-cell"><div class="vs">–</div></div>' +
+          '<div class="pick"><span class="rscore">' + as + '</span></div>' +
+          teamCell(m.away, 'away') +
+          '<details class="reveal" ontoggle="revealPicks(this, \'' + escapeHtml(m.id) + '\')">' +
+            '<summary>' + escapeHtml(t('showPicks')) + '</summary><div class="reveal-body"></div></details>' +
+          '</div>';
+      }).join('');
+      return head + cards;
+    }).join('');
+  }
+
+  // Table layout: matrix of completed games (rows) × players (columns).
+  function scheduleTable(completed, cfgPlayers, guesses) {
     // Players = everyone joined + anyone with a guess. Build a guess lookup
     // (lut[player][matchId]) and each player's total over completed games, then
     // order the columns best-first (matches the standings order).
@@ -1295,7 +1423,100 @@
     });
 
     html += '</tbody></table></div>';
-    body.innerHTML = html;
+    return html;
+  }
+
+  // ---- Groups tab: live group tables from the fixtures ----------------------
+  // Standings per group from completed group-stage games: 3 pts win / 1 draw,
+  // sorted by points, then goal difference, then goals scored, then name.
+  function renderGroups() {
+    const body = document.getElementById('groupsBody');
+    const groups = {};        // letter -> { teamKey -> {side, gf, ga, pts, played} }
+    const groupMatches = {};  // letter -> [matches]  (for the head-to-head grid)
+
+    MATCHES.forEach(m => {
+      if ((m.stage || {}).slug !== 'group-stage' || !m.group) return;
+      (groupMatches[m.group] = groupMatches[m.group] || []).push(m);
+      const g = (groups[m.group] = groups[m.group] || {});
+      [m.home, m.away].forEach(side => {
+        const k = teamAbbr(side);
+        if (!g[k]) g[k] = { side: side, gf: 0, ga: 0, pts: 0, played: 0 };
+      });
+      const hs = homeScore(m), as = awayScore(m);
+      if (isFinished(m) && hs != null && as != null) {
+        const H = g[teamAbbr(m.home)], A = g[teamAbbr(m.away)];
+        H.gf += hs; H.ga += as; H.played++;
+        A.gf += as; A.ga += hs; A.played++;
+        if (hs > as) H.pts += 3; else if (as > hs) A.pts += 3; else { H.pts++; A.pts++; }
+      }
+    });
+
+    const letters = Object.keys(groups).sort();
+    if (!letters.length) {
+      body.innerHTML = '<div class="card">' + escapeHtml(t('noGroups')) + '</div>';
+      return;
+    }
+
+    body.innerHTML = letters.map(letter => {
+      const teams = Object.keys(groups[letter]).map(k => {
+        const r = groups[letter][k];
+        return { side: r.side, played: r.played, gf: r.gf, ga: r.ga, gd: r.gf - r.ga, pts: r.pts };
+      }).sort((a, b) =>
+        b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || teamName(a.side).localeCompare(teamName(b.side)));
+
+      const rows = teams.map(r => {
+        const logo = teamLogo(r.side);
+        const flag = logo ? '<img class="flag" src="' + escapeHtml(logo) + '" alt="" loading="lazy" />' : '';
+        const goals = r.gf + '–' + r.ga + ' (' + (r.gd > 0 ? '+' : '') + r.gd + ')';
+        return '<tr>' +
+          '<td class="gteam" onclick="showTeamInSchedule(\'' + escapeHtml(teamAbbr(r.side)) + '\')">' +
+            flag + '<span class="tn">' + escapeHtml(teamName(r.side)) +
+            ' <span class="ab-paren">(' + escapeHtml(teamAbbr(r.side)) + ')</span></span></td>' +
+          '<td class="num">' + r.played + '</td>' +
+          '<td class="goalcol">' + goals + '</td>' +
+          '<td class="num gpts">' + r.pts + '</td></tr>';
+      }).join('');
+
+      return '<div class="card">' +
+        '<h2 class="group-title">' + escapeHtml(t('group') + ' ' + letter) + '</h2>' +
+        '<table class="group-table"><thead><tr>' +
+          '<th>' + escapeHtml(t('thTeam')) + '</th>' +
+          '<th class="num">' + escapeHtml(t('thPlayed')) + '</th>' +
+          '<th class="goalcol">' + escapeHtml(t('thGoals')) + '</th>' +
+          '<th class="num">' + escapeHtml(t('thPts')) + '</th>' +
+        '</tr></thead><tbody>' + rows + '</tbody></table>' +
+        '<div class="h2h-label">' + escapeHtml(t('h2hTitle')) + '</div>' +
+        '<div class="h2h-scroll">' + h2hMatrix(teams, groupMatches[letter] || []) + '</div>' +
+        '</div>';
+    }).join('');
+  }
+
+  function flagAbbr(side) {
+    const l = teamLogo(side);
+    const img = l ? '<img class="flag" src="' + escapeHtml(l) + '" alt="" loading="lazy" />' : '';
+    return img + '<span class="ab">' + escapeHtml(teamAbbr(side)) + '</span>';
+  }
+
+  // Head-to-head grid: rows × columns of the group's teams (same order as the
+  // table). Each cell shows that pair's result from the ROW team's perspective.
+  function h2hMatrix(teams, matches) {
+    const findMatch = (a, b) => matches.find(x => {
+      const h = teamAbbr(x.home), w = teamAbbr(x.away), ka = teamAbbr(a.side), kb = teamAbbr(b.side);
+      return (h === ka && w === kb) || (h === kb && w === ka);
+    });
+    const cols = teams.map(c => '<th class="h2h-th">' + flagAbbr(c.side) + '</th>').join('');
+    const rows = teams.map(rt => {
+      const cells = teams.map(ct => {
+        if (teamAbbr(rt.side) === teamAbbr(ct.side)) return '<td class="h2h-self"></td>';
+        const m = findMatch(rt, ct);
+        if (!m || !isFinished(m)) return '<td></td>';
+        const hs = homeScore(m), as = awayScore(m);
+        const score = teamAbbr(m.home) === teamAbbr(rt.side) ? hs + ':' + as : as + ':' + hs;
+        return '<td class="h2h-cell" onclick="showGameInSchedule(\'' + escapeHtml(m.id) + '\')">' + score + '</td>';
+      }).join('');
+      return '<tr><th class="h2h-rowhead">' + flagAbbr(rt.side) + '</th>' + cells + '</tr>';
+    }).join('');
+    return '<table class="h2h-table"><thead><tr><th></th>' + cols + '</tr></thead><tbody>' + rows + '</tbody></table>';
   }
 
   function escapeHtml(s) {

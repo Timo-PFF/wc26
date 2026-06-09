@@ -23,7 +23,10 @@ const I18N = {
   en: {
     appTitle: '⚽ World Cup Prediction Pool', docTitle: 'World Cup Prediction Pool',
     subtitle: 'Pick scores, earn points, win bragging rights.',
-    tabWho: 'Player', tabPredict: 'Make picks', tabSchedule: 'Schedule', tabStandings: 'Standings',
+    tabWho: 'Player', tabPredict: 'Make picks', tabSchedule: 'Schedule', tabGroups: 'Groups', tabStandings: 'Standings',
+    svTable: 'Table', svGame: 'By game', filtered: 'Filtered', clearFilter: 'Clear filter',
+    thTeam: 'Team', thPlayed: 'Pl', thGoals: 'Goals (+/−)', h2hTitle: 'Head-to-head',
+    noGroups: 'No group games found.',
     playAs: name => 'You play as <b>' + name + '</b>',
     retrievingLogin: 'Retrieving your login…',
     whoLabel: 'Who are you?', selectName: '— select your name —',
@@ -80,7 +83,10 @@ const I18N = {
   de: {
     appTitle: '⚽ WM-Tippspiel', docTitle: 'WM-Tippspiel',
     subtitle: 'Tippe Ergebnisse, sammle Punkte, gewinne Ruhm.',
-    tabWho: 'Spieler', tabPredict: 'Tippen', tabSchedule: 'Spielplan', tabStandings: 'Tabelle',
+    tabWho: 'Spieler', tabPredict: 'Tippen', tabSchedule: 'Spielplan', tabGroups: 'Gruppen', tabStandings: 'Tabelle',
+    svTable: 'Tabelle', svGame: 'Nach Spiel', filtered: 'Gefiltert', clearFilter: 'Filter entfernen',
+    thTeam: 'Team', thPlayed: 'Sp', thGoals: 'Tore (+/−)', h2hTitle: 'Direkter Vergleich',
+    noGroups: 'Keine Gruppenspiele gefunden.',
     playAs: name => 'Du spielst als <b>' + name + '</b>',
     retrievingLogin: 'Anmeldung läuft …',
     whoLabel: 'Wer bist du?', selectName: '— wähle deinen Namen —',
