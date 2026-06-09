@@ -32,18 +32,32 @@
  *          | { ok:false, error:'not_joined'|'bad_password' }
  */
 
-// URL of the hosted fixtures JSON, e.g.
-//   https://USER.github.io/REPO/data/wc2026_fixtures.json
-// The backend fetches it to learn which games are LOCKED (scored or kicked off),
-// so it can keep unplayed picks private. Apps Script can't reach a local file or
-// the ?fixtures= dev override, so this must be a publicly reachable URL.
+// URL of the hosted fixtures JSON. The backend fetches it to learn which games
+// are LOCKED (scored or kicked off), so it can keep unplayed picks private. Apps
+// Script can't reach a local file or the ?fixtures= dev override, so this must be
+// a publicly reachable URL. The raw GitHub URL works without GitHub Pages and
+// reflects the file as soon as it's pushed (subject to ~5-min raw CDN caching).
 // Left '' → no other player's picks are ever returned (maximally private, but
 // Schedule/Standings then show only your own data).
-var FIXTURES_URL = '';
+// NOTE: temporarily pointed at the DEV fixtures (3 games scored) for testing the
+// locked-game privacy filter — switch back to wc2026_fixtures.json for real use.
+var FIXTURES_URL = 'https://raw.githubusercontent.com/Timo-PFF/wc26/main/data/wc2026_fixtures.dev.json';
 
 // ---- Web app entry points -------------------------------------------------
 
 function doGet(e) {
+  var action = (e && e.parameter && e.parameter.action) || 'config';
+  // Temporary diagnostic: shows what the DEPLOYED backend sees for lock state.
+  // Non-sensitive (just the fixtures URL + which match ids are locked). Remove later.
+  if (action === 'debug') {
+    var locked = lockedMatchIds();
+    return json({
+      fixturesUrl: FIXTURES_URL,
+      lockedKnown: locked !== null,
+      lockedCount: locked ? Object.keys(locked).length : 0,
+      lockedSample: locked ? Object.keys(locked).slice(0, 5) : []
+    });
+  }
   // Only the (non-sensitive) player list is public. Guesses are private and
   // require auth — see the 'guesses' POST action below.
   return json({ players: readColumn('Players', 0, 1).filter(String) });
@@ -239,6 +253,17 @@ function lockedMatchIds() {
 }
 
 function listToSet(arr) { var s = {}; arr.forEach(function (x) { s[x] = true; }); return s; }
+
+// One-off: run this from the editor to (re)authorize external requests and
+// confirm the fixtures fetch works. After running, open Execution log — you want
+// "HTTP 200" and a non-zero locked count.
+function testFetch() {
+  CacheService.getScriptCache().remove('lockedIds');   // bust the cache so we recompute
+  var resp = UrlFetchApp.fetch(FIXTURES_URL, { muteHttpExceptions: true });
+  Logger.log('HTTP ' + resp.getResponseCode() + ', ' + resp.getContentText().length + ' chars');
+  var locked = lockedMatchIds();
+  Logger.log('lockedKnown=' + (locked !== null) + ' count=' + (locked ? Object.keys(locked).length : 0));
+}
 
 function removePlayerGuesses(sheet, player, idMap) {
   var last = sheet.getLastRow();
