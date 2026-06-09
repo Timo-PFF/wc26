@@ -598,7 +598,7 @@
       { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
   }
 
-  const COUNTDOWN_SOON_MS = 120 * 60 * 60 * 1000;   // within this window → highlight (120h for testing; 48h for prod)
+  const COUNTDOWN_SOON_MS = 60 * 60 * 60 * 1000;   // within this window (60h) → "upcoming" highlight + filter
 
   // "Starts in 3h 12m" from ms-until-kickoff (two most-significant units).
   function fmtCountdown(ms) {

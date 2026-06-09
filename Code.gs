@@ -47,9 +47,7 @@
 // are LOCKED (scored or kicked off), so it can keep unplayed picks private. Apps
 // Script can't reach a local file or the ?fixtures= dev override, so this must be
 // a publicly reachable URL. Lock state is GLOBAL (shared by every league).
-// NOTE: temporarily pointed at the DEV fixtures for testing the locked-game
-// privacy filter — switch back to wc2026_fixtures.json for real use.
-var FIXTURES_URL = 'https://raw.githubusercontent.com/Timo-PFF/wc26/main/data/wc2026_fixtures.dev.json';
+var FIXTURES_URL = 'https://raw.githubusercontent.com/Timo-PFF/wc26/main/data/wc2026_fixtures.json';
 
 // ---- Web app entry points -------------------------------------------------
 
