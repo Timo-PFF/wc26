@@ -1,0 +1,67 @@
+name: Refresh fixtures
+
+# Pulls the latest fixtures/scores/odds from ESPN and commits the regenerated
+# data/wc2026_fixtures.json back to main, so the live app (and the Apps Script
+# lock check, which reads the raw file) stay current without manual refreshes.
+#
+# fetch_fixtures.py validates the full WC2026 schedule before writing, so a flaky
+# API response fails the job (red) instead of committing junk.
+
+on:
+  schedule:
+    # Every 6 hours (UTC) for now — bump to '*/15 * * * *' once the tournament
+    # starts. GitHub may delay scheduled runs under load.
+    - cron: '0 */6 * * *'
+  workflow_dispatch:   # manual "Run workflow" button
+
+# Never run two refreshes at once (a slow run shouldn't overlap the next tick).
+concurrency:
+  group: refresh-fixtures
+  cancel-in-progress: false
+
+permissions:
+  contents: write      # lets the default GITHUB_TOKEN commit the regenerated file
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Refresh fixtures (fetch + group letters)
+        working-directory: python
+        run: python refresh_fixtures.py
+
+      - name: Commit if the data actually changed
+        run: |
+          set -euo pipefail
+          file=data/wc2026_fixtures.json
+
+          if git diff --quiet -- "$file"; then
+            echo "No changes — nothing to commit."
+            exit 0
+          fi
+
+          # Skip commits where the ONLY change is the generatedAt timestamp
+          # (avoids a churn of empty no-op commits in quiet periods).
+          material=$(git diff -U0 -- "$file" \
+            | grep -E '^[+-]' | grep -vE '^[+-]{3}' \
+            | grep -vc 'generatedAt' || true)
+          if [ "$material" -eq 0 ]; then
+            echo "Only the timestamp changed — discarding."
+            git checkout -- "$file"
+            exit 0
+          fi
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$file"
+          git commit -m "Auto-refresh fixtures ($(date -u +%Y-%m-%dT%H:%MZ))"
+          git push

@@ -23,6 +23,7 @@ import datetime as dt
 import json
 import sys
 import time
+from collections import Counter
 
 import requests
 
@@ -202,6 +203,62 @@ def extract_match(event):
     }
 
 
+# ---- validation -----------------------------------------------------------
+# The WC2026 schedule is fixed: 104 matches in known per-stage counts. We refuse
+# to write the output unless a fetch reproduces this exactly, so a partial or
+# garbled API response (e.g. a transient ESPN hiccup during an automated refresh)
+# can never overwrite the good fixtures file with junk.
+
+EXPECTED_STAGE_COUNTS = {
+    "group-stage": 72,
+    "round-of-32": 16,
+    "round-of-16": 8,
+    "quarterfinals": 4,
+    "semifinals": 2,
+    "3rd-place-match": 1,
+    "final": 1,
+}
+EXPECTED_TOTAL = sum(EXPECTED_STAGE_COUNTS.values())  # 104
+
+
+class FixturesValidationError(Exception):
+    """Raised when a fetched schedule doesn't look like the full WC2026 fixture set."""
+
+
+def validate_matches(matches):
+    """Raise FixturesValidationError unless `matches` is the complete, well-formed
+    WC2026 schedule. Collects every problem so one run reports them all."""
+    problems = []
+
+    if len(matches) != EXPECTED_TOTAL:
+        problems.append(f"expected {EXPECTED_TOTAL} matches, got {len(matches)}")
+
+    ids = [m.get("id") for m in matches]
+    if any(not i for i in ids):
+        problems.append("match(es) with a missing id")
+    if len(set(ids)) != len(ids):
+        problems.append("duplicate match ids")
+
+    counts = Counter((m.get("stage") or {}).get("slug") for m in matches)
+    for slug, want in EXPECTED_STAGE_COUNTS.items():
+        if counts.get(slug, 0) != want:
+            problems.append(f"stage {slug!r}: expected {want}, got {counts.get(slug, 0)}")
+    unknown = sorted(s for s in counts if s not in EXPECTED_STAGE_COUNTS)
+    if unknown:
+        problems.append(f"unexpected stage(s): {unknown}")
+
+    for m in matches:
+        if not m.get("date"):
+            problems.append(f"match {m.get('id')}: missing date")
+        for side in ("home", "away"):
+            team = m.get(side) or {}
+            if not (team.get("abbreviation") or team.get("displayName")):
+                problems.append(f"match {m.get('id')}: {side} team has no name/abbreviation")
+
+    if problems:
+        raise FixturesValidationError("; ".join(problems))
+
+
 # ---- fetching -------------------------------------------------------------
 
 def daterange(start, end):
@@ -234,6 +291,8 @@ def main():
     ap.add_argument("--out", default="../data/wc2026_fixtures.json")
     ap.add_argument("--delay", type=float, default=0.4,
                     help="seconds to wait between daily requests (be polite)")
+    ap.add_argument("--no-validate", action="store_true",
+                    help="skip the full-schedule sanity check (e.g. for a partial date range)")
     args = ap.parse_args()
 
     start = dt.datetime.strptime(args.start, "%Y%m%d").date()
@@ -259,6 +318,18 @@ def main():
         time.sleep(args.delay)
 
     matches = sorted(by_id.values(), key=lambda m: (m["date"] or "", m["id"]))
+
+    # Sanity-check before writing — a bad fetch must not overwrite a good file.
+    if not args.no_validate:
+        try:
+            validate_matches(matches)
+        except FixturesValidationError as exc:
+            print(f"\n! Refusing to write {args.out} — schedule failed validation:\n  {exc}",
+                  file=sys.stderr)
+            print("  (re-run when ESPN is healthy, or pass --no-validate for a partial fetch)",
+                  file=sys.stderr)
+            sys.exit(1)
+
     payload = {
         "source": "ESPN site.api scoreboard (fifa.world)",
         "generatedAt": dt.datetime.utcnow().isoformat() + "Z",
