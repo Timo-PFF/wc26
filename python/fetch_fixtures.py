@@ -61,7 +61,8 @@ def extract_team(competitor):
         "name": t.get("name"),
         "abbreviation": t.get("abbreviation"),
         "logo": t.get("logo"),
-        "score": _int_or_none(state.get("score")),
+        "score": _int_or_none(state.get("score")),          # 90'/extra-time goals
+        "shootout": _int_or_none(state.get("shootoutScore")),  # penalty tally, else None
         "winner": bool(state.get("winner", False)),
     }
 
@@ -152,6 +153,19 @@ def extract_match(event):
     completed = bool(status_type.get("completed"))
     state = status_type.get("state")  # pre | in | post
 
+    # How a finished knockout was decided (ESPN encodes this in the status name).
+    # `score` is always the 90'/extra-time score; for penalties it's the draw and
+    # the deciding tally lives in each team's `shootout`.
+    name = status_type.get("name")
+    if not completed:
+        decided_by = None
+    elif name == "STATUS_FINAL_PEN":
+        decided_by = "penalties"
+    elif name == "STATUS_FINAL_AET":
+        decided_by = "extra_time"
+    else:
+        decided_by = "regulation"
+
     # Don't report a 0-0 "score" for matches that haven't kicked off.
     if state == "pre":
         home["score"] = None
@@ -183,6 +197,7 @@ def extract_match(event):
         "home": home,
         "away": away,
         "winner": determine_winner(home, away, completed),
+        "decidedBy": decided_by,
         "odds": extract_odds(comp),
     }
 

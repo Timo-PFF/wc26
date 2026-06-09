@@ -12,7 +12,8 @@
  *   Players  — col A: names that have joined; col B: MD5 hash of their password
  *              (headers "Name" / "PassHash"). Starts empty; fills as people add
  *              themselves. Feeds the picks dropdown.
- *   Guesses  — A:timestamp B:player C:matchId D:guessHome E:guessAway (auto-filled)
+ *   Guesses  — A:timestamp B:player C:matchId D:guessHome E:guessAway
+ *              F:penaltyWinner ('home'/'away', only for knockout-draw picks) (auto-filled)
  *
  * Passwords are a low-friction deterrent only: MD5 (unsalted), stored in the
  * sheet, behind a public endpoint with no rate-limiting. Fine for stopping
@@ -34,7 +35,7 @@
  *          for LOCKED games only (lock state from FIXTURES_URL). No public read.
  *   POST { action:'addPlayer', name, password } -> { ok, name, token, players } | { ok:false, error }
  *          error CODE: 'empty' | 'no_password' | 'not_eligible' | 'duplicate'.
- *   POST { token (or player+password), guesses:[{matchId,home,away}] } -> { ok, saved }
+ *   POST { token (or player+password), guesses:[{matchId,home,away,penaltyWinner?}] } -> { ok, saved }
  *          | { ok:false, error:'bad_password' }
  */
 
@@ -152,10 +153,12 @@ function savePicks(body) {
   var rows = [];
   guesses.forEach(function (g) {
     if (g.home === '' || g.away === '' || g.home == null || g.away == null) return;
-    rows.push([now, player, String(g.matchId), Number(g.home), Number(g.away)]);
+    // penaltyWinner ('home'/'away') only set when the pick is a knockout draw.
+    var pen = (g.penaltyWinner === 'home' || g.penaltyWinner === 'away') ? g.penaltyWinner : '';
+    rows.push([now, player, String(g.matchId), Number(g.home), Number(g.away), pen]);
   });
   if (rows.length) {
-    sheet.getRange(sheet.getLastRow() + 1, 1, rows.length, 5).setValues(rows);
+    sheet.getRange(sheet.getLastRow() + 1, 1, rows.length, 6).setValues(rows);
   }
   return { ok: true, saved: rows.length };
 }
@@ -269,13 +272,14 @@ function getGuesses() {
   var sheet = ss().getSheetByName('Guesses');
   var last = sheet.getLastRow();
   if (last < 2) return [];
-  var data = sheet.getRange(2, 1, last - 1, 5).getValues();
+  var data = sheet.getRange(2, 1, last - 1, 6).getValues();
   return data.map(function (r) {
     return {
       player: String(r[1]).trim(),
       matchId: String(r[2]).trim(),
       home: Number(r[3]),
-      away: Number(r[4])
+      away: Number(r[4]),
+      penaltyWinner: String(r[5] || '').trim()   // 'home' | 'away' | '' (knockout draws only)
     };
   }).filter(function (g) { return g.player && g.matchId; });
 }
@@ -363,7 +367,7 @@ function setupSheet() {
   // Players fills itself as people add themselves (col A name, col B password
   // hash). Starts with just the header.
   ensureTab(book, 'Players', [['Name', 'PassHash']]);
-  ensureTab(book, 'Guesses', [['timestamp', 'player', 'matchId', 'guessHome', 'guessAway']]);
+  ensureTab(book, 'Guesses', [['timestamp', 'player', 'matchId', 'guessHome', 'guessAway', 'penaltyWinner']]);
 }
 
 function ensureTab(book, name, seed) {

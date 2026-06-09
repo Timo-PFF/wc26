@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-08T20:52:45.990993Z",
+  "generatedAt": "2026-06-09T10:49:17.600252Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -38,6 +38,7 @@
         "abbreviation": "MEX",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/mex.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -48,17 +49,19 @@
         "abbreviation": "RSA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/rsa.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "MEX -230",
+        "details": "MEX -235",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-230",
+          "home": "-235",
           "away": "+700",
-          "draw": "+340"
+          "draw": "+350"
         },
         "spread": {
           "line": "-1.5",
@@ -98,6 +101,7 @@
         "abbreviation": "KOR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/kors.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -108,9 +112,11 @@
         "abbreviation": "CZE",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cze.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "KOR +165",
@@ -122,7 +128,7 @@
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+150"
+          "odds": "+145"
         }
       },
       "group": "A"
@@ -158,6 +164,7 @@
         "abbreviation": "CAN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/can.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -168,9 +175,11 @@
         "abbreviation": "BIH",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bih.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "CAN -125",
@@ -218,6 +227,7 @@
         "abbreviation": "USA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -228,9 +238,11 @@
         "abbreviation": "PAR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/par.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "USA -105",
@@ -278,6 +290,7 @@
         "abbreviation": "QAT",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/qat.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -288,9 +301,11 @@
         "abbreviation": "SUI",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sui.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "SUI -450",
@@ -302,7 +317,7 @@
         },
         "spread": {
           "line": "+1.5",
-          "odds": "+110"
+          "odds": "+115"
         }
       },
       "group": "B"
@@ -338,6 +353,7 @@
         "abbreviation": "BRA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -348,9 +364,11 @@
         "abbreviation": "MAR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/mar.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "BRA -150",
@@ -398,6 +416,7 @@
         "abbreviation": "HAI",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/hai.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -408,21 +427,23 @@
         "abbreviation": "SCO",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sco.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "SCO -200",
+        "details": "SCO -195",
         "overUnder": 2.5,
         "moneyline": {
           "home": "+550",
-          "away": "-200",
-          "draw": "+330"
+          "away": "-195",
+          "draw": "+340"
         },
         "spread": {
           "line": "+1.5",
-          "odds": "-190"
+          "odds": "-205"
         }
       },
       "group": "C"
@@ -458,6 +479,7 @@
         "abbreviation": "AUS",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/aus.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -468,21 +490,23 @@
         "abbreviation": "TUR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/tur.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "TUR -135",
+        "details": "TUR -140",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+380",
-          "away": "-135",
-          "draw": "+275"
+          "home": "+400",
+          "away": "-140",
+          "draw": "+280"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+105"
+          "odds": "+110"
         }
       },
       "group": "D"
@@ -518,6 +542,7 @@
         "abbreviation": "GER",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ger.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -528,9 +553,11 @@
         "abbreviation": "CUW",
         "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/11678.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "GER -4000",
@@ -542,7 +569,7 @@
         },
         "spread": {
           "line": "-3.5",
-          "odds": "-110"
+          "odds": "-105"
         }
       },
       "group": "E"
@@ -578,6 +605,7 @@
         "abbreviation": "NED",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ned.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -588,9 +616,11 @@
         "abbreviation": "JPN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/jpn.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "NED +100",
@@ -638,6 +668,7 @@
         "abbreviation": "CIV",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/civ.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -648,9 +679,11 @@
         "abbreviation": "ECU",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ecu.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "ECU +140",
@@ -698,6 +731,7 @@
         "abbreviation": "SWE",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/swe.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -708,9 +742,11 @@
         "abbreviation": "TUN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/tun.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "SWE -110",
@@ -758,6 +794,7 @@
         "abbreviation": "ESP",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/esp.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -768,9 +805,11 @@
         "abbreviation": "CPV",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cpv.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "ESP -1200",
@@ -818,6 +857,7 @@
         "abbreviation": "BEL",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bel.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -828,9 +868,11 @@
         "abbreviation": "EGY",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/egy.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "BEL -155",
@@ -878,6 +920,7 @@
         "abbreviation": "KSA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ksa.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -888,21 +931,23 @@
         "abbreviation": "URU",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/uru.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "URU -210",
+        "details": "URU -215",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+600",
-          "away": "-210",
+          "home": "+650",
+          "away": "-215",
           "draw": "+340"
         },
         "spread": {
           "line": "+1.5",
-          "odds": "-170"
+          "odds": "-165"
         }
       },
       "group": "H"
@@ -938,6 +983,7 @@
         "abbreviation": "IRN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/irn.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -948,9 +994,11 @@
         "abbreviation": "NZL",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/nzl.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "IRN -110",
@@ -998,6 +1046,7 @@
         "abbreviation": "FRA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/fra.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -1008,9 +1057,11 @@
         "abbreviation": "SEN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sen.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "FRA -215",
@@ -1058,6 +1109,7 @@
         "abbreviation": "IRQ",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/irq.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -1068,9 +1120,11 @@
         "abbreviation": "NOR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/nor.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "NOR -475",
@@ -1118,6 +1172,7 @@
         "abbreviation": "ARG",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/arg.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -1128,9 +1183,11 @@
         "abbreviation": "ALG",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/alg.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "ARG -240",
@@ -1178,6 +1235,7 @@
         "abbreviation": "AUT",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/aut.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -1188,9 +1246,11 @@
         "abbreviation": "JOR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/jor.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "AUT -310",
@@ -1238,6 +1298,7 @@
         "abbreviation": "POR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/por.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -1248,9 +1309,11 @@
         "abbreviation": "COD",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/rdc.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "POR -360",
@@ -1298,6 +1361,7 @@
         "abbreviation": "ENG",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -1308,9 +1372,11 @@
         "abbreviation": "CRO",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cro.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "ENG -140",
@@ -1358,6 +1424,7 @@
         "abbreviation": "GHA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/gha.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -1368,9 +1435,11 @@
         "abbreviation": "PAN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/pan.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "GHA +105",
@@ -1418,6 +1487,7 @@
         "abbreviation": "UZB",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/uzb.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -1428,9 +1498,11 @@
         "abbreviation": "COL",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/col.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "COL -240",
@@ -1478,6 +1550,7 @@
         "abbreviation": "CZE",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cze.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -1488,9 +1561,11 @@
         "abbreviation": "RSA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/rsa.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "CZE -105",
@@ -1538,6 +1613,7 @@
         "abbreviation": "SUI",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sui.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -1548,9 +1624,11 @@
         "abbreviation": "BIH",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bih.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "SUI -155",
@@ -1598,6 +1676,7 @@
         "abbreviation": "CAN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/can.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -1608,21 +1687,23 @@
         "abbreviation": "QAT",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/qat.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "CAN -300",
+        "details": "CAN -320",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-300",
-          "away": "+900",
-          "draw": "+400"
+          "home": "-320",
+          "away": "+950",
+          "draw": "+425"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "-105"
+          "odds": "-110"
         }
       },
       "group": "B"
@@ -1658,6 +1739,7 @@
         "abbreviation": "MEX",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/mex.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -1668,9 +1750,11 @@
         "abbreviation": "KOR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/kors.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "MEX -125",
@@ -1718,6 +1802,7 @@
         "abbreviation": "USA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -1728,9 +1813,11 @@
         "abbreviation": "AUS",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/aus.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "USA -130",
@@ -1778,6 +1865,7 @@
         "abbreviation": "SCO",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sco.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -1788,9 +1876,11 @@
         "abbreviation": "MAR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/mar.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "MAR +100",
@@ -1838,6 +1928,7 @@
         "abbreviation": "BRA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -1848,9 +1939,11 @@
         "abbreviation": "HAI",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/hai.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "BRA -1400",
@@ -1898,6 +1991,7 @@
         "abbreviation": "TUR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/tur.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -1908,9 +2002,11 @@
         "abbreviation": "PAR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/par.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "TUR +125",
@@ -1958,6 +2054,7 @@
         "abbreviation": "NED",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ned.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -1968,9 +2065,11 @@
         "abbreviation": "SWE",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/swe.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "NED -155",
@@ -2018,6 +2117,7 @@
         "abbreviation": "GER",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ger.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -2028,9 +2128,11 @@
         "abbreviation": "CIV",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/civ.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "GER -180",
@@ -2078,6 +2180,7 @@
         "abbreviation": "ECU",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ecu.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -2088,9 +2191,11 @@
         "abbreviation": "CUW",
         "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/11678.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "ECU -475",
@@ -2138,6 +2243,7 @@
         "abbreviation": "TUN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/tun.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -2148,17 +2254,19 @@
         "abbreviation": "JPN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/jpn.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "JPN -125",
+        "details": "JPN -130",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+370",
-          "away": "-125",
-          "draw": "+250"
+          "home": "+400",
+          "away": "-130",
+          "draw": "+255"
         },
         "spread": {
           "line": "+0.5",
@@ -2198,6 +2306,7 @@
         "abbreviation": "ESP",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/esp.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -2208,9 +2317,11 @@
         "abbreviation": "KSA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ksa.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "ESP -1000",
@@ -2258,6 +2369,7 @@
         "abbreviation": "BEL",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bel.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -2268,9 +2380,11 @@
         "abbreviation": "IRN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/irn.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "BEL -245",
@@ -2318,6 +2432,7 @@
         "abbreviation": "URU",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/uru.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -2328,21 +2443,23 @@
         "abbreviation": "CPV",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cpv.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "URU -225",
+        "details": "URU -240",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-225",
-          "away": "+650",
-          "draw": "+360"
+          "home": "-240",
+          "away": "+700",
+          "draw": "+370"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "+130"
+          "odds": "+125"
         }
       },
       "group": "H"
@@ -2378,6 +2495,7 @@
         "abbreviation": "NZL",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/nzl.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -2388,9 +2506,11 @@
         "abbreviation": "EGY",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/egy.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "EGY -135",
@@ -2438,6 +2558,7 @@
         "abbreviation": "ARG",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/arg.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -2448,9 +2569,11 @@
         "abbreviation": "AUT",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/aut.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "ARG -155",
@@ -2498,6 +2621,7 @@
         "abbreviation": "FRA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/fra.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -2508,9 +2632,11 @@
         "abbreviation": "IRQ",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/irq.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "FRA -800",
@@ -2558,6 +2684,7 @@
         "abbreviation": "NOR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/nor.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -2568,9 +2695,11 @@
         "abbreviation": "SEN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sen.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "NOR +110",
@@ -2618,6 +2747,7 @@
         "abbreviation": "JOR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/jor.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -2628,21 +2758,23 @@
         "abbreviation": "ALG",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/alg.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ALG -175",
+        "details": "ALG -185",
         "overUnder": 2.5,
         "moneyline": {
           "home": "+500",
-          "away": "-175",
-          "draw": "+310"
+          "away": "-185",
+          "draw": "+320"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+135"
+          "odds": "+145"
         }
       },
       "group": "J"
@@ -2678,6 +2810,7 @@
         "abbreviation": "POR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/por.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -2688,21 +2821,23 @@
         "abbreviation": "UZB",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/uzb.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "POR -400",
+        "details": "POR -425",
         "overUnder": 3.5,
         "moneyline": {
-          "home": "-400",
-          "away": "+1000",
+          "home": "-425",
+          "away": "+1100",
           "draw": "+550"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "-140"
+          "odds": "-145"
         }
       },
       "group": "K"
@@ -2738,6 +2873,7 @@
         "abbreviation": "ENG",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -2748,9 +2884,11 @@
         "abbreviation": "GHA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/gha.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "ENG -320",
@@ -2798,6 +2936,7 @@
         "abbreviation": "PAN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/pan.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -2808,21 +2947,23 @@
         "abbreviation": "CRO",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cro.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "CRO -200",
+        "details": "CRO -205",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+600",
-          "away": "-200",
-          "draw": "+310"
+          "home": "+650",
+          "away": "-205",
+          "draw": "+320"
         },
         "spread": {
           "line": "+1.5",
-          "odds": "-205"
+          "odds": "-200"
         }
       },
       "group": "L"
@@ -2858,6 +2999,7 @@
         "abbreviation": "COL",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/col.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -2868,9 +3010,11 @@
         "abbreviation": "COD",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/rdc.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "COL -205",
@@ -2918,6 +3062,7 @@
         "abbreviation": "BIH",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bih.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -2928,9 +3073,11 @@
         "abbreviation": "QAT",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/qat.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "BIH -185",
@@ -2978,6 +3125,7 @@
         "abbreviation": "SUI",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sui.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -2988,9 +3136,11 @@
         "abbreviation": "CAN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/can.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "SUI +110",
@@ -3038,6 +3188,7 @@
         "abbreviation": "MAR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/mar.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -3048,9 +3199,11 @@
         "abbreviation": "HAI",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/hai.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "MAR -290",
@@ -3098,6 +3251,7 @@
         "abbreviation": "SCO",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sco.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -3108,9 +3262,11 @@
         "abbreviation": "BRA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "BRA -205",
@@ -3158,6 +3314,7 @@
         "abbreviation": "RSA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/rsa.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -3168,9 +3325,11 @@
         "abbreviation": "KOR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/kors.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "KOR -105",
@@ -3218,6 +3377,7 @@
         "abbreviation": "CZE",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cze.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -3228,9 +3388,11 @@
         "abbreviation": "MEX",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/mex.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "MEX -125",
@@ -3278,6 +3440,7 @@
         "abbreviation": "ECU",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ecu.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -3288,21 +3451,23 @@
         "abbreviation": "GER",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ger.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "GER -145",
+        "details": "GER -135",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+390",
-          "away": "-145",
-          "draw": "+295"
+          "home": "+370",
+          "away": "-135",
+          "draw": "+285"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+115"
+          "odds": "+105"
         }
       },
       "group": "E"
@@ -3338,6 +3503,7 @@
         "abbreviation": "CUW",
         "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/11678.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -3348,9 +3514,11 @@
         "abbreviation": "CIV",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/civ.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "CIV -450",
@@ -3398,6 +3566,7 @@
         "abbreviation": "JPN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/jpn.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -3408,9 +3577,11 @@
         "abbreviation": "SWE",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/swe.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "JPN +105",
@@ -3458,6 +3629,7 @@
         "abbreviation": "TUN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/tun.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -3468,9 +3640,11 @@
         "abbreviation": "NED",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ned.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "NED -195",
@@ -3518,6 +3692,7 @@
         "abbreviation": "PAR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/par.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -3528,21 +3703,23 @@
         "abbreviation": "AUS",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/aus.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "PAR +120",
+        "details": "PAR +115",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+120",
-          "away": "+255",
+          "home": "+115",
+          "away": "+260",
           "draw": "+225"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+110"
+          "odds": "+105"
         }
       },
       "group": "D"
@@ -3578,6 +3755,7 @@
         "abbreviation": "TUR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/tur.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -3588,9 +3766,11 @@
         "abbreviation": "USA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "USA +155",
@@ -3638,6 +3818,7 @@
         "abbreviation": "SEN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sen.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -3648,9 +3829,11 @@
         "abbreviation": "IRQ",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/irq.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "SEN -230",
@@ -3698,6 +3881,7 @@
         "abbreviation": "NOR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/nor.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -3708,9 +3892,11 @@
         "abbreviation": "FRA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/fra.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "FRA -125",
@@ -3758,6 +3944,7 @@
         "abbreviation": "CPV",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cpv.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -3768,9 +3955,11 @@
         "abbreviation": "KSA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ksa.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "CPV +160",
@@ -3818,6 +4007,7 @@
         "abbreviation": "URU",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/uru.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -3828,9 +4018,11 @@
         "abbreviation": "ESP",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/esp.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "ESP -155",
@@ -3878,6 +4070,7 @@
         "abbreviation": "EGY",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/egy.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -3888,9 +4081,11 @@
         "abbreviation": "IRN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/irn.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "EGY +125",
@@ -3938,6 +4133,7 @@
         "abbreviation": "NZL",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/nzl.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -3948,21 +4144,23 @@
         "abbreviation": "BEL",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bel.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "BEL -330",
+        "details": "BEL -340",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+850",
-          "away": "-330",
+          "home": "+900",
+          "away": "-340",
           "draw": "+475"
         },
         "spread": {
           "line": "+1.5",
-          "odds": "-120"
+          "odds": "-110"
         }
       },
       "group": "G"
@@ -3998,6 +4196,7 @@
         "abbreviation": "CRO",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cro.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -4008,9 +4207,11 @@
         "abbreviation": "GHA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/gha.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "CRO -150",
@@ -4058,6 +4259,7 @@
         "abbreviation": "PAN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/pan.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -4068,9 +4270,11 @@
         "abbreviation": "ENG",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "ENG -330",
@@ -4118,6 +4322,7 @@
         "abbreviation": "COL",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/col.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -4128,9 +4333,11 @@
         "abbreviation": "POR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/por.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "POR +115",
@@ -4178,6 +4385,7 @@
         "abbreviation": "COD",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/rdc.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -4188,9 +4396,11 @@
         "abbreviation": "UZB",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/uzb.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "COD +130",
@@ -4238,6 +4448,7 @@
         "abbreviation": "JOR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/jor.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -4248,9 +4459,11 @@
         "abbreviation": "ARG",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/arg.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "ARG -500",
@@ -4298,6 +4511,7 @@
         "abbreviation": "ALG",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/alg.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -4308,9 +4522,11 @@
         "abbreviation": "AUT",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/aut.png",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
         "details": "AUT +125",
@@ -4358,6 +4574,7 @@
         "abbreviation": "2A",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -4368,9 +4585,11 @@
         "abbreviation": "2B",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -4405,6 +4624,7 @@
         "abbreviation": "1C",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -4415,9 +4635,11 @@
         "abbreviation": "2F",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -4452,6 +4674,7 @@
         "abbreviation": "1E",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -4462,9 +4685,11 @@
         "abbreviation": "3RD",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -4499,6 +4724,7 @@
         "abbreviation": "1F",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -4509,9 +4735,11 @@
         "abbreviation": "2C",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -4546,6 +4774,7 @@
         "abbreviation": "2E",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -4556,9 +4785,11 @@
         "abbreviation": "2I",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -4593,6 +4824,7 @@
         "abbreviation": "1I",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -4603,9 +4835,11 @@
         "abbreviation": "3RD",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -4640,6 +4874,7 @@
         "abbreviation": "1A",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -4650,9 +4885,11 @@
         "abbreviation": "3RD",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -4687,6 +4924,7 @@
         "abbreviation": "1L",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -4697,9 +4935,11 @@
         "abbreviation": "3RD",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -4734,6 +4974,7 @@
         "abbreviation": "1G",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -4744,9 +4985,11 @@
         "abbreviation": "3RD",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -4781,6 +5024,7 @@
         "abbreviation": "1D",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -4791,9 +5035,11 @@
         "abbreviation": "3RD",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -4828,6 +5074,7 @@
         "abbreviation": "1H",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -4838,9 +5085,11 @@
         "abbreviation": "2J",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -4875,6 +5124,7 @@
         "abbreviation": "2K",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -4885,9 +5135,11 @@
         "abbreviation": "2L",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -4922,6 +5174,7 @@
         "abbreviation": "1B",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -4932,9 +5185,11 @@
         "abbreviation": "3RD",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -4969,6 +5224,7 @@
         "abbreviation": "2D",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -4979,9 +5235,11 @@
         "abbreviation": "2G",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -5016,6 +5274,7 @@
         "abbreviation": "1J",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -5026,9 +5285,11 @@
         "abbreviation": "2H",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -5063,6 +5324,7 @@
         "abbreviation": "1K",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -5073,9 +5335,11 @@
         "abbreviation": "3RD",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -5110,6 +5374,7 @@
         "abbreviation": "RD32",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -5120,9 +5385,11 @@
         "abbreviation": "RD32",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -5157,6 +5424,7 @@
         "abbreviation": "RD32",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -5167,9 +5435,11 @@
         "abbreviation": "RD32",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -5204,6 +5474,7 @@
         "abbreviation": "RD32",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -5214,9 +5485,11 @@
         "abbreviation": "RD32",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -5251,6 +5524,7 @@
         "abbreviation": "RD32",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -5261,9 +5535,11 @@
         "abbreviation": "RD32",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -5298,6 +5574,7 @@
         "abbreviation": "RD32",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -5308,9 +5585,11 @@
         "abbreviation": "RD32",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -5345,6 +5624,7 @@
         "abbreviation": "RD32",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -5355,9 +5635,11 @@
         "abbreviation": "RD32",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -5392,6 +5674,7 @@
         "abbreviation": "RD32",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -5402,9 +5685,11 @@
         "abbreviation": "RD32",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -5439,6 +5724,7 @@
         "abbreviation": "RD32",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -5449,9 +5735,11 @@
         "abbreviation": "RD32",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -5486,6 +5774,7 @@
         "abbreviation": "RD16 W1",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -5496,9 +5785,11 @@
         "abbreviation": "RD16 W2",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -5533,6 +5824,7 @@
         "abbreviation": "RD16 W5",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -5543,9 +5835,11 @@
         "abbreviation": "RD16 W6",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -5580,6 +5874,7 @@
         "abbreviation": "RD16 W3",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -5590,9 +5885,11 @@
         "abbreviation": "RD16 W4",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -5627,6 +5924,7 @@
         "abbreviation": "RD16 W7",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -5637,9 +5935,11 @@
         "abbreviation": "RD16 W8",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -5674,6 +5974,7 @@
         "abbreviation": "QFW1",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -5684,9 +5985,11 @@
         "abbreviation": "QFW2",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -5721,6 +6024,7 @@
         "abbreviation": "QFW3",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -5731,9 +6035,11 @@
         "abbreviation": "QW4",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -5768,6 +6074,7 @@
         "abbreviation": "SF L1",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -5778,9 +6085,11 @@
         "abbreviation": "SF L2",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     },
@@ -5815,6 +6124,7 @@
         "abbreviation": "SFW1",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "away": {
@@ -5825,9 +6135,11 @@
         "abbreviation": "SFW2",
         "logo": "",
         "score": null,
+        "shootout": null,
         "winner": false
       },
       "winner": null,
+      "decidedBy": null,
       "odds": null,
       "group": null
     }

@@ -80,9 +80,12 @@ it):
 pip install requests
 cd python
 
+# Both steps in one go (fetch, then add groups), with default paths:
+python refresh_fixtures.py
+
+# …or run them individually:
 # 1) Pull every match (group + knockout) with scores, logos and odds:
 python fetch_fixtures.py            # → ../data/wc2026_fixtures.json
-
 # 2) Stamp the group letter (A–L) onto each group-stage match:
 python add_groups.py                # reads ../data/groups.csv, updates the JSON in place
 ```
@@ -111,15 +114,15 @@ them with the real teams, and fills in scores once games are played.
    ```js
    const SCRIPT_URL   = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
    const FIXTURES_URL = "data/wc2026_fixtures.json";   // already set
-   const SCORING      = { exact: 3, outcome: 1 };       // the pool's points rule
    ```
-   The **points rule** lives here (the ESPN file has no scoring block). Match
-   *results* come from the JSON; these numbers decide how many points a pick is
+   The **points rule** lives in `scoring.js` (`SCORING` + `scoreGuess`; the ESPN
+   file has no scoring block). Match *results* come from the JSON; those values
+   decide how many points a pick is
    worth. Change them here if you want different scoring.
-2. Publish on **GitHub Pages**: create a repo and upload **`index.html`**,
-   **`i18n.js`** (the English/German translation tables — the page won't render
-   without it), *and* the **`data/`** folder (so `data/wc2026_fixtures.json` is
-   reachable). Then
+2. Publish on **GitHub Pages**: create a repo and upload **`index.html`** plus
+   its sidecar scripts **`i18n.js`** (EN/DE text), **`scoring.js`** (points rule)
+   and **`groups.js`** (group-table logic) — the page won't work without them —
+   *and* the **`data/`** folder (so `data/wc2026_fixtures.json` is reachable). Then
    **Settings → Pages → Source: Deploy from a branch → `main` / `/root` → Save**.
    Your site goes live at `https://<username>.github.io/<repo>/`. Share that link.
 
@@ -143,7 +146,7 @@ So a predicted draw can only score 3 (exact) or 1 (right draw, wrong score); the
 goal-difference tier applies only when you pick a winner. Tie-break: most points,
 then most exact hits, then most correct goal differences (winner picks only —
 shown as the **GD** column), then name. **To change the point values, edit the
-`SCORING` constant in `index.html`** — it applies on the next page load.
+`SCORING` constant in `scoring.js`** — it applies on the next page load.
 
 ## Day-to-day use
 

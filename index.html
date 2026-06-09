@@ -111,6 +111,12 @@
   .meta-row .countdown { color: var(--accent); font-weight: 600; font-variant-numeric: tabular-nums; }
   .meta-row .countdown.soon { color: var(--accent2); }   /* within 48h → yellow/orange */
   .done { grid-column: 1 / -1; font-size: .78rem; color: var(--accent2); margin-top: 6px; font-weight: 600; }
+  /* Knockout penalty-winner picker (shown when the pick is a draw) */
+  .penrow { grid-column: 1 / -1; display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; margin-top: 8px; }
+  .penlabel { font-size: .8rem; color: var(--muted); }
+  .penbtn { padding: 5px 12px; border: 1px solid var(--line); background: var(--card); color: var(--ink);
+    border-radius: 999px; cursor: pointer; font-size: .82rem; }
+  .penbtn.active { background: var(--accent); color: #06281b; border-color: var(--accent); font-weight: 600; }
   /* Locked-game reveal: tap the note to see everyone's picks */
   .reveal { grid-column: 1 / -1; margin-top: 6px; }
   .reveal summary { font-size: .78rem; color: var(--accent2); font-weight: 600; cursor: pointer; }
@@ -340,6 +346,8 @@
 <!-- Translation tables (I18N / STAGE_DE / DE_NAMES / translatePlaceholder).
      Must load before the inline script below, which reads them. -->
 <script src="i18n.js"></script>
+<script src="scoring.js"></script>
+<script src="groups.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
   // ====== CONFIG ===========================================================
@@ -347,13 +355,7 @@
   const SCRIPT_URL   = "https://script.google.com/macros/s/AKfycbxDl0jYS99LBobeb-g4bAJgQ4r9-GZwOeOqFm540YiDfeiQaXnblgdG6VjDIsRob848/exec";
   // 2) Where the fixtures live (ESPN-shaped file produced by python/fetch_fixtures.py):
   const FIXTURES_URL = "data/wc2026_fixtures.json";
-  // 3) Pool scoring rule (points a pick is worth — NOT the match result, which
-  //    comes from each team's `score` in the JSON). Tiers (see scoreGuess):
-  //      exact           = exact score                                    → 3
-  //      goalDifference  = right winner AND right goal difference          → 2
-  //      outcome         = right winner only, OR a correctly-called draw   → 1
-  //      anything else                                                     → 0
-  const SCORING = { exact: 3, goalDifference: 2, outcome: 1 };
+  // (Scoring lives in scoring.js: SCORING + scorePick()/scoreGroup(), loaded above.)
   // =========================================================================
 
   // ====== i18n ==============================================================
@@ -604,20 +606,6 @@
     });
   }
 
-  // ---- Scoring --------------------------------------------------------------
-  // exact → 3; right winner + goal difference → 2; right winner only or a
-  // correctly-called draw → 1; wrong result (incl. draw-vs-decided) → 0.
-  function scoreGuess(gHome, gAway, aHome, aAway) {
-    if (aHome == null || aAway == null) return 0;
-    if (gHome === aHome && gAway === aAway) return SCORING.exact;        // exact score
-    const gOutcome = Math.sign(gHome - gAway);                          // 1 home, -1 away, 0 draw
-    const aOutcome = Math.sign(aHome - aAway);
-    if (gOutcome !== aOutcome) return 0;                                // wrong winner / draw mismatch
-    if (gOutcome === 0) return SCORING.outcome;                         // correct draw, wrong score
-    if ((gHome - gAway) === (aHome - aAway)) return SCORING.goalDifference; // right winner + goal diff
-    return SCORING.outcome;                                             // right winner only
-  }
-
   async function init() {
     // Optional ?lang=de / ?lang=en to start in a given language.
     const urlLang = new URLSearchParams(location.search).get('lang');
@@ -663,6 +651,7 @@
         msg(t('couldNotLoadPlayers'), 'err');
       }
     }
+    setupPenListeners();       // delegated handlers for the knockout penalty picker
     setInterval(tick, 1000);   // live clock + auto-lock games as their kickoff passes
   }
 
@@ -850,12 +839,18 @@
   // input first (so switching names never leaves a previous person's picks).
   function applyUserPicks(player, guesses) {
     document.querySelectorAll('#matches input[data-id]').forEach(inp => { inp.value = ''; });
-    if (!player) return;
+    document.querySelectorAll('#matches .penbtn').forEach(b => b.classList.remove('active'));
+    if (!player) {
+      document.querySelectorAll('#matches .penrow').forEach(r => r.style.display = 'none');
+      return;
+    }
     guesses.filter(g => g.player === player).forEach(g => {
       ['home', 'away'].forEach(side => {
         const inp = document.querySelector('#matches input[data-id="' + g.matchId + '"][data-side="' + side + '"]');
         if (inp) inp.value = g[side];
       });
+      setPenaltyPick(g.matchId, g.penaltyWinner);
+      updatePenRow(g.matchId);
     });
   }
 
@@ -942,8 +937,8 @@
     return [...sections.values()];   // Map keeps insertion order = chronological
   }
 
-  // Snapshot scores already typed so a view switch (which rebuilds the DOM)
-  // doesn't lose them. Returns { matchId: {home, away} }.
+  // Snapshot scores already typed (+ any penalty-winner pick) so a view switch
+  // that rebuilds the DOM doesn't lose them. Returns { matchId: {home, away, pen} }.
   function captureDrafts() {
     const drafts = {};
     document.querySelectorAll('#matches input[data-id]').forEach(inp => {
@@ -951,16 +946,45 @@
       const id = inp.dataset.id;
       (drafts[id] = drafts[id] || {})[inp.dataset.side] = inp.value;
     });
+    document.querySelectorAll('#matches .penbtn.active').forEach(b => {
+      const id = b.dataset.id;
+      (drafts[id] = drafts[id] || {}).pen = b.dataset.side;
+    });
     return drafts;
   }
 
   function applyDrafts(drafts) {
     Object.keys(drafts).forEach(id => {
-      Object.keys(drafts[id]).forEach(side => {
-        const inp = document.querySelector(
-          '#matches input[data-id="' + id + '"][data-side="' + side + '"]');
+      ['home', 'away'].forEach(side => {
+        if (drafts[id][side] == null) return;
+        const inp = document.querySelector('#matches input[data-id="' + id + '"][data-side="' + side + '"]');
         if (inp) inp.value = drafts[id][side];
       });
+      if (drafts[id].pen) setPenaltyPick(id, drafts[id].pen);
+    });
+  }
+
+  // Set/clear the active penalty-winner button for a match, and show/hide the
+  // "who wins on penalties?" row based on whether the current pick is a draw.
+  function setPenaltyPick(id, side) {
+    document.querySelectorAll('#matches .penbtn[data-id="' + id + '"]').forEach(b =>
+      b.classList.toggle('active', !!side && b.dataset.side === side));
+  }
+  function updatePenRow(id) {
+    const row = document.querySelector('#matches .penrow[data-id="' + id + '"]');
+    if (!row) return;
+    const h = document.querySelector('#matches input[data-id="' + id + '"][data-side="home"]');
+    const a = document.querySelector('#matches input[data-id="' + id + '"][data-side="away"]');
+    const draw = h && a && h.value !== '' && a.value !== '' && parseInt(h.value, 10) === parseInt(a.value, 10);
+    row.style.display = draw ? '' : 'none';
+  }
+  // One-time delegated handlers on the (persistent) #matches container.
+  function setupPenListeners() {
+    const wrap = document.getElementById('matches');
+    wrap.addEventListener('input', e => { if (e.target.matches('input[data-id]')) updatePenRow(e.target.dataset.id); });
+    wrap.addEventListener('click', e => {
+      const b = e.target.closest('.penbtn');
+      if (b) setPenaltyPick(b.dataset.id, b.dataset.side);
     });
   }
 
@@ -1102,6 +1126,16 @@
             '</span></summary><div class="reveal-body"></div></details>'
           : '';
 
+        // Knockout games: when the pick is a draw, ask who wins on penalties.
+        // Hidden until the two scores are equal (toggled in updatePenRow).
+        const penRow = (!locked && isKnockout(m))
+          ? '<div class="penrow" data-id="' + escapeHtml(m.id) + '" style="display:none">' +
+              '<span class="penlabel">' + escapeHtml(t('penaltyWinner')) + '</span>' +
+              '<button type="button" class="penbtn" data-id="' + escapeHtml(m.id) + '" data-side="home">' + escapeHtml(teamAbbr(m.home)) + '</button>' +
+              '<button type="button" class="penbtn" data-id="' + escapeHtml(m.id) + '" data-side="away">' + escapeHtml(teamAbbr(m.away)) + '</button>' +
+            '</div>'
+          : '';
+
         card.innerHTML =
           (metaBits.length ? '<div class="meta-row">' + metaBits.join('<span>·</span>') + '</div>' : '') +
           teamCell(m.home, 'home') +
@@ -1109,13 +1143,14 @@
           '<div class="pick vs-cell">' + prob('draw') + '<div class="vs">' + escapeHtml(t('vs')) + '</div></div>' +
           '<div class="pick">' + prob('away') + input('away') + '</div>' +
           teamCell(m.away, 'away') +
-          lockBlock;
+          penRow + lockBlock;
         wrap.appendChild(card);
       });
     });
 
     applyDrafts(drafts);
     fillEmptyFromSaved();   // backfill saved picks for games that weren't in the snapshot (e.g. just-unhidden)
+    document.querySelectorAll('#matches .penrow').forEach(r => updatePenRow(r.dataset.id));
   }
 
   // Fill any still-empty input from the current player's saved picks — used
@@ -1123,10 +1158,15 @@
   function fillEmptyFromSaved() {
     if (!AUTH) return;
     SHEET.guesses.filter(g => g.player === AUTH.name).forEach(g => {
+      let filled = false;
       ['home', 'away'].forEach(side => {
         const inp = document.querySelector('#matches input[data-id="' + g.matchId + '"][data-side="' + side + '"]');
-        if (inp && inp.value === '') inp.value = g[side];
+        if (inp && inp.value === '') { inp.value = g[side]; filled = true; }
       });
+      // Restore the saved penalty pick only if a draft didn't already set one.
+      if (filled && !document.querySelector('#matches .penbtn[data-id="' + g.matchId + '"].active')) {
+        setPenaltyPick(g.matchId, g.penaltyWinner);
+      }
     });
   }
 
@@ -1148,7 +1188,7 @@
 
     const rows = players.map(p => {
       const g = (lut[p] || {})[m.id];
-      return { player: p, guess: g, pts: (g && scored) ? scoreGuess(g.home, g.away, hs, as) : null };
+      return { player: p, guess: g, pts: (g && scored) ? scorePick(g, m) : null };
     }).sort((a, b) => scored
       ? (b.pts == null ? -1 : b.pts) - (a.pts == null ? -1 : a.pts) || a.player.localeCompare(b.player)
       : (b.guess ? 1 : 0) - (a.guess ? 1 : 0) || a.player.localeCompare(b.player));
@@ -1177,10 +1217,21 @@
       if (byId[id] && isLocked(byId[id])) return;   // never submit a scored / kicked-off game
       const aIn = document.querySelector('#matches input[data-id="' + id + '"][data-side="away"]');
       if (hIn.value !== '' && aIn.value !== '') {
-        guesses.push({ matchId: id, home: parseInt(hIn.value, 10), away: parseInt(aIn.value, 10) });
+        const home = parseInt(hIn.value, 10), away = parseInt(aIn.value, 10);
+        const guess = { matchId: id, home: home, away: away };
+        // Knockout draw → include the chosen penalty winner.
+        if (byId[id] && isKnockout(byId[id]) && home === away) {
+          const sel = document.querySelector('#matches .penbtn[data-id="' + id + '"].active');
+          guess.penaltyWinner = sel ? sel.dataset.side : '';
+        }
+        guesses.push(guess);
       }
     });
     if (!guesses.length) { msg(t('enterScore'), 'err'); return; }
+    // Require a penalty winner for any knockout-draw pick.
+    if (guesses.some(g => byId[g.matchId] && isKnockout(byId[g.matchId]) && g.home === g.away && !g.penaltyWinner)) {
+      msg(t('pickPenaltyWinner'), 'err'); return;
+    }
 
     const btn = document.getElementById('submitBtn');
     btn.disabled = true; msg(t('saving'), 'ok');
@@ -1217,7 +1268,7 @@
       ensure(g.player);
       const aHome = homeScore(m), aAway = awayScore(m);
       if (aHome == null || aAway == null) return;   // unscored game contributes nothing
-      totals[g.player] += scoreGuess(g.home, g.away, aHome, aAway);
+      totals[g.player] += scorePick(g, m);
       if (g.home === aHome && g.away === aAway) exact[g.player] += 1;
       // Correct goal difference — counted only for winner picks (a draw's GD is
       // trivially right, so it wouldn't discriminate). Includes exact winners.
@@ -1305,7 +1356,7 @@
       let run = 0; const arr = [0];
       completed.forEach(m => {
         const g = (lut[p] || {})[m.id];
-        if (g) run += scoreGuess(g.home, g.away, homeScore(m), awayScore(m));
+        if (g) run += scorePick(g, m);
         arr.push(run);
       });
       series[p] = arr;
@@ -1481,12 +1532,14 @@
     }
   }
 
+  // Colour by points magnitude (knockouts can reach 4): 0 muted · 1 yellow ·
+  // 2 cyan · 3+ green.
   function ptsClass(pts) {
     if (pts == null) return 'pts-none';
-    if (pts === SCORING.exact) return 'pts-exact';
-    if (pts === SCORING.goalDifference) return 'pts-gd';
-    if (pts === SCORING.outcome) return 'pts-outcome';
-    return 'pts-zero';
+    if (pts <= 0) return 'pts-zero';
+    if (pts >= 3) return 'pts-exact';
+    if (pts === 2) return 'pts-gd';
+    return 'pts-outcome';
   }
 
   // Render the schedule in the chosen layout (table matrix or by-game cards).
@@ -1559,14 +1612,14 @@
     players.forEach(p => { total[p] = 0; });
     completed.forEach(m => {
       const hs = homeScore(m), as = awayScore(m);
-      players.forEach(p => { const g = (lut[p] || {})[m.id]; if (g) total[p] += scoreGuess(g.home, g.away, hs, as); });
+      players.forEach(p => { const g = (lut[p] || {})[m.id]; if (g) total[p] += scorePick(g, m); });
     });
     players.sort((a, b) => total[b] - total[a] || a.localeCompare(b));
 
     const cell = (p, m, hs, as) => {
       const g = (lut[p] || {})[m.id];
       if (!g) return '<td><div class="pcell"><span class="g pts-none">—</span></div></td>';
-      const pts = scoreGuess(g.home, g.away, hs, as);
+      const pts = scorePick(g, m);
       return '<td><div class="pcell"><span class="g">' + g.home + '–' + g.away +
         '</span><span class="p ' + ptsClass(pts) + '">' + pts + '</span></div></td>';
     };
@@ -1610,38 +1663,15 @@
   // sorted by points, then goal difference, then goals scored, then name.
   function renderGroups() {
     const body = document.getElementById('groupsBody');
-    const groups = {};        // letter -> { teamKey -> {side, gf, ga, pts, played} }
-    const groupMatches = {};  // letter -> [matches]  (for the head-to-head grid)
-
-    MATCHES.forEach(m => {
-      if ((m.stage || {}).slug !== 'group-stage' || !m.group) return;
-      (groupMatches[m.group] = groupMatches[m.group] || []).push(m);
-      const g = (groups[m.group] = groups[m.group] || {});
-      [m.home, m.away].forEach(side => {
-        const k = teamAbbr(side);
-        if (!g[k]) g[k] = { side: side, gf: 0, ga: 0, pts: 0, played: 0 };
-      });
-      const hs = homeScore(m), as = awayScore(m);
-      if (isFinished(m) && hs != null && as != null) {
-        const H = g[teamAbbr(m.home)], A = g[teamAbbr(m.away)];
-        H.gf += hs; H.ga += as; H.played++;
-        A.gf += as; A.ga += hs; A.played++;
-        if (hs > as) H.pts += 3; else if (as > hs) A.pts += 3; else { H.pts++; A.pts++; }
-      }
-    });
-
-    const letters = Object.keys(groups).sort();
+    const groups = computeGroups(MATCHES);   // { letter: {teams, matches} }, computed in groups.js
+    const letters = Object.keys(groups);
     if (!letters.length) {
       body.innerHTML = '<div class="card">' + escapeHtml(t('noGroups')) + '</div>';
       return;
     }
 
     body.innerHTML = letters.map(letter => {
-      const teams = Object.keys(groups[letter]).map(k => {
-        const r = groups[letter][k];
-        return { side: r.side, played: r.played, gf: r.gf, ga: r.ga, gd: r.gf - r.ga, pts: r.pts };
-      }).sort((a, b) =>
-        b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || teamName(a.side).localeCompare(teamName(b.side)));
+      const teams = groups[letter].teams;
 
       const rows = teams.map(r => {
         const logo = teamLogo(r.side);
@@ -1665,7 +1695,7 @@
           '<th class="num">' + escapeHtml(t('thPts')) + '</th>' +
         '</tr></thead><tbody>' + rows + '</tbody></table>' +
         '<div class="h2h-label">' + escapeHtml(t('h2hTitle')) + '</div>' +
-        '<div class="h2h-scroll">' + h2hMatrix(teams, groupMatches[letter] || []) + '</div>' +
+        '<div class="h2h-scroll">' + h2hMatrix(teams, groups[letter].matches) + '</div>' +
         '</div>';
     }).join('');
   }
