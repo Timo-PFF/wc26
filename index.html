@@ -65,8 +65,17 @@
   select, input { width: 100%; padding: 10px; border-radius: 9px; border: 1px solid var(--line);
     background: #0d1426; color: var(--ink); font-size: 1rem; }
   .addlabel { font-size: .8rem; color: var(--muted); margin: 14px 0 4px; }
-  .addrow { display: flex; flex-wrap: wrap; gap: 8px; }
+  .addrow { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; }
   .addrow input { flex: 1 1 120px; }
+  /* off-screen username field so password managers can save/fill the login */
+  .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
+  /* password field with an inline show/hide toggle */
+  .pw-wrap { position: relative; display: flex; flex: 1 1 120px; }
+  .pw-wrap input { flex: 1 1 auto; padding-right: 64px; }
+  .pw-toggle { position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+    background: none; border: 0; color: var(--muted); cursor: pointer; font-size: .78rem; padding: 4px 6px; }
+  .pw-toggle:hover { color: var(--ink); }
   .addrow button {
     flex: 0 0 auto; padding: 10px 16px; border: 1px solid var(--accent); background: transparent;
     color: var(--accent); border-radius: 9px; cursor: pointer; font-size: .95rem; font-weight: 600;
@@ -197,16 +206,23 @@
     <div class="card">
       <label for="player" data-i18n="whoLabel">Who are you?</label>
       <select id="player" onchange="onPlayerChosen()"><option value="" data-i18n="selectName">— select your name —</option></select>
-      <div class="addrow" id="loginRow" style="display:none">
-        <input id="loginPw" type="password" autocomplete="current-password" data-i18n-ph="passwordPlaceholder" placeholder="Password" />
-        <button id="loginBtn" onclick="login()" data-i18n="continueBtn">Continue</button>
-      </div>
+      <form class="addrow" id="loginRow" style="display:none" onsubmit="login(); return false;">
+        <input id="loginUser" type="text" class="visually-hidden" autocomplete="username" tabindex="-1" aria-hidden="true" />
+        <span class="pw-wrap">
+          <input id="loginPw" type="password" autocomplete="current-password" data-i18n-ph="passwordPlaceholder" placeholder="Password" />
+          <button type="button" class="pw-toggle" data-i18n="showPw" onclick="togglePw('loginPw', this)">Show</button>
+        </span>
+        <button id="loginBtn" type="submit" data-i18n="continueBtn">Continue</button>
+      </form>
       <div class="addlabel" data-i18n="addLabel">New here? Add your name + password</div>
-      <div class="addrow">
-        <input id="newName" type="text" maxlength="40" autocomplete="off" data-i18n-ph="addNamePlaceholder" placeholder="Your name" />
-        <input id="newPw" type="password" maxlength="64" autocomplete="new-password" data-i18n-ph="passwordPlaceholder" placeholder="Password" />
-        <button id="addBtn" onclick="addMe()" data-i18n="addMe">Add me</button>
-      </div>
+      <form class="addrow" id="addForm" onsubmit="addMe(); return false;">
+        <input id="newName" type="text" maxlength="40" autocomplete="username" data-i18n-ph="addNamePlaceholder" placeholder="Your name" />
+        <span class="pw-wrap">
+          <input id="newPw" type="password" maxlength="64" autocomplete="new-password" data-i18n-ph="passwordPlaceholder" placeholder="Password" />
+          <button type="button" class="pw-toggle" data-i18n="showPw" onclick="togglePw('newPw', this)">Show</button>
+        </span>
+        <button id="addBtn" type="submit" data-i18n="addMe">Add me</button>
+      </form>
       <div id="addMsg" class="msg"></div>
     </div>
   </section>
@@ -338,6 +354,16 @@
     renderMatches();
   }
 
+  // Show/hide a password field. Keeps data-i18n in sync so a language switch
+  // keeps the label correct for the current state.
+  function togglePw(id, btn) {
+    const inp = document.getElementById(id);
+    const reveal = inp.type === 'password';
+    inp.type = reveal ? 'text' : 'password';
+    btn.dataset.i18n = reveal ? 'hidePw' : 'showPw';
+    btn.textContent = t(btn.dataset.i18n);
+  }
+
   // Group/stage filter chips (group view only). Lists every section from the
   // full fixture set so a toggled-off (and thus absent) section can be re-shown.
   function renderGroupFilter() {
@@ -430,6 +456,7 @@
   }
   function msg(text, kind) { showMsg('msg', text, kind); }       // near the submit button
   function addMsg(text, kind) { showMsg('addMsg', text, kind); } // in the add-name card
+  function clearMsg(id) { const el = document.getElementById(id); el.textContent = ''; el.className = 'msg'; }
 
   // ---- ESPN-schema accessors ----------------------------------------------
   // Names/logos/scores live on nested home/away objects; isolate that here so
@@ -557,6 +584,7 @@
       if (data.ok) {
         AUTH = { name: data.name, password: pw };   // log them in with the password they just set
         guessesLoaded = false;
+        clearMsg('addMsg');   // drop any earlier error
         input.value = ''; pwInput.value = '';
         // Refresh the player list so the new name shows up everywhere; fall back
         // to the add response's list if the refetch fails.
@@ -597,6 +625,7 @@
       if (data.ok) {
         AUTH = { name: data.name, password: pw };
         guessesLoaded = false;
+        clearMsg('addMsg');   // drop any earlier "wrong password" error
         document.getElementById('loginPw').value = '';
         document.getElementById('loginRow').style.display = 'none';
         document.getElementById('submitBtn').disabled = false;
@@ -692,13 +721,17 @@
   // Player-tab dropdown handler: a returning player must enter their password
   // (shown here) before they're logged in — see login().
   function onPlayerChosen() {
-    document.getElementById('addMsg').className = 'msg';
+    clearMsg('addMsg');
     const name = document.getElementById('player').value;
     const loginRow = document.getElementById('loginRow');
     if (!name) { loginRow.style.display = 'none'; return; }
+    document.getElementById('loginUser').value = name;   // ties the saved password to this player
     loginRow.style.display = '';
     const pw = document.getElementById('loginPw');
     pw.value = '';
+    pw.type = 'password';                                 // reset reveal state
+    const tog = loginRow.querySelector('.pw-toggle');
+    if (tog) { tog.dataset.i18n = 'showPw'; tog.textContent = t('showPw'); }
     pw.focus();
   }
 
