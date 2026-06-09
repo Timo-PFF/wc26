@@ -1,61 +1,66 @@
 /**
  * World Cup Prediction Pool — Google Apps Script backend (picks storage only)
  * ---------------------------------------------------------------------------
- * The Sheet stores who's eligible, who has joined, and everyone's picks. It does
- * NOT hold the fixtures or do any scoring — matches, results and points live in
- * the fixtures JSON and the leaderboard is computed in the browser.
+ * The Sheet stores the leagues (pools), who has joined each one, and everyone's
+ * picks. It does NOT hold fixtures or do scoring — matches, results and points
+ * live in the fixtures JSON and the leaderboard is computed in the browser.
  *
- * SHEET TABS (setupSheet() creates these for you):
- *   Eligible — col A: the allowlist of names that are ALLOWED to join (header
- *              "Name" in A1). You maintain this. People can only add themselves
- *              if their name is here.
- *   Players  — col A: names that have joined; col B: MD5 hash of their password
- *              (headers "Name" / "PassHash"). Starts empty; fills as people add
- *              themselves. Feeds the picks dropdown.
- *   Guesses  — A:timestamp B:player C:matchId D:guessHome E:guessAway
- *              F:penaltyWinner ('home'/'away', only for knockout-draw picks) (auto-filled)
+ * MULTI-LEAGUE: every pool is an independent "league". Players, names and picks
+ * are scoped to a league — the same name in two leagues is two unrelated people.
+ * A league has a plaintext join password (only you, the organizer, can see the
+ * Sheet and you choose the passwords, so plaintext is fine). That password is
+ * needed only to CREATE an account; afterwards you log in with league + name +
+ * your own personal password.
  *
- * Passwords are a low-friction deterrent only: MD5 (unsalted), stored in the
- * sheet, behind a public endpoint with no rate-limiting. Fine for stopping
- * casual sabotage in a family pool; not real security.
+ * SHEET TABS (setupSheet() creates these for a fresh install):
+ *   Leagues — A:id  B:name  C:password   (you maintain this; password is the
+ *             shared join secret for that pool, plaintext)
+ *   Players — A:league  B:name  C:passHash  (MD5 of the personal password;
+ *             fills as people create accounts; feeds the per-league name list)
+ *   Guesses — A:league B:timestamp C:player D:matchId E:guessHome F:guessAway
+ *             G:penaltyWinner ('home'/'away', knockout-draw picks only)
  *
- * Auth: addPlayer/auth return a session `token` (HMAC-signed, 30-day, sliding).
- * The client stores it and sends `token` on later requests instead of the
- * password (stays logged in across refreshes). token OR name+password accepted.
+ * Personal passwords are a low-friction deterrent only: MD5 (unsalted), behind a
+ * public endpoint with no rate-limiting. Fine for a family pool, not real security.
+ *
+ * Auth: addPlayer/auth return a session `token` (HMAC-signed, 30-day, sliding)
+ * that binds to (league, name). The client stores one token PER league and sends
+ * it on later requests instead of the password. token OR league+name+password.
  *
  * API:
- *   GET  ?action=config   -> { players: [...] }                  (who has joined; public)
- *   POST { action:'auth', name, password } -> { ok, name, token } | { ok:false, error }
- *          error CODE: 'no_password' | 'not_joined' | 'bad_password'. A player
- *          with no hash yet sets their password on first auth.
- *   POST { action:'resume', token } -> { ok, name, token } | { ok:false, error }
- *          re-issues a fresh token; error CODE: 'expired' | 'not_joined'.
- *   POST { action:'guesses', token } (or name+password) -> { ok, guesses } | { ok:false, error }
- *          Auth'd + PRIVATE: returns the caller's own picks plus everyone's picks
- *          for LOCKED games only (lock state from FIXTURES_URL). No public read.
- *   POST { action:'addPlayer', name, password } -> { ok, name, token, players } | { ok:false, error }
- *          error CODE: 'empty' | 'no_password' | 'not_eligible' | 'duplicate'.
- *   POST { token (or player+password), guesses:[{matchId,home,away,penaltyWinner?}] } -> { ok, saved }
- *          | { ok:false, error:'bad_password' }
+ *   GET  ?action=leagues            -> { leagues:[{id,name}] }      (public; no passwords)
+ *   GET  ?league=ID                 -> { players:[...] }            (that league's joined names; public)
+ *   POST { action:'auth', league, name, password } -> { ok, league, name, token } | { ok:false, error }
+ *          error: 'bad_league' | 'no_password' | 'not_joined' | 'bad_password'
+ *   POST { action:'resume', token } -> { ok, league, name, token } | { ok:false, error:'expired'|'not_joined' }
+ *   POST { action:'guesses', token } (or league+name+password) -> { ok, guesses } | { ok:false, error }
+ *          Auth'd + PRIVATE: caller's own picks plus everyone's picks for LOCKED
+ *          games only, scoped to the caller's league.
+ *   POST { action:'addPlayer', league, name, password, leaguePassword }
+ *          -> { ok, league, name, token, players } | { ok:false, error }
+ *          error: 'bad_league' | 'empty' | 'no_password' | 'bad_league_password' | 'duplicate'
+ *   POST { token (or league+name+password), guesses:[{matchId,home,away,penaltyWinner?}] }
+ *          -> { ok, saved } | { ok:false, error:'bad_password' }
  */
 
 // URL of the hosted fixtures JSON. The backend fetches it to learn which games
 // are LOCKED (scored or kicked off), so it can keep unplayed picks private. Apps
 // Script can't reach a local file or the ?fixtures= dev override, so this must be
-// a publicly reachable URL. The raw GitHub URL works without GitHub Pages and
-// reflects the file as soon as it's pushed (subject to ~5-min raw CDN caching).
-// Left '' → no other player's picks are ever returned (maximally private, but
-// Schedule/Standings then show only your own data).
-// NOTE: temporarily pointed at the DEV fixtures (3 games scored) for testing the
-// locked-game privacy filter — switch back to wc2026_fixtures.json for real use.
+// a publicly reachable URL. Lock state is GLOBAL (shared by every league).
+// NOTE: temporarily pointed at the DEV fixtures for testing the locked-game
+// privacy filter — switch back to wc2026_fixtures.json for real use.
 var FIXTURES_URL = 'https://raw.githubusercontent.com/Timo-PFF/wc26/main/data/wc2026_fixtures.dev.json';
 
 // ---- Web app entry points -------------------------------------------------
 
 function doGet(e) {
-  var action = (e && e.parameter && e.parameter.action) || 'config';
-  // Temporary diagnostic: shows what the DEPLOYED backend sees for lock state.
-  // Non-sensitive (just the fixtures URL + which match ids are locked). Remove later.
+  var params = (e && e.parameter) || {};
+  var action = params.action || 'config';
+  // The public league list (id + display name only) populates the login picker.
+  if (action === 'leagues') {
+    return json({ leagues: getLeagues() });
+  }
+  // Temporary diagnostic: what the DEPLOYED backend sees for lock state (global).
   if (action === 'debug') {
     var locked = lockedMatchIds();
     return json({
@@ -65,16 +70,16 @@ function doGet(e) {
       lockedSample: locked ? Object.keys(locked).slice(0, 5) : []
     });
   }
-  // Only the (non-sensitive) player list is public. Guesses are private and
+  // The (non-sensitive) joined-name list for ONE league. Guesses are private and
   // require auth — see the 'guesses' POST action below.
-  return json({ players: readColumn('Players', 0, 1).filter(String) });
+  return json({ players: playersForLeague(params.league) });
 }
 
 function doPost(e) {
   try {
     var body = JSON.parse(e.postData.contents);
-    if (body.action === 'addPlayer') return json(addPlayer(body.name, body.password));
-    if (body.action === 'auth') return json(authPlayer(body.name, body.password));
+    if (body.action === 'addPlayer') return json(addPlayer(body));
+    if (body.action === 'auth') return json(authPlayer(body));
     if (body.action === 'resume') return json(resumeSession(body.token));
     if (body.action === 'guesses') return json(getGuessesFor(body));
     return json(savePicks(body));
@@ -83,84 +88,112 @@ function doPost(e) {
   }
 }
 
-// ---- Add a player (restricted self-service) -------------------------------
-// Anyone may add a name, but only one that's on the Eligible list and not
-// already in Players. We write the canonical Eligible spelling (never raw user
-// input — also why this can't inject a sheet formula) plus the MD5 of their
-// chosen password in column B.
+// ---- Create an account (league-password gated) ----------------------------
+// Anyone who knows a league's join password may create an account in that league
+// under any (not-yet-taken) name. We store the name as typed (trimmed) plus the
+// MD5 of their chosen personal password.
 
-function addPlayer(rawName, password) {
-  var name = String(rawName || '').trim();
+function addPlayer(body) {
+  var lg = getLeague(body && body.league);
+  if (!lg) return { ok: false, error: 'bad_league' };
+  var name = String((body && body.name) || '').trim();
   if (!name) return { ok: false, error: 'empty' };
-  if (!String(password || '')) return { ok: false, error: 'no_password' };
-
-  var canonical = findCanonical('Eligible', name);   // must be on the guest list
-  if (!canonical) return { ok: false, error: 'not_eligible' };
-  if (getPlayer(canonical)) return { ok: false, error: 'duplicate' };
+  if (!String((body && body.password) || '')) return { ok: false, error: 'no_password' };
+  if (String((body && body.leaguePassword) || '') !== String(lg.password)) {
+    return { ok: false, error: 'bad_league_password' };
+  }
+  if (getPlayer(lg.id, name)) return { ok: false, error: 'duplicate' };
 
   var sheet = ss().getSheetByName('Players');
-  sheet.getRange(sheet.getLastRow() + 1, 1, 1, 2).setValues([[canonical, md5(password)]]);
-  return { ok: true, name: canonical, token: issueToken(canonical),
-           players: readColumn('Players', 0, 1).filter(String) };
+  sheet.getRange(sheet.getLastRow() + 1, 1, 1, 3).setValues([[lg.id, name, md5(body.password)]]);
+  return { ok: true, league: lg.id, name: name, token: issueToken(lg.id, name),
+           players: playersForLeague(lg.id) };
 }
 
 // ---- Authenticate a returning player --------------------------------------
-// A player with no stored hash yet (e.g. added before passwords existed) sets
-// their password on first successful login.
 
-function authPlayer(rawName, password) {
-  var pw = String(password || '');
+function authPlayer(body) {
+  var lg = getLeague(body && body.league);
+  if (!lg) return { ok: false, error: 'bad_league' };
+  var pw = String((body && body.password) || '');
   if (!pw) return { ok: false, error: 'no_password' };
-  var p = getPlayer(String(rawName || '').trim());
+  var p = getPlayer(lg.id, String((body && body.name) || '').trim());
   if (!p) return { ok: false, error: 'not_joined' };
-  if (!p.hash) {                                     // first-time: claim the password
-    ss().getSheetByName('Players').getRange(p.row, 2).setValue(md5(pw));
-    return { ok: true, name: p.name, token: issueToken(p.name) };
-  }
   if (p.hash !== md5(pw)) return { ok: false, error: 'bad_password' };
-  return { ok: true, name: p.name, token: issueToken(p.name) };
+  return { ok: true, league: lg.id, name: p.name, token: issueToken(lg.id, p.name) };
 }
 
 // Validate a saved session token and (if good) re-issue a fresh one so active
 // users stay logged in (sliding expiry).
 function resumeSession(token) {
-  var name = verifyToken(token);
-  if (!name) return { ok: false, error: 'expired' };
-  var p = getPlayer(name);
+  var t = verifyToken(token);
+  if (!t) return { ok: false, error: 'expired' };
+  var p = getPlayer(t.league, t.name);
   if (!p) return { ok: false, error: 'not_joined' };
-  return { ok: true, name: p.name, token: issueToken(p.name) };
+  return { ok: true, league: t.league, name: p.name, token: issueToken(t.league, p.name) };
 }
 
-// ---- Save picks (password-gated) ------------------------------------------
+// ---- Save picks (auth-gated, league-scoped) -------------------------------
 
 function savePicks(body) {
   var guesses = body.guesses || [];
 
-  // Must be authenticated (session token or password). Use the canonical
-  // spelling so guesses line up with the player list.
+  // Must be authenticated. The league comes from the resolved identity (token or
+  // password), never from a client-supplied field — so a token can only ever
+  // write into its own league.
   var p = resolvePlayer(body);
   if (!p) return { ok: false, error: 'bad_password' };
-  var player = p.name;
+  var league = p.league, player = p.name;
 
   var sheet = ss().getSheetByName('Guesses');
   var now = new Date();
 
-  // Overwrite this player's earlier picks for the submitted matches (no dupes).
+  // Overwrite this player's earlier picks (in this league) for the submitted matches.
   var submittedIds = {};
   guesses.forEach(function (g) { submittedIds[String(g.matchId)] = true; });
-  removePlayerGuesses(sheet, player, submittedIds);
+  removePlayerGuesses(sheet, league, player, submittedIds);
 
   var rows = [];
   guesses.forEach(function (g) {
     if (g.home === '' || g.away === '' || g.home == null || g.away == null) return;
     // penaltyWinner ('home'/'away') only set when the pick is a knockout draw.
     var pen = (g.penaltyWinner === 'home' || g.penaltyWinner === 'away') ? g.penaltyWinner : '';
-    rows.push([now, player, String(g.matchId), Number(g.home), Number(g.away), pen]);
+    rows.push([league, now, player, String(g.matchId), Number(g.home), Number(g.away), pen]);
   });
   if (rows.length) {
-    sheet.getRange(sheet.getLastRow() + 1, 1, rows.length, 6).setValues(rows);
+    sheet.getRange(sheet.getLastRow() + 1, 1, rows.length, 7).setValues(rows);
   }
   return { ok: true, saved: rows.length };
+}
+
+// ---- Leagues --------------------------------------------------------------
+
+// Public league list — id + display name only, never the password.
+function getLeagues() {
+  var sheet = ss().getSheetByName('Leagues');
+  var last = sheet ? sheet.getLastRow() : 0;
+  if (last < 2) return [];
+  var data = sheet.getRange(2, 1, last - 1, 2).getValues();
+  return data
+    .filter(function (r) { return String(r[0]).trim(); })
+    .map(function (r) { return { id: String(r[0]).trim(), name: String(r[1]).trim() }; });
+}
+
+// Full league record (incl. plaintext password) for a given id, or null.
+function getLeague(id) {
+  var sheet = ss().getSheetByName('Leagues');
+  var last = sheet ? sheet.getLastRow() : 0;
+  if (last < 2) return null;
+  var want = normalize(id);
+  if (!want) return null;
+  var data = sheet.getRange(2, 1, last - 1, 3).getValues();
+  for (var i = 0; i < data.length; i++) {
+    if (normalize(data[i][0]) === want) {
+      return { id: String(data[i][0]).trim(), name: String(data[i][1]).trim(),
+               password: String(data[i][2] || '') };
+    }
+  }
+  return null;
 }
 
 // ---- Helpers --------------------------------------------------------------
@@ -175,27 +208,43 @@ function md5(s) {
   return bytes.map(function (b) { return ('0' + (b & 0xFF).toString(16)).slice(-2); }).join('');
 }
 
-// Look up a joined player (case-insensitive). Returns {row, name, hash} or null.
-// Players sheet: col A = canonical name, col B = MD5 password hash.
-function getPlayer(name) {
+// Joined-player lookup within a league (case-insensitive name).
+// Players sheet: A = league, B = name, C = MD5 password hash.
+// Returns {row, league, name, hash} or null.
+function getPlayer(league, name) {
   var sheet = ss().getSheetByName('Players');
   var last = sheet.getLastRow();
   if (last < 2) return null;
-  var data = sheet.getRange(2, 1, last - 1, 2).getValues();
-  var n = normalize(name);
+  var data = sheet.getRange(2, 1, last - 1, 3).getValues();
+  var lg = normalize(league), n = normalize(name);
+  if (!lg || !n) return null;
   for (var i = 0; i < data.length; i++) {
-    if (normalize(data[i][0]) === n) {
-      return { row: i + 2, name: String(data[i][0]).trim(), hash: String(data[i][1] || '').trim() };
+    if (normalize(data[i][0]) === lg && normalize(data[i][1]) === n) {
+      return { row: i + 2, league: String(data[i][0]).trim(),
+               name: String(data[i][1]).trim(), hash: String(data[i][2] || '').trim() };
     }
   }
   return null;
 }
 
+// Joined names for one league (for the login name dropdown).
+function playersForLeague(league) {
+  var sheet = ss().getSheetByName('Players');
+  var last = sheet.getLastRow();
+  if (last < 2) return [];
+  var data = sheet.getRange(2, 1, last - 1, 2).getValues();
+  var lg = normalize(league);
+  if (!lg) return [];
+  return data
+    .filter(function (r) { return normalize(r[0]) === lg && String(r[1]).trim(); })
+    .map(function (r) { return String(r[1]).trim(); });
+}
+
 // ---- Sessions (HMAC-signed tokens — "stay logged in") ---------------------
-// A token is  base64(name).expiryMs.base64(HMAC_SHA256(secret, "base64(name).expiryMs")).
-// Stateless: no session table — we just re-verify the signature + expiry. The
-// secret lives in Script Properties (auto-created once). Rotating it logs
-// everyone out. Tokens can't be individually revoked before they expire.
+// A token is  base64(JSON{l,n}).expiryMs.base64(HMAC_SHA256(secret, payload)).
+// It binds to (league, name). Stateless: we just re-verify the signature +
+// expiry. The secret lives in Script Properties (auto-created once). Rotating it
+// logs everyone out. Tokens can't be individually revoked before they expire.
 
 var SESSION_DAYS = 30;
 
@@ -211,13 +260,13 @@ function sign(payload) {
     Utilities.computeHmacSha256Signature(payload, sessionSecret(), Utilities.Charset.UTF_8));
 }
 
-function issueToken(name) {
-  var payload = Utilities.base64Encode(name, Utilities.Charset.UTF_8) + '.' +
-    (new Date().getTime() + SESSION_DAYS * 24 * 60 * 60 * 1000);
+function issueToken(league, name) {
+  var data = Utilities.base64Encode(JSON.stringify({ l: league, n: name }), Utilities.Charset.UTF_8);
+  var payload = data + '.' + (new Date().getTime() + SESSION_DAYS * 24 * 60 * 60 * 1000);
   return payload + '.' + sign(payload);
 }
 
-// Returns the canonical name if the token's signature is valid and unexpired, else null.
+// Returns {league, name} if the token's signature is valid and unexpired, else null.
 function verifyToken(token) {
   if (!token) return null;
   var parts = String(token).split('.');
@@ -226,32 +275,24 @@ function verifyToken(token) {
   if (sign(payload) !== parts[2]) return null;                 // tampered / wrong secret
   if (new Date().getTime() > Number(parts[1])) return null;    // expired
   try {
-    return Utilities.newBlob(Utilities.base64Decode(parts[0])).getDataAsString('UTF-8');
+    var obj = JSON.parse(Utilities.newBlob(Utilities.base64Decode(parts[0])).getDataAsString('UTF-8'));
+    if (!obj || !obj.l || !obj.n) return null;
+    return { league: String(obj.l), name: String(obj.n) };
   } catch (e) { return null; }
 }
 
 // Identify the requesting player from a session token (preferred) or a
-// name+password pair. Returns the {row, name, hash} record or null.
+// league+name+password triple. Returns the {row, league, name, hash} record or null.
 function resolvePlayer(body) {
   if (body && body.token) {
-    var name = verifyToken(body.token);
-    return name ? getPlayer(name) : null;
+    var t = verifyToken(body.token);
+    return t ? getPlayer(t.league, t.name) : null;
   }
-  var p = getPlayer(String((body && (body.player || body.name)) || '').trim());
+  var lg = getLeague(body && body.league);
+  if (!lg) return null;
+  var p = getPlayer(lg.id, String((body && (body.player || body.name)) || '').trim());
   if (!p || !p.hash || p.hash !== md5(String((body && body.password) || ''))) return null;
   return p;
-}
-
-// Canonical spelling of `name` in a single-column tab (header in row 1),
-// matched case-insensitively, or null if it isn't there.
-function findCanonical(tabName, name) {
-  var n = normalize(name);
-  if (!n) return null;
-  var values = readColumn(tabName, 0, 1).filter(String);
-  for (var i = 0; i < values.length; i++) {
-    if (normalize(values[i]) === n) return values[i];
-  }
-  return null;
 }
 
 function json(obj) {
@@ -260,46 +301,43 @@ function json(obj) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
-function readColumn(tabName, colIndex, startRow) {
-  var sheet = ss().getSheetByName(tabName);
-  var last = sheet.getLastRow();
-  if (last < startRow + 1) return [];
-  var values = sheet.getRange(startRow + 1, colIndex + 1, last - startRow, 1).getValues();
-  return values.map(function (r) { return String(r[0]).trim(); });
-}
-
-function getGuesses() {
+// All picks for one league.
+function getGuesses(league) {
   var sheet = ss().getSheetByName('Guesses');
   var last = sheet.getLastRow();
   if (last < 2) return [];
-  var data = sheet.getRange(2, 1, last - 1, 6).getValues();
-  return data.map(function (r) {
-    return {
-      player: String(r[1]).trim(),
-      matchId: String(r[2]).trim(),
-      home: Number(r[3]),
-      away: Number(r[4]),
-      penaltyWinner: String(r[5] || '').trim()   // 'home' | 'away' | '' (knockout draws only)
-    };
-  }).filter(function (g) { return g.player && g.matchId; });
+  var data = sheet.getRange(2, 1, last - 1, 7).getValues();
+  var lg = normalize(league);
+  return data
+    .filter(function (r) { return normalize(r[0]) === lg; })
+    .map(function (r) {
+      return {
+        player: String(r[2]).trim(),
+        matchId: String(r[3]).trim(),
+        home: Number(r[4]),
+        away: Number(r[5]),
+        penaltyWinner: String(r[6] || '').trim()   // 'home' | 'away' | '' (knockout draws only)
+      };
+    })
+    .filter(function (g) { return g.player && g.matchId; });
 }
 
-// Authenticated, privacy-filtered guesses: the caller's OWN picks (any state)
-// plus everyone's picks for games that are already LOCKED (scored / kicked off).
-// Unplayed games stay private — other players' picks for them are never sent.
+// Authenticated, privacy-filtered guesses for the caller's league: the caller's
+// OWN picks (any state) plus everyone's picks for games already LOCKED (scored /
+// kicked off). Unplayed games stay private; other leagues are never visible.
 function getGuessesFor(body) {
   var p = resolvePlayer(body);
   if (!p) return { ok: false, error: 'unauthorized' };
   var locked = lockedMatchIds() || {};   // {} when fixtures are unknown → only own picks
   var mine = normalize(p.name);
-  var out = getGuesses().filter(function (g) {
+  var out = getGuesses(p.league).filter(function (g) {
     return normalize(g.player) === mine || locked[String(g.matchId)];
   });
-  return { ok: true, guesses: out };
+  return { ok: true, league: p.league, guesses: out };
 }
 
-// Set of locked match ids from the hosted fixtures (scored OR kicked off),
-// cached briefly since the fixtures file is large. Returns null if unknown.
+// Set of locked match ids from the hosted fixtures (scored OR kicked off; GLOBAL
+// across leagues), cached briefly since the fixtures file is large. Null if unknown.
 function lockedMatchIds() {
   if (!FIXTURES_URL) return null;
   var cache = CacheService.getScriptCache();
@@ -340,34 +378,38 @@ function testFetch() {
 // One-off: run from the editor to authorize Script Properties (the session
 // secret store) and confirm token issue/verify works. Check the Execution log.
 function testToken() {
-  var tok = issueToken('TestUser');
+  var tok = issueToken('family', 'TestUser');
   Logger.log('token: ' + tok);
-  Logger.log('verify (expect TestUser): ' + verifyToken(tok));
+  Logger.log('verify (expect {league:family,name:TestUser}): ' + JSON.stringify(verifyToken(tok)));
 }
 
-function removePlayerGuesses(sheet, player, idMap) {
+// Delete this player's earlier picks (in this league) for the given match ids.
+// Guesses: A league, B timestamp, C player, D matchId.
+function removePlayerGuesses(sheet, league, player, idMap) {
   var last = sheet.getLastRow();
   if (last < 2) return;
-  var data = sheet.getRange(2, 1, last - 1, 5).getValues();
+  var data = sheet.getRange(2, 1, last - 1, 4).getValues();
+  var lg = normalize(league), pl = normalize(player);
   for (var i = data.length - 1; i >= 0; i--) {
-    var rowPlayer = String(data[i][1]).trim();
-    var rowMatch = String(data[i][2]).trim();
-    if (rowPlayer === player && idMap[rowMatch]) {
+    if (normalize(data[i][0]) === lg && normalize(data[i][2]) === pl && idMap[String(data[i][3]).trim()]) {
       sheet.deleteRow(i + 2);
     }
   }
 }
 
 // ---- One-time setup helper (run once from the editor) ---------------------
+// For a FRESH install. On an existing single-pool sheet, migrate by hand instead:
+// add a Leagues tab, prepend a `league` column to Players/Guesses, stamp existing
+// rows with the league id, and delete the old Eligible tab.
 
 function setupSheet() {
   var book = ss();
-  // Eligible = the guest list you maintain. Replace the examples with real names.
-  ensureTab(book, 'Eligible', [['Name'], ['Alice'], ['Bob'], ['Charlie']]);
-  // Players fills itself as people add themselves (col A name, col B password
-  // hash). Starts with just the header.
-  ensureTab(book, 'Players', [['Name', 'PassHash']]);
-  ensureTab(book, 'Guesses', [['timestamp', 'player', 'matchId', 'guessHome', 'guessAway', 'penaltyWinner']]);
+  // Leagues you maintain. Replace the example password before sharing the pool.
+  ensureTab(book, 'Leagues', [['id', 'name', 'password'], ['family', 'Family', 'CHANGE_ME']]);
+  // Players / Guesses fill themselves as people join and pick.
+  ensureTab(book, 'Players', [['league', 'name', 'passHash']]);
+  ensureTab(book, 'Guesses',
+    [['league', 'timestamp', 'player', 'matchId', 'guessHome', 'guessAway', 'penaltyWinner']]);
 }
 
 function ensureTab(book, name, seed) {

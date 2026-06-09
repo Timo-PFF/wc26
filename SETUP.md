@@ -33,31 +33,51 @@ fixtures, then publish. ~15 minutes.
 3. Delete the sample code and **paste the entire contents of `Code.gs`**. Click **Save**.
 4. In the function dropdown choose **`setupSheet`** → **Run**.
    - Authorize when asked: *Review permissions → your account → Advanced → Go to (project) → Allow.* (The "unverified app" notice is normal for your own script.)
-   - Back in the Sheet you'll now have three tabs: **Eligible**, **Players** and **Guesses**.
+   - Back in the Sheet you'll now have three tabs: **Leagues**, **Players** and **Guesses**.
 
-## 2. Set the guest list (Eligible)
+## 2. Set up your leagues (pools)
 
-On the **Eligible** tab, replace Alice/Bob/Charlie with the real names of everyone
-allowed to join (one per row under the "Name" header). This is your guest list —
-people can only add themselves if their name is here. You can edit it any time, no
-redeploy needed.
+Each **league** is an independent pool — its own players, picks and standings.
+The same name in two leagues is two unrelated people.
 
-How joining works: on the page, a new person types their name **and a password**
-and taps **Add me**. The script checks the name against **Eligible**
-(case-insensitive) and, if it matches and nobody has claimed it yet, writes that
-name + the **MD5 hash** of their password onto the **Players** tab. Returning
-players pick their name from the dropdown and enter their password to continue.
-Submitting picks requires the password, so no one can submit under someone else's
-name.
+On the **Leagues** tab, one row per pool with three columns:
 
-> - The **Players** tab (col A name, col B `PassHash`) starts empty and fills
->   itself — you don't edit it (deleting a row frees the name *and* its password).
-> - The **Guesses** tab fills itself as people submit; you don't touch it either.
-> - Passwords are a **light deterrent only** — MD5, unsalted, in the sheet, behind
->   a public endpoint with no rate-limiting. Fine for a family pool; not real
->   security. (Reading others' upcoming picks isn't blocked yet — that's a
->   separate, larger change.)
-> - A name can't be added twice, and names not on **Eligible** are rejected.
+| id | name | password |
+|---|---|---|
+| `family` | Family | (a shared join password you choose) |
+
+- **id** — short, URL-safe (used in the share link `…/?league=family`).
+- **name** — the display name people see in the league picker.
+- **password** — the **shared join secret** for that pool (plaintext is fine: only
+  you can see the Sheet, and it just gates *creating* an account). Hand it out to
+  the people you want in that pool.
+
+How joining works: a person opens the app, picks their **league**, types a **name**,
+their **own password**, and the **league password**, then taps **Add me**. The
+script checks the league password and, if the name isn't already taken in that
+league, writes `league · name · MD5(personal password)` onto the **Players** tab.
+After that they log in with just league + name + their personal password — the
+league password is only needed once, at account creation.
+
+> - The **Players** tab (col A league, B name, C `passHash`) and **Guesses** tab
+>   (col A league, then timestamp/player/matchId/scores/penaltyWinner) fill
+>   themselves — you don't edit them. Deleting a Players row frees that name in
+>   that league.
+> - Personal passwords are a **light deterrent only** — MD5, unsalted, behind a
+>   public endpoint with no rate-limiting. Fine for a family pool; not real security.
+> - Picks stay private until a game locks (kickoff/score), and leagues never see
+>   each other's data.
+
+### Migrating an existing single-pool sheet
+
+If you already ran an older single-pool version, migrate by hand instead of
+re-running `setupSheet`:
+1. Add a **Leagues** tab with headers `id`, `name`, `password` and one row, e.g.
+   `family · Family · yourjoinpassword`.
+2. Insert a new **column A** named `league` on both **Players** and **Guesses**,
+   and fill every existing data row with `family`.
+3. Delete the old **Eligible** tab.
+4. Re-paste `Code.gs` and redeploy (Manage deployments → edit → new version).
 
 ## 3. Deploy the script as a web app
 

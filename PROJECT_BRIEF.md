@@ -31,11 +31,13 @@ python/fetch_fixtures.py ──┘   (static page,                  (Apps Script
 
 ## Files
 
-- `Code.gs` — Apps Script web app. `doPost` saves `{player, guesses:[{matchId,home,away}]}`
-  (overwrites that player's prior picks for those matches, no dupes). `doGet?action=config`
-  → `{players}`; `doGet?action=guesses` → `{guesses:[{player,matchId,home,away}]}`.
-  `setupSheet()` creates the `Players` and `Guesses` tabs. Deploy as web app,
-  "Execute as: Me", "Who has access: Anyone".
+- `Code.gs` — Apps Script web app. Multi-league: every player/pick is scoped to a
+  `league` (pool). `doGet?action=leagues` → `{leagues:[{id,name}]}` (public picker);
+  `doGet?league=ID` → that league's `{players}`. `doPost` `auth`/`addPlayer` take a
+  league (addPlayer also needs the league's join password); `guesses` + savePicks
+  derive the league from the HMAC token, so a session only ever touches its own pool.
+  `setupSheet()` creates the `Leagues`, `Players` and `Guesses` tabs. Deploy as web
+  app, "Execute as: Me", "Who has access: Anyone".
 - `index.html` — two tabs (Make picks / Standings). Reads `SCRIPT_URL` (the
   deployed /exec URL) and `FIXTURES_URL`. Locks matches that already have a final
   score. POSTs with no custom headers (text/plain) to avoid CORS preflight.

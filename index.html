@@ -65,6 +65,7 @@
   .badge { background: var(--card); border: 1px solid var(--accent); color: var(--ink);
     border-radius: 999px; padding: 6px 14px; font-size: .85rem; cursor: pointer; }
   .badge b { color: var(--accent); }
+  .badge .badge-league { color: var(--muted); font-weight: 400; }
   .reload-btn {
     padding: 5px 11px; border: 1px solid var(--line); background: var(--card); color: var(--muted);
     border-radius: 8px; cursor: pointer; font-size: .78rem;
@@ -337,28 +338,37 @@
     <button id="tabStandings" onclick="showTab('standings')" data-i18n="tabStandings">Standings</button>
   </div>
 
-  <!-- WHO ARE YOU (pick or add your name) — the landing tab -->
+  <!-- WHO ARE YOU (pick your league, then your name) — the landing tab -->
   <section id="who">
     <div class="card">
-      <label for="player" data-i18n="whoLabel">Who are you?</label>
-      <select id="player" onchange="onPlayerChosen()"><option value="" data-i18n="selectName">— select your name —</option></select>
-      <form class="addrow" id="loginRow" style="display:none" onsubmit="login(); return false;">
-        <input id="loginUser" type="text" class="visually-hidden" autocomplete="username" tabindex="-1" aria-hidden="true" />
-        <span class="pw-wrap">
-          <input id="loginPw" type="password" autocomplete="current-password" data-i18n-ph="passwordPlaceholder" placeholder="Password" />
-          <button type="button" class="pw-toggle" onclick="togglePw('loginPw', this)"></button>
-        </span>
-        <button id="loginBtn" type="submit" data-i18n="continueBtn">Continue</button>
-      </form>
-      <div class="addlabel" data-i18n="addLabel">New here? Add your name + password</div>
-      <form class="addrow" id="addForm" onsubmit="addMe(); return false;">
-        <input id="newName" type="text" maxlength="40" autocomplete="username" data-i18n-ph="addNamePlaceholder" placeholder="Your name" />
-        <span class="pw-wrap">
-          <input id="newPw" type="password" maxlength="64" autocomplete="new-password" data-i18n-ph="passwordPlaceholder" placeholder="Password" />
-          <button type="button" class="pw-toggle" onclick="togglePw('newPw', this)"></button>
-        </span>
-        <button id="addBtn" type="submit" data-i18n="addMe">Add me</button>
-      </form>
+      <label for="leagueSelect" data-i18n="chooseLeague">Choose your league</label>
+      <select id="leagueSelect" onchange="onLeagueChosen()"><option value="" data-i18n="selectLeague">— select your league —</option></select>
+
+      <div id="leagueGated" style="display:none">
+        <label for="player" data-i18n="whoLabel">Who are you?</label>
+        <select id="player" onchange="onPlayerChosen()"><option value="" data-i18n="selectName">— select your name —</option></select>
+        <form class="addrow" id="loginRow" style="display:none" onsubmit="login(); return false;">
+          <input id="loginUser" type="text" class="visually-hidden" autocomplete="username" tabindex="-1" aria-hidden="true" />
+          <span class="pw-wrap">
+            <input id="loginPw" type="password" autocomplete="current-password" data-i18n-ph="passwordPlaceholder" placeholder="Password" />
+            <button type="button" class="pw-toggle" onclick="togglePw('loginPw', this)"></button>
+          </span>
+          <button id="loginBtn" type="submit" data-i18n="continueBtn">Continue</button>
+        </form>
+        <div class="addlabel" data-i18n="addLabel">New here? Create your account</div>
+        <form class="addrow" id="addForm" onsubmit="addMe(); return false;">
+          <input id="newName" type="text" maxlength="40" autocomplete="username" data-i18n-ph="addNamePlaceholder" placeholder="Your name" />
+          <span class="pw-wrap">
+            <input id="newPw" type="password" maxlength="64" autocomplete="new-password" data-i18n-ph="passwordPlaceholder" placeholder="Your password" />
+            <button type="button" class="pw-toggle" onclick="togglePw('newPw', this)"></button>
+          </span>
+          <span class="pw-wrap">
+            <input id="leaguePw" type="password" maxlength="64" autocomplete="off" data-i18n-ph="leaguePasswordPlaceholder" placeholder="League password" />
+            <button type="button" class="pw-toggle" onclick="togglePw('leaguePw', this)"></button>
+          </span>
+          <button id="addBtn" type="submit" data-i18n="addMe">Add me</button>
+        </form>
+      </div>
       <div id="addMsg" class="msg"></div>
     </div>
     <div id="scoringRules" class="card scoring-rules"></div>
@@ -464,7 +474,10 @@
   let HIDDEN_GROUPS = new Set();  // pick tab (group view): section keys toggled off
   let ONLY_UPCOMING = false;      // pick tab: only games kicking off within COUNTDOWN_SOON_MS
   let ONLY_NOPICK = false;        // pick tab: only games without a saved pick
-  let AUTH = null;                // { name, password } once the player logs in / adds themselves
+  let AUTH = null;                // { name, token } once the player logs in / adds themselves
+  let LEAGUES = [];               // [{id, name}] available pools (from the backend)
+  let LEAGUE = null;              // current league id
+  let LEAGUE_NAME = '';           // current league display name (for the badge)
 
   function setView(mode) {
     if (mode === VIEW_MODE) return;
@@ -666,11 +679,23 @@
   function addMsg(text, kind) { showMsg('addMsg', text, kind); } // in the add-name card
   function clearMsg(id) { const el = document.getElementById(id); el.textContent = ''; el.className = 'msg'; }
 
-  // Session token persistence (keeps you logged in across refreshes).
-  const TOKEN_KEY = 'wc26_token';
-  function loadToken()  { try { return localStorage.getItem(TOKEN_KEY); } catch (e) { return null; } }
-  function saveToken(t) { try { localStorage.setItem(TOKEN_KEY, t); } catch (e) {} }
-  function clearToken() { try { localStorage.removeItem(TOKEN_KEY); } catch (e) {} }
+  // Session token persistence (keeps you logged in across refreshes). One token
+  // per league, since identity is league-scoped — so you can be logged into more
+  // than one pool in the same browser.
+  function tokenKey(league)        { return 'wc26_token_' + (league || ''); }
+  function loadToken(league)       { try { return localStorage.getItem(tokenKey(league)); } catch (e) { return null; } }
+  function saveToken(league, t)    { try { localStorage.setItem(tokenKey(league), t); } catch (e) {} }
+  function clearToken(league)      { try { localStorage.removeItem(tokenKey(league)); } catch (e) {} }
+  // Remember the last league chosen, so a bare visit (no ?league=) reopens it.
+  const LEAGUE_KEY = 'wc26_league';
+  function loadLastLeague()        { try { return localStorage.getItem(LEAGUE_KEY); } catch (e) { return null; } }
+  function saveLastLeague(id)      { try { localStorage.setItem(LEAGUE_KEY, id); } catch (e) {} }
+  // Canonical league record for an id (case-insensitive), or null.
+  function findLeague(id) {
+    if (!id) return null;
+    const n = String(id).toLowerCase();
+    return LEAGUES.find(l => l.id.toLowerCase() === n) || null;
+  }
 
   // ---- ESPN-schema accessors ----------------------------------------------
   // Names/logos/scores live on nested home/away objects; isolate that here so
@@ -772,13 +797,6 @@
       document.getElementById('lgDe').classList.toggle('active', LANG === 'de');
     }
     applyLabels();   // paint all static labels in the chosen language
-    // If a session is saved, show a placeholder badge right away while we verify
-    // the token and fetch the sheet (resumeSession resolves it to the name).
-    if (loadToken() && !SCRIPT_URL.startsWith('PASTE')) {
-      const badge = document.getElementById('playerBadge');
-      badge.textContent = t('retrievingLogin');
-      badge.style.display = '';
-    }
     if (SCRIPT_URL.startsWith('PASTE')) {
       document.getElementById('matches').innerHTML =
         '<div class="card" style="color:var(--bad)">' + escapeHtml(t('setScriptUrl')) + '</div>';
@@ -798,12 +816,14 @@
       document.getElementById('matches').innerHTML =
         '<div class="card" style="color:var(--bad)">' + escapeHtml(t('couldNotLoadFixtures')(fixturesUrl)) + '</div>';
     }
-    // Player list from the sheet (who has joined so far).
+    // Leagues, then open the league from ?league= (or the last one used). That
+    // loads its player list and resumes a saved session if there is one.
     if (!SCRIPT_URL.startsWith('PASTE')) {
       try {
-        setPlayers(await loadPlayers());   // public list for the dropdown
-        await resumeSession();             // stay logged in across refreshes
-        // submit stays gated until a player logs in / resumes
+        await loadLeagues();
+        const urlLeague = new URLSearchParams(location.search).get('league');
+        const startLg = findLeague(urlLeague) || findLeague(loadLastLeague());
+        if (startLg) await selectLeague(startLg.id);
       } catch (e) {
         msg(t('couldNotLoadPlayers'), 'err');
       }
@@ -822,14 +842,69 @@
     });
   }
 
-  // Restricted self-service: add a name to the pool. The backend only accepts
-  // names on the Eligible list and rejects duplicates; on success it returns
-  // the canonical spelling + the refreshed player list.
+  // Fetch the public league list (id + display name) and fill the league picker.
+  async function loadLeagues() {
+    const data = await fetch(SCRIPT_URL + '?action=leagues').then(r => r.json());
+    LEAGUES = data.leagues || [];
+    const sel = document.getElementById('leagueSelect');
+    sel.querySelectorAll('option:not([data-i18n])').forEach(o => o.remove());
+    LEAGUES.forEach(l => {
+      const o = document.createElement('option'); o.value = l.id; o.textContent = l.name; sel.appendChild(o);
+    });
+  }
+
+  // Switch to a league: load its names, reset any prior login, and resume this
+  // league's saved session if there is one.
+  async function selectLeague(id) {
+    const lg = findLeague(id);
+    if (!lg) return;
+    LEAGUE = lg.id; LEAGUE_NAME = lg.name;
+    saveLastLeague(LEAGUE);
+    document.getElementById('leagueSelect').value = LEAGUE;
+    document.getElementById('leagueGated').style.display = '';
+    // Reset prior login state when (re)entering a league.
+    AUTH = null; guessesLoaded = false; SHEET.guesses = []; playersLoaded = false;
+    document.getElementById('submitBtn').disabled = true;
+    document.getElementById('player').value = '';
+    document.getElementById('loginRow').style.display = 'none';
+    applyUserPicks(null, []);   // clear any previous league's picks from the inputs
+    try { setPlayers(await loadPlayers(true)); }
+    catch (e) { msg(t('couldNotLoadPlayers'), 'err'); }
+    // Placeholder badge while we verify a saved token for this league.
+    const tok = loadToken(LEAGUE);
+    if (tok) {
+      const badge = document.getElementById('playerBadge');
+      badge.textContent = t('retrievingLogin'); badge.style.display = '';
+    } else {
+      updatePlayerBadge();
+    }
+    await resumeSession();   // logs in if the token is valid; else clears the placeholder
+  }
+
+  // League-picker handler.
+  function onLeagueChosen() {
+    clearMsg('addMsg');
+    const id = document.getElementById('leagueSelect').value;
+    if (!id) {
+      LEAGUE = null; LEAGUE_NAME = ''; AUTH = null;
+      document.getElementById('leagueGated').style.display = 'none';
+      document.getElementById('submitBtn').disabled = true;
+      applyUserPicks(null, []); updatePlayerBadge();
+      return;
+    }
+    selectLeague(id);
+  }
+
+  // Self-service account creation: needs the league's join password. On success
+  // the backend returns a session token + the refreshed player list for the league.
   async function addMe() {
     const input = document.getElementById('newName');
     const pwInput = document.getElementById('newPw');
+    const leaguePwInput = document.getElementById('leaguePw');
     const name = input.value.trim();
     const pw = pwInput.value;
+    const leaguePw = leaguePwInput.value;
+    if (!LEAGUE) { addMsg(t('leagueRequired'), 'err'); return; }
     if (!name) { addMsg(t('addErrEmpty'), 'err'); return; }
     if (!pw) { addMsg(t('needPassword'), 'err'); return; }
     if (SCRIPT_URL.startsWith('PASTE')) { addMsg(t('setScriptUrl'), 'err'); return; }
@@ -839,15 +914,15 @@
     try {
       const res = await fetch(SCRIPT_URL, {
         method: 'POST',
-        body: JSON.stringify({ action: 'addPlayer', name: name, password: pw }) // text/plain → no CORS preflight
+        body: JSON.stringify({ action: 'addPlayer', league: LEAGUE, name: name, password: pw, leaguePassword: leaguePw })
       });
       const data = await res.json();
       if (data.ok) {
         AUTH = { name: data.name, token: data.token };   // logged in with a session token
-        saveToken(data.token);
+        saveToken(data.league, data.token);
         guessesLoaded = false;
         clearMsg('addMsg');   // drop any earlier error
-        input.value = ''; pwInput.value = '';
+        input.value = ''; pwInput.value = ''; leaguePwInput.value = '';
         // Refresh the player list so the new name shows up everywhere; fall back
         // to the add response's list if the refetch fails.
         let players = data.players;
@@ -859,7 +934,8 @@
         showTab('predict');   // switch only after the add + reload finished
       } else {
         const codes = { empty: 'addErrEmpty', no_password: 'needPassword',
-          not_eligible: 'addErrNotEligible', duplicate: 'addErrDuplicate' };
+          bad_league_password: 'badLeaguePassword', bad_league: 'leagueRequired',
+          duplicate: 'addErrDuplicate' };
         addMsg(t(codes[data.error] || 'addFailed'), 'err');
       }
     } catch (e) {
@@ -868,10 +944,11 @@
     btn.disabled = false;
   }
 
-  // Returning player: verify the password for the selected name, then proceed.
+  // Returning player: verify the password for the selected name in this league.
   async function login() {
     const name = document.getElementById('player').value;
     const pw = document.getElementById('loginPw').value;
+    if (!LEAGUE) { addMsg(t('leagueRequired'), 'err'); return; }
     if (!name) return;
     if (!pw) { addMsg(t('needPassword'), 'err'); return; }
     if (SCRIPT_URL.startsWith('PASTE')) { addMsg(t('setScriptUrl'), 'err'); return; }
@@ -881,12 +958,12 @@
     try {
       const res = await fetch(SCRIPT_URL, {
         method: 'POST',
-        body: JSON.stringify({ action: 'auth', name: name, password: pw })
+        body: JSON.stringify({ action: 'auth', league: LEAGUE, name: name, password: pw })
       });
       const data = await res.json();
       if (data.ok) {
         AUTH = { name: data.name, token: data.token };
-        saveToken(data.token);
+        saveToken(data.league, data.token);
         guessesLoaded = false;
         clearMsg('addMsg');   // drop any earlier "wrong password" error
         document.getElementById('loginPw').value = '';
@@ -903,22 +980,24 @@
     btn.disabled = false;
   }
 
-  // On load, restore a saved session token so the user stays logged in.
+  // Restore the current league's saved session token so the user stays logged in.
   async function resumeSession() {
-    const tok = loadToken();
-    if (!tok || SCRIPT_URL.startsWith('PASTE')) return;
+    const tok = loadToken(LEAGUE);
+    if (!tok || SCRIPT_URL.startsWith('PASTE')) { updatePlayerBadge(); return; }
     try {
       const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'resume', token: tok }) });
       const data = await res.json();
       if (data.ok) {
+        const lg = findLeague(data.league);
+        if (lg) { LEAGUE = lg.id; LEAGUE_NAME = lg.name; }
         AUTH = { name: data.name, token: data.token };
-        saveToken(data.token);          // sliding expiry
+        saveToken(LEAGUE, data.token);  // sliding expiry
         guessesLoaded = false;
         document.getElementById('submitBtn').disabled = false;
         await syncPlayer();
         showTab('predict');
       } else {
-        clearToken();                   // expired / invalid → forget it
+        clearToken(LEAGUE);             // expired / invalid → forget it
         updatePlayerBadge();            // remove the "retrieving" placeholder
       }
     } catch (e) {
@@ -927,8 +1006,8 @@
   }
 
   function logout() {
+    if (LEAGUE) clearToken(LEAGUE);   // forget this league's session (stay in the league)
     AUTH = null;
-    clearToken();
     guessesLoaded = false;
     SHEET.guesses = [];
     document.getElementById('submitBtn').disabled = true;
@@ -938,11 +1017,11 @@
     showTab('who');
   }
 
-  // Public player list (for the dropdown) — cached; force=true refetches.
+  // Public player list for the current league (dropdown) — cached; force=true refetches.
   async function loadPlayers(force) {
-    if (SCRIPT_URL.startsWith('PASTE')) return SHEET.players;
+    if (SCRIPT_URL.startsWith('PASTE') || !LEAGUE) return SHEET.players;
     if (playersLoaded && !force) return SHEET.players;
-    const cfg = await fetch(SCRIPT_URL + '?action=config').then(r => r.json());
+    const cfg = await fetch(SCRIPT_URL + '?league=' + encodeURIComponent(LEAGUE)).then(r => r.json());
     SHEET.players = cfg.players || [];
     playersLoaded = true;
     return SHEET.players;
@@ -1042,8 +1121,11 @@
   function updatePlayerBadge() {
     const badge = document.getElementById('playerBadge');
     const lo = document.getElementById('logoutBtn');
-    if (AUTH) { badge.innerHTML = t('playAs')(escapeHtml(AUTH.name)); badge.style.display = ''; if (lo) lo.style.display = ''; }
-    else { badge.textContent = ''; badge.style.display = 'none'; if (lo) lo.style.display = 'none'; }
+    if (AUTH) {
+      const league = LEAGUE_NAME ? ' <span class="badge-league">· ' + escapeHtml(LEAGUE_NAME) + '</span>' : '';
+      badge.innerHTML = t('playAs')(escapeHtml(AUTH.name)) + league;
+      badge.style.display = ''; if (lo) lo.style.display = '';
+    } else { badge.textContent = ''; badge.style.display = 'none'; if (lo) lo.style.display = 'none'; }
   }
 
   // Group matches into ordered sections: each group letter, then each knockout
