@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>World Cup Prediction Pool</title>
+<style>
+  :root {
+    --bg: #0f1729; --card: #1b2540; --line: #2c3a5e; --ink: #eef2ff;
+    --muted: #9fb0d0; --accent: #3ddc97; --accent2: #ffd24a; --bad: #ff6b6b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    background: var(--bg); color: var(--ink); line-height: 1.5;
+  }
+  header { padding: 24px 16px 8px; text-align: center; }
+  h1 { margin: 0 0 4px; font-size: 1.5rem; }
+  .sub { color: var(--muted); font-size: .9rem; }
+  main { max-width: 680px; margin: 0 auto; padding: 16px; }
+  .tabs { display: flex; gap: 8px; margin: 12px 0 16px; }
+  .tabs button {
+    flex: 1; min-width: 0; padding: 10px 6px; border: 1px solid var(--line); background: var(--card);
+    color: var(--ink); border-radius: 10px; cursor: pointer; font-size: .92rem;
+  }
+  .tabs button.active { background: var(--accent); color: #06281b; font-weight: 600; border-color: var(--accent); }
+  .viewtoggle { display: flex; align-items: center; gap: 8px; }
+  .pickbar { display: flex; justify-content: space-between; align-items: center;
+    gap: 8px 14px; flex-wrap: wrap; margin: 0 2px 12px; font-size: .85rem; color: var(--muted); }
+  .clocktext { font-variant-numeric: tabular-nums; }
+  .hidetoggle { display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
+  .hidetoggle input[type="checkbox"] { width: auto; padding: 0; margin: 0; cursor: pointer; }
+  .groupfilter { display: flex; flex-direction: column; gap: 8px; margin: 0 2px 12px; }
+  .quickbtns { display: flex; flex-wrap: wrap; gap: 6px; }
+  .quickbtn { padding: 4px 10px; border: 1px solid var(--line); background: var(--card);
+    color: var(--ink); border-radius: 8px; cursor: pointer; font-size: .78rem; }
+  .quickbtn:hover { border-color: var(--accent); }
+  .chiprow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+  .chiprow .vt-label { margin-right: 2px; }
+  #groupChips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { padding: 4px 10px; border: 1px solid var(--line); background: var(--card); color: var(--muted);
+    border-radius: 999px; cursor: pointer; font-size: .78rem; }
+  .chip.on { color: var(--ink); border-color: var(--accent); }
+  .chip:not(.on) { opacity: .5; }
+  .viewtoggle .vt-label { color: var(--muted); font-size: .85rem; }
+  .viewtoggle button {
+    padding: 6px 12px; border: 1px solid var(--line); background: var(--card);
+    color: var(--ink); border-radius: 8px; cursor: pointer; font-size: .85rem;
+  }
+  .viewtoggle button.active { background: var(--accent); color: #06281b; font-weight: 600; border-color: var(--accent); }
+  .topbar { display: flex; justify-content: space-between; align-items: center;
+    gap: 8px 12px; flex-wrap: wrap; margin: 10px 2px 0; }
+  .topbar-right { display: flex; align-items: center; gap: 10px 14px; flex-wrap: wrap; }
+  .badge { background: var(--card); border: 1px solid var(--accent); color: var(--ink);
+    border-radius: 999px; padding: 6px 14px; font-size: .85rem; cursor: pointer; }
+  .badge b { color: var(--accent); }
+  .reload-btn {
+    padding: 5px 11px; border: 1px solid var(--line); background: var(--card); color: var(--muted);
+    border-radius: 8px; cursor: pointer; font-size: .78rem;
+  }
+  .reload-btn:hover { color: var(--ink); }
+  .reload-btn:disabled { opacity: .5; cursor: default; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin-bottom: 14px; }
+  label { display: block; font-size: .85rem; color: var(--muted); margin-bottom: 6px; }
+  select, input { width: 100%; padding: 10px; border-radius: 9px; border: 1px solid var(--line);
+    background: #0d1426; color: var(--ink); font-size: 1rem; }
+  .addlabel { font-size: .8rem; color: var(--muted); margin: 14px 0 4px; }
+  .addrow { display: flex; flex-wrap: wrap; gap: 8px; }
+  .addrow input { flex: 1 1 120px; }
+  .addrow button {
+    flex: 0 0 auto; padding: 10px 16px; border: 1px solid var(--accent); background: transparent;
+    color: var(--accent); border-radius: 9px; cursor: pointer; font-size: .95rem; font-weight: 600;
+  }
+  .addrow button:disabled { opacity: .5; cursor: default; }
+
+  /* Section headings that group matches by stage / group letter */
+  .section-head { display: flex; align-items: baseline; gap: 8px; margin: 22px 2px 8px; }
+  .section-head h2 { margin: 0; font-size: 1.05rem; }
+  .section-head .count { color: var(--muted); font-size: .8rem; }
+
+  /* One match row. align-items:end keeps team names + inputs on a common
+     baseline while the win-probability labels stack above the inputs. */
+  .match { display: grid; grid-template-columns: 1fr 48px auto 48px 1fr; align-items: end; gap: 8px; }
+  .match .team { display: flex; align-items: center; gap: 8px; min-width: 0; padding-bottom: 8px; }
+  .match .team.home { justify-content: flex-start; }
+  .match .team.away { justify-content: flex-end; }
+  .match .team img.flag { width: 26px; height: 26px; object-fit: contain; flex: 0 0 auto; border-radius: 3px; background: #0d1426; }
+  .match .team .name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .match .team .name .abbr { display: none; }
+  /* Pick column = optional win-prob label stacked above the input / "vs". */
+  .pick { display: flex; flex-direction: column; }
+  .pick.vs-cell { align-items: center; }
+  .prob { font-size: .72rem; font-weight: 600; color: var(--ink); text-align: center;
+    margin-bottom: 4px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .match .vs { text-align: center; color: var(--muted); padding-bottom: 8px; }
+  .match input { text-align: center; padding: 8px; }
+  .meta-row { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .75rem; color: var(--muted); margin-bottom: 4px; }
+  .meta-row .odds { color: var(--accent2); }
+  .done { grid-column: 1 / -1; font-size: .78rem; color: var(--accent2); margin-top: 6px; font-weight: 600; }
+  /* Locked-game reveal: tap the note to see everyone's picks */
+  .reveal { grid-column: 1 / -1; margin-top: 6px; }
+  .reveal summary { font-size: .78rem; color: var(--accent2); font-weight: 600; cursor: pointer; }
+  .reveal .reveal-hint { color: var(--muted); font-weight: 400; }
+  .reveal[open] summary { margin-bottom: 8px; }
+  .reveal-table { width: 100%; }
+  .reveal-table th { color: var(--muted); font-weight: 600; font-size: .72rem; text-align: left; padding: 3px 8px; }
+  .reveal-table th.num { text-align: right; }
+  .reveal-table td { padding: 4px 8px; border-bottom: 1px solid var(--line); font-size: .85rem; }
+  .reveal-table td.guess { font-variant-numeric: tabular-nums; }
+  .reveal-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* On narrow screens swap full names for abbreviations to keep the row tidy */
+  @media (max-width: 460px) {
+    .match { grid-template-columns: 1fr 40px auto 40px 1fr; gap: 6px; }
+    .match .team .name .full { display: none; }
+    .match .team .name .abbr { display: inline; }
+    .match .team img.flag { width: 22px; height: 22px; }
+  }
+
+  button.primary {
+    width: 100%; padding: 13px; border: none; border-radius: 11px; background: var(--accent);
+    color: #06281b; font-size: 1.05rem; font-weight: 700; cursor: pointer; margin-top: 6px;
+    position: sticky; bottom: 12px;
+  }
+  button.primary:disabled { opacity: .5; cursor: default; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 9px 8px; text-align: left; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-weight: 600; font-size: .8rem; text-transform: uppercase; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .rank1 td { color: var(--accent2); font-weight: 700; }
+  /* Schedule tab: one row per finished game, one column per player */
+  .schedule-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .schedule-table { border-collapse: collapse; min-width: 100%; }
+  .schedule-table th, .schedule-table td {
+    padding: 7px 10px; border-bottom: 1px solid var(--line); text-align: center; white-space: nowrap;
+  }
+  .schedule-table thead th { color: var(--muted); font-size: .78rem; font-weight: 600; }
+  /* Game column stays put while the player columns scroll sideways. */
+  .schedule-table .game { text-align: left; position: sticky; left: 0; background: var(--bg); z-index: 1; }
+  .schedule-table .game img.flag { width: 18px; height: 18px; object-fit: contain;
+    vertical-align: middle; border-radius: 2px; margin: 0 4px; }
+  .schedule-table .score { color: var(--accent2); font-weight: 700; padding: 0 3px; font-variant-numeric: tabular-nums; }
+  .section-row th { text-align: left; background: var(--bg); color: var(--ink); font-size: .9rem;
+    position: sticky; left: 0; padding-top: 14px; }
+  .totals-row td { border-bottom: 2px solid var(--line); }
+  .totals-row .game { color: var(--muted); font-weight: 600; }
+  .totals-row .tot { color: var(--accent2); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .pcell { display: flex; flex-direction: column; align-items: center; gap: 1px; line-height: 1.15; }
+  .pcell .g { font-variant-numeric: tabular-nums; }
+  .pcell .p { font-size: .72rem; font-weight: 700; }
+  .pts-exact { color: var(--accent); }
+  .pts-gd { color: #59c2d6; }
+  .pts-outcome { color: var(--accent2); }
+  .pts-zero { color: var(--muted); }
+  .pts-none { color: var(--line); }
+  .msg { padding: 10px 12px; border-radius: 9px; margin: 10px 0; font-size: .9rem; display: none; }
+  .msg.ok { background: rgba(61,220,151,.15); color: var(--accent); display: block; }
+  .msg.err { background: rgba(255,107,107,.15); color: var(--bad); display: block; }
+  .loading { color: var(--muted); text-align: center; padding: 24px; }
+  footer { text-align: center; color: var(--muted); font-size: .75rem; padding: 16px; }
+</style>
+</head>
+<body>
+<header>
+  <h1 id="title" data-i18n="appTitle">⚽ World Cup Prediction Pool</h1>
+  <div class="sub" data-i18n="subtitle">Pick scores, earn points, win bragging rights.</div>
+</header>
+
+<main>
+  <!-- Global bar: who you're playing as + reload + language (shown on every tab) -->
+  <div class="topbar">
+    <button id="playerBadge" class="badge" onclick="showTab('who')" style="display:none"></button>
+    <div class="topbar-right">
+      <div class="viewtoggle" id="viewToggle">
+        <span class="vt-label" data-i18n="viewLabel">View:</span>
+        <button id="vtGroup" class="active" onclick="setView('group')" data-i18n="byGroup">By group</button>
+        <button id="vtDate" onclick="setView('date')" data-i18n="chronological">Chronological</button>
+      </div>
+      <div class="viewtoggle">
+        <span class="vt-label" data-i18n="langLabel">Language:</span>
+        <button id="lgEn" class="active" onclick="setLang('en')">English</button>
+        <button id="lgDe" onclick="setLang('de')">Deutsch</button>
+      </div>
+      <button id="reloadBtn" class="reload-btn" onclick="reloadData()" data-i18n="reloadData">↻ Reload data</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button id="tabWho" class="active" onclick="showTab('who')" data-i18n="tabWho">Player</button>
+    <button id="tabPredict" onclick="showTab('predict')" data-i18n="tabPredict">Make picks</button>
+    <button id="tabSchedule" onclick="showTab('schedule')" data-i18n="tabSchedule">Schedule</button>
+    <button id="tabStandings" onclick="showTab('standings')" data-i18n="tabStandings">Standings</button>
+  </div>
+
+  <!-- WHO ARE YOU (pick or add your name) — the landing tab -->
+  <section id="who">
+    <div class="card">
+      <label for="player" data-i18n="whoLabel">Who are you?</label>
+      <select id="player" onchange="onPlayerChosen()"><option value="" data-i18n="selectName">— select your name —</option></select>
+      <div class="addrow" id="loginRow" style="display:none">
+        <input id="loginPw" type="password" autocomplete="current-password" data-i18n-ph="passwordPlaceholder" placeholder="Password" />
+        <button id="loginBtn" onclick="login()" data-i18n="continueBtn">Continue</button>
+      </div>
+      <div class="addlabel" data-i18n="addLabel">New here? Add your name + password</div>
+      <div class="addrow">
+        <input id="newName" type="text" maxlength="40" autocomplete="off" data-i18n-ph="addNamePlaceholder" placeholder="Your name" />
+        <input id="newPw" type="password" maxlength="64" autocomplete="new-password" data-i18n-ph="passwordPlaceholder" placeholder="Password" />
+        <button id="addBtn" onclick="addMe()" data-i18n="addMe">Add me</button>
+      </div>
+      <div id="addMsg" class="msg"></div>
+    </div>
+  </section>
+
+  <!-- PREDICT -->
+  <section id="predict" style="display:none">
+    <div class="pickbar">
+      <span class="clocktext"><span data-i18n="nowLabel">Now:</span> <span id="clock"></span></span>
+      <label class="hidetoggle"><input type="checkbox" id="hideStarted" onchange="toggleHideStarted()" /> <span data-i18n="hideStarted">Hide started games</span></label>
+    </div>
+    <div id="groupFilter" class="groupfilter" style="display:none">
+      <div class="quickbtns">
+        <button class="quickbtn" onclick="setGroupFilter('all')" data-i18n="qbShowAll">Show all</button>
+        <button class="quickbtn" onclick="setGroupFilter('none')" data-i18n="qbHideAll">Hide all</button>
+        <button class="quickbtn" onclick="setGroupFilter('groups')" data-i18n="qbGroupStage">Group stage</button>
+        <button class="quickbtn" onclick="setGroupFilter('knockouts')" data-i18n="qbKnockouts">Knockouts</button>
+      </div>
+      <div class="chiprow">
+        <span class="vt-label" data-i18n="showLabel">Show:</span>
+        <span id="groupChips"></span>
+      </div>
+    </div>
+    <div id="matches"><div class="loading" data-i18n="loadingMatches">Loading matches…</div></div>
+    <div id="msg" class="msg"></div>
+    <button class="primary" id="submitBtn" onclick="submitGuesses()" disabled data-i18n="submit">Submit my picks</button>
+  </section>
+
+  <!-- SCHEDULE (completed games + everyone's guesses) -->
+  <section id="schedule" style="display:none">
+    <div id="scheduleMeta" class="sub" style="margin-bottom:10px"></div>
+    <div id="scheduleBody"><div class="loading" data-i18n="loading">Loading…</div></div>
+  </section>
+
+  <!-- STANDINGS -->
+  <section id="standings" style="display:none">
+    <div class="card">
+      <div id="standingsMeta" class="sub" style="margin-bottom:10px"></div>
+      <table>
+        <thead><tr><th data-i18n="thRank">#</th><th data-i18n="thPlayer">Player</th><th class="num" data-i18n="thPts">Pts</th><th class="num" data-i18n="thExact">Exact</th><th class="num" data-i18n="thGd">GD</th></tr></thead>
+        <tbody id="standingsBody"><tr><td colspan="5" class="loading" data-i18n="loading">Loading…</td></tr></tbody>
+      </table>
+    </div>
+    <div class="sub" id="scoringNote" style="text-align:center"></div>
+  </section>
+</main>
+
+<footer data-i18n="footer">Family &amp; friends pool · refresh standings any time</footer>
+
+<!-- Translation tables (I18N / STAGE_DE / DE_NAMES / translatePlaceholder).
+     Must load before the inline script below, which reads them. -->
+<script src="i18n.js"></script>
+<script>
+  // ====== CONFIG ===========================================================
+  // 1) Paste your deployed Apps Script web-app URL (ends in /exec):
+  const SCRIPT_URL   = "https://script.google.com/macros/s/AKfycbxDl0jYS99LBobeb-g4bAJgQ4r9-GZwOeOqFm540YiDfeiQaXnblgdG6VjDIsRob848/exec";
+  // 2) Where the fixtures live (ESPN-shaped file produced by python/fetch_fixtures.py):
+  const FIXTURES_URL = "data/wc2026_fixtures.json";
+  // 3) Pool scoring rule (points a pick is worth — NOT the match result, which
+  //    comes from each team's `score` in the JSON). Tiers (see scoreGuess):
+  //      exact           = exact score                                    → 3
+  //      goalDifference  = right winner AND right goal difference          → 2
+  //      outcome         = right winner only, OR a correctly-called draw   → 1
+  //      anything else                                                     → 0
+  const SCORING = { exact: 3, goalDifference: 2, outcome: 1 };
+  // =========================================================================
+
+  // ====== i18n ==============================================================
+  // Translation TABLES (I18N, STAGE_DE, DE_NAMES) + translatePlaceholder() live
+  // in i18n.js, loaded just before this script. The language-aware glue that
+  // reads them against the live LANG state stays here.
+  function t(key) { return I18N[LANG][key]; }
+  function localeTag() { return LANG === 'de' ? 'de-DE' : 'en-US'; }
+  function stageLabel(stage) {
+    if (LANG === 'de') return STAGE_DE[stage.slug] || stage.label || 'Knockout';
+    return stage.label || 'Knockout';
+  }
+  // =========================================================================
+
+  let MATCHES = [];
+  let SHEET = { players: [], guesses: [] };  // cached sheet data
+  let playersLoaded = false;                 // public player list loaded
+  let guessesLoaded = false;                 // private (auth'd) guesses loaded for the current login
+  let FIXTURE_TITLE = null;  // set if the fixtures file carries its own title
+  let VIEW_MODE = 'group';   // 'group' = by group/stage · 'date' = chronological
+  let LANG = 'en';           // 'en' | 'de' — affects all UI text + country names
+  let HIDE_STARTED = false;  // pick tab: hide games that are scored / kicked off
+  let lockSignature = '';    // ids of locked games at last render; drives auto-relock on the clock tick
+  let HIDDEN_GROUPS = new Set();  // pick tab (group view): section keys toggled off
+  let AUTH = null;                // { name, password } once the player logs in / adds themselves
+
+  function setView(mode) {
+    if (mode === VIEW_MODE) return;
+    VIEW_MODE = mode;
+    document.getElementById('vtGroup').classList.toggle('active', mode === 'group');
+    document.getElementById('vtDate').classList.toggle('active', mode === 'date');
+    renderMatches();   // predict tab (preserves typed scores via captureDrafts)
+    // Schedule groups the same way; re-render it if it's the open tab.
+    if (document.getElementById('schedule').style.display !== 'none') loadSchedule();
+  }
+
+  // Swap every static label carrying a data-i18n key, plus the page title and
+  // <html lang>. Interpolated strings (scoring note, counts) are handled where
+  // they're built.
+  function applyLabels() {
+    document.documentElement.lang = LANG;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const v = I18N[LANG][el.dataset.i18n];
+      if (typeof v === 'string') el.textContent = v;
+    });
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+      const v = I18N[LANG][el.dataset.i18nPh];
+      if (typeof v === 'string') el.placeholder = v;
+    });
+    // The fixtures file may override the title; otherwise use the localized one.
+    document.getElementById('title').textContent = FIXTURE_TITLE ? '⚽ ' + FIXTURE_TITLE : t('appTitle');
+    document.title = FIXTURE_TITLE || t('docTitle');
+    updateScoringNote();
+    updatePlayerBadge();
+    updateClock();
+  }
+
+  function updateScoringNote() {
+    document.getElementById('scoringNote').innerHTML =
+      t('scoringNote')(SCORING.exact, SCORING.goalDifference, SCORING.outcome);
+  }
+
+  function toggleHideStarted() {
+    HIDE_STARTED = document.getElementById('hideStarted').checked;
+    renderMatches();
+  }
+
+  // Group/stage filter chips (group view only). Lists every section from the
+  // full fixture set so a toggled-off (and thus absent) section can be re-shown.
+  function renderGroupFilter() {
+    const bar = document.getElementById('groupFilter');
+    if (VIEW_MODE !== 'group' || !MATCHES.length) { bar.style.display = 'none'; return; }
+    bar.style.display = '';
+    const chips = document.getElementById('groupChips');
+    chips.innerHTML = sectionize(MATCHES).map(s =>
+      '<button class="chip' + (HIDDEN_GROUPS.has(s.key) ? '' : ' on') + '" data-key="' +
+      escapeHtml(s.key) + '">' + escapeHtml(s.title) + '</button>'
+    ).join('');
+    chips.onclick = e => { const b = e.target.closest('.chip'); if (b) toggleGroup(b.dataset.key); };
+  }
+
+  function toggleGroup(key) {
+    if (HIDDEN_GROUPS.has(key)) HIDDEN_GROUPS.delete(key);
+    else HIDDEN_GROUPS.add(key);
+    renderMatches();
+  }
+
+  // Quick filters. Group-stage sections have order 0/1; knockout rounds order 2.
+  function setGroupFilter(mode) {
+    const sections = sectionize(MATCHES);
+    if (mode === 'all') HIDDEN_GROUPS = new Set();
+    else if (mode === 'none') HIDDEN_GROUPS = new Set(sections.map(s => s.key));
+    else if (mode === 'groups') HIDDEN_GROUPS = new Set(sections.filter(s => s.order === 2).map(s => s.key));
+    else if (mode === 'knockouts') HIDDEN_GROUPS = new Set(sections.filter(s => s.order <= 1).map(s => s.key));
+    renderMatches();
+  }
+
+  // Live clock — the exact "now" the lock compares kickoffs against (local time).
+  function updateClock() {
+    const el = document.getElementById('clock');
+    if (!el) return;
+    el.textContent = new Date().toLocaleString(localeTag(),
+      { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  }
+
+  // Once a second: tick the clock, and (when the picks tab is open and the user
+  // isn't mid-typing) re-render if a game has just crossed its kickoff.
+  function tick() {
+    updateClock();
+    if (document.getElementById('predict').style.display === 'none') return;
+    const a = document.activeElement;
+    if (a && a.matches && a.matches('#matches input')) return;
+    const sig = MATCHES.filter(isLocked).map(m => m.id).join(',');
+    if (sig !== lockSignature) renderMatches();
+  }
+
+  function setLang(lang) {
+    if (lang === LANG) return;
+    LANG = lang;
+    document.getElementById('lgEn').classList.toggle('active', lang === 'en');
+    document.getElementById('lgDe').classList.toggle('active', lang === 'de');
+    applyLabels();
+    renderMatches();   // preserves typed scores (see captureDrafts)
+    // Re-render the visible data tab (schedule/standings) so its labels, dates
+    // and meta line come back in the new language.
+    const tab = visibleDataTab();
+    if (tab) tab.onShow();
+  }
+
+  // Tabs: section id, its button id, and an optional loader run when shown.
+  const TABS = [
+    { name: 'who',       btn: 'tabWho' },
+    { name: 'predict',   btn: 'tabPredict' },
+    { name: 'schedule',  btn: 'tabSchedule',  onShow: () => loadSchedule() },
+    { name: 'standings', btn: 'tabStandings', onShow: () => loadStandings() },
+  ];
+
+  function showTab(which) {
+    TABS.forEach(tab => {
+      const active = tab.name === which;
+      document.getElementById(tab.name).style.display = active ? '' : 'none';
+      document.getElementById(tab.btn).classList.toggle('active', active);
+    });
+    const tab = TABS.find(t => t.name === which);
+    if (tab && tab.onShow) tab.onShow();
+  }
+
+  // The data tab currently on screen (schedule/standings), if any — used to
+  // refresh it after a language switch.
+  function visibleDataTab() {
+    return TABS.find(t => t.onShow && document.getElementById(t.name).style.display !== 'none');
+  }
+
+  function showMsg(id, text, kind) {
+    const el = document.getElementById(id);
+    el.textContent = text; el.className = 'msg ' + kind;
+  }
+  function msg(text, kind) { showMsg('msg', text, kind); }       // near the submit button
+  function addMsg(text, kind) { showMsg('addMsg', text, kind); } // in the add-name card
+
+  // ---- ESPN-schema accessors ----------------------------------------------
+  // Names/logos/scores live on nested home/away objects; isolate that here so
+  // the rest of the code doesn't care about the feed shape.
+  function teamName(side) {
+    if (!side) return 'TBD';
+    const english = side.displayName || side.name || 'TBD';
+    if (LANG === 'de') {
+      return DE_NAMES[side.abbreviation] || translatePlaceholder(english) || english;
+    }
+    return english;
+  }
+  function teamAbbr(side)  { return (side && (side.abbreviation || side.shortDisplayName)) || teamName(side); }
+  function teamLogo(side)  { return (side && side.logo) || ''; }
+  function isFinished(m)   { return !!(m.status && m.status.completed); }
+  function homeScore(m)    { return m.home ? m.home.score : null; }
+  function awayScore(m)    { return m.away ? m.away.score : null; }
+  // Kicked off yet? Compares the kickoff instant to the live clock (UTC-correct
+  // regardless of the viewer's timezone).
+  function isStarted(m)    { const d = kickoffDate(m.date); return d ? d.getTime() <= Date.now() : false; }
+  // Picks are locked once a game has a result OR has kicked off.
+  function isLocked(m)     { return isFinished(m) || isStarted(m); }
+
+  // "2026-06-11T19:00Z" → a Date. ESPN omits seconds, which some browsers won't
+  // parse, so normalise to "...:00Z" first. Returns null on a missing/bad value.
+  function kickoffDate(iso) {
+    if (!iso) return null;
+    const d = new Date(iso.replace(/T(\d{2}):(\d{2})Z$/, 'T$1:$2:00Z'));
+    return isNaN(d) ? null : d;
+  }
+
+  // A readable local date/time for a match card, in the active language's locale.
+  function kickoffLabel(iso) {
+    const d = kickoffDate(iso);
+    if (!d) return iso || '';
+    return d.toLocaleString(localeTag(), {
+      weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
+    });
+  }
+
+  // ---- Scoring --------------------------------------------------------------
+  // exact → 3; right winner + goal difference → 2; right winner only or a
+  // correctly-called draw → 1; wrong result (incl. draw-vs-decided) → 0.
+  function scoreGuess(gHome, gAway, aHome, aAway) {
+    if (aHome == null || aAway == null) return 0;
+    if (gHome === aHome && gAway === aAway) return SCORING.exact;        // exact score
+    const gOutcome = Math.sign(gHome - gAway);                          // 1 home, -1 away, 0 draw
+    const aOutcome = Math.sign(aHome - aAway);
+    if (gOutcome !== aOutcome) return 0;                                // wrong winner / draw mismatch
+    if (gOutcome === 0) return SCORING.outcome;                         // correct draw, wrong score
+    if ((gHome - gAway) === (aHome - aAway)) return SCORING.goalDifference; // right winner + goal diff
+    return SCORING.outcome;                                             // right winner only
+  }
+
+  async function init() {
+    // Optional ?lang=de / ?lang=en to start in a given language.
+    const urlLang = new URLSearchParams(location.search).get('lang');
+    if (urlLang === 'de' || urlLang === 'en') {
+      LANG = urlLang;
+      document.getElementById('lgEn').classList.toggle('active', LANG === 'en');
+      document.getElementById('lgDe').classList.toggle('active', LANG === 'de');
+    }
+    applyLabels();   // paint all static labels in the chosen language
+    if (SCRIPT_URL.startsWith('PASTE')) {
+      document.getElementById('matches').innerHTML =
+        '<div class="card" style="color:var(--bad)">' + escapeHtml(t('setScriptUrl')) + '</div>';
+    }
+    // Fixtures load independently of the backend so picks render even if the URL isn't set yet.
+    // Dev override: ?fixtures=<relative path> swaps the source (e.g. a test file
+    // with finished games). Restricted to same-origin relative paths.
+    const fxOverride = new URLSearchParams(location.search).get('fixtures');
+    const fixturesUrl = (fxOverride && !/^(https?:)?\/\//i.test(fxOverride)) ? fxOverride : FIXTURES_URL;
+    try {
+      const fx = await (await fetch(fixturesUrl + '?t=' + Date.now())).json();
+      MATCHES = fx.matches || [];
+      if (fx.title) { FIXTURE_TITLE = fx.title; applyLabels(); }
+      updateScoringNote();
+      renderMatches();
+    } catch (e) {
+      document.getElementById('matches').innerHTML =
+        '<div class="card" style="color:var(--bad)">' + escapeHtml(t('couldNotLoadFixtures')(fixturesUrl)) + '</div>';
+    }
+    // Player list from the sheet (who has joined so far).
+    if (!SCRIPT_URL.startsWith('PASTE')) {
+      try {
+        setPlayers(await loadPlayers());   // public list for the dropdown
+        // guesses + submit stay gated until a player logs in
+      } catch (e) {
+        msg(t('couldNotLoadPlayers'), 'err');
+      }
+    }
+    setInterval(tick, 1000);   // live clock + auto-lock games as their kickoff passes
+  }
+
+  // Repopulate the "who are you?" dropdown, keeping the placeholder option
+  // (the only <option> with a data-i18n key).
+  function setPlayers(players) {
+    const sel = document.getElementById('player');
+    sel.querySelectorAll('option:not([data-i18n])').forEach(o => o.remove());
+    (players || []).forEach(p => {
+      const o = document.createElement('option'); o.value = p; o.textContent = p; sel.appendChild(o);
+    });
+  }
+
+  // Restricted self-service: add a name to the pool. The backend only accepts
+  // names on the Eligible list and rejects duplicates; on success it returns
+  // the canonical spelling + the refreshed player list.
+  async function addMe() {
+    const input = document.getElementById('newName');
+    const pwInput = document.getElementById('newPw');
+    const name = input.value.trim();
+    const pw = pwInput.value;
+    if (!name) { addMsg(t('addErrEmpty'), 'err'); return; }
+    if (!pw) { addMsg(t('needPassword'), 'err'); return; }
+    if (SCRIPT_URL.startsWith('PASTE')) { addMsg(t('setScriptUrl'), 'err'); return; }
+
+    const btn = document.getElementById('addBtn');
+    btn.disabled = true;
+    try {
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'addPlayer', name: name, password: pw }) // text/plain → no CORS preflight
+      });
+      const data = await res.json();
+      if (data.ok) {
+        AUTH = { name: data.name, password: pw };   // log them in with the password they just set
+        guessesLoaded = false;
+        input.value = ''; pwInput.value = '';
+        // Refresh the player list so the new name shows up everywhere; fall back
+        // to the add response's list if the refetch fails.
+        let players = data.players;
+        try { players = await loadPlayers(true); } catch (e) { /* keep response list */ }
+        setPlayers(players);
+        document.getElementById('player').value = data.name;
+        document.getElementById('submitBtn').disabled = false;
+        await syncPlayer();   // badge + (empty) prefill, loads this user's guesses
+        showTab('predict');   // switch only after the add + reload finished
+      } else {
+        const codes = { empty: 'addErrEmpty', no_password: 'needPassword',
+          not_eligible: 'addErrNotEligible', duplicate: 'addErrDuplicate' };
+        addMsg(t(codes[data.error] || 'addFailed'), 'err');
+      }
+    } catch (e) {
+      addMsg(t('addFailed'), 'err');
+    }
+    btn.disabled = false;
+  }
+
+  // Returning player: verify the password for the selected name, then proceed.
+  async function login() {
+    const name = document.getElementById('player').value;
+    const pw = document.getElementById('loginPw').value;
+    if (!name) return;
+    if (!pw) { addMsg(t('needPassword'), 'err'); return; }
+    if (SCRIPT_URL.startsWith('PASTE')) { addMsg(t('setScriptUrl'), 'err'); return; }
+
+    const btn = document.getElementById('loginBtn');
+    btn.disabled = true;
+    try {
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'auth', name: name, password: pw })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        AUTH = { name: data.name, password: pw };
+        guessesLoaded = false;
+        document.getElementById('loginPw').value = '';
+        document.getElementById('loginRow').style.display = 'none';
+        document.getElementById('submitBtn').disabled = false;
+        await syncPlayer();
+        showTab('predict');
+      } else {
+        addMsg(t(data.error === 'bad_password' ? 'badPassword' : 'addFailed'), 'err');
+      }
+    } catch (e) {
+      addMsg(t('addFailed'), 'err');
+    }
+    btn.disabled = false;
+  }
+
+  // Public player list (for the dropdown) — cached; force=true refetches.
+  async function loadPlayers(force) {
+    if (SCRIPT_URL.startsWith('PASTE')) return SHEET.players;
+    if (playersLoaded && !force) return SHEET.players;
+    const cfg = await fetch(SCRIPT_URL + '?action=config').then(r => r.json());
+    SHEET.players = cfg.players || [];
+    playersLoaded = true;
+    return SHEET.players;
+  }
+
+  // Guesses are PRIVATE: fetched only when logged in, and the server returns
+  // just YOUR picks plus everyone's picks for already-locked games. Cached until
+  // a submit/reload/new-login invalidates it (guessesLoaded = false).
+  async function loadGuesses(force) {
+    if (!AUTH || SCRIPT_URL.startsWith('PASTE')) { SHEET.guesses = []; guessesLoaded = false; return SHEET.guesses; }
+    if (guessesLoaded && !force) return SHEET.guesses;
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'guesses', name: AUTH.name, password: AUTH.password })
+    });
+    const data = await res.json();
+    SHEET.guesses = data.ok ? (data.guesses || []) : [];
+    guessesLoaded = !!data.ok;
+    return SHEET.guesses;
+  }
+
+  // Reflect a just-saved submission in the cache (mirrors the backend's
+  // overwrite of this player's picks for the submitted matches), so we don't
+  // need a network round-trip to show fresh data.
+  function updateCacheGuesses(player, submitted) {
+    const ids = new Set(submitted.map(g => g.matchId));
+    SHEET.guesses = SHEET.guesses.filter(g => !(g.player === player && ids.has(g.matchId)));
+    submitted.forEach(g => SHEET.guesses.push({ player: player, matchId: g.matchId, home: g.home, away: g.away }));
+  }
+
+  // Manual refresh: refetch the sheet and re-render whatever's on screen.
+  async function reloadData() {
+    if (SCRIPT_URL.startsWith('PASTE')) return;
+    const btn = document.getElementById('reloadBtn');
+    const sel = document.getElementById('player');
+    const keep = AUTH ? AUTH.name : sel.value;
+    if (btn) btn.disabled = true;
+    try {
+      await loadPlayers(true);
+      guessesLoaded = false;            // force a fresh private fetch
+      setPlayers(SHEET.players);
+      if (keep && SHEET.players.includes(keep)) sel.value = keep;
+      await syncPlayer();               // re-apply picks + badge for the logged-in player
+      const tab = visibleDataTab();
+      if (tab) await tab.onShow();       // re-render the open data tab from fresh cache
+    } catch (e) { /* keep showing the last good data */ }
+    if (btn) btn.disabled = false;
+  }
+
+  // Fill the score inputs with `player`'s saved picks, clearing every other
+  // input first (so switching names never leaves a previous person's picks).
+  function applyUserPicks(player, guesses) {
+    document.querySelectorAll('#matches input[data-id]').forEach(inp => { inp.value = ''; });
+    if (!player) return;
+    guesses.filter(g => g.player === player).forEach(g => {
+      ['home', 'away'].forEach(side => {
+        const inp = document.querySelector('#matches input[data-id="' + g.matchId + '"][data-side="' + side + '"]');
+        if (inp) inp.value = g[side];
+      });
+    });
+  }
+
+  // Reflect the logged-in player everywhere: the global "You play as …" badge
+  // plus their pre-filled picks. No tab change (used on reload too).
+  async function syncPlayer() {
+    updatePlayerBadge();
+    if (!AUTH || SCRIPT_URL.startsWith('PASTE')) { applyUserPicks(null, []); return; }
+    try {
+      await loadGuesses();
+      applyUserPicks(AUTH.name, SHEET.guesses);
+    } catch (e) { /* leave inputs as-is if guesses can't be loaded */ }
+  }
+
+  // Player-tab dropdown handler: a returning player must enter their password
+  // (shown here) before they're logged in — see login().
+  function onPlayerChosen() {
+    document.getElementById('addMsg').className = 'msg';
+    const name = document.getElementById('player').value;
+    const loginRow = document.getElementById('loginRow');
+    if (!name) { loginRow.style.display = 'none'; return; }
+    loginRow.style.display = '';
+    const pw = document.getElementById('loginPw');
+    pw.value = '';
+    pw.focus();
+  }
+
+  function updatePlayerBadge() {
+    const badge = document.getElementById('playerBadge');
+    if (AUTH) { badge.innerHTML = t('playAs')(escapeHtml(AUTH.name)); badge.style.display = ''; }
+    else { badge.textContent = ''; badge.style.display = 'none'; }
+  }
+
+  // Group matches into ordered sections: each group letter, then each knockout
+  // stage. Returns [{title, matches:[...]}] in chronological-ish stage order.
+  function sectionize(matches) {
+    const sections = new Map();   // key -> {title, order, matches:[]}
+    matches.forEach(m => {
+      const stage = m.stage || {};
+      let key, title, order;
+      if (m.group) {                              // group-stage match with a known group
+        key = 'group-' + m.group; title = t('group') + ' ' + m.group; order = 0;
+      } else if (stage.slug === 'group-stage') {  // group stage but group not resolved yet
+        key = 'group-?'; title = t('groupStageTBD'); order = 1;
+      } else {                                    // knockout round
+        key = stage.slug || 'knockout';
+        title = stageLabel(stage);
+        order = 2;
+      }
+      if (!sections.has(key)) sections.set(key, { key, title, order, matches: [] });
+      sections.get(key).matches.push(m);
+    });
+    // Order: group sections first (alphabetical: Group A, B, …), then knockout
+    // rounds in chronological order (R32 → R16 → … → Final), keyed off each
+    // round's earliest kickoff so we don't have to hard-code the bracket order.
+    const minDate = s => s.matches.reduce(
+      (min, m) => (m.date && (!min || m.date < min)) ? m.date : min, '');
+    return [...sections.values()].sort((a, b) =>
+      a.order - b.order ||
+      (a.order === 0 ? a.title.localeCompare(b.title) : minDate(a).localeCompare(minDate(b))));
+  }
+
+  // Chronological view: one section per calendar day (in LOCAL time, so the day
+  // heading agrees with the local kickoff time shown on each card), days ordered
+  // by kickoff. Matches with no date sink to a "Date TBD" section at the end.
+  function sectionizeByDate(matches) {
+    const sorted = [...matches].sort((a, b) =>
+      (a.date || '￿').localeCompare(b.date || '￿'));   // null dates last
+    const sections = new Map();
+    sorted.forEach(m => {
+      const d = kickoffDate(m.date);
+      const key = d ? d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate() : 'tbd';
+      const title = d
+        ? d.toLocaleDateString(localeTag(), { weekday: 'long', month: 'long', day: 'numeric' })
+        : t('dateTBD');
+      if (!sections.has(key)) sections.set(key, { title, matches: [] });
+      sections.get(key).matches.push(m);
+    });
+    return [...sections.values()];   // Map keeps insertion order = chronological
+  }
+
+  // Snapshot scores already typed so a view switch (which rebuilds the DOM)
+  // doesn't lose them. Returns { matchId: {home, away} }.
+  function captureDrafts() {
+    const drafts = {};
+    document.querySelectorAll('#matches input[data-id]').forEach(inp => {
+      if (inp.value === '') return;
+      const id = inp.dataset.id;
+      (drafts[id] = drafts[id] || {})[inp.dataset.side] = inp.value;
+    });
+    return drafts;
+  }
+
+  function applyDrafts(drafts) {
+    Object.keys(drafts).forEach(id => {
+      Object.keys(drafts[id]).forEach(side => {
+        const inp = document.querySelector(
+          '#matches input[data-id="' + id + '"][data-side="' + side + '"]');
+        if (inp) inp.value = drafts[id][side];
+      });
+    });
+  }
+
+  // American moneyline ("-230", "+700") → raw implied win probability (0..1).
+  function mlToProb(ml) {
+    if (ml == null) return null;
+    const n = parseInt(String(ml).replace('+', ''), 10);
+    if (isNaN(n) || n === 0) return null;
+    return n > 0 ? 100 / (n + 100) : -n / (-n + 100);
+  }
+
+  // {home, away, draw} moneylines → vig-free probabilities that sum to 1.
+  // Returns null unless all three legs are present (can't de-vig otherwise).
+  function impliedProbs(moneyline) {
+    if (!moneyline) return null;
+    const h = mlToProb(moneyline.home), a = mlToProb(moneyline.away), d = mlToProb(moneyline.draw);
+    if (h == null || a == null || d == null) return null;
+    const sum = h + a + d;
+    if (sum <= 0) return null;
+    return { home: h / sum, away: a / sum, draw: d / sum };
+  }
+
+  // Round the three probabilities to whole percents that still sum to exactly
+  // 100 (largest-remainder method) — naive per-value rounding can yield 99/101.
+  // Returns { home, away, draw } as integers.
+  function pctTrio(probs) {
+    const parts = ['home', 'away', 'draw'].map(key => {
+      const v = probs[key] * 100;
+      return { key, base: Math.floor(v), frac: v - Math.floor(v) };
+    });
+    let leftover = 100 - parts.reduce((s, p) => s + p.base, 0);
+    parts.sort((a, b) => b.frac - a.frac);            // hand spare points to biggest remainders
+    for (let i = 0; i < parts.length && leftover > 0; i++, leftover--) parts[i].base += 1;
+    const out = {};
+    parts.forEach(p => { out[p.key] = p.base; });
+    return out;
+  }
+
+  function oddsLabel(odds) {
+    if (!odds) return '';
+    const bits = [];
+    if (odds.details) bits.push(odds.details);
+    if (odds.overUnder != null) bits.push('O/U ' + odds.overUnder);
+    return bits.length ? '<span class="odds">' + escapeHtml(bits.join(' · ')) + '</span>' : '';
+  }
+
+  function teamCell(side, sideClass) {
+    const logo = teamLogo(side);
+    const img = logo ? '<img class="flag" src="' + escapeHtml(logo) + '" alt="" loading="lazy" />' : '';
+    const name = '<span class="name"><span class="full">' + escapeHtml(teamName(side)) +
+                 '</span><span class="abbr">' + escapeHtml(teamAbbr(side)) + '</span></span>';
+    // Away side puts the logo on the right of the name for symmetry.
+    const inner = sideClass === 'away' ? name + img : img + name;
+    return '<div class="team ' + sideClass + '">' + inner + '</div>';
+  }
+
+  function renderMatches() {
+    const wrap = document.getElementById('matches');
+    if (!MATCHES.length) { wrap.innerHTML = '<div class="card">' + escapeHtml(t('noMatches')) + '</div>'; return; }
+    const drafts = captureDrafts();   // keep unsaved scores across a view switch
+    wrap.innerHTML = '';
+    lockSignature = MATCHES.filter(isLocked).map(m => m.id).join(',');
+    renderGroupFilter();   // the per-group/stage chips (group view only)
+
+    // "Hide started games" drops scored / kicked-off games from the list.
+    const visible = HIDE_STARTED ? MATCHES.filter(m => !isLocked(m)) : MATCHES;
+    if (!visible.length) {
+      wrap.innerHTML = '<div class="card">' + escapeHtml(t('allStarted')) + '</div>';
+      return;
+    }
+
+    let sections = VIEW_MODE === 'date' ? sectionizeByDate(visible) : sectionize(visible);
+    // In group view, drop sections the user toggled off via the chips.
+    if (VIEW_MODE === 'group') sections = sections.filter(s => !HIDDEN_GROUPS.has(s.key));
+    if (!sections.length) {
+      wrap.innerHTML = '<div class="card">' + escapeHtml(t('allHidden')) + '</div>';
+      return;
+    }
+    sections.forEach(section => {
+      const head = document.createElement('div');
+      head.className = 'section-head';
+      head.innerHTML = '<h2>' + escapeHtml(section.title) + '</h2>' +
+                       '<span class="count">' + escapeHtml(t('matchCount')(section.matches.length)) + '</span>';
+      wrap.appendChild(head);
+
+      section.matches.forEach(m => {
+        const finished = isFinished(m);
+        const locked = isLocked(m);   // disabled if scored OR kicked off
+        const hs = homeScore(m), as = awayScore(m);
+        const card = document.createElement('div');
+        card.className = 'card match';
+
+        const metaBits = [];
+        if (m.date) metaBits.push(escapeHtml(kickoffLabel(m.date)));
+        if (m.venue && m.venue.fullName) {
+          const v = [m.venue.fullName, m.venue.city, m.venue.country].filter(Boolean).join(', ');
+          metaBits.push(escapeHtml(v));
+        }
+        const odds = oddsLabel(m.odds);
+        if (odds) metaBits.push(odds);
+
+        // Vig-free win probabilities shown above each input (draw above "vs"),
+        // rounded so the three percents add up to exactly 100.
+        const p = impliedProbs(m.odds && m.odds.moneyline);
+        const pct = p ? pctTrio(p) : null;
+        const prob = side => pct ? '<div class="prob">' + pct[side] + '%</div>' : '';
+        const input = side =>
+          '<input type="number" min="0" max="99" inputmode="numeric" data-id="' +
+          escapeHtml(m.id) + '" data-side="' + side + '" ' + (locked ? 'disabled' : '') + ' />';
+
+        // Locked games show a note (final score, or "kicked off") that expands
+        // to reveal everyone's picks (+ points once the game has a score).
+        const note = finished ? t('finalLocked')(hs, as) : t('startedLocked');
+        const lockBlock = locked
+          ? '<details class="reveal" ontoggle="revealPicks(this, \'' + escapeHtml(m.id) + '\')">' +
+            '<summary>' + escapeHtml(note) + ' <span class="reveal-hint">' + escapeHtml(t('showPicks')) +
+            '</span></summary><div class="reveal-body"></div></details>'
+          : '';
+
+        card.innerHTML =
+          (metaBits.length ? '<div class="meta-row">' + metaBits.join('<span>·</span>') + '</div>' : '') +
+          teamCell(m.home, 'home') +
+          '<div class="pick">' + prob('home') + input('home') + '</div>' +
+          '<div class="pick vs-cell">' + prob('draw') + '<div class="vs">' + escapeHtml(t('vs')) + '</div></div>' +
+          '<div class="pick">' + prob('away') + input('away') + '</div>' +
+          teamCell(m.away, 'away') +
+          lockBlock;
+        wrap.appendChild(card);
+      });
+    });
+
+    applyDrafts(drafts);
+    fillEmptyFromSaved();   // backfill saved picks for games that weren't in the snapshot (e.g. just-unhidden)
+  }
+
+  // Fill any still-empty input from the current player's saved picks — used
+  // after render so unhiding a locked game restores its (saved, disabled) pick.
+  function fillEmptyFromSaved() {
+    if (!AUTH) return;
+    SHEET.guesses.filter(g => g.player === AUTH.name).forEach(g => {
+      ['home', 'away'].forEach(side => {
+        const inp = document.querySelector('#matches input[data-id="' + g.matchId + '"][data-side="' + side + '"]');
+        if (inp && inp.value === '') inp.value = g[side];
+      });
+    });
+  }
+
+  // Fill a locked game's <details> with everyone's picks when it's expanded
+  // (rebuilt on each open so it reflects the current cache).
+  function revealPicks(el, mid) {
+    if (!el.open) return;
+    const m = MATCHES.find(x => x.id === mid);
+    if (m) el.querySelector('.reveal-body').innerHTML = buildPicksList(m);
+  }
+
+  // Table of every player's guess for match m, with points once it's scored.
+  function buildPicksList(m) {
+    const hs = homeScore(m), as = awayScore(m);
+    const scored = hs != null && as != null;
+    const players = [...new Set([...SHEET.players, ...SHEET.guesses.map(g => g.player)])];
+    const lut = {};
+    SHEET.guesses.forEach(g => { (lut[g.player] = lut[g.player] || {})[g.matchId] = g; });
+
+    const rows = players.map(p => {
+      const g = (lut[p] || {})[m.id];
+      return { player: p, guess: g, pts: (g && scored) ? scoreGuess(g.home, g.away, hs, as) : null };
+    }).sort((a, b) => scored
+      ? (b.pts == null ? -1 : b.pts) - (a.pts == null ? -1 : a.pts) || a.player.localeCompare(b.player)
+      : (b.guess ? 1 : 0) - (a.guess ? 1 : 0) || a.player.localeCompare(b.player));
+
+    const head = '<tr><th>' + escapeHtml(t('thPlayer')) + '</th><th>' + escapeHtml(t('thGuess')) + '</th>' +
+      (scored ? '<th class="num">' + escapeHtml(t('thPts')) + '</th>' : '') + '</tr>';
+    const body = rows.map(r =>
+      '<tr><td>' + escapeHtml(r.player) + '</td>' +
+      '<td class="guess">' + (r.guess ? r.guess.home + '–' + r.guess.away : '—') + '</td>' +
+      (scored ? '<td class="num ' + ptsClass(r.pts) + '">' + (r.pts == null ? '—' : r.pts) + '</td>' : '') +
+      '</tr>'
+    ).join('');
+    return '<table class="reveal-table">' + head + body + '</table>';
+  }
+
+  async function submitGuesses() {
+    if (!AUTH) { msg(t('loginFirst'), 'err'); showTab('who'); return; }
+    const player = AUTH.name;
+
+    const byId = {};
+    MATCHES.forEach(m => { byId[m.id] = m; });
+
+    const guesses = [];
+    document.querySelectorAll('#matches input[data-side="home"]').forEach(hIn => {
+      const id = hIn.dataset.id;
+      if (byId[id] && isLocked(byId[id])) return;   // never submit a scored / kicked-off game
+      const aIn = document.querySelector('#matches input[data-id="' + id + '"][data-side="away"]');
+      if (hIn.value !== '' && aIn.value !== '') {
+        guesses.push({ matchId: id, home: parseInt(hIn.value, 10), away: parseInt(aIn.value, 10) });
+      }
+    });
+    if (!guesses.length) { msg(t('enterScore'), 'err'); return; }
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true; msg(t('saving'), 'ok');
+    try {
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ player: player, password: AUTH.password, guesses: guesses }) // text/plain → no CORS preflight
+      });
+      const data = await res.json();
+      if (data.ok) { updateCacheGuesses(player, guesses); msg(t('saved')(data.saved), 'ok'); }
+      else if (data.error === 'bad_password') msg(t('badPassword'), 'err');
+      else if (data.error === 'not_joined') msg(t('submitErrNotJoined'), 'err');
+      else msg(t('errorPrefix')(data.error || t('unknown')), 'err');
+    } catch (e) {
+      msg(t('networkError'), 'err');
+    }
+    btn.disabled = false;
+  }
+
+  // ---- Standings: combine sheet picks + fixtures results in the browser ----
+  function computeStandings(guesses, players) {
+    const byId = {};
+    MATCHES.forEach(m => { byId[m.id] = m; });
+    const totals = {}, exact = {}, gd = {};
+    const ensure = p => { if (totals[p] == null) { totals[p] = 0; exact[p] = 0; gd[p] = 0; } };
+    (players || []).forEach(ensure);
+
+    let finished = 0;
+    MATCHES.forEach(m => { if (isFinished(m)) finished++; });
+
+    guesses.forEach(g => {
+      const m = byId[g.matchId];
+      if (!m) return;
+      ensure(g.player);
+      const aHome = homeScore(m), aAway = awayScore(m);
+      if (aHome == null || aAway == null) return;   // unscored game contributes nothing
+      totals[g.player] += scoreGuess(g.home, g.away, aHome, aAway);
+      if (g.home === aHome && g.away === aAway) exact[g.player] += 1;
+      // Correct goal difference — counted only for winner picks (a draw's GD is
+      // trivially right, so it wouldn't discriminate). Includes exact winners.
+      if (g.home !== g.away && (g.home - g.away) === (aHome - aAway)) gd[g.player] += 1;
+    });
+
+    const rows = Object.keys(totals).map(p =>
+      ({ player: p, points: totals[p], exact: exact[p], gd: gd[p] }));
+    rows.sort((a, b) =>
+      b.points - a.points || b.exact - a.exact || b.gd - a.gd || a.player.localeCompare(b.player));
+    let rank = 0, prev = null;
+    rows.forEach((r, i) => { if (r.points !== prev) { rank = i + 1; prev = r.points; } r.rank = rank; });
+    return { rows, finished };
+  }
+
+  async function loadStandings() {
+    const body = document.getElementById('standingsBody');
+    if (SCRIPT_URL.startsWith('PASTE')) {
+      body.innerHTML = '<tr><td colspan="5" style="color:var(--bad)">' + escapeHtml(t('setScriptUrlFirst')) + '</td></tr>';
+      return;
+    }
+    if (!AUTH) {
+      document.getElementById('standingsMeta').textContent = '';
+      body.innerHTML = '<tr><td colspan="5" class="loading">' + escapeHtml(t('loginRequired')) + '</td></tr>';
+      return;
+    }
+    body.innerHTML = '<tr><td colspan="5" class="loading">' + escapeHtml(t('loading')) + '</td></tr>';
+    try {
+      await loadPlayers(); await loadGuesses();
+      const { rows, finished } = computeStandings(SHEET.guesses, SHEET.players);
+      document.getElementById('standingsMeta').textContent = t('matchesScored')(finished);
+      if (!rows.length) { body.innerHTML = '<tr><td colspan="5" class="loading">' + escapeHtml(t('noPlayers')) + '</td></tr>'; return; }
+      body.innerHTML = '';
+      rows.forEach(r => {
+        const tr = document.createElement('tr');
+        if (r.rank === 1) tr.className = 'rank1';
+        tr.innerHTML = '<td>' + r.rank + '</td><td>' + escapeHtml(r.player) +
+          '</td><td class="num">' + r.points + '</td><td class="num">' + r.exact +
+          '</td><td class="num">' + r.gd + '</td>';
+        body.appendChild(tr);
+      });
+    } catch (e) {
+      body.innerHTML = '<tr><td colspan="5" style="color:var(--bad)">' + escapeHtml(t('couldNotLoadStandings')) + '</td></tr>';
+    }
+  }
+
+  // ---- Schedule tab: completed games, grouped by day, with every guess ------
+  async function loadSchedule() {
+    const body = document.getElementById('scheduleBody');
+    document.getElementById('scheduleMeta').textContent = '';
+    if (SCRIPT_URL.startsWith('PASTE')) {
+      body.innerHTML = '<div class="card" style="color:var(--bad)">' + escapeHtml(t('setScriptUrlFirst')) + '</div>';
+      return;
+    }
+    if (!AUTH) {
+      body.innerHTML = '<div class="card">' + escapeHtml(t('loginRequired')) + '</div>';
+      return;
+    }
+    body.innerHTML = '<div class="loading">' + escapeHtml(t('loading')) + '</div>';
+    try {
+      await loadPlayers(); await loadGuesses();
+      renderSchedule(SHEET.players, SHEET.guesses);
+    } catch (e) {
+      body.innerHTML = '<div class="card" style="color:var(--bad)">' + escapeHtml(t('couldNotLoadSchedule')) + '</div>';
+    }
+  }
+
+  function ptsClass(pts) {
+    if (pts == null) return 'pts-none';
+    if (pts === SCORING.exact) return 'pts-exact';
+    if (pts === SCORING.goalDifference) return 'pts-gd';
+    if (pts === SCORING.outcome) return 'pts-outcome';
+    return 'pts-zero';
+  }
+
+  // Matrix: one row per completed game (grouped by day), one column per player.
+  // Each player cell stacks their guess over the points it earned.
+  function renderSchedule(cfgPlayers, guesses) {
+    const body = document.getElementById('scheduleBody');
+    const completed = MATCHES.filter(isFinished);
+    document.getElementById('scheduleMeta').textContent = t('completedGames')(completed.length);
+    if (!completed.length) {
+      body.innerHTML = '<div class="card">' + escapeHtml(t('noCompleted')) + '</div>';
+      return;
+    }
+
+    // Players = everyone joined + anyone with a guess. Build a guess lookup
+    // (lut[player][matchId]) and each player's total over completed games, then
+    // order the columns best-first (matches the standings order).
+    const players = [...new Set([...cfgPlayers, ...guesses.map(g => g.player)])];
+    const lut = {};
+    guesses.forEach(g => { (lut[g.player] = lut[g.player] || {})[g.matchId] = g; });
+    const total = {};
+    players.forEach(p => { total[p] = 0; });
+    completed.forEach(m => {
+      const hs = homeScore(m), as = awayScore(m);
+      players.forEach(p => { const g = (lut[p] || {})[m.id]; if (g) total[p] += scoreGuess(g.home, g.away, hs, as); });
+    });
+    players.sort((a, b) => total[b] - total[a] || a.localeCompare(b));
+
+    const cell = (p, m, hs, as) => {
+      const g = (lut[p] || {})[m.id];
+      if (!g) return '<td><div class="pcell"><span class="g pts-none">—</span></div></td>';
+      const pts = scoreGuess(g.home, g.away, hs, as);
+      return '<td><div class="pcell"><span class="g">' + g.home + '–' + g.away +
+        '</span><span class="p ' + ptsClass(pts) + '">' + pts + '</span></div></td>';
+    };
+
+    // Team logo (browser caches by URL — same files the picks tab loads).
+    const flag = side => {
+      const l = teamLogo(side);
+      return l ? '<img class="flag" src="' + escapeHtml(l) + '" alt="" loading="lazy" />' : '';
+    };
+
+    let html = '<div class="schedule-scroll"><table class="schedule-table"><thead><tr>' +
+      '<th class="game">' + escapeHtml(t('thGame')) + '</th>' +
+      players.map(p => '<th>' + escapeHtml(p) + '</th>').join('') +
+      '</tr></thead><tbody>';
+
+    // Top row: each player's running point total over the completed games.
+    html += '<tr class="totals-row"><td class="game">' + escapeHtml(t('total')) + '</td>' +
+      players.map(p => '<td><span class="tot">' + total[p] + '</span></td>').join('') + '</tr>';
+
+    const sections = VIEW_MODE === 'date' ? sectionizeByDate(completed) : sectionize(completed);
+    sections.forEach(section => {
+      html += '<tr class="section-row"><th colspan="' + (players.length + 1) + '">' +
+        escapeHtml(section.title) + '</th></tr>';
+      section.matches.forEach(m => {
+        const hs = homeScore(m), as = awayScore(m);
+        html += '<tr><td class="game">' +
+          flag(m.home) + escapeHtml(teamAbbr(m.home)) +
+          ' <span class="score">' + hs + '–' + as + '</span> ' +
+          escapeHtml(teamAbbr(m.away)) + flag(m.away) + '</td>' +
+          players.map(p => cell(p, m, hs, as)).join('') +
+          '</tr>';
+      });
+    });
+
+    html += '</tbody></table></div>';
+    body.innerHTML = html;
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  init();
+</script>
+</body>
+</html>
