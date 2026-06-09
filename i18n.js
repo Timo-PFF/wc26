@@ -23,7 +23,7 @@ const I18N = {
   en: {
     appTitle: '⚽ World Cup Prediction Pool', docTitle: 'World Cup Prediction Pool',
     subtitle: 'Pick scores, earn points, win bragging rights.',
-    tabWho: 'Player', tabPredict: 'Make picks', tabSchedule: 'Results', tabGroups: 'Groups', tabStandings: 'Standings',
+    tabWho: 'Player', tabPredict: 'Make picks', tabSchedule: 'Results', tabGroups: 'Groups', tabKnockout: 'Knockout', tabStandings: 'Standings',
     svTable: 'Table', svGame: 'By game', filtered: 'Filtered', clearFilter: 'Clear filter',
     thTeam: 'Team', thPlayed: 'Pl', thGoals: 'Goals (+/−)', h2hTitle: 'Head-to-head',
     noGroups: 'No group games found.',
@@ -68,6 +68,9 @@ const I18N = {
     wonOnPens: (team, w, l) => team + ' win ' + w + ':' + l + ' on penalties',
     wonOnPensNoScore: team => team + ' win on penalties',
     afterExtraTime: 'a.e.t.',
+    penTag: (w, l) => 'pens ' + w + '–' + l,
+    penTagPlain: 'pens',
+    noKnockout: 'No knockout games yet.',
     vs: 'vs',
     scoringRules: (g, k) =>
       '<h2 class="rules-title">Scoring rules</h2>' +
@@ -113,7 +116,7 @@ const I18N = {
   de: {
     appTitle: '⚽ WM-Tippspiel', docTitle: 'WM-Tippspiel',
     subtitle: 'Tippe Ergebnisse, sammle Punkte, gewinne Ruhm.',
-    tabWho: 'Spieler', tabPredict: 'Tippen', tabSchedule: 'Ergebnisse', tabGroups: 'Gruppen', tabStandings: 'Tabelle',
+    tabWho: 'Spieler', tabPredict: 'Tippen', tabSchedule: 'Ergebnisse', tabGroups: 'Gruppen', tabKnockout: 'K.-o.-Runde', tabStandings: 'Tabelle',
     svTable: 'Tabelle', svGame: 'Nach Spiel', filtered: 'Gefiltert', clearFilter: 'Filter entfernen',
     thTeam: 'Team', thPlayed: 'Sp', thGoals: 'Tore (+/−)', h2hTitle: 'Direkter Vergleich',
     noGroups: 'Keine Gruppenspiele gefunden.',
@@ -158,6 +161,9 @@ const I18N = {
     wonOnPens: (team, w, l) => team + ' gewinnt ' + w + ':' + l + ' im Elfmeterschießen',
     wonOnPensNoScore: team => team + ' gewinnt im Elfmeterschießen',
     afterExtraTime: 'n.V.',
+    penTag: (w, l) => 'i.E. ' + w + '–' + l,
+    penTagPlain: 'i.E.',
+    noKnockout: 'Noch keine K.-o.-Spiele.',
     vs: 'gegen',
     scoringRules: (g, k) =>
       '<h2 class="rules-title">Wertung</h2>' +

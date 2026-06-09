@@ -7,7 +7,7 @@
 <style>
   :root {
     --bg: #0f1729; --card: #1b2540; --line: #2c3a5e; --ink: #eef2ff;
-    --muted: #9fb0d0; --accent: #3ddc97; --accent2: #ffd24a; --bad: #ff6b6b;
+    --muted: #9fb0d0; --accent: #3ddc97; --accent2: #ffd24a; --bad: #ff6b6b; --gold: #ffcf40;
   }
   * { box-sizing: border-box; }
   body {
@@ -234,6 +234,33 @@
   .pts-outcome { color: var(--accent2); }
   .pts-zero { color: var(--muted); }
   .pts-none { color: var(--line); }
+  /* Knockout bracket — vertical folded tree (teams top & bottom, final centre) */
+  .ko-scroll { overflow-x: auto; padding-bottom: 6px; }
+  .ko-tree { --ko-unit: 80px; display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: max-content; margin: 0 auto; }
+  .ko-round { display: flex; justify-content: center; gap: 8px; }
+  /* Aligned rounds: a leaf-unit grid so each card centres over its two feeders */
+  .ko-round.ko-grid { display: grid; gap: 0; justify-content: center; }
+  .ko-round.ko-grid .ko-match { justify-self: center; }
+  .ko-round.ko-center { align-items: start; margin: 4px 0; }
+  .ko-round-label { font-size: .68rem; text-transform: uppercase; letter-spacing: .05em;
+    color: var(--muted); margin-top: 8px; }
+  .ko-match { width: 70px; background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+    padding: 3px 4px; display: flex; flex-direction: column; gap: 2px; }
+  .ko-match.ko-clickable { cursor: pointer; }
+  .ko-match.ko-clickable:hover { border-color: var(--accent); }
+  .ko-match.ko-final { width: 104px; border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold) inset; }
+  .ko-match.ko-final.ko-clickable:hover { border-color: var(--gold); }
+  .ko-match.ko-third { width: 104px; opacity: .9; }
+  .ko-card-lbl { font-size: .6rem; color: var(--muted); text-align: center; }
+  .ko-side { display: flex; align-items: center; gap: 4px; font-size: .74rem; line-height: 1.2; }
+  .ko-side img.flag { width: 16px; height: 16px; object-fit: contain; flex: 0 0 auto; border-radius: 2px; background: #0d1426; }
+  .ko-side .ko-noflag { width: 16px; height: 16px; flex: 0 0 auto; border-radius: 2px;
+    background: repeating-linear-gradient(45deg, var(--line) 0 2px, transparent 2px 4px); }
+  .ko-side .abbr { flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); }
+  .ko-side .sc { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--ink); }
+  .ko-side.win .abbr { color: var(--ink); font-weight: 700; }
+  .ko-side.win .sc { color: var(--accent); }
+  .ko-tag { text-align: center; font-size: .6rem; color: var(--muted); font-variant-numeric: tabular-nums; }
   .msg { padding: 10px 12px; border-radius: 9px; margin: 10px 0; font-size: .9rem; display: none; }
   .msg.ok { background: rgba(61,220,151,.15); color: var(--accent); display: block; }
   .msg.err { background: rgba(255,107,107,.15); color: var(--bad); display: block; }
@@ -274,6 +301,7 @@
     <button id="tabPredict" onclick="showTab('predict')" data-i18n="tabPredict">Make picks</button>
     <button id="tabSchedule" onclick="showTab('schedule')" data-i18n="tabSchedule">Schedule</button>
     <button id="tabGroups" onclick="showTab('groups')" data-i18n="tabGroups">Groups</button>
+    <button id="tabKnockout" onclick="showTab('knockout')" data-i18n="tabKnockout">Knockout</button>
     <button id="tabStandings" onclick="showTab('standings')" data-i18n="tabStandings">Standings</button>
   </div>
 
@@ -344,6 +372,11 @@
     <div id="groupsBody"><div class="loading" data-i18n="loading">Loading…</div></div>
   </section>
 
+  <!-- KNOCKOUT (full bracket tree, folded around the final) -->
+  <section id="knockout" style="display:none">
+    <div id="knockoutBody"><div class="loading" data-i18n="loading">Loading…</div></div>
+  </section>
+
   <!-- STANDINGS -->
   <section id="standings" style="display:none">
     <div class="card">
@@ -364,6 +397,7 @@
 <script src="i18n.js"></script>
 <script src="scoring.js"></script>
 <script src="groups.js"></script>
+<script src="bracket.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
   // ====== CONFIG ===========================================================
@@ -552,6 +586,7 @@
     { name: 'predict',   btn: 'tabPredict' },
     { name: 'schedule',  btn: 'tabSchedule',  onShow: () => loadSchedule() },
     { name: 'groups',    btn: 'tabGroups',    onShow: () => renderGroups() },
+    { name: 'knockout',  btn: 'tabKnockout',  onShow: () => renderKnockout() },
     { name: 'standings', btn: 'tabStandings', onShow: () => loadStandings() },
   ];
 
@@ -1794,6 +1829,114 @@
     const l = teamLogo(side);
     const img = l ? '<img class="flag" src="' + escapeHtml(l) + '" alt="" loading="lazy" />' : '';
     return img + '<span class="ab">' + escapeHtml(teamAbbr(side)) + '</span>';
+  }
+
+  // ---- Knockout tab: full bracket tree (built in bracket.js) ----------------
+
+  // Short label for a bracket slot: a resolved team's abbreviation, or a compact
+  // feeder reference ("R32·3") while the slot is still a placeholder.
+  function koSlotLabel(side) {
+    if (side && side.logo) return teamAbbr(side);            // resolved real team
+    const dn = (side && side.displayName) || '';
+    const m = dn.match(/^(Round of 32|Round of 16|Quarterfinal|Semifinal)s? (\d+) (Winner|Loser)$/);
+    if (m) {
+      const ab = { 'Round of 32': 'R32', 'Round of 16': 'R16', 'Quarterfinal': 'QF', 'Semifinal': 'SF' }[m[1]];
+      return ab + '·' + m[2];
+    }
+    return (side && (side.abbreviation || side.shortDisplayName)) || 'TBD';
+  }
+
+  // One team's line in a bracket card: flag, label, score; winner highlighted.
+  function koSideHtml(m, side) {
+    const s = m[side];
+    const win = m.winner === side;
+    const logo = (s && s.logo)
+      ? '<img class="flag" src="' + escapeHtml(s.logo) + '" alt="" loading="lazy" />'
+      : '<span class="ko-noflag"></span>';
+    const sc = (s && s.score != null) ? '<span class="sc">' + s.score + '</span>' : '';
+    return '<div class="ko-side' + (win ? ' win' : '') + '" title="' + escapeHtml(teamName(s)) + '">' +
+      logo + '<span class="abbr">' + escapeHtml(koSlotLabel(s)) + '</span>' + sc + '</div>';
+  }
+
+  // Tiny footer tag for how a finished game was decided (a.e.t. / penalties).
+  function koTagHtml(m) {
+    if (!isFinished(m)) return '';
+    const d = m.decidedBy || 'regulation';
+    if (d === 'penalties') {
+      const so = shootoutResult(m);
+      const txt = (so && so.winSO != null && so.loseSO != null) ? t('penTag')(so.winSO, so.loseSO) : t('penTagPlain');
+      return '<div class="ko-tag">' + escapeHtml(txt) + '</div>';
+    }
+    if (d === 'extra_time') return '<div class="ko-tag">' + escapeHtml(t('afterExtraTime')) + '</div>';
+    return '';
+  }
+
+  function koMatchHtml(m, isFinal, isThird, attrs) {
+    if (!m) return '';
+    // Finished games click through to the results tab, filtered to that game.
+    const clickable = isFinished(m);
+    const cls = 'ko-match' + (isFinal ? ' ko-final' : '') + (isThird ? ' ko-third' : '') +
+      (clickable ? ' ko-clickable' : '');
+    const onclick = clickable ? ' onclick="showGameInSchedule(\'' + escapeHtml(m.id) + '\')"' : '';
+    // Final and 3rd-place carry their round name inside the panel (no row label).
+    const lbl = (isFinal || isThird) ? '<div class="ko-card-lbl">' + escapeHtml(stageLabel(m.stage)) + '</div>' : '';
+    return '<div class="' + cls + '"' + (attrs || '') + onclick + '>' +
+      lbl + koSideHtml(m, 'home') + koSideHtml(m, 'away') + koTagHtml(m) + '</div>';
+  }
+
+  function koRoundLabelHtml(stage) {
+    return '<div class="ko-round-label">' + escapeHtml(stageLabel(stage)) + '</div>';
+  }
+
+  // A round as a row of cards (no label — only the final/3rd-place are labelled).
+  // When `leaves` is given (the half's Round-of-32 count) and the round halves
+  // cleanly, lay the cards on a leaf-unit grid so each card centres over the two
+  // feeder matches below it; otherwise just centre them.
+  function koRoundHtml(list, leaves) {
+    const span = leaves / list.length;
+    const onGrid = Number.isInteger(span);
+    const cards = list.map((m, n) => {
+      const attr = onGrid ? ' style="grid-column:' + (n * span + 1) + ' / span ' + span + '"' : '';
+      return koMatchHtml(m, false, false, attr);
+    }).join('');
+    const open = onGrid
+      ? '<div class="ko-round ko-grid" style="grid-template-columns:repeat(' + leaves + ',var(--ko-unit))">'
+      : '<div class="ko-round">';
+    return open + cards + '</div>';
+  }
+
+  function renderKnockout() {
+    const body = document.getElementById('knockoutBody');
+    const b = buildBracket(MATCHES);
+    if (b.empty) { body.innerHTML = '<div class="card">' + escapeHtml(t('noKnockout')) + '</div>'; return; }
+
+    let inner = '';
+    if (!b.folded) {
+      // Structure not as expected — fall back to a flat, labelled top-to-bottom list.
+      ['round-of-32', 'round-of-16', 'quarterfinals', 'semifinals', '3rd-place-match', 'final']
+        .forEach(slug => {
+          const list = b.rounds[slug];
+          if (list && list.length) inner += koRoundLabelHtml(list[0].stage) + koRoundHtml(list);
+        });
+    } else {
+      // Both halves share one leaf-unit grid (Round-of-32 count) so every round
+      // aligns: a match sits centred between its two feeders in the round below.
+      const leaves = (b.topRows['round-of-32'] || []).length || (b.bottomRows['round-of-32'] || []).length;
+      ['round-of-32', 'round-of-16', 'quarterfinals', 'semifinals']
+        .forEach(slug => { if (b.topRows[slug].length) inner += koRoundHtml(b.topRows[slug], leaves); });
+      // Centre row on the same leaf grid: the final spans the full width and
+      // centres (directly under the semifinals); the 3rd-place sits to the right.
+      const cols = ' style="grid-template-columns:repeat(' + leaves + ',var(--ko-unit))"';
+      const finalAttr = ' style="grid-column:1 / span ' + leaves + ';grid-row:1"';
+      const thirdAttr = ' style="grid-column:' + Math.max(1, leaves - 1) + ' / span 2;grid-row:1"';
+      inner += '<div class="ko-round ko-grid ko-center"' + cols + '>' +
+        koMatchHtml(b.final, true, false, finalAttr) +
+        (b.third ? koMatchHtml(b.third, false, true, thirdAttr) : '') + '</div>';
+      // Bottom half runs back outward: SF nearest the final, R32 at the very bottom.
+      ['semifinals', 'quarterfinals', 'round-of-16', 'round-of-32']
+        .forEach(slug => { if (b.bottomRows[slug].length) inner += koRoundHtml(b.bottomRows[slug], leaves); });
+    }
+    body.innerHTML = '<div class="ko-scroll"><div class="ko-tree">' + inner + '</div></div>';
   }
 
   // Head-to-head grid: rows × columns of the group's teams (same order as the
