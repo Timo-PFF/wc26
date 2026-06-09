@@ -23,7 +23,7 @@ const I18N = {
   en: {
     appTitle: '⚽ World Cup Prediction Pool', docTitle: 'World Cup Prediction Pool',
     subtitle: 'Pick scores, earn points, win bragging rights.',
-    tabWho: 'Player', tabPredict: 'Make picks', tabSchedule: 'Schedule', tabGroups: 'Groups', tabStandings: 'Standings',
+    tabWho: 'Player', tabPredict: 'Make picks', tabSchedule: 'Results', tabGroups: 'Groups', tabStandings: 'Standings',
     svTable: 'Table', svGame: 'By game', filtered: 'Filtered', clearFilter: 'Clear filter',
     thTeam: 'Team', thPlayed: 'Pl', thGoals: 'Goals (+/−)', h2hTitle: 'Head-to-head',
     noGroups: 'No group games found.',
@@ -53,6 +53,7 @@ const I18N = {
     allHidden: 'All groups hidden — tap a chip above to show one.',
     submit: 'Submit my picks',
     thRank: '#', thPlayer: 'Player', thPts: 'Pts', thExact: 'Exact', thGd: 'GD', thGame: 'Game', thGuess: 'Guess', total: 'Total',
+    pointsChartTitle: 'Cumulative points', start: 'Start',
     completedGames: n => n + ' completed game(s)',
     noCompleted: 'No completed games yet.',
     couldNotLoadSchedule: 'Could not load the schedule.',
@@ -83,7 +84,7 @@ const I18N = {
   de: {
     appTitle: '⚽ WM-Tippspiel', docTitle: 'WM-Tippspiel',
     subtitle: 'Tippe Ergebnisse, sammle Punkte, gewinne Ruhm.',
-    tabWho: 'Spieler', tabPredict: 'Tippen', tabSchedule: 'Spielplan', tabGroups: 'Gruppen', tabStandings: 'Tabelle',
+    tabWho: 'Spieler', tabPredict: 'Tippen', tabSchedule: 'Ergebnisse', tabGroups: 'Gruppen', tabStandings: 'Tabelle',
     svTable: 'Tabelle', svGame: 'Nach Spiel', filtered: 'Gefiltert', clearFilter: 'Filter entfernen',
     thTeam: 'Team', thPlayed: 'Sp', thGoals: 'Tore (+/−)', h2hTitle: 'Direkter Vergleich',
     noGroups: 'Keine Gruppenspiele gefunden.',
@@ -113,6 +114,7 @@ const I18N = {
     allHidden: 'Alle Gruppen ausgeblendet — tippe oben auf einen Chip.',
     submit: 'Tipps absenden',
     thRank: '#', thPlayer: 'Spieler', thPts: 'Pkt', thExact: 'Exakt', thGd: 'TD', thGame: 'Spiel', thGuess: 'Tipp', total: 'Gesamt',
+    pointsChartTitle: 'Punkteverlauf', start: 'Start',
     completedGames: n => n + (n === 1 ? ' abgeschlossenes Spiel' : ' abgeschlossene Spiele'),
     noCompleted: 'Noch keine abgeschlossenen Spiele.',
     couldNotLoadSchedule: 'Spielplan konnte nicht geladen werden.',

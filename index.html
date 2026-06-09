@@ -142,6 +142,25 @@
   th { color: var(--muted); font-weight: 600; font-size: .8rem; text-transform: uppercase; }
   td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
   .rank1 td { color: var(--accent2); font-weight: 700; }
+  /* Cumulative-points line chart (Standings tab) */
+  .chart-title { margin: 0 0 10px; font-size: 1.05rem; }
+  .chart-wrap { position: relative; height: 280px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 12px; font-size: .82rem; color: var(--muted); }
+  .leg { display: inline-flex; align-items: center; gap: 5px; cursor: pointer; transition: opacity .1s; }
+  .leg.dim { opacity: .35; }
+  .leg.sel { color: var(--ink); font-weight: 700; }
+  .sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; flex: 0 0 auto; }
+  #standingsBody tr { cursor: pointer; }
+  #standingsBody tr:hover td { background: rgba(255,255,255,.04); }
+  #standingsBody tr.sel td { background: rgba(61,220,151,.12); }
+  .chart-tooltip { position: absolute; pointer-events: none; z-index: 50; opacity: 0;
+    transform: translate(-50%, calc(-100% - 10px)); transition: opacity .1s;
+    background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 6px 9px;
+    font-size: .8rem; color: var(--ink); white-space: nowrap; box-shadow: 0 4px 14px rgba(0,0,0,.45); }
+  .chart-tooltip .tt-title { display: flex; align-items: center; gap: 5px; font-weight: 600; margin-bottom: 4px; }
+  .chart-tooltip .tt-title img { width: 16px; height: 16px; object-fit: contain; }
+  .chart-tooltip .tt-row { display: flex; align-items: center; gap: 5px; }
+  .chart-tooltip .sw { width: 10px; height: 10px; }
   /* Groups tab: one league table per group */
   .group-title { margin: 0 0 10px; font-size: 1.05rem; }
   .group-table .gteam { display: flex; align-items: center; gap: 8px; min-width: 0; }
@@ -304,6 +323,7 @@
 
   <!-- STANDINGS -->
   <section id="standings" style="display:none">
+    <div class="sub" id="scoringNote" style="margin-bottom:10px"></div>
     <div class="card">
       <div id="standingsMeta" class="sub" style="margin-bottom:10px"></div>
       <table>
@@ -311,7 +331,7 @@
         <tbody id="standingsBody"><tr><td colspan="5" class="loading" data-i18n="loading">Loading…</td></tr></tbody>
       </table>
     </div>
-    <div class="sub" id="scoringNote" style="text-align:center"></div>
+    <div id="pointsChart"></div>
   </section>
 </main>
 
@@ -320,6 +340,7 @@
 <!-- Translation tables (I18N / STAGE_DE / DE_NAMES / translatePlaceholder).
      Must load before the inline script below, which reads them. -->
 <script src="i18n.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
   // ====== CONFIG ===========================================================
   // 1) Paste your deployed Apps Script web-app URL (ends in /exec):
@@ -1214,6 +1235,8 @@
 
   async function loadStandings() {
     const body = document.getElementById('standingsBody');
+    if (pointsChart) { pointsChart.destroy(); pointsChart = null; }
+    document.getElementById('pointsChart').innerHTML = '';   // cleared unless we render below
     if (SCRIPT_URL.startsWith('PASTE')) {
       body.innerHTML = '<tr><td colspan="5" style="color:var(--bad)">' + escapeHtml(t('setScriptUrlFirst')) + '</td></tr>';
       return;
@@ -1233,14 +1256,169 @@
       rows.forEach(r => {
         const tr = document.createElement('tr');
         if (r.rank === 1) tr.className = 'rank1';
+        if (CHART_SELECTED.has(r.player)) tr.classList.add('sel');
+        tr.dataset.player = r.player;
         tr.innerHTML = '<td>' + r.rank + '</td><td>' + escapeHtml(r.player) +
           '</td><td class="num">' + r.points + '</td><td class="num">' + r.exact +
           '</td><td class="num">' + r.gd + '</td>';
+        tr.addEventListener('mouseenter', () => applyChartHighlight(r.player));
+        tr.addEventListener('mouseleave', () => applyChartHighlight());
+        tr.addEventListener('click', () => toggleChartSelect(r.player));
         body.appendChild(tr);
       });
+      renderPointsChart(SHEET.players, SHEET.guesses);
     } catch (e) {
       body.innerHTML = '<tr><td colspan="5" style="color:var(--bad)">' + escapeHtml(t('couldNotLoadStandings')) + '</td></tr>';
     }
+  }
+
+  let pointsChart = null;          // Chart.js instance for the cumulative-points line chart
+  let CHART_SELECTED = new Set();  // pinned players (click to toggle); empty = all lines equal
+
+  function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  const chartColor = (hue, alpha) => 'hsla(' + hue + ',70%,60%,' + (alpha == null ? 1 : alpha) + ')';
+
+  // Singleton HTML element for the chart's custom (logo-capable) tooltip.
+  function chartTooltipEl() {
+    let el = document.getElementById('chartTooltip');
+    if (!el) { el = document.createElement('div'); el.id = 'chartTooltip'; el.className = 'chart-tooltip'; document.body.appendChild(el); }
+    return el;
+  }
+
+  // Chart.js line chart of each player's cumulative points across completed
+  // games (chronological). Hovering a standings row or legend item highlights
+  // the matching line (others dimmed).
+  function renderPointsChart(cfgPlayers, guesses) {
+    const el = document.getElementById('pointsChart');
+    if (pointsChart) { pointsChart.destroy(); pointsChart = null; }
+    const completed = MATCHES.filter(isFinished)
+      .slice().sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+    const N = completed.length;
+    if (!N || typeof Chart === 'undefined') { el.innerHTML = ''; return; }
+
+    const players = [...new Set([...cfgPlayers, ...guesses.map(g => g.player)])];
+    const lut = {};
+    guesses.forEach(g => { (lut[g.player] = lut[g.player] || {})[g.matchId] = g; });
+
+    const series = {};   // player -> cumulative points after game 0..N (index 0 = start)
+    players.forEach(p => {
+      let run = 0; const arr = [0];
+      completed.forEach(m => {
+        const g = (lut[p] || {})[m.id];
+        if (g) run += scoreGuess(g.home, g.away, homeScore(m), awayScore(m));
+        arr.push(run);
+      });
+      series[p] = arr;
+    });
+    players.sort((a, b) => series[b][N] - series[a][N] || a.localeCompare(b));   // leader first
+
+    const labels = [];
+    for (let i = 0; i <= N; i++) labels.push(i === 0 ? '' : String(i));
+    const datasets = players.map((p, i) => {
+      const hue = Math.round(i * 360 / players.length);
+      return { label: p, data: series[p], _hue: hue,
+        borderColor: chartColor(hue), backgroundColor: chartColor(hue),
+        borderWidth: 2, pointRadius: 0, pointHoverRadius: 4, tension: 0.15 };
+    });
+
+    el.innerHTML = '<div class="card"><h2 class="chart-title">' + escapeHtml(t('pointsChartTitle')) + '</h2>' +
+      '<div class="chart-wrap"><canvas id="pointsCanvas"></canvas></div><div class="legend" id="chartLegend"></div></div>';
+
+    const grid = cssVar('--line'), tick = cssVar('--muted');
+    pointsChart = new Chart(document.getElementById('pointsCanvas'), {
+      type: 'line',
+      data: { labels: labels, datasets: datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'nearest', intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: { enabled: false }   // replaced by our custom mousemove tooltip below
+        },
+        scales: {
+          x: { grid: { color: grid }, ticks: { color: tick, autoSkip: true, maxRotation: 0 } },
+          y: { beginAtZero: true, grid: { color: grid }, ticks: { color: tick, precision: 0 } }
+        }
+      }
+    });
+
+    const legend = document.getElementById('chartLegend');
+    legend.innerHTML = players.map((p, i) =>
+      '<span class="leg' + (CHART_SELECTED.has(p) ? ' sel' : '') + '" data-player="' + escapeHtml(p) +
+      '"><span class="sw" style="background:' + chartColor(Math.round(i * 360 / players.length)) + '"></span>' +
+      escapeHtml(p) + '</span>').join('');
+    legend.querySelectorAll('.leg').forEach(elem => {
+      elem.addEventListener('mouseenter', () => applyChartHighlight(elem.dataset.player));
+      elem.addEventListener('mouseleave', () => applyChartHighlight());
+      elem.addEventListener('click', () => toggleChartSelect(elem.dataset.player));
+    });
+    applyChartHighlight();   // reflect any persisted pins on the fresh chart
+
+    // Custom tooltip: over a line → that player's points for the nearest game;
+    // over the x-axis labels → EVERY player's points for that game.
+    const canvas = pointsChart.canvas;
+    const lg = side => { const l = teamLogo(side); return l ? '<img src="' + escapeHtml(l) + '" alt="" />' : ''; };
+    canvas.addEventListener('mousemove', e => {
+      const chart = pointsChart, area = chart.chartArea, rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+      const tip = chartTooltipEl();
+      if (mx < area.left || mx > area.right || my < area.top || my > chart.height) { tip.style.opacity = 0; return; }
+      let idx = Math.round(chart.scales.x.getValueForPixel(mx));
+      idx = Math.max(0, Math.min(N, idx));
+      const inAxis = my > area.bottom;   // below the plot area = over the x-axis labels
+      let list = chart.data.datasets.map(ds => ({ ds, val: ds.data[idx], gained: idx === 0 ? 0 : ds.data[idx] - ds.data[idx - 1] }));
+      let anchorY;
+      if (inAxis) {
+        list.sort((a, b) => b.gained - a.gained || a.ds.label.localeCompare(b.ds.label));
+        anchorY = area.bottom;
+      } else {
+        let best = list[0], bestD = Infinity;
+        list.forEach(o => { const d = Math.abs(chart.scales.y.getPixelForValue(o.val) - my); if (d < bestD) { bestD = d; best = o; } });
+        // include EVERY line passing through the same point (tied/intersecting lines)
+        list = list.filter(o => o.val === best.val).sort((a, b) => b.gained - a.gained || a.ds.label.localeCompare(b.ds.label));
+        anchorY = chart.scales.y.getPixelForValue(best.val);
+      }
+      let title = escapeHtml(t('start'));
+      if (idx > 0) {
+        const m = completed[idx - 1];
+        title = m ? lg(m.home) + escapeHtml(teamAbbr(m.home)) + ' <b>' + homeScore(m) + '–' + awayScore(m) +
+          '</b> ' + escapeHtml(teamAbbr(m.away)) + lg(m.away) : '';
+      }
+      tip.innerHTML = '<div class="tt-title">' + title + '</div>' + list.map(o =>
+        '<div class="tt-row"><span class="sw" style="background:' + chartColor(o.ds._hue) + '"></span>' +
+        escapeHtml(o.ds.label) + ': ' + o.gained + '</div>').join('');
+      tip.style.opacity = 1;
+      tip.style.left = (window.scrollX + rect.left + chart.scales.x.getPixelForValue(idx)) + 'px';
+      tip.style.top = (window.scrollY + rect.top + anchorY) + 'px';
+    });
+    canvas.addEventListener('mouseleave', () => { chartTooltipEl().style.opacity = 0; });
+  }
+
+  // Click to pin/unpin a line; supports multiple. Empty set → all lines equal.
+  function toggleChartSelect(name) {
+    if (CHART_SELECTED.has(name)) CHART_SELECTED.delete(name); else CHART_SELECTED.add(name);
+    const on = CHART_SELECTED.has(name);
+    document.querySelectorAll('#standingsBody tr, #chartLegend .leg').forEach(el => {
+      if (el.dataset.player === name) el.classList.toggle('sel', on);
+    });
+    applyChartHighlight(name);
+  }
+
+  // Emphasise lines from the pinned set, plus an optional transient hover.
+  function applyChartHighlight(hoverName) {
+    if (!pointsChart) return;
+    const anySel = CHART_SELECTED.size > 0;
+    const focus = anySel || !!hoverName;
+    const isLit = p => hoverName ? (p === hoverName || (anySel && CHART_SELECTED.has(p)))
+                                 : (anySel ? CHART_SELECTED.has(p) : true);
+    pointsChart.data.datasets.forEach(ds => {
+      const lit = isLit(ds.label);
+      ds.borderColor = chartColor(ds._hue, (focus && !lit) ? 0.15 : 1);
+      ds.borderWidth = (focus && lit) ? 3.5 : 2;
+    });
+    pointsChart.update('none');
+    document.querySelectorAll('#chartLegend .leg').forEach(el =>
+      el.classList.toggle('dim', focus && !isLit(el.dataset.player)));
   }
 
   // ---- Schedule tab: completed games, grouped by day, with every guess ------
@@ -1360,8 +1538,9 @@
           '<div class="pick vs-cell"><div class="vs">–</div></div>' +
           '<div class="pick"><span class="rscore">' + as + '</span></div>' +
           teamCell(m.away, 'away') +
-          '<details class="reveal" ontoggle="revealPicks(this, \'' + escapeHtml(m.id) + '\')">' +
-            '<summary>' + escapeHtml(t('showPicks')) + '</summary><div class="reveal-body"></div></details>' +
+          '<details class="reveal"' + (SCHEDULE_FILTER ? ' open' : '') + ' ontoggle="revealPicks(this, \'' + escapeHtml(m.id) + '\')">' +
+            '<summary>' + escapeHtml(t('showPicks')) + '</summary>' +
+            '<div class="reveal-body">' + (SCHEDULE_FILTER ? buildPicksList(m) : '') + '</div></details>' +
           '</div>';
       }).join('');
       return head + cards;
