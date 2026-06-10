@@ -397,6 +397,7 @@
 
   <!-- PREDICT -->
   <section id="predict" style="display:none">
+    <div id="loginNotice" class="msg"></div>
     <div class="pickbar">
       <span class="clocktext"><span data-i18n="nowLabel">Now:</span> <span id="clock"></span></span>
       <div class="pickfilters">
@@ -1337,6 +1338,16 @@
       badge.innerHTML = t('playAs')(escapeHtml(AUTH.name)) + league;
       badge.style.display = ''; if (lo) lo.style.display = '';
     } else { badge.textContent = ''; badge.style.display = 'none'; if (lo) lo.style.display = 'none'; }
+    updateLoginNotice();
+  }
+
+  // Notice on the pick tab when logged out: you can browse games/odds, but you
+  // need to log in to actually submit picks. Same style as the error message.
+  function updateLoginNotice() {
+    const el = document.getElementById('loginNotice');
+    if (!el) return;
+    if (AUTH) { el.textContent = ''; el.className = 'msg'; }
+    else { el.textContent = t('loginToPick'); el.className = 'msg err'; }
   }
 
   // Group matches into ordered sections: each group letter, then each knockout
