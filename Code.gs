@@ -40,7 +40,9 @@
  *          -> { ok, league, name, token, players } | { ok:false, error }
  *          error: 'bad_league' | 'empty' | 'no_password' | 'bad_league_password' | 'duplicate'
  *   POST { token (or league+name+password), guesses:[{matchId,home,away,penaltyWinner?}] }
- *          -> { ok, saved } | { ok:false, error:'bad_password' }
+ *          -> { ok, saved, rejected } | { ok:false, error:'bad_password' }
+ *          Picks for LOCKED games (scored / kicked off) are dropped server-side
+ *          (counted in `rejected`); existing picks for them are left untouched.
  */
 
 // URL of the hosted fixtures JSON. The backend fetches it to learn which games
@@ -143,16 +145,28 @@ function savePicks(body) {
   if (!p) return { ok: false, error: 'bad_password' };
   var league = p.league, player = p.name;
 
+  // Never accept — or even overwrite — a pick for a game that's already LOCKED
+  // (scored or kicked off). The client disables those inputs, but a crafted
+  // request must be blocked here too, or someone could change a pick after
+  // kickoff. Lock state is global (same source the privacy filter uses).
+  // If the fixtures fetch is unavailable (locked === null), we can't prove a game
+  // is locked, so we let the write through rather than block all submissions
+  // during an outage; switch `|| {}` to a hard reject if you prefer strict.
+  var locked = lockedMatchIds() || {};
+  var accepted = guesses.filter(function (g) { return !locked[String(g.matchId)]; });
+  var rejected = guesses.length - accepted.length;
+
   var sheet = ss().getSheetByName('Guesses');
   var now = new Date();
 
-  // Overwrite this player's earlier picks (in this league) for the submitted matches.
+  // Overwrite this player's earlier picks (in this league) for the ACCEPTED
+  // matches only — a locked game's existing pick is left untouched.
   var submittedIds = {};
-  guesses.forEach(function (g) { submittedIds[String(g.matchId)] = true; });
+  accepted.forEach(function (g) { submittedIds[String(g.matchId)] = true; });
   removePlayerGuesses(sheet, league, player, submittedIds);
 
   var rows = [];
-  guesses.forEach(function (g) {
+  accepted.forEach(function (g) {
     if (g.home === '' || g.away === '' || g.home == null || g.away == null) return;
     // penaltyWinner ('home'/'away') only set when the pick is a knockout draw.
     var pen = (g.penaltyWinner === 'home' || g.penaltyWinner === 'away') ? g.penaltyWinner : '';
@@ -161,7 +175,7 @@ function savePicks(body) {
   if (rows.length) {
     sheet.getRange(sheet.getLastRow() + 1, 1, rows.length, 7).setValues(rows);
   }
-  return { ok: true, saved: rows.length };
+  return { ok: true, saved: rows.length, rejected: rejected };
 }
 
 // ---- Leagues --------------------------------------------------------------
