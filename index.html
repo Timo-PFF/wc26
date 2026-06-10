@@ -240,6 +240,18 @@
   .schedule-table .score.score-live { color: var(--accent); }
   .h2h-table .h2h-cell.h2h-live { color: var(--accent); font-weight: 700; font-size: .7rem; }
   .ko-tag.ko-live { color: var(--accent); font-weight: 700; letter-spacing: .04em; }
+  /* Info panel: what the last ESPN live fetch covered */
+  .live-info { max-width: 680px; margin: 8px auto 0; padding: 8px 12px; background: var(--card);
+    border: 1px solid var(--line); border-radius: 10px; font-size: .82rem; }
+  .live-info .live-info-head { color: var(--muted); margin-bottom: 4px; }
+  .live-info .live-info-row { font-variant-numeric: tabular-nums; }
+  .live-info .li-live { color: var(--accent); font-weight: 600; }
+  .live-info .li-final { color: var(--accent2); font-weight: 600; }
+  /* Provisional live points added to the standings, e.g. "0 + 2" */
+  .live-delta { color: var(--accent); font-weight: 700; margin-left: 3px; }
+  /* Provisional per-guess points (accent = not final) in the pick reveal + matrix */
+  .reveal-table .num.live-pts,
+  .pcell .p.live-pts { color: var(--accent); font-weight: 700; }
   .section-row th { text-align: left; background: var(--bg); color: var(--ink); font-size: .9rem;
     position: sticky; left: 0; padding-top: 14px; }
   .totals-row td { border-bottom: 2px solid var(--line); }
@@ -330,9 +342,13 @@
         <button id="vtGroup" class="active" onclick="setView('group')" data-i18n="byGroup">By group</button>
         <button id="vtDate" onclick="setView('date')" data-i18n="chronological">Chronological</button>
       </div>
+      <button id="liveBtn" class="reload-btn" onclick="fetchLiveScores()" data-i18n="liveScores" disabled>⚡ Live scores</button>
       <button id="reloadBtn" class="reload-btn" onclick="reloadData()" data-i18n="reloadData">↻ Reload data</button>
     </div>
   </div>
+
+  <!-- What the last ESPN live fetch covered (auto-fire on load or the Live button) -->
+  <div id="liveInfo" class="live-info" style="display:none"></div>
 
   <div class="tabs">
     <button id="tabWho" class="active" onclick="showTab('who')" data-i18n="tabWho">Player</button>
@@ -517,6 +533,7 @@
     document.getElementById('title').textContent = FIXTURE_TITLE ? '⚽ ' + FIXTURE_TITLE : t('appTitle');
     document.title = FIXTURE_TITLE || t('docTitle');
     renderScoringRules();
+    drawLiveInfo();          // re-localize the live-fetch note (keeps the original time)
     updatePlayerBadge();
     updateClock();
     // The "only upcoming" checkbox label carries the current threshold (e.g. "120h").
@@ -629,6 +646,7 @@
   // and the user isn't mid-typing) re-render if a game has just crossed kickoff.
   function tick() {
     updateClock();
+    updateLiveButton();   // enable/disable as games kick off / finish (cheap)
     if (document.getElementById('predict').style.display === 'none') return;
     updateCountdowns();   // cheap text-only update, safe while typing
     const a = document.activeElement;
@@ -780,6 +798,186 @@
     return shootoutResult(m) ? scoreWithBold(hs, as, m.winner) : (hs + '–' + as);
   }
 
+  // ---- Live scores (optional, client-direct from ESPN) ----------------------
+  // On demand (button / auto-fire) we pull today's scoreboard straight from ESPN
+  // and overlay it on games our fixtures still consider live. Two outcomes per
+  // game: ESPN says it's FINAL (the fixtures JSON just hasn't refreshed yet) → we
+  // promote the match to final in memory so it's treated exactly like a JSON-final
+  // game (official scoring, penalties and all); ESPN says it's in progress → we
+  // stash the current score for a provisional "live" display + standings overlay.
+  // Nothing here is persisted or sent to the server; it's re-derived each fetch.
+
+  const ESPN_SCOREBOARD = 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard';
+  let LIVE_SCORES = {};   // matchId -> {home, away} for ESPN-in-progress games (provisional)
+  let PROMOTED = {};      // matchId -> true for games we promoted to final via ESPN this session
+  let LAST_LIVE = null;   // { fetched, at:Date } of the most recent fetch (so the info panel re-localizes)
+
+  // Where to fetch the scoreboard for a given YYYYMMDD. A same-origin ?live=<path>
+  // override swaps in canned ESPN-shaped test data (mirrors the ?fixtures= seam).
+  function liveScoreboardUrl(yyyymmdd) {
+    const override = new URLSearchParams(location.search).get('live');
+    if (override && !/^(https?:)?\/\//i.test(override)) return override;
+    return ESPN_SCOREBOARD + '?dates=' + yyyymmdd + '&limit=950';
+  }
+
+  function intOrNull(v) { const n = parseInt(v, 10); return isNaN(n) ? null : n; }
+
+  // Parse one ESPN scoreboard event into the fields we use. Mirrors the Python
+  // fetch_fixtures.extract_match (status name → decidedBy, score/shootout/winner).
+  function extractLiveEvent(ev) {
+    const comp = (ev && ev.competitions && ev.competitions[0]) || {};
+    const cs = comp.competitors || [];
+    const hc = cs.find(c => c.homeAway === 'home');
+    const ac = cs.find(c => c.homeAway === 'away');
+    if (!hc || !ac) return null;
+    const st = (comp.status && comp.status.type) || {};
+    const completed = !!st.completed;
+    const decidedBy = !completed ? null
+      : st.name === 'STATUS_FINAL_PEN' ? 'penalties'
+      : st.name === 'STATUS_FINAL_AET' ? 'extra_time' : 'regulation';
+    const side = c => ({ score: intOrNull(c.score), shootout: intOrNull(c.shootoutScore), winner: !!c.winner });
+    return { id: String(ev.id), completed, state: st.state, decidedBy, home: side(hc), away: side(ac) };
+  }
+
+  // Overlay ESPN events onto the in-memory fixtures (only games we consider live).
+  // Returns [{m, finished}] for each live game the fetch actually covered.
+  function applyLiveData(events) {
+    const byId = {};
+    MATCHES.forEach(m => { byId[m.id] = m; });
+    const fetched = [];
+    (events || []).forEach(ev => {
+      const e = extractLiveEvent(ev);
+      if (!e) return;
+      const m = byId[e.id];
+      // Live games — or ones we already promoted this session (so a re-fetch keeps
+      // listing them as finished instead of dropping them from the info panel).
+      if (!m || (!isLive(m) && !PROMOTED[e.id])) return;
+      if (e.completed) {
+        PROMOTED[e.id] = true;
+        fetched.push({ m: m, finished: true });
+        // ESPN is ahead of the JSON: promote to FINAL so the whole app treats it
+        // like any completed game (official scoring, incl. the penalty result).
+        m.home.score = e.home.score; m.away.score = e.away.score;
+        m.home.shootout = e.home.shootout; m.away.shootout = e.away.shootout;
+        m.home.winner = e.home.winner; m.away.winner = e.away.winner;
+        m.winner = e.home.winner ? 'home' : e.away.winner ? 'away'
+          : (e.home.score != null && e.home.score === e.away.score ? 'draw' : null);
+        m.decidedBy = e.decidedBy;
+        m.status = m.status || {};
+        m.status.completed = true; m.status.state = 'post';
+        delete LIVE_SCORES[e.id];
+      } else if (e.home.score != null && e.away.score != null) {
+        LIVE_SCORES[e.id] = { home: e.home.score, away: e.away.score };
+        fetched.push({ m: m, finished: false });
+      }
+    });
+    return fetched;
+  }
+
+  // Record what the last ESPN fetch covered (auto-fire or button) and show it.
+  // Called only after a fetch actually ran, so we show it even for 0 matches.
+  function renderLiveInfo(fetched) {
+    if (!fetched) return;
+    LAST_LIVE = { fetched: fetched, at: new Date() };
+    drawLiveInfo();
+  }
+
+  // (Re)paint the live-info panel from LAST_LIVE in the current language — so a
+  // language swap re-localizes it, keeping the original fetch time.
+  function drawLiveInfo() {
+    const el = document.getElementById('liveInfo');
+    if (!el || !LAST_LIVE) return;
+    const rows = LAST_LIVE.fetched.map(f =>
+      '<div class="live-info-row">' + escapeHtml(teamAbbr(f.m.home)) + ' – ' + escapeHtml(teamAbbr(f.m.away)) +
+      ' <span class="' + (f.finished ? 'li-final' : 'li-live') + '">(' +
+      escapeHtml(t(f.finished ? 'liFinished' : 'liOngoing')) + ')</span></div>').join('');
+    const time = LAST_LIVE.at.toLocaleTimeString(localeTag(), { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    el.innerHTML = '<div class="live-info-head">' + escapeHtml(t('liFetched')(LAST_LIVE.fetched.length, time)) + '</div>' + rows;
+    el.style.display = '';
+  }
+
+  // The fetched in-progress score for a game, or null.
+  function liveScoreOf(m) { return (m && LIVE_SCORES[m.id]) || null; }
+
+  // A synthetic "as if it ended right now" match, so the existing scorer can give
+  // PROVISIONAL points for an in-progress game. A level knockout score is treated
+  // like a draw-after-ET (no advancer yet → outright picks score 0, draw picks get
+  // the draw points); any decisive score is treated as a regulation result.
+  function liveAsFinal(m, hs, as) {
+    const winner = hs > as ? 'home' : (as > hs ? 'away' : null);
+    const decidedBy = (isKnockout(m) && hs === as) ? 'penalties' : 'regulation';
+    return Object.assign({}, m, {
+      home: Object.assign({}, m.home, { score: hs }),
+      away: Object.assign({}, m.away, { score: as }),
+      winner: winner, decidedBy: decidedBy,
+    });
+  }
+
+  // Provisional standings deltas from the currently in-progress games. Mirrors the
+  // points/exact/gd accounting in computeStandings, but over LIVE_SCORES games.
+  function computeLiveDeltas(guesses) {
+    const byId = {};
+    MATCHES.forEach(m => { byId[m.id] = m; });
+    const delta = {}, hasPick = {};
+    (guesses || []).forEach(g => {
+      const live = LIVE_SCORES[g.matchId];
+      const m = byId[g.matchId];
+      if (!live || !m) return;
+      hasPick[g.player] = true;
+      if (!delta[g.player]) delta[g.player] = { points: 0, exact: 0, gd: 0 };
+      delta[g.player].points += scorePick(g, liveAsFinal(m, live.home, live.away));
+      if (g.home === live.home && g.away === live.away) delta[g.player].exact += 1;
+      if (g.home !== g.away && (g.home - g.away) === (live.home - live.away)) delta[g.player].gd += 1;
+    });
+    return { delta, hasPick };
+  }
+
+  // Unique YYYYMMDD (UTC) buckets to query for the live games — each game's
+  // kickoff day plus the day before, to cover any scoreboard date bucketing.
+  function liveQueryDates() {
+    const pad = n => (n < 10 ? '0' : '') + n;
+    const fmt = d => '' + d.getUTCFullYear() + pad(d.getUTCMonth() + 1) + pad(d.getUTCDate());
+    const set = {};
+    // Live games, plus ones promoted this session — so a re-fetch still queries
+    // their day and the info panel keeps showing them as finished.
+    MATCHES.filter(m => isLive(m) || PROMOTED[m.id]).forEach(m => {
+      const d = kickoffDate(m.date);
+      if (!d) return;
+      set[fmt(d)] = true;
+      set[fmt(new Date(d.getTime() - 86400000))] = true;
+    });
+    return Object.keys(set);
+  }
+
+  // Fetch + overlay live scores, then refresh whatever's on screen. `silent` skips
+  // the button's busy state (used by the on-load auto-fire).
+  async function fetchLiveScores(silent) {
+    const dates = liveQueryDates();
+    if (!dates.length) return;
+    const btn = document.getElementById('liveBtn');
+    if (!silent && btn) btn.disabled = true;
+    try {
+      // With the ?live= override every date resolves to the same file → fetch once.
+      const override = !/^(https?:)?\/\//i.test(new URLSearchParams(location.search).get('live') || 'http');
+      const urls = override ? [liveScoreboardUrl(dates[0])] : dates.map(liveScoreboardUrl);
+      const responses = await Promise.all(urls.map(u =>
+        fetch(u).then(r => r.ok ? r.json() : null).catch(() => null)));
+      const events = responses.filter(Boolean).flatMap(j => j.events || []);
+      renderLiveInfo(applyLiveData(events));  // note which games this fetch covered
+      renderMatches();                       // pick tab (locks unaffected; promoted games now final)
+      const tab = visibleDataTab();
+      if (tab) await tab.onShow();            // re-render the open data tab with the overlay
+    } catch (e) { /* leave the last good state on a transient failure */ }
+    updateLiveButton();
+  }
+
+  // Enable the live button only while a game is in progress (per the clock).
+  function updateLiveButton() {
+    const btn = document.getElementById('liveBtn');
+    if (!btn) return;
+    btn.disabled = !MATCHES.some(isLive);
+  }
+
   // "2026-06-11T19:00Z" → a Date. ESPN omits seconds, which some browsers won't
   // parse, so normalise to "...:00Z" first. Returns null on a missing/bad value.
   function kickoffDate(iso) {
@@ -838,6 +1036,10 @@
       }
     }
     setupPenListeners();       // delegated handlers for the knockout penalty picker
+    updateLiveButton();
+    // Auto-pull live scores on load when a game is in progress — this also makes
+    // the "ESPN already final but JSON not refreshed yet" promotion survive reloads.
+    if (MATCHES.some(isLive)) fetchLiveScores(true);
     setInterval(tick, 1000);   // live clock + auto-lock games as their kickoff passes
   }
 
@@ -1452,27 +1654,30 @@
     return g.home + '–' + g.away;
   }
 
-  // Table of every player's guess for match m, with points once it's scored.
+  // Table of every player's guess for match m. Points are shown once final, and
+  // provisionally (accent-tinted) for a live game whose live score we've fetched.
   function buildPicksList(m) {
-    const hs = homeScore(m), as = awayScore(m);
-    const scored = isFinished(m);   // points only for final games; live shows picks, no points
+    const live = !isFinished(m) ? liveScoreOf(m) : null;     // {home,away} if live data is in
+    const scoreM = live ? liveAsFinal(m, live.home, live.away) : m;
+    const showPts = isFinished(m) || !!live;                 // a points column when final OR live-scored
     const players = [...new Set([...SHEET.players, ...SHEET.guesses.map(g => g.player)])];
     const lut = {};
     SHEET.guesses.forEach(g => { (lut[g.player] = lut[g.player] || {})[g.matchId] = g; });
 
     const rows = players.map(p => {
       const g = (lut[p] || {})[m.id];
-      return { player: p, guess: g, pts: (g && scored) ? scorePick(g, m) : null };
-    }).sort((a, b) => scored
+      return { player: p, guess: g, pts: (g && showPts) ? scorePick(g, scoreM) : null };
+    }).sort((a, b) => showPts
       ? (b.pts == null ? -1 : b.pts) - (a.pts == null ? -1 : a.pts) || a.player.localeCompare(b.player)
       : (b.guess ? 1 : 0) - (a.guess ? 1 : 0) || a.player.localeCompare(b.player));
 
     const head = '<tr><th>' + escapeHtml(t('thPlayer')) + '</th><th>' + escapeHtml(t('thGuess')) + '</th>' +
-      (scored ? '<th class="num">' + escapeHtml(t('thPts')) + '</th>' : '') + '</tr>';
+      (showPts ? '<th class="num">' + escapeHtml(t('thPts')) + '</th>' : '') + '</tr>';
     const body = rows.map(r =>
       '<tr><td>' + escapeHtml(r.player) + '</td>' +
       '<td class="guess">' + formatGuessCell(r.guess, m) + '</td>' +
-      (scored ? '<td class="num ' + ptsClass(r.pts) + '">' + (r.pts == null ? '—' : r.pts) + '</td>' : '') +
+      (showPts ? '<td class="num ' + ptsClass(r.pts) + (live ? ' live-pts' : '') + '">' +
+        (r.pts == null ? '—' : r.pts) + '</td>' : '') +
       '</tr>'
     ).join('');
     return '<table class="reveal-table">' + head + body + '</table>';
@@ -1578,6 +1783,22 @@
       const { rows, finished } = computeStandings(SHEET.guesses, SHEET.players);
       document.getElementById('standingsMeta').textContent = t('matchesScored')(finished);
       if (!rows.length) { body.innerHTML = '<tr><td colspan="5" class="loading">' + escapeHtml(t('noPlayers')) + '</td></tr>'; return; }
+
+      // Provisional live overlay: add each in-progress game's points to a "live
+      // standing", re-ranked by the combined total. Settled + Δ shown per cell.
+      const { delta, hasPick } = computeLiveDeltas(SHEET.guesses);
+      rows.forEach(r => {
+        const d = delta[r.player] || { points: 0, exact: 0, gd: 0 };
+        r.live = !!hasPick[r.player];
+        r.dPoints = d.points; r.dExact = d.exact; r.dGd = d.gd;
+        r.tPoints = r.points + d.points; r.tExact = r.exact + d.exact; r.tGd = r.gd + d.gd;
+      });
+      rows.sort((a, b) => b.tPoints - a.tPoints || b.tExact - a.tExact || b.tGd - a.tGd || a.player.localeCompare(b.player));
+      let rk = 0, pv = null;
+      rows.forEach((r, i) => { if (r.tPoints !== pv) { rk = i + 1; pv = r.tPoints; } r.rank = rk; });
+
+      // base count, plus a green "+Δ" for players with a stake in a live game.
+      const cell = (base, d, live) => base + (live ? ' <span class="live-delta">+' + d + '</span>' : '');
       body.innerHTML = '';
       rows.forEach(r => {
         const tr = document.createElement('tr');
@@ -1585,8 +1806,9 @@
         if (CHART_SELECTED.has(r.player)) tr.classList.add('sel');
         tr.dataset.player = r.player;
         tr.innerHTML = '<td>' + r.rank + '</td><td>' + escapeHtml(r.player) +
-          '</td><td class="num">' + r.points + '</td><td class="num">' + r.exact +
-          '</td><td class="num">' + r.gd + '</td>';
+          '</td><td class="num">' + cell(r.points, r.dPoints, r.live) +
+          '</td><td class="num">' + cell(r.exact, r.dExact, r.live) +
+          '</td><td class="num">' + cell(r.gd, r.dGd, r.live) + '</td>';
         tr.addEventListener('mouseenter', () => applyChartHighlight(r.player));
         tr.addEventListener('mouseleave', () => applyChartHighlight());
         tr.addEventListener('click', () => toggleChartSelect(r.player));
@@ -1830,7 +2052,10 @@
     const body = document.getElementById('scheduleBody');
     // Show every kicked-off game: final results AND in-progress (live) ones.
     const played = MATCHES.filter(m => isFinished(m) || isLive(m));
-    document.getElementById('scheduleMeta').textContent = t('completedGames')(MATCHES.filter(isFinished).length);
+    const liveN = MATCHES.filter(isLive).length;
+    let meta = t('completedGames')(MATCHES.filter(isFinished).length);
+    if (liveN) meta += t('inProgress')(liveN);
+    document.getElementById('scheduleMeta').textContent = meta;
     if (!played.length) {
       body.innerHTML = '<div class="card">' + escapeHtml(t('noCompleted')) + '</div>';
       return;
@@ -1868,14 +2093,17 @@
         if (m.venue && m.venue.fullName) {
           metaBits.push(escapeHtml([m.venue.fullName, m.venue.city, m.venue.country].filter(Boolean).join(', ')));
         }
-        // Final games show the score; live games show a "LIVE" badge instead.
+        // Final → score; live → the fetched live score (if any) + a LIVE badge,
+        // else just the LIVE badge when no live data has been pulled yet.
+        const ls = isFinished(m) ? null : liveScoreOf(m);
+        const liveBadge = '<span class="live-badge">' + escapeHtml(t('liveLabel')) + '</span>';
         const scoreBlock = isFinished(m)
           ? '<div class="pick"><span class="rscore">' + hs + '</span></div>' +
             '<div class="pick vs-cell"><div class="vs">–</div></div>' +
             '<div class="pick"><span class="rscore">' + as + '</span></div>'
-          : '<div class="pick"></div>' +
-            '<div class="pick vs-cell"><span class="live-badge">' + escapeHtml(t('liveLabel')) + '</span></div>' +
-            '<div class="pick"></div>';
+          : '<div class="pick"><span class="rscore">' + (ls ? ls.home : '') + '</span></div>' +
+            '<div class="pick vs-cell">' + liveBadge + '</div>' +
+            '<div class="pick"><span class="rscore">' + (ls ? ls.away : '') + '</span></div>';
         return '<div class="card match">' +
           (metaBits.length ? '<div class="meta-row">' + metaBits.join('<span>·</span>') + '</div>' : '') +
           teamCell(m.home, 'home') +
@@ -1901,20 +2129,31 @@
     guesses.forEach(g => { (lut[g.player] = lut[g.player] || {})[g.matchId] = g; });
     const total = {};
     players.forEach(p => { total[p] = 0; });
+    // The match to score against: the game itself when final, or a synthetic
+    // "as-if-final" from the live score when in progress (provisional). Null for
+    // a pre-game or a live game we haven't fetched a score for.
+    const scoreMatch = m => {
+      if (isFinished(m)) return m;
+      const ls = liveScoreOf(m);
+      return ls ? liveAsFinal(m, ls.home, ls.away) : null;
+    };
+
     completed.forEach(m => {
-      if (!isFinished(m)) return;   // live games don't contribute points
-      players.forEach(p => { const g = (lut[p] || {})[m.id]; if (g) total[p] += scorePick(g, m); });
+      const sm = scoreMatch(m);
+      if (!sm) return;   // contributes nothing yet
+      players.forEach(p => { const g = (lut[p] || {})[m.id]; if (g) total[p] += scorePick(g, sm); });
     });
     players.sort((a, b) => total[b] - total[a] || a.localeCompare(b));
 
     const cell = (p, m) => {
       const g = (lut[p] || {})[m.id];
       if (!g) return '<td><div class="pcell"><span class="g pts-none">—</span></div></td>';
-      // Live game: show the guess but no points yet.
-      if (!isFinished(m)) return '<td><div class="pcell"><span class="g">' + formatGuessCompact(g, m) + '</span></div></td>';
-      const pts = scorePick(g, m);
+      const sm = scoreMatch(m);
+      if (!sm) return '<td><div class="pcell"><span class="g">' + formatGuessCompact(g, m) + '</span></div></td>';
+      const pts = scorePick(g, sm);
+      const liveCls = isFinished(m) ? '' : ' live-pts';   // accent-tint provisional points
       return '<td><div class="pcell"><span class="g">' + formatGuessCompact(g, m) +
-        '</span><span class="p ' + ptsClass(pts) + '">' + pts + '</span></div></td>';
+        '</span><span class="p ' + ptsClass(pts) + liveCls + '">' + pts + '</span></div></td>';
     };
 
     // Team logo (browser caches by URL — same files the picks tab loads).
@@ -1938,11 +2177,12 @@
         escapeHtml(section.title) + '</th></tr>';
       section.matches.forEach(m => {
         const hs = homeScore(m), as = awayScore(m);
-        // Final → score (penalty winner marked); live → "LIVE".
+        // Final → score (penalty winner marked); live → fetched score + "LIVE", or just "LIVE".
+        const ls = isFinished(m) ? null : liveScoreOf(m);
         const scoreCell = isFinished(m)
           ? '<span class="score"' + (shootoutResult(m) ? ' title="' + escapeHtml(t('penaltyWinner')) + '"' : '') +
             '>' + finalScoreHtml(m, hs, as) + '</span>'
-          : '<span class="score score-live">' + escapeHtml(t('liveLabel')) + '</span>';
+          : '<span class="score score-live">' + (ls ? ls.home + '–' + ls.away + ' ' : '') + escapeHtml(t('liveLabel')) + '</span>';
         html += '<tr><td class="game">' +
           flag(m.home) + escapeHtml(teamAbbr(m.home)) + ' ' + scoreCell + ' ' +
           escapeHtml(teamAbbr(m.away)) + flag(m.away) + '</td>' +
@@ -2025,8 +2265,10 @@
     const logo = (s && s.logo)
       ? '<img class="flag" src="' + escapeHtml(s.logo) + '" alt="" loading="lazy" />'
       : '<span class="ko-noflag"></span>';
-    // Only show a score once the game is final — live games just read "LIVE".
-    const sc = (isFinished(m) && s && s.score != null) ? '<span class="sc">' + s.score + '</span>' : '';
+    // Final → real score; live → the fetched live score (if pulled); else nothing.
+    const ls = isFinished(m) ? null : liveScoreOf(m);
+    const sc = (isFinished(m) && s && s.score != null) ? '<span class="sc">' + s.score + '</span>'
+      : ls ? '<span class="sc">' + ls[side] + '</span>' : '';
     return '<div class="ko-side' + (win ? ' win' : '') + '" title="' + escapeHtml(teamName(s)) + '">' +
       logo + '<span class="abbr">' + escapeHtml(koSlotLabel(s)) + '</span>' + sc + '</div>';
   }
@@ -2128,8 +2370,12 @@
         const m = findMatch(rt, ct);
         if (!m) return '<td></td>';
         if (isLive(m)) {
+          const ls = liveScoreOf(m);
+          const txt = ls
+            ? (teamAbbr(m.home) === teamAbbr(rt.side) ? ls.home + ':' + ls.away : ls.away + ':' + ls.home)
+            : t('liveLabel');
           return '<td class="h2h-cell h2h-live" onclick="showGameInSchedule(\'' + escapeHtml(m.id) + '\')">' +
-            escapeHtml(t('liveLabel')) + '</td>';
+            escapeHtml(txt) + '</td>';
         }
         if (!isFinished(m)) return '<td></td>';
         const hs = homeScore(m), as = awayScore(m);

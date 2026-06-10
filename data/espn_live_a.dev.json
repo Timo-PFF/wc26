@@ -1,0 +1,45 @@
+{
+  "events": [
+    {
+      "id": "760484",
+      "competitions": [
+        {
+          "id": "760484",
+          "status": {
+            "type": {
+              "name": "STATUS_FIRST_HALF",
+              "state": "in",
+              "completed": false,
+              "detail": "1st Half",
+              "shortDetail": "1st Half"
+            }
+          },
+          "competitors": [
+            {
+              "id": "624",
+              "homeAway": "home",
+              "winner": false,
+              "score": "1",
+              "team": {
+                "id": "624",
+                "abbreviation": "ALG",
+                "displayName": "Algeria"
+              }
+            },
+            {
+              "id": "474",
+              "homeAway": "away",
+              "winner": false,
+              "score": "0",
+              "team": {
+                "id": "474",
+                "abbreviation": "AUT",
+                "displayName": "Austria"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
