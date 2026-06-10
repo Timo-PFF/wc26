@@ -235,6 +235,11 @@
   /* Penalty-winner marker on a score digit — used for actual results and for a
      player's guessed penalty winner, in both the matrix and the picks tables */
   .penw { color: var(--accent); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+  /* "LIVE" markers for kicked-off, not-yet-final games (Results / Groups / Bracket) */
+  .live-badge { color: var(--accent); font-weight: 700; font-size: .85rem; letter-spacing: .04em; }
+  .schedule-table .score.score-live { color: var(--accent); }
+  .h2h-table .h2h-cell.h2h-live { color: var(--accent); font-weight: 700; font-size: .7rem; }
+  .ko-tag.ko-live { color: var(--accent); font-weight: 700; letter-spacing: .04em; }
   .section-row th { text-align: left; background: var(--bg); color: var(--ink); font-size: .9rem;
     position: sticky; left: 0; padding-top: 14px; }
   .totals-row td { border-bottom: 2px solid var(--line); }
@@ -718,6 +723,10 @@
   function isStarted(m)    { const d = kickoffDate(m.date); return d ? d.getTime() <= Date.now() : false; }
   // Picks are locked once a game has a result OR has kicked off.
   function isLocked(m)     { return isFinished(m) || isStarted(m); }
+  // Live = kicked off (by clock) but not yet final. We measure ONLY by kickoff
+  // time, not the feed's pre/in state — so a started-but-unscored game is "live".
+  // Live games are NEVER scored; they show a "live" marker until completed.
+  function isLive(m)       { return isStarted(m) && !isFinished(m); }
 
   // For a penalty-decided knockout game, the shootout outcome from the winner's
   // perspective; null for any other game. shootout tallies may be absent.
@@ -1446,7 +1455,7 @@
   // Table of every player's guess for match m, with points once it's scored.
   function buildPicksList(m) {
     const hs = homeScore(m), as = awayScore(m);
-    const scored = hs != null && as != null;
+    const scored = isFinished(m);   // points only for final games; live shows picks, no points
     const players = [...new Set([...SHEET.players, ...SHEET.guesses.map(g => g.player)])];
     const lut = {};
     SHEET.guesses.forEach(g => { (lut[g.player] = lut[g.player] || {})[g.matchId] = g; });
@@ -1531,8 +1540,9 @@
       const m = byId[g.matchId];
       if (!m) return;
       ensure(g.player);
+      if (!isFinished(m)) return;   // only FINAL games are scored (skips pre-game + live)
       const aHome = homeScore(m), aAway = awayScore(m);
-      if (aHome == null || aAway == null) return;   // unscored game contributes nothing
+      if (aHome == null || aAway == null) return;
       totals[g.player] += scorePick(g, m);
       if (g.home === aHome && g.away === aAway) exact[g.player] += 1;
       // Correct goal difference — counted only for winner picks (a draw's GD is
@@ -1818,15 +1828,16 @@
   // Render the schedule in the chosen layout (table matrix or by-game cards).
   function renderSchedule(cfgPlayers, guesses) {
     const body = document.getElementById('scheduleBody');
-    const completed = MATCHES.filter(isFinished);
-    document.getElementById('scheduleMeta').textContent = t('completedGames')(completed.length);
-    if (!completed.length) {
+    // Show every kicked-off game: final results AND in-progress (live) ones.
+    const played = MATCHES.filter(m => isFinished(m) || isLive(m));
+    document.getElementById('scheduleMeta').textContent = t('completedGames')(MATCHES.filter(isFinished).length);
+    if (!played.length) {
       body.innerHTML = '<div class="card">' + escapeHtml(t('noCompleted')) + '</div>';
       return;
     }
     body.innerHTML = SCHEDULE_VIEW === 'game'
-      ? scheduleByGame(completed)
-      : scheduleTable(completed, cfgPlayers, guesses);
+      ? scheduleByGame(played)
+      : scheduleTable(played, cfgPlayers, guesses);
   }
 
   // By-game layout: read-only cards (like the pick tab) showing each final
@@ -1857,12 +1868,18 @@
         if (m.venue && m.venue.fullName) {
           metaBits.push(escapeHtml([m.venue.fullName, m.venue.city, m.venue.country].filter(Boolean).join(', ')));
         }
+        // Final games show the score; live games show a "LIVE" badge instead.
+        const scoreBlock = isFinished(m)
+          ? '<div class="pick"><span class="rscore">' + hs + '</span></div>' +
+            '<div class="pick vs-cell"><div class="vs">–</div></div>' +
+            '<div class="pick"><span class="rscore">' + as + '</span></div>'
+          : '<div class="pick"></div>' +
+            '<div class="pick vs-cell"><span class="live-badge">' + escapeHtml(t('liveLabel')) + '</span></div>' +
+            '<div class="pick"></div>';
         return '<div class="card match">' +
           (metaBits.length ? '<div class="meta-row">' + metaBits.join('<span>·</span>') + '</div>' : '') +
           teamCell(m.home, 'home') +
-          '<div class="pick"><span class="rscore">' + hs + '</span></div>' +
-          '<div class="pick vs-cell"><div class="vs">–</div></div>' +
-          '<div class="pick"><span class="rscore">' + as + '</span></div>' +
+          scoreBlock +
           teamCell(m.away, 'away') +
           resultNote(m) +
           '<details class="reveal"' + (SCHEDULE_FILTER ? ' open' : '') + ' ontoggle="revealPicks(this, \'' + escapeHtml(m.id) + '\')">' +
@@ -1885,14 +1902,16 @@
     const total = {};
     players.forEach(p => { total[p] = 0; });
     completed.forEach(m => {
-      const hs = homeScore(m), as = awayScore(m);
+      if (!isFinished(m)) return;   // live games don't contribute points
       players.forEach(p => { const g = (lut[p] || {})[m.id]; if (g) total[p] += scorePick(g, m); });
     });
     players.sort((a, b) => total[b] - total[a] || a.localeCompare(b));
 
-    const cell = (p, m, hs, as) => {
+    const cell = (p, m) => {
       const g = (lut[p] || {})[m.id];
       if (!g) return '<td><div class="pcell"><span class="g pts-none">—</span></div></td>';
+      // Live game: show the guess but no points yet.
+      if (!isFinished(m)) return '<td><div class="pcell"><span class="g">' + formatGuessCompact(g, m) + '</span></div></td>';
       const pts = scorePick(g, m);
       return '<td><div class="pcell"><span class="g">' + formatGuessCompact(g, m) +
         '</span><span class="p ' + ptsClass(pts) + '">' + pts + '</span></div></td>';
@@ -1919,12 +1938,15 @@
         escapeHtml(section.title) + '</th></tr>';
       section.matches.forEach(m => {
         const hs = homeScore(m), as = awayScore(m);
+        // Final → score (penalty winner marked); live → "LIVE".
+        const scoreCell = isFinished(m)
+          ? '<span class="score"' + (shootoutResult(m) ? ' title="' + escapeHtml(t('penaltyWinner')) + '"' : '') +
+            '>' + finalScoreHtml(m, hs, as) + '</span>'
+          : '<span class="score score-live">' + escapeHtml(t('liveLabel')) + '</span>';
         html += '<tr><td class="game">' +
-          flag(m.home) + escapeHtml(teamAbbr(m.home)) +
-          ' <span class="score"' + (shootoutResult(m) ? ' title="' + escapeHtml(t('penaltyWinner')) + '"' : '') +
-          '>' + finalScoreHtml(m, hs, as) + '</span> ' +
+          flag(m.home) + escapeHtml(teamAbbr(m.home)) + ' ' + scoreCell + ' ' +
           escapeHtml(teamAbbr(m.away)) + flag(m.away) + '</td>' +
-          players.map(p => cell(p, m, hs, as)).join('') +
+          players.map(p => cell(p, m)).join('') +
           '</tr>';
       });
     });
@@ -2003,13 +2025,16 @@
     const logo = (s && s.logo)
       ? '<img class="flag" src="' + escapeHtml(s.logo) + '" alt="" loading="lazy" />'
       : '<span class="ko-noflag"></span>';
-    const sc = (s && s.score != null) ? '<span class="sc">' + s.score + '</span>' : '';
+    // Only show a score once the game is final — live games just read "LIVE".
+    const sc = (isFinished(m) && s && s.score != null) ? '<span class="sc">' + s.score + '</span>' : '';
     return '<div class="ko-side' + (win ? ' win' : '') + '" title="' + escapeHtml(teamName(s)) + '">' +
       logo + '<span class="abbr">' + escapeHtml(koSlotLabel(s)) + '</span>' + sc + '</div>';
   }
 
-  // Tiny footer tag for how a finished game was decided (a.e.t. / penalties).
+  // Tiny footer tag: "LIVE" for in-progress games, else how a finished game was
+  // decided (a.e.t. / penalties).
   function koTagHtml(m) {
+    if (isLive(m)) return '<div class="ko-tag ko-live">' + escapeHtml(t('liveLabel')) + '</div>';
     if (!isFinished(m)) return '';
     const d = m.decidedBy || 'regulation';
     if (d === 'penalties') {
@@ -2023,8 +2048,8 @@
 
   function koMatchHtml(m, isFinal, isThird, attrs) {
     if (!m) return '';
-    // Finished games click through to the results tab, filtered to that game.
-    const clickable = isFinished(m);
+    // Finished AND live games click through to the results tab, filtered to that game.
+    const clickable = isFinished(m) || isLive(m);
     const cls = 'ko-match' + (isFinal ? ' ko-final' : '') + (isThird ? ' ko-third' : '') +
       (clickable ? ' ko-clickable' : '');
     const onclick = clickable ? ' onclick="showGameInSchedule(\'' + escapeHtml(m.id) + '\')"' : '';
@@ -2101,7 +2126,12 @@
       const cells = teams.map(ct => {
         if (teamAbbr(rt.side) === teamAbbr(ct.side)) return '<td class="h2h-self"></td>';
         const m = findMatch(rt, ct);
-        if (!m || !isFinished(m)) return '<td></td>';
+        if (!m) return '<td></td>';
+        if (isLive(m)) {
+          return '<td class="h2h-cell h2h-live" onclick="showGameInSchedule(\'' + escapeHtml(m.id) + '\')">' +
+            escapeHtml(t('liveLabel')) + '</td>';
+        }
+        if (!isFinished(m)) return '<td></td>';
         const hs = homeScore(m), as = awayScore(m);
         const score = teamAbbr(m.home) === teamAbbr(rt.side) ? hs + ':' + as : as + ':' + hs;
         return '<td class="h2h-cell" onclick="showGameInSchedule(\'' + escapeHtml(m.id) + '\')">' + score + '</td>';
