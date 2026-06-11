@@ -157,6 +157,17 @@
   .reveal-table td { padding: 4px 8px; border-bottom: 1px solid var(--line); font-size: .85rem; }
   .reveal-table td.guess { font-variant-numeric: tabular-nums; }
   .reveal-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  /* A player's picks expanded under their standings row */
+  .standings-expand > td { padding: 6px 10px 10px; background: rgba(0,0,0,.12); }
+  .pg-table .pg-game { white-space: nowrap; }
+  .pg-table .pg-game img.flag { width: 16px; height: 16px; object-fit: contain; vertical-align: middle; margin: 0 4px; border-radius: 2px; }
+  .pg-table .score { color: var(--accent2); font-weight: 700; padding: 0 3px; font-variant-numeric: tabular-nums; }
+  .pg-table .score.score-live { color: var(--accent); }
+  .pg-table .pg-vs { color: var(--muted); padding: 0 3px; }
+  .pg-table .num.pg-upcoming { color: var(--line); }
+  .pg-table .pg-section th { text-align: left; color: var(--ink); font-weight: 700;
+    font-size: .78rem; padding-top: 12px; border-bottom: 1px solid var(--line); }
+  .pg-none { color: var(--muted); font-size: .85rem; padding: 6px 2px; }
 
   /* On narrow screens swap full names for abbreviations to keep the row tidy */
   @media (max-width: 460px) {
@@ -405,7 +416,8 @@
       <div class="pickfilters">
         <label class="hidetoggle"><input type="checkbox" id="hideStarted" onchange="applyPickFilters()" /> <span data-i18n="hideStarted">Hide started games</span></label>
         <label class="hidetoggle"><input type="checkbox" id="onlyUpcoming" onchange="applyPickFilters()" /> <span id="onlyUpcomingLbl">Show only upcoming games</span></label>
-        <label class="hidetoggle"><input type="checkbox" id="onlyNoPick" onchange="applyPickFilters()" /> <span data-i18n="onlyNoPicks">Show only games without picks</span></label>
+        <label class="hidetoggle"><input type="checkbox" id="onlyNoPick" onchange="if(this.checked)document.getElementById('onlyMyPick').checked=false; applyPickFilters()" /> <span data-i18n="onlyNoPicks">Show only games without picks</span></label>
+        <label class="hidetoggle"><input type="checkbox" id="onlyMyPick" onchange="if(this.checked)document.getElementById('onlyNoPick').checked=false; applyPickFilters()" /> <span data-i18n="onlyMyPicks">Show only your picks</span></label>
       </div>
     </div>
     <div id="groupFilter" class="groupfilter" style="display:none">
@@ -447,6 +459,7 @@
   <section id="standings" style="display:none">
     <div class="card">
       <div id="standingsMeta" class="sub" style="margin-bottom:10px"></div>
+      <div class="sub standings-hint" data-i18n="clickPlayerHint" style="margin-bottom:10px">Tip: click a name to see their picks.</div>
       <table>
         <thead><tr><th data-i18n="thRank">#</th><th data-i18n="thPlayer">Player</th><th class="num" data-i18n="thPts">Pts</th><th class="num" data-i18n="thExact">Exact</th><th class="num" data-i18n="thGd">GD</th></tr></thead>
         <tbody id="standingsBody"><tr><td colspan="5" class="loading" data-i18n="loading">Loading…</td></tr></tbody>
@@ -498,6 +511,7 @@
   let HIDDEN_GROUPS = new Set();  // pick tab (group view): section keys toggled off
   let ONLY_UPCOMING = false;      // pick tab: only games kicking off within COUNTDOWN_SOON_MS
   let ONLY_NOPICK = false;        // pick tab: only games without a saved pick
+  let ONLY_MYPICK = false;        // pick tab: only games the player has picked
   let AUTH = null;                // { name, token } once the player logs in / adds themselves
   let LEAGUES = [];               // [{id, name}] available pools (from the backend)
   let LEAGUE = null;              // current league id
@@ -556,6 +570,7 @@
     HIDE_STARTED = document.getElementById('hideStarted').checked;
     ONLY_UPCOMING = document.getElementById('onlyUpcoming').checked;
     ONLY_NOPICK = document.getElementById('onlyNoPick').checked;
+    ONLY_MYPICK = document.getElementById('onlyMyPick').checked;
     renderMatches();
   }
 
@@ -1530,13 +1545,20 @@
         return ko && ko.getTime() - now <= COUNTDOWN_SOON_MS;
       });
     }
-    if (ONLY_NOPICK) {
+    if (ONLY_NOPICK || ONLY_MYPICK) {
       const picked = new Set((AUTH ? SHEET.guesses.filter(g => g.player === AUTH.name) : []).map(g => g.matchId));
-      visible = visible.filter(m => !picked.has(m.id));
+      visible = visible.filter(m => ONLY_MYPICK ? picked.has(m.id) : !picked.has(m.id));
     }
     if (!visible.length) {
-      const filtered = HIDE_STARTED || ONLY_UPCOMING || ONLY_NOPICK;
-      wrap.innerHTML = '<div class="card">' + escapeHtml(t(filtered ? 'noUpcomingMatch' : 'noMatches')) + '</div>';
+      let note;
+      if (ONLY_UPCOMING && ONLY_NOPICK) {
+        // Upcoming + unpicked is empty → you've picked everything coming up soon.
+        note = t('allUpcomingPicked')(Math.round(COUNTDOWN_SOON_MS / (60 * 60 * 1000)));
+      } else {
+        const filtered = HIDE_STARTED || ONLY_UPCOMING || ONLY_NOPICK || ONLY_MYPICK;
+        note = t(filtered ? 'noUpcomingMatch' : 'noMatches');
+      }
+      wrap.innerHTML = '<div class="card">' + escapeHtml(note) + '</div>';
       return;
     }
 
@@ -1837,13 +1859,73 @@
           '</td><td class="num">' + cell(r.gd, r.dGd, r.live) + '</td>';
         tr.addEventListener('mouseenter', () => applyChartHighlight(r.player));
         tr.addEventListener('mouseleave', () => applyChartHighlight());
-        tr.addEventListener('click', () => toggleChartSelect(r.player));
+        // Click expands this player's picks below. Persistent chart pinning is the
+        // legend's job (a row click no longer pins, to keep the two independent).
+        tr.addEventListener('click', () => togglePlayerGuesses(tr, r.player));
         body.appendChild(tr);
       });
       renderPointsChart(SHEET.players, SHEET.guesses);
     } catch (e) {
       body.innerHTML = '<tr><td colspan="5" style="color:var(--bad)">' + escapeHtml(t('couldNotLoadStandings')) + '</td></tr>';
     }
+  }
+
+  // Expand/collapse a player's picks directly under their standings row. Shows
+  // every pick we have for them — for yourself that's all games (incl. upcoming);
+  // for others only locked games (the server never sends their unplayed picks).
+  // Finished games show points; live games show provisional points (accent).
+  function togglePlayerGuesses(tr, player) {
+    const next = tr.nextElementSibling;
+    const open = next && next.classList.contains('standings-expand') && next.dataset.expandFor === player;
+    document.querySelectorAll('#standingsBody .standings-expand').forEach(e => e.remove());
+    if (open) return;   // it was open → leave it collapsed
+    const exp = document.createElement('tr');
+    exp.className = 'standings-expand';
+    exp.dataset.expandFor = player;
+    exp.innerHTML = '<td colspan="5">' + playerGuessList(player) + '</td>';
+    tr.after(exp);
+  }
+
+  // One player's picks, grouped by group / knockout stage (same ordering as the
+  // schedule). Each game shows the result, the pick, and points once scored.
+  function playerGuessList(player) {
+    const lut = {};
+    SHEET.guesses.forEach(g => { if (g.player === player) lut[g.matchId] = g; });
+    const games = MATCHES.filter(m => lut[m.id]).slice().sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+    if (!games.length) return '<div class="pg-none">' + escapeHtml(t('noPicksYet')) + '</div>';
+
+    const flag = side => {
+      const l = teamLogo(side);
+      return l ? '<img class="flag" src="' + escapeHtml(l) + '" alt="" loading="lazy" />' : '';
+    };
+    const rowFor = m => {
+      const g = lut[m.id];
+      const live = !isFinished(m) ? liveScoreOf(m) : null;
+      const scored = isFinished(m) || !!live;
+      const pts = scored ? scorePick(g, live ? liveAsFinal(m, live.home, live.away) : m) : null;
+      var result;
+      if (isFinished(m)) {
+        result = '<span class="score"' + (shootoutResult(m) ? ' title="' + escapeHtml(t('penaltyWinner')) + '"' : '') +
+          '>' + finalScoreHtml(m, homeScore(m), awayScore(m)) + '</span>';
+      } else if (live) {
+        result = '<span class="score score-live">' + live.home + '–' + live.away + ' ' + escapeHtml(t('liveLabel')) + '</span>';
+      } else {
+        result = '<span class="pg-vs">' + escapeHtml(t('vs')) + '</span>';
+      }
+      const ptsCell = scored
+        ? '<td class="num ' + ptsClass(pts) + (live ? ' live-pts' : '') + '">' + pts + '</td>'
+        : '<td class="num pg-upcoming">—</td>';
+      return '<tr><td class="pg-game">' + flag(m.home) + escapeHtml(teamAbbr(m.home)) + ' ' + result + ' ' +
+        escapeHtml(teamAbbr(m.away)) + flag(m.away) + '</td>' +
+        '<td class="guess">' + formatGuessCell(g, m) + '</td>' + ptsCell + '</tr>';
+    };
+
+    const head = '<tr><th>' + escapeHtml(t('thGame')) + '</th><th>' + escapeHtml(t('thGuess')) +
+      '</th><th class="num">' + escapeHtml(t('thPts')) + '</th></tr>';
+    const body = sectionize(games).map(sec =>
+      '<tr class="pg-section"><th colspan="3">' + escapeHtml(sec.title) + '</th></tr>' +
+      sec.matches.map(rowFor).join('')).join('');
+    return '<table class="reveal-table pg-table">' + head + body + '</table>';
   }
 
   let pointsChart = null;          // Chart.js instance for the cumulative-points line chart
@@ -1925,9 +2007,9 @@
     });
 
     const legend = document.getElementById('chartLegend');
-    legend.innerHTML = players.map((p, i) =>
+    legend.innerHTML = players.map(p =>
       '<span class="leg' + (CHART_SELECTED.has(p) ? ' sel' : '') + '" data-player="' + escapeHtml(p) +
-      '"><span class="sw" style="background:' + chartColor(Math.round(i * 360 / players.length)) + '"></span>' +
+      '"><span class="sw" style="background:' + chartColor(hueOf[p]) + '"></span>' +
       escapeHtml(p) + '</span>').join('');
     legend.querySelectorAll('.leg').forEach(elem => {
       elem.addEventListener('mouseenter', () => applyChartHighlight(elem.dataset.player));

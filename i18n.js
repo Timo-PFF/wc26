@@ -49,8 +49,10 @@ const I18N = {
     countdown: (d, h, m, s) => 'Starts in ' +
       (d > 0 ? d + 'd ' + h + 'h' : h > 0 ? h + 'h ' + m + 'm' : m + 'm ' + s + 's'),
     onlyUpcoming: h => 'Show only upcoming games (' + h + 'h)',
-    onlyNoPicks: 'Show only games without picks',
+    onlyNoPicks: 'Show only games without picks', onlyMyPicks: 'Show only your picks',
     noUpcomingMatch: 'No games match the filters.',
+    allUpcomingPicked: h => 'There are no picks to be made for any games in the next ' + h +
+      ' hours. But you can change your picks before kickoff, if you wish.',
     qbShowAll: 'Show all', qbHideAll: 'Hide all', qbGroupStage: 'Group stage', qbKnockouts: 'Knockouts',
     startedLocked: 'Kicked off — picks locked', allStarted: 'No upcoming games to pick.',
     penaltyWinner: 'Penalty winner:', pickPenaltyWinner: 'Pick a penalty winner for your drawn knockout games.',
@@ -116,7 +118,8 @@ const I18N = {
     submitErrNotJoined: 'Add your name first, then make your picks.',
     setScriptUrlFirst: 'Set SCRIPT_URL first.',
     matchesScored: n => n + ' match(es) scored so far.',
-    noPlayers: 'No players yet.',
+    clickPlayerHint: 'Click a name to see their picks.',
+    noPlayers: 'No players yet.', noPicksYet: 'No picks to show.',
     couldNotLoadStandings: 'Could not load standings.',
     group: 'Group', groupStageTBD: 'Group Stage (TBD)', dateTBD: 'Date TBD',
   },
@@ -149,8 +152,10 @@ const I18N = {
     countdown: (d, h, m, s) => 'Beginnt in ' +
       (d > 0 ? d + ' T ' + h + ' Std' : h > 0 ? h + ' Std ' + m + ' Min' : m + ' Min ' + s + ' Sek'),
     onlyUpcoming: h => 'Nur anstehende Spiele (' + h + ' Std)',
-    onlyNoPicks: 'Nur Spiele ohne Tipp',
+    onlyNoPicks: 'Nur Spiele ohne Tipp', onlyMyPicks: 'Nur deine Tipps',
     noUpcomingMatch: 'Keine Spiele entsprechen den Filtern.',
+    allUpcomingPicked: h => 'In den nächsten ' + h + ' Stunden gibt es keine Spiele, die noch getippt werden müssen.' +
+      ' Du kannst deine Tipps aber bis zum Anpfiff noch ändern, wenn du möchtest.',
     qbShowAll: 'Alle anzeigen', qbHideAll: 'Alle ausblenden', qbGroupStage: 'Gruppenphase', qbKnockouts: 'K.-o.-Runden',
     startedLocked: 'Angepfiffen — Tipps gesperrt', allStarted: 'Keine anstehenden Spiele zum Tippen.',
     penaltyWinner: 'Elfmeter-Sieger:', pickPenaltyWinner: 'Wähle bei deinen K.-o.-Remis einen Elfmeter-Sieger.',
@@ -216,7 +221,8 @@ const I18N = {
     submitErrNotJoined: 'Füge zuerst deinen Namen hinzu, dann tippe.',
     setScriptUrlFirst: 'Zuerst SCRIPT_URL setzen.',
     matchesScored: n => n + (n === 1 ? ' Spiel' : ' Spiele') + ' bisher gewertet.',
-    noPlayers: 'Noch keine Spieler.',
+    clickPlayerHint: 'Klicke auf einen Namen, um die Tipps zu sehen.',
+    noPlayers: 'Noch keine Spieler.', noPicksYet: 'Keine Tipps vorhanden.',
     couldNotLoadStandings: 'Tabelle konnte nicht geladen werden.',
     group: 'Gruppe', groupStageTBD: 'Gruppenphase (offen)', dateTBD: 'Datum offen',
   },
