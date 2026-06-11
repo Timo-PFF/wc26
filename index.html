@@ -514,6 +514,7 @@
   let ONLY_UPCOMING = false;      // pick tab: only games kicking off within COUNTDOWN_SOON_MS
   let ONLY_NOPICK = false;        // pick tab: only games without a saved pick
   let ONLY_MYPICK = false;        // pick tab: only games the player has picked
+  let FAV_GUESS = false;          // ?fav gimmick: prefill 2-1 for the betting favourite
   let AUTH = null;                // { name, token } once the player logs in / adds themselves
   let LEAGUES = [];               // [{id, name}] available pools (from the backend)
   let LEAGUE = null;              // current league id
@@ -1016,6 +1017,8 @@
   }
 
   async function init() {
+    // ?fav — prefill picks with 2-1 for the betting favourite (gimmick).
+    FAV_GUESS = new URLSearchParams(location.search).has('fav');
     // Optional ?lang=de / ?lang=en to start in a given language.
     const urlLang = new URLSearchParams(location.search).get('lang');
     if (urlLang === 'de' || urlLang === 'en') {
@@ -1329,7 +1332,26 @@
     try {
       await loadGuesses();
       applyUserPicks(AUTH.name, SHEET.guesses);
+      if (FAV_GUESS) applyFavGuesses();   // ?fav_guess=1 gimmick — see below
     } catch (e) { /* leave inputs as-is if guesses can't be loaded */ }
+  }
+
+  // Gimmick (?fav): fill every unlocked game that has betting odds with
+  // 2–1 for the bookies' favourite (1–1 if the two sides are exactly level).
+  // Only fills the inputs — nothing is submitted. Edits captured as drafts so a
+  // re-render keeps them.
+  function applyFavGuesses() {
+    MATCHES.forEach(m => {
+      if (isLocked(m)) return;
+      const ml = m.odds && m.odds.moneyline;
+      const h = ml ? mlToProb(ml.home) : null, a = ml ? mlToProb(ml.away) : null;
+      if (h == null || a == null) return;   // no usable win odds for this game
+      const hg = h > a ? 2 : h < a ? 1 : 1;   // 2-1 for the favourite; 1-1 if dead level
+      const ag = h > a ? 1 : h < a ? 2 : 1;
+      const hIn = document.querySelector('#matches input[data-id="' + m.id + '"][data-side="home"]');
+      const aIn = document.querySelector('#matches input[data-id="' + m.id + '"][data-side="away"]');
+      if (hIn && aIn) { hIn.value = hg; aIn.value = ag; updatePenRow(m.id); }
+    });
   }
 
   // Player-tab dropdown handler: a returning player must enter their password
