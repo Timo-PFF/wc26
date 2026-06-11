@@ -30,7 +30,7 @@ fixtures, then publish. ~15 minutes.
 
 1. Go to <https://sheets.google.com> → create a **blank spreadsheet** (name it anything).
 2. **Extensions → Apps Script**.
-3. Delete the sample code and **paste the entire contents of `Code.gs`**. Click **Save**.
+3. Delete the sample code and **paste the entire contents of `server/Code.gs`**. Click **Save**.
 4. In the function dropdown choose **`setupSheet`** → **Run**.
    - Authorize when asked: *Review permissions → your account → Advanced → Go to (project) → Allow.* (The "unverified app" notice is normal for your own script.)
    - Back in the Sheet you'll now have four tabs: **Leagues**, **Players**, **Guesses** and **Links**.
@@ -77,7 +77,7 @@ re-running `setupSheet`:
 2. Insert a new **column A** named `league` on both **Players** and **Guesses**,
    and fill every existing data row with `family`.
 3. Delete the old **Eligible** tab.
-4. Re-paste `Code.gs` and redeploy (Manage deployments → edit → new version).
+4. Re-paste `server/Code.gs` and redeploy (Manage deployments → edit → new version).
 
 ### Linking one person across leagues (optional)
 
@@ -224,7 +224,7 @@ shown as the **GD** column), then name. **To change the point values, edit the
   others' *upcoming* picks — Standings & Schedule therefore require logging in.
   This needs `FIXTURES_URL` set (next bullet); without it the server can't tell
   which games are locked and returns only your own picks.
-- **`FIXTURES_URL`** (top of `Code.gs`): set this to your **hosted** fixtures URL,
+- **`FIXTURES_URL`** (top of `server/Code.gs`): set this to your **hosted** fixtures URL,
   e.g. `https://<username>.github.io/<repo>/data/wc2026_fixtures.json`. The backend
   fetches it to know kickoff times / results. It must be publicly reachable — Apps
   Script can't see a local file or the `?fixtures=` dev override. Re-deploy after

@@ -20,7 +20,7 @@ python/fetch_fixtures.py ──┘   (static page,                  (Apps Script
 ```
 
 - **Static frontend** (`index.html`) hosted on GitHub Pages. No build step, single file.
-- **Backend = a Google Sheet** behind a Google Apps Script web app (`Code.gs`).
+- **Backend = a Google Sheet** behind a Google Apps Script web app (`server/Code.gs`).
   It stores ONLY the player list and submitted picks. No fixtures, no scoring there.
 - **Fixtures + results live in a JSON file**, not the sheet. Editing JSON (or
   re-running the fetch script) is how games and final scores get updated.
@@ -31,7 +31,7 @@ python/fetch_fixtures.py ──┘   (static page,                  (Apps Script
 
 ## Files
 
-- `Code.gs` — Apps Script web app. Multi-league: every player/pick is scoped to a
+- `server/Code.gs` — Apps Script web app. Multi-league: every player/pick is scoped to a
   `league` (pool). `doGet?action=leagues` → `{leagues:[{id,name}]}` (public picker);
   `doGet?league=ID` → that league's `{players}`. `doPost` `auth`/`addPlayer` take a
   league (addPlayer also needs the league's join password); `guesses` + savePicks
@@ -121,5 +121,5 @@ file in the old shape. Less nice — loses logos/odds in the UI.)
 4. (Optional) Add a scheduled refresh (cron/GitHub Action) that re-runs the
    fetch so results update automatically.
 
-Please start by reading `index.html`, `Code.gs`, `python/fetch_fixtures.py`, and
+Please start by reading `index.html`, `server/Code.gs`, `python/fetch_fixtures.py`, and
 a sample of `data/wc2026_fixtures.json`, then propose a short plan before editing.
