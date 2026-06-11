@@ -37,6 +37,9 @@
  *          error: 'bad_league' | 'no_password' | 'not_joined' | 'bad_password'
  *          `links`: [{league,name}] of any other players this account is linked to.
  *   POST { action:'resume', token } -> { ok, league, name, token, links } | { ok:false, error:'expired'|'not_joined' }
+ *   POST { action:'switchLink', token, league, name } -> { ok, league, name, token, links } | { ok:false, error }
+ *          Switch to a LINKED account (same link group) without its password.
+ *          error: 'expired' | 'bad_league' | 'not_linked' | 'not_joined'
  *   POST { action:'guesses', token } (or league+name+password) -> { ok, guesses } | { ok:false, error }
  *          Auth'd + PRIVATE: caller's own picks plus everyone's picks for LOCKED
  *          games only, scoped to the caller's league.
@@ -86,6 +89,7 @@ function doPost(e) {
     if (body.action === 'addPlayer') return json(addPlayer(body));
     if (body.action === 'auth') return json(authPlayer(body));
     if (body.action === 'resume') return json(resumeSession(body.token));
+    if (body.action === 'switchLink') return json(switchLink(body));
     if (body.action === 'guesses') return json(getGuessesFor(body));
     return json(savePicks(body));
   } catch (err) {
@@ -138,6 +142,26 @@ function resumeSession(token) {
   if (!p) return { ok: false, error: 'not_joined' };
   return { ok: true, league: t.league, name: p.name, token: issueToken(t.league, p.name),
            links: linkedOthers(t.league, p.name) };
+}
+
+// Switch to a LINKED account without its password. A valid token authenticates
+// the caller; the target must be in the caller's link group (which the organizer
+// declared the same person — their picks already mirror), so no password is
+// needed. Mints a fresh token for the target league/name.
+function switchLink(body) {
+  var t = verifyToken(body && body.token);
+  if (!t) return { ok: false, error: 'expired' };
+  var lg = getLeague(body && body.league);
+  if (!lg) return { ok: false, error: 'bad_league' };
+  var name = String((body && body.name) || '').trim();
+  var inGroup = linkGroupFor(t.league, t.name).some(function (x) {
+    return normalize(x.league) === normalize(lg.id) && normalize(x.name) === normalize(name);
+  });
+  if (!inGroup) return { ok: false, error: 'not_linked' };
+  var p = getPlayer(lg.id, name);
+  if (!p) return { ok: false, error: 'not_joined' };
+  return { ok: true, league: lg.id, name: p.name, token: issueToken(lg.id, p.name),
+           links: linkedOthers(lg.id, p.name) };
 }
 
 // ---- Save picks (auth-gated, league-scoped) -------------------------------

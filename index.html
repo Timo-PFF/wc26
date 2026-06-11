@@ -68,6 +68,8 @@
   .badge .badge-league { color: var(--muted); font-weight: 400; }
   .badge .badge-link { font-size: .78rem; color: var(--muted); }
   .badge .badge-link .badge-league { color: var(--accent2); }
+  .badge .badge-switch { cursor: pointer; }
+  .badge .badge-switch:hover { color: var(--ink); text-decoration: underline; }
   .reload-btn {
     padding: 5px 11px; border: 1px solid var(--line); background: var(--card); color: var(--muted);
     border-radius: 8px; cursor: pointer; font-size: .78rem;
@@ -346,7 +348,7 @@
        Stacked and right-aligned, sitting under the language flags in the header. -->
   <div class="topbar">
     <div class="topbar-row">
-      <button id="playerBadge" class="badge" onclick="showTab('who')" style="display:none"></button>
+      <button id="playerBadge" class="badge" onclick="onBadgeClick(event)" style="display:none"></button>
       <button id="logoutBtn" class="reload-btn" onclick="logout()" data-i18n="logout" style="display:none">Log out</button>
     </div>
     <div class="topbar-row">
@@ -1356,14 +1358,48 @@
       const leagueOf = id => escapeHtml((findLeague(id) || {}).name || id);
       const league = LEAGUE_NAME ? ' <span class="badge-league">· ' + escapeHtml(LEAGUE_NAME) + '</span>' : '';
       let html = '<div class="badge-main">' + t('playAs')(escapeHtml(AUTH.name)) + league + '</div>';
+      // Linked accounts are clickable: switch into them without their password.
       (AUTH.links || []).forEach(l => {
-        html += '<div class="badge-link">🔗 ' + escapeHtml(l.name) +
-          ' <span class="badge-league">(' + leagueOf(l.league) + ')</span></div>';
+        html += '<div class="badge-link badge-switch" data-league="' + escapeHtml(l.league) +
+          '" data-name="' + escapeHtml(l.name) + '" title="' + escapeHtml(t('switchRole')) + '">🔗 ' +
+          escapeHtml(l.name) + ' <span class="badge-league">(' + leagueOf(l.league) + ')</span></div>';
       });
       badge.innerHTML = html;
       badge.style.display = ''; if (lo) lo.style.display = '';
     } else { badge.textContent = ''; badge.style.display = 'none'; if (lo) lo.style.display = 'none'; }
     updateLoginNotice();
+  }
+
+  // Badge click: a linked row switches into that account; the rest opens Login.
+  function onBadgeClick(e) {
+    const sw = e.target.closest('.badge-switch');
+    if (sw) { switchToLink(sw.dataset.league, sw.dataset.name); return; }
+    showTab('who');
+  }
+
+  // Log into a linked account (same person, another league) without its password.
+  async function switchToLink(league, name) {
+    if (!AUTH || SCRIPT_URL.startsWith('PASTE')) return;
+    try {
+      const res = await fetch(SCRIPT_URL, { method: 'POST',
+        body: JSON.stringify({ action: 'switchLink', token: AUTH.token, league: league, name: name }) });
+      const data = await res.json();
+      if (!data.ok) { msg(t('switchFailed'), 'err'); showTab('predict'); return; }
+      const lg = findLeague(data.league);
+      if (lg) { LEAGUE = lg.id; LEAGUE_NAME = lg.name; }
+      AUTH = { name: data.name, token: data.token, links: data.links || [] };
+      saveToken(data.league, data.token);
+      saveLastLeague(data.league);
+      guessesLoaded = false; playersLoaded = false;
+      document.getElementById('leagueSelect').value = LEAGUE;
+      try { setPlayers(await loadPlayers(true)); } catch (e) { /* keep last list */ }
+      document.getElementById('player').value = data.name;
+      document.getElementById('submitBtn').disabled = false;
+      await syncPlayer();                 // badge + this account's prefilled picks
+      renderMatches();                    // re-render the pick tab for the new account
+      const tab = visibleDataTab(); if (tab) await tab.onShow();
+      showTab('predict');
+    } catch (e) { msg(t('switchFailed'), 'err'); }
   }
 
   // Notice on the pick tab when logged out: you can browse games/odds, but you
