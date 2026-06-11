@@ -206,16 +206,28 @@ function savePicks(body) {
   // are overwritten; locked games are never touched. Lock state is global, so the
   // same accepted set applies to everyone.
   var targets = linkGroupFor(p.league, p.name);
-  var rows = [];
-  targets.forEach(function (target) {
-    removePlayerGuesses(sheet, target.league, target.name, submittedIds);
-    clean.forEach(function (g) {
-      rows.push([target.league, now, target.name, g.matchId, g.home, g.away, g.pen]);
+
+  // Serialize the read-delete-append so concurrent submits (double-click, two
+  // linked sessions) can't race and leave duplicate rows. Apps Script runs web
+  // requests in parallel, so without this the second call's removePlayerGuesses
+  // could run on a snapshot taken before the first call appended.
+  var lock = LockService.getScriptLock();
+  try { lock.waitLock(20000); } catch (e) { return { ok: false, error: 'busy' }; }
+  try {
+    var rows = [];
+    targets.forEach(function (target) {
+      removePlayerGuesses(sheet, target.league, target.name, submittedIds);
+      clean.forEach(function (g) {
+        rows.push([target.league, now, target.name, g.matchId, g.home, g.away, g.pen]);
+      });
     });
-  });
-  if (rows.length) {
-    sheet.getRange(sheet.getLastRow() + 1, 1, rows.length, 7).setValues(rows);
+    if (rows.length) {
+      sheet.getRange(sheet.getLastRow() + 1, 1, rows.length, 7).setValues(rows);
+    }
+  } finally {
+    lock.releaseLock();
   }
+
   // `saved` is the caller's own pick count; `linked` = how many other players also got them.
   return { ok: true, saved: clean.length, rejected: rejected, linked: targets.length - 1 };
 }
@@ -407,25 +419,27 @@ function json(obj) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
-// All picks for one league.
+// All picks for one league, de-duplicated to one row per (league, player, matchId)
+// with the LAST (most recent) row winning. savePicks already overwrites cleanly,
+// but this guards against any stray duplicate (manual edit / past race) double-counting.
 function getGuesses(league) {
   var sheet = ss().getSheetByName('Guesses');
   var last = sheet.getLastRow();
   if (last < 2) return [];
   var data = sheet.getRange(2, 1, last - 1, 7).getValues();
   var lg = normalize(league);
-  return data
-    .filter(function (r) { return normalize(r[0]) === lg; })
-    .map(function (r) {
-      return {
-        player: String(r[2]).trim(),
-        matchId: String(r[3]).trim(),
-        home: Number(r[4]),
-        away: Number(r[5]),
-        penaltyWinner: String(r[6] || '').trim()   // 'home' | 'away' | '' (knockout draws only)
-      };
-    })
-    .filter(function (g) { return g.player && g.matchId; });
+  var byKey = {};   // (league|player|matchId) -> guess (later rows overwrite earlier)
+  data.forEach(function (r) {
+    if (normalize(r[0]) !== lg) return;
+    var player = String(r[2]).trim(), matchId = String(r[3]).trim();
+    if (!player || !matchId) return;
+    byKey[normalize(r[0]) + '|' + normalize(player) + '|' + matchId] = {
+      player: player, matchId: matchId,
+      home: Number(r[4]), away: Number(r[5]),
+      penaltyWinner: String(r[6] || '').trim()   // 'home' | 'away' | '' (knockout draws only)
+    };
+  });
+  return Object.keys(byKey).map(function (k) { return byKey[k]; });
 }
 
 // Authenticated, privacy-filtered guesses for the caller's league: the caller's
