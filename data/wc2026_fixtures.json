@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-11T20:31:30.620318Z",
+  "generatedAt": "2026-06-11T21:39:28.524615Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -19,11 +19,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_FIRST_HALF",
-        "state": "in",
-        "completed": false,
-        "detail": "3'",
-        "shortDetail": "3'"
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
       },
       "venue": {
         "fullName": "Estadio Banorte",
@@ -37,9 +37,9 @@
         "name": "Mexico",
         "abbreviation": "MEX",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/mex.png",
-        "score": 0,
+        "score": 2,
         "shootout": null,
-        "winner": false
+        "winner": true
       },
       "away": {
         "id": "467",
@@ -52,22 +52,9 @@
         "shootout": null,
         "winner": false
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "MEX -230",
-        "overUnder": 2.5,
-        "moneyline": {
-          "home": "-230",
-          "away": "+750",
-          "draw": "+330"
-        },
-        "spread": {
-          "line": "-1.5",
-          "odds": "+140"
-        }
-      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
       "group": "A"
     },
     {
@@ -119,11 +106,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "KOR +170",
+        "details": "KOR +165",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+170",
-          "away": "+195",
+          "home": "+165",
+          "away": "+200",
           "draw": "+205"
         },
         "spread": {
@@ -1568,16 +1555,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "CZE -145",
+        "details": "CZE -160",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-145",
-          "away": "+425",
-          "draw": "+275"
+          "home": "-160",
+          "away": "+450",
+          "draw": "+300"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-150"
+          "odds": "-165"
         }
       },
       "group": "A"
@@ -1757,16 +1744,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "MEX -125",
+        "details": "MEX -115",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-125",
-          "away": "+370",
-          "draw": "+265"
+          "home": "-115",
+          "away": "+330",
+          "draw": "+255"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-135"
+          "odds": "-125"
         }
       },
       "group": "A"
@@ -3332,16 +3319,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "KOR -145",
+        "details": "KOR -140",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+425",
-          "away": "-145",
+          "home": "+400",
+          "away": "-140",
           "draw": "+285"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+115"
+          "odds": "+110"
         }
       },
       "group": "A"
