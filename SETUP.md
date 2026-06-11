@@ -33,7 +33,7 @@ fixtures, then publish. ~15 minutes.
 3. Delete the sample code and **paste the entire contents of `Code.gs`**. Click **Save**.
 4. In the function dropdown choose **`setupSheet`** → **Run**.
    - Authorize when asked: *Review permissions → your account → Advanced → Go to (project) → Allow.* (The "unverified app" notice is normal for your own script.)
-   - Back in the Sheet you'll now have three tabs: **Leagues**, **Players** and **Guesses**.
+   - Back in the Sheet you'll now have four tabs: **Leagues**, **Players**, **Guesses** and **Links**.
 
 ## 2. Set up your leagues (pools)
 
@@ -78,6 +78,37 @@ re-running `setupSheet`:
    and fill every existing data row with `family`.
 3. Delete the old **Eligible** tab.
 4. Re-paste `Code.gs` and redeploy (Manage deployments → edit → new version).
+
+### Linking one person across leagues (optional)
+
+If someone plays in **several leagues** but wants to guess each game only once, link
+their accounts on the **Links** tab. Any pick they save (in any of their leagues)
+is then mirrored to all the linked accounts automatically.
+
+| linkId | league | name |
+|---|---|---|
+| `1` | `family` | Timo |
+| `1` | `oppenheimer` | Timo |
+| `2` | `family` | Anna |
+| `2` | `friends` | Annie |
+| `2` | `work` | Anna |
+
+- Rows sharing a **`linkId`** are the **same person** across leagues — give each
+  link group its own id (`1`, `2`, …). Names and leagues can differ (e.g. `Anna` /
+  `Annie`), and the same name across leagues is fine too.
+- **`league`** must be the league **id** (column A of the Leagues tab), and
+  **`name`** must match that person's name in the **Players** tab of that league
+  (same spelling/casing). Rows that don't match a real player are simply ignored,
+  so a typo just means that account won't receive the mirrored picks.
+- When a linked player logs in, the app lists their linked accounts under the
+  "You play as…" badge, and a successful submit notes "(also saved for N linked
+  players)".
+- Editing the Links tab takes effect immediately — **no redeploy needed** (the
+  script reads it live on each save).
+
+> Mirroring only ever touches **upcoming** games: a pick for a game that's already
+> locked (kicked off / scored) isn't propagated, so linked players' settled picks
+> are never overwritten.
 
 ## 3. Deploy the script as a web app
 

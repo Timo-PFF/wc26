@@ -63,9 +63,11 @@
   .topbar { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; margin: 10px 2px 0; }
   .topbar-row { display: flex; align-items: center; gap: 10px 14px; flex-wrap: wrap; justify-content: flex-end; }
   .badge { background: var(--card); border: 1px solid var(--accent); color: var(--ink);
-    border-radius: 999px; padding: 6px 14px; font-size: .85rem; cursor: pointer; }
+    border-radius: 12px; padding: 6px 14px; font-size: .85rem; cursor: pointer; text-align: right; line-height: 1.35; }
   .badge b { color: var(--accent); }
   .badge .badge-league { color: var(--muted); font-weight: 400; }
+  .badge .badge-link { font-size: .78rem; color: var(--muted); }
+  .badge .badge-link .badge-league { color: var(--accent2); }
   .reload-btn {
     padding: 5px 11px; border: 1px solid var(--line); background: var(--card); color: var(--muted);
     border-radius: 8px; cursor: pointer; font-size: .78rem;
@@ -1130,7 +1132,7 @@
       });
       const data = await res.json();
       if (data.ok) {
-        AUTH = { name: data.name, token: data.token };   // logged in with a session token
+        AUTH = { name: data.name, token: data.token, links: data.links || [] };   // logged in with a session token
         saveToken(data.league, data.token);
         guessesLoaded = false;
         clearMsg('addMsg');   // drop any earlier error
@@ -1174,7 +1176,7 @@
       });
       const data = await res.json();
       if (data.ok) {
-        AUTH = { name: data.name, token: data.token };
+        AUTH = { name: data.name, token: data.token, links: data.links || [] };
         saveToken(data.league, data.token);
         guessesLoaded = false;
         clearMsg('addMsg');   // drop any earlier "wrong password" error
@@ -1202,7 +1204,7 @@
       if (data.ok) {
         const lg = findLeague(data.league);
         if (lg) { LEAGUE = lg.id; LEAGUE_NAME = lg.name; }
-        AUTH = { name: data.name, token: data.token };
+        AUTH = { name: data.name, token: data.token, links: data.links || [] };
         saveToken(LEAGUE, data.token);  // sliding expiry
         guessesLoaded = false;
         document.getElementById('submitBtn').disabled = false;
@@ -1330,12 +1332,20 @@
     pw.focus();
   }
 
+  // The "You play as …" badge. When the account is linked across leagues, the
+  // linked players are listed as extra rows (their picks save together).
   function updatePlayerBadge() {
     const badge = document.getElementById('playerBadge');
     const lo = document.getElementById('logoutBtn');
     if (AUTH) {
+      const leagueOf = id => escapeHtml((findLeague(id) || {}).name || id);
       const league = LEAGUE_NAME ? ' <span class="badge-league">· ' + escapeHtml(LEAGUE_NAME) + '</span>' : '';
-      badge.innerHTML = t('playAs')(escapeHtml(AUTH.name)) + league;
+      let html = '<div class="badge-main">' + t('playAs')(escapeHtml(AUTH.name)) + league + '</div>';
+      (AUTH.links || []).forEach(l => {
+        html += '<div class="badge-link">🔗 ' + escapeHtml(l.name) +
+          ' <span class="badge-league">(' + leagueOf(l.league) + ')</span></div>';
+      });
+      badge.innerHTML = html;
       badge.style.display = ''; if (lo) lo.style.display = '';
     } else { badge.textContent = ''; badge.style.display = 'none'; if (lo) lo.style.display = 'none'; }
     updateLoginNotice();
@@ -1731,7 +1741,12 @@
         body: JSON.stringify({ token: AUTH.token, guesses: guesses }) // text/plain → no CORS preflight
       });
       const data = await res.json();
-      if (data.ok) { updateCacheGuesses(player, guesses); msg(t('saved')(data.saved), 'ok'); if (ONLY_NOPICK) renderMatches(); }
+      if (data.ok) {
+        updateCacheGuesses(player, guesses);
+        const extra = data.linked ? ' ' + t('alsoSavedForN')(data.linked) : '';
+        msg(t('saved')(data.saved) + extra, 'ok');
+        if (ONLY_NOPICK) renderMatches();
+      }
       else if (data.error === 'bad_password' || data.error === 'unauthorized') { logout(); addMsg(t('loginFirst'), 'err'); }
       else if (data.error === 'not_joined') msg(t('submitErrNotJoined'), 'err');
       else msg(t('errorPrefix')(data.error || t('unknown')), 'err');

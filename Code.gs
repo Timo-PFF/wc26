@@ -19,6 +19,9 @@
  *             fills as people create accounts; feeds the per-league name list)
  *   Guesses — A:league B:timestamp C:player D:matchId E:guessHome F:guessAway
  *             G:penaltyWinner ('home'/'away', knockout-draw picks only)
+ *   Links   — A:linkId B:league C:name (optional). Rows sharing a linkId are the
+ *             same person across leagues; a pick by any of them is mirrored to the
+ *             others (see savePicks). You maintain it; typo/not-joined rows are skipped.
  *
  * Personal passwords are a low-friction deterrent only: MD5 (unsalted), behind a
  * public endpoint with no rate-limiting. Fine for a family pool, not real security.
@@ -30,19 +33,21 @@
  * API:
  *   GET  ?action=leagues            -> { leagues:[{id,name}] }      (public; no passwords)
  *   GET  ?league=ID                 -> { players:[...] }            (that league's joined names; public)
- *   POST { action:'auth', league, name, password } -> { ok, league, name, token } | { ok:false, error }
+ *   POST { action:'auth', league, name, password } -> { ok, league, name, token, links } | { ok:false, error }
  *          error: 'bad_league' | 'no_password' | 'not_joined' | 'bad_password'
- *   POST { action:'resume', token } -> { ok, league, name, token } | { ok:false, error:'expired'|'not_joined' }
+ *          `links`: [{league,name}] of any other players this account is linked to.
+ *   POST { action:'resume', token } -> { ok, league, name, token, links } | { ok:false, error:'expired'|'not_joined' }
  *   POST { action:'guesses', token } (or league+name+password) -> { ok, guesses } | { ok:false, error }
  *          Auth'd + PRIVATE: caller's own picks plus everyone's picks for LOCKED
  *          games only, scoped to the caller's league.
  *   POST { action:'addPlayer', league, name, password, leaguePassword }
- *          -> { ok, league, name, token, players } | { ok:false, error }
+ *          -> { ok, league, name, token, players, links } | { ok:false, error }
  *          error: 'bad_league' | 'empty' | 'no_password' | 'bad_league_password' | 'duplicate'
  *   POST { token (or league+name+password), guesses:[{matchId,home,away,penaltyWinner?}] }
- *          -> { ok, saved, rejected } | { ok:false, error:'bad_password' }
+ *          -> { ok, saved, rejected, linked } | { ok:false, error:'bad_password' }
  *          Picks for LOCKED games (scored / kicked off) are dropped server-side
  *          (counted in `rejected`); existing picks for them are left untouched.
+ *          Saved for the caller AND any linked players (Links tab); `linked` = #others.
  */
 
 // URL of the hosted fixtures JSON. The backend fetches it to learn which games
@@ -107,7 +112,7 @@ function addPlayer(body) {
   var sheet = ss().getSheetByName('Players');
   sheet.getRange(sheet.getLastRow() + 1, 1, 1, 3).setValues([[lg.id, name, md5(body.password)]]);
   return { ok: true, league: lg.id, name: name, token: issueToken(lg.id, name),
-           players: playersForLeague(lg.id) };
+           players: playersForLeague(lg.id), links: linkedOthers(lg.id, name) };
 }
 
 // ---- Authenticate a returning player --------------------------------------
@@ -120,7 +125,8 @@ function authPlayer(body) {
   var p = getPlayer(lg.id, String((body && body.name) || '').trim());
   if (!p) return { ok: false, error: 'not_joined' };
   if (p.hash !== md5(pw)) return { ok: false, error: 'bad_password' };
-  return { ok: true, league: lg.id, name: p.name, token: issueToken(lg.id, p.name) };
+  return { ok: true, league: lg.id, name: p.name, token: issueToken(lg.id, p.name),
+           links: linkedOthers(lg.id, p.name) };
 }
 
 // Validate a saved session token and (if good) re-issue a fresh one so active
@@ -130,7 +136,8 @@ function resumeSession(token) {
   if (!t) return { ok: false, error: 'expired' };
   var p = getPlayer(t.league, t.name);
   if (!p) return { ok: false, error: 'not_joined' };
-  return { ok: true, league: t.league, name: p.name, token: issueToken(t.league, p.name) };
+  return { ok: true, league: t.league, name: p.name, token: issueToken(t.league, p.name),
+           links: linkedOthers(t.league, p.name) };
 }
 
 // ---- Save picks (auth-gated, league-scoped) -------------------------------
@@ -143,7 +150,6 @@ function savePicks(body) {
   // write into its own league.
   var p = resolvePlayer(body);
   if (!p) return { ok: false, error: 'bad_password' };
-  var league = p.league, player = p.name;
 
   // Never accept — or even overwrite — a pick for a game that's already LOCKED
   // (scored or kicked off). The client disables those inputs, but a crafted
@@ -156,26 +162,38 @@ function savePicks(body) {
   var accepted = guesses.filter(function (g) { return !locked[String(g.matchId)]; });
   var rejected = guesses.length - accepted.length;
 
-  var sheet = ss().getSheetByName('Guesses');
-  var now = new Date();
-
-  // Overwrite this player's earlier picks (in this league) for the ACCEPTED
-  // matches only — a locked game's existing pick is left untouched.
-  var submittedIds = {};
-  accepted.forEach(function (g) { submittedIds[String(g.matchId)] = true; });
-  removePlayerGuesses(sheet, league, player, submittedIds);
-
-  var rows = [];
+  // Validate/normalise once, then reuse for the player AND any linked players.
+  var clean = [];
   accepted.forEach(function (g) {
     if (g.home === '' || g.away === '' || g.home == null || g.away == null) return;
     // penaltyWinner ('home'/'away') only set when the pick is a knockout draw.
     var pen = (g.penaltyWinner === 'home' || g.penaltyWinner === 'away') ? g.penaltyWinner : '';
-    rows.push([league, now, player, String(g.matchId), Number(g.home), Number(g.away), pen]);
+    clean.push({ matchId: String(g.matchId), home: Number(g.home), away: Number(g.away), pen: pen });
+  });
+  var submittedIds = {};
+  clean.forEach(function (g) { submittedIds[g.matchId] = true; });
+
+  var sheet = ss().getSheetByName('Guesses');
+  var now = new Date();
+
+  // Save for the player AND any LINKED players (same linkId in the Links tab),
+  // each in their own league — so someone playing in several pools guesses once.
+  // Each target's earlier picks for the submitted (accepted, unlocked) matches
+  // are overwritten; locked games are never touched. Lock state is global, so the
+  // same accepted set applies to everyone.
+  var targets = linkGroupFor(p.league, p.name);
+  var rows = [];
+  targets.forEach(function (target) {
+    removePlayerGuesses(sheet, target.league, target.name, submittedIds);
+    clean.forEach(function (g) {
+      rows.push([target.league, now, target.name, g.matchId, g.home, g.away, g.pen]);
+    });
   });
   if (rows.length) {
     sheet.getRange(sheet.getLastRow() + 1, 1, rows.length, 7).setValues(rows);
   }
-  return { ok: true, saved: rows.length, rejected: rejected };
+  // `saved` is the caller's own pick count; `linked` = how many other players also got them.
+  return { ok: true, saved: clean.length, rejected: rejected, linked: targets.length - 1 };
 }
 
 // ---- Leagues --------------------------------------------------------------
@@ -206,6 +224,58 @@ function getLeague(id) {
     }
   }
   return null;
+}
+
+// ---- Links (cross-league player links) ------------------------------------
+// The Links tab (linkId | league | name) ties one person's accounts across
+// leagues. A pick saved by any linked player is mirrored to the others.
+
+function getLinks() {
+  var sheet = ss().getSheetByName('Links');
+  var last = sheet ? sheet.getLastRow() : 0;
+  if (last < 2) return [];
+  var data = sheet.getRange(2, 1, last - 1, 3).getValues();
+  return data
+    .filter(function (r) { return String(r[0]).trim() && String(r[2]).trim(); })
+    .map(function (r) {
+      return { linkId: String(r[0]).trim(), league: String(r[1]).trim(), name: String(r[2]).trim() };
+    });
+}
+
+// Who a pick by (league, name) should be written for: the player themselves plus
+// everyone sharing one of their linkIds — but ONLY targets that actually exist in
+// Players (typos / not-yet-joined entries in the Links tab are skipped). Returns
+// [{league, name}] with each target's canonical Players-tab name. With no Links
+// tab or no match, it's just the player → identical to the unlinked behaviour.
+function linkGroupFor(league, name) {
+  var out = {};
+  var selfKey = normalize(league) + '|' + normalize(name);
+  out[selfKey] = { league: league, name: name };   // caller (already authenticated)
+
+  var links = getLinks();
+  if (!links.length) return [out[selfKey]];
+
+  var myIds = {};
+  links.forEach(function (r) {
+    if (normalize(r.league) + '|' + normalize(r.name) === selfKey) myIds[r.linkId] = true;
+  });
+  links.forEach(function (r) {
+    if (!myIds[r.linkId]) return;
+    var key = normalize(r.league) + '|' + normalize(r.name);
+    if (out[key]) return;                       // already added (incl. self)
+    var pl = getPlayer(r.league, r.name);       // skip non-existent combos (typos / not joined)
+    if (pl) out[key] = { league: pl.league, name: pl.name };
+  });
+  return Object.keys(out).map(function (k) { return out[k]; });
+}
+
+// The OTHER players linked to (league, name) — the link group minus the player
+// themselves. Used to tell a logged-in player who their picks also save for.
+function linkedOthers(league, name) {
+  var selfKey = normalize(league) + '|' + normalize(name);
+  return linkGroupFor(league, name).filter(function (t) {
+    return normalize(t.league) + '|' + normalize(t.name) !== selfKey;
+  });
 }
 
 // ---- Helpers --------------------------------------------------------------
@@ -422,6 +492,9 @@ function setupSheet() {
   ensureTab(book, 'Players', [['league', 'name', 'passHash']]);
   ensureTab(book, 'Guesses',
     [['league', 'timestamp', 'player', 'matchId', 'guessHome', 'guessAway', 'penaltyWinner']]);
+  // Links (optional): rows sharing a linkId tie one person's accounts across
+  // leagues, so a pick by any of them is mirrored to the others. You maintain it.
+  ensureTab(book, 'Links', [['linkId', 'league', 'name']]);
 }
 
 function ensureTab(book, name, seed) {
