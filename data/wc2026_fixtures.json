@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-11T16:20:06.845715Z",
+  "generatedAt": "2026-06-11T20:31:30.620318Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -19,11 +19,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
+        "name": "STATUS_FIRST_HALF",
+        "state": "in",
         "completed": false,
-        "detail": "Thu, June 11th at 3:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "detail": "3'",
+        "shortDetail": "3'"
       },
       "venue": {
         "fullName": "Estadio Banorte",
@@ -37,7 +37,7 @@
         "name": "Mexico",
         "abbreviation": "MEX",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/mex.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -48,7 +48,7 @@
         "name": "South Africa",
         "abbreviation": "RSA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/rsa.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -56,16 +56,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "MEX -235",
+        "details": "MEX -230",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-235",
+          "home": "-230",
           "away": "+750",
-          "draw": "+340"
+          "draw": "+330"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "+120"
+          "odds": "+140"
         }
       },
       "group": "A"
@@ -119,16 +119,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "KOR +175",
+        "details": "KOR +170",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+175",
-          "away": "+185",
+          "home": "+170",
+          "away": "+195",
           "draw": "+205"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+155"
+          "odds": "+150"
         }
       },
       "group": "A"
@@ -182,16 +182,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "CAN -120",
+        "details": "CAN -115",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-120",
-          "away": "+360",
+          "home": "-115",
+          "away": "+350",
           "draw": "+255"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-135"
+          "odds": "-125"
         }
       },
       "group": "B"
@@ -632,7 +632,7 @@
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-110"
+          "odds": "-105"
         }
       },
       "group": "F"
@@ -884,7 +884,7 @@
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-165"
+          "odds": "-170"
         }
       },
       "group": "G"
@@ -1568,16 +1568,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "CZE -105",
+        "details": "CZE -145",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-105",
-          "away": "+320",
-          "draw": "+240"
+          "home": "-145",
+          "away": "+425",
+          "draw": "+275"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-115"
+          "odds": "-150"
         }
       },
       "group": "A"
@@ -3332,16 +3332,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "KOR -105",
+        "details": "KOR -145",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+300",
-          "away": "-105",
-          "draw": "+250"
+          "home": "+425",
+          "away": "-145",
+          "draw": "+285"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "-120"
+          "odds": "+115"
         }
       },
       "group": "A"
@@ -4034,7 +4034,7 @@
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+125"
+          "odds": "+120"
         }
       },
       "group": "H"
