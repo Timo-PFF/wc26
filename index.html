@@ -978,9 +978,12 @@
     const btn = document.getElementById('liveBtn');
     if (!silent && btn) btn.disabled = true;
     try {
-      // With the ?live= override every date resolves to the same file → fetch once.
-      const override = !/^(https?:)?\/\//i.test(new URLSearchParams(location.search).get('live') || 'http');
-      const urls = override ? [liveScoreboardUrl(dates[0])] : dates.map(liveScoreboardUrl);
+      // With a same-origin ?live= override, every date resolves to the same canned
+      // file → fetch once. Otherwise hit ESPN for EACH date (the game's UTC day and
+      // the day before, to cover scoreboard date bucketing).
+      const liveParam = new URLSearchParams(location.search).get('live');
+      const usingOverride = !!liveParam && !/^(https?:)?\/\//i.test(liveParam);
+      const urls = usingOverride ? [liveScoreboardUrl(dates[0])] : dates.map(liveScoreboardUrl);
       const responses = await Promise.all(urls.map(u =>
         fetch(u).then(r => r.ok ? r.json() : null).catch(() => null)));
       const events = responses.filter(Boolean).flatMap(j => j.events || []);
