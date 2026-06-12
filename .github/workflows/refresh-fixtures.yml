@@ -9,9 +9,10 @@ name: Refresh fixtures
 
 on:
   schedule:
-    # Every 6 hours (UTC) for now — bump to '*/15 * * * *' once the tournament
-    # starts. GitHub may delay scheduled runs under load.
-    - cron: '0 */6 * * *'
+    # Every 30 minutes during the tournament — the client live-scores feature
+    # handles real-time within a game, so the JSON only needs periodic refreshes.
+    # GitHub may delay scheduled runs under load.
+    - cron: '*/30 * * * *'
   workflow_dispatch:   # manual "Run workflow" button
 
 # Never run two refreshes at once (a slow run shouldn't overlap the next tick).
