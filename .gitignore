@@ -8,3 +8,6 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+
+# Cached raw ESPN odds JSON (one file per game; regenerated on demand)
+data/odds_cache/
