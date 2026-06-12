@@ -55,6 +55,7 @@ const I18N = {
     allUpcomingPicked: h => 'There are no picks to be made for any games in the next ' + h +
       ' hours. But you can change your picks before kickoff, if you wish.',
     qbShowAll: 'Show all', qbHideAll: 'Hide all', qbGroupStage: 'Group stage', qbKnockouts: 'Knockouts',
+    moreFilters: 'more filter options',
     startedLocked: 'Kicked off — picks locked', allStarted: 'No upcoming games to pick.',
     penaltyWinner: 'Penalty winner:', pickPenaltyWinner: 'Pick a penalty winner for your drawn knockout games.',
     allHidden: 'All groups hidden — tap a chip above to show one.',
@@ -159,6 +160,7 @@ const I18N = {
     allUpcomingPicked: h => 'In den nächsten ' + h + ' Stunden gibt es keine Spiele, die noch getippt werden müssen.' +
       ' Du kannst deine Tipps aber bis zum Anpfiff noch ändern, wenn du möchtest.',
     qbShowAll: 'Alle anzeigen', qbHideAll: 'Alle ausblenden', qbGroupStage: 'Gruppenphase', qbKnockouts: 'K.-o.-Runden',
+    moreFilters: 'mehr Filteroptionen',
     startedLocked: 'Angepfiffen — Tipps gesperrt', allStarted: 'Keine anstehenden Spiele zum Tippen.',
     penaltyWinner: 'Elfmeter-Sieger:', pickPenaltyWinner: 'Wähle bei deinen K.-o.-Remis einen Elfmeter-Sieger.',
     allHidden: 'Alle Gruppen ausgeblendet — tippe oben auf einen Chip.',

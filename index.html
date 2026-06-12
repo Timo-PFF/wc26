@@ -39,6 +39,9 @@
   .hidetoggle input[type="checkbox"] { width: auto; padding: 0; margin: 0; cursor: pointer; }
   .pickfilters { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px;
     background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
+  .morefilters-toggle { background: none; border: 0; color: var(--muted); cursor: pointer;
+    font-size: .8rem; padding: 2px 2px; margin: 0 2px 8px; }
+  .morefilters-toggle:hover { color: var(--ink); }
   .groupfilter { display: flex; flex-direction: column; gap: 8px; margin: 0 2px 12px; }
   .quickbtns { display: flex; flex-wrap: wrap; gap: 6px; }
   .quickbtn { padding: 4px 10px; border: 1px solid var(--line); background: var(--card);
@@ -177,6 +180,9 @@
     .match .team .name .full { display: none; }
     .match .team .name .abbr { display: inline; }
     .match .team img.flag { width: 22px; height: 22px; }
+    /* Tabs wrap to two rows of three so labels don't overlap on narrow screens. */
+    .tabs { flex-wrap: wrap; gap: 2px 6px; }
+    .tabs button { flex: 1 1 28%; margin-bottom: 0; }
   }
 
   button.primary {
@@ -422,6 +428,7 @@
         <label class="hidetoggle"><input type="checkbox" id="onlyMyPick" onchange="if(this.checked)document.getElementById('onlyNoPick').checked=false; applyPickFilters()" /> <span data-i18n="onlyMyPicks">Show only your picks</span></label>
       </div>
     </div>
+    <button id="moreFiltersBtn" type="button" class="morefilters-toggle" onclick="toggleGroupFilterPanel()" style="display:none"></button>
     <div id="groupFilter" class="groupfilter" style="display:none">
       <span class="vt-label" data-i18n="showLabel">Show:</span>
       <div class="quickbtns">
@@ -511,6 +518,7 @@
   let HIDE_STARTED = false;  // pick tab: hide games that are scored / kicked off
   let lockSignature = '';    // ids of locked games at last render; drives auto-relock on the clock tick
   let HIDDEN_GROUPS = new Set();  // pick tab (group view): section keys toggled off
+  let SHOW_GROUP_FILTER = false;  // pick tab: is the group/stage filter panel expanded?
   let ONLY_UPCOMING = false;      // pick tab: only games kicking off within COUNTDOWN_SOON_MS
   let ONLY_NOPICK = false;        // pick tab: only games without a saved pick
   let ONLY_MYPICK = false;        // pick tab: only games the player has picked
@@ -607,14 +615,28 @@
   // full fixture set so a toggled-off (and thus absent) section can be re-shown.
   function renderGroupFilter() {
     const bar = document.getElementById('groupFilter');
-    if (VIEW_MODE !== 'group' || !MATCHES.length) { bar.style.display = 'none'; return; }
-    bar.style.display = '';
+    const btn = document.getElementById('moreFiltersBtn');
+    // The group/stage filter only applies in group view; hide it (and its toggle) otherwise.
+    if (VIEW_MODE !== 'group' || !MATCHES.length) {
+      bar.style.display = 'none';
+      if (btn) btn.style.display = 'none';
+      return;
+    }
+    if (btn) { btn.style.display = ''; btn.textContent = (SHOW_GROUP_FILTER ? '▾ ' : '▸ ') + t('moreFilters'); }
+    bar.style.display = SHOW_GROUP_FILTER ? '' : 'none';
+    if (!SHOW_GROUP_FILTER) return;   // panel collapsed — no need to build the chips
     const chips = document.getElementById('groupChips');
     chips.innerHTML = sectionize(MATCHES).map(s =>
       '<button class="chip' + (HIDDEN_GROUPS.has(s.key) ? '' : ' on') + '" data-key="' +
       escapeHtml(s.key) + '">' + escapeHtml(s.title) + '</button>'
     ).join('');
     chips.onclick = e => { const b = e.target.closest('.chip'); if (b) toggleGroup(b.dataset.key); };
+  }
+
+  // Show/hide the group/stage filter panel ("more filter options").
+  function toggleGroupFilterPanel() {
+    SHOW_GROUP_FILTER = !SHOW_GROUP_FILTER;
+    renderGroupFilter();
   }
 
   function toggleGroup(key) {
