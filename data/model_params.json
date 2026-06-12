@@ -1,7 +1,7 @@
 {
   "rho": -0.008834817798267579,
   "theta": 0.9982838175534583,
-  "fav_threshold": 2.6500000000000012,
+  "fav_threshold": 2.65,
   "total_weight": 0.5,
   "max_goals": 10,
   "pick_max": 6

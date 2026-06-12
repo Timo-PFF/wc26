@@ -96,7 +96,7 @@ def fit_threshold(rows, lo=1.5, hi=4.0, step=0.05):
                             (r["home_score"], r["away_score"])) for r in rows])
         if s > best_pts:
             best_pts, best_T = s, float(T)
-    return best_T
+    return round(best_T, 2)   # grid is in 0.05 steps; avoid float-drift like 2.650000001
 
 
 # ---- backtest -------------------------------------------------------------

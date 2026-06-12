@@ -17,6 +17,10 @@ Knockout note: the score model predicts the regulation-style result the moneylin
 prices; `pen_winner` is a simple best-guess (the side more likely to win) for the
 pool's separate penalty-winner pick. Refine later if needed.
 
+Also writes a small JSON sidecar (--fav-json) with the calibrated fav-by-1
+threshold and each game's implied mean total — enough to reproduce the fav-by-1
+1-0/2-1 decision (implied_mean >= threshold -> 2-1).
+
 Usage:
     python apply_model.py
     python apply_model.py --params ../data/model_params.json --odds ../data/wc2026_odds.csv
@@ -24,6 +28,7 @@ Usage:
 
 import argparse
 import csv
+import json
 
 from model.model import ScoreModel
 from model.odds import devig_1x2, devig_two_way
@@ -54,12 +59,14 @@ def main():
     ap.add_argument("--params", default="../data/model_params.json")
     ap.add_argument("--odds", default="../data/wc2026_odds.csv")
     ap.add_argument("--out", default="../data/wc2026_optimal_picks.csv")
+    ap.add_argument("--fav-json", default="../data/wc2026_fav_by_1.json")
     args = ap.parse_args()
 
     model = ScoreModel.load(args.params)
     print(f"Model: rho={model.rho:.4f} theta={model.theta:.4f}")
 
     out_rows, skipped, scored, total_pts = [], 0, 0, 0.0
+    fav_games = []   # per-game implied means for the fav-by-1 JSON sidecar
     with open(args.odds, encoding="utf-8", newline="") as f:
         for r in csv.DictReader(f):
             probs = devig_1x2(_f(r["home_ml"]), _f(r["draw_ml"]), _f(r["away_ml"]))
@@ -72,6 +79,11 @@ def main():
             # Market-implied mean total goals (folds in the O/U price when present).
             imean = implied_total_mean(ou, p_over) if p_over is not None else ou
             is_ko = r["knockout"] == "True"
+            fav_games.append({
+                "event_id": r["event_id"], "date": r["date"],
+                "home": r["home"], "away": r["away"],
+                "implied_mean": round(imean, 4),
+            })
 
             if is_ko:
                 # Knockout: optimise against the post-ET result + the KO scoring rule.
@@ -134,7 +146,15 @@ def main():
         w.writeheader()
         w.writerows(out_rows)
 
+    # JSON sidecar: the fav-by-1 threshold + each game's implied mean total, enough
+    # to reproduce the 1-0/2-1 decision (implied_mean >= fav_threshold -> 2-1).
+    with open(args.fav_json, "w", encoding="utf-8") as f:
+        json.dump({"fav_threshold": model.fav_threshold, "games": fav_games},
+                  f, ensure_ascii=False, indent=2)
+
     print(f"Wrote {len(out_rows)} pick(s) -> {args.out} ({skipped} game(s) had no usable line).")
+    print(f"Wrote fav-by-1 sidecar ({len(fav_games)} games, threshold {model.fav_threshold}) "
+          f"-> {args.fav_json}")
     if scored:
         print(f"Already-finished games: {scored}, optimal-pick points = {total_pts} "
               f"({total_pts / scored:.2f}/game).")
