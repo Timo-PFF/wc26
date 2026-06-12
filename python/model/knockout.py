@@ -137,3 +137,31 @@ def best_ko_pick(outcomes, pick_max=PICK_MAX):
         agg[(ah, aa)] = agg.get((ah, aa), 0.0) + p
     ml = max(agg, key=agg.get)
     return best, best_ev, ml
+
+
+def ko_breakdown(outcomes, pick_max=PICK_MAX):
+    """Per-candidate knockout breakdown. One row per candidate guess (outright-
+    winner scorelines + draw scorelines with each shootout call), giving the
+    probability of scoring each KO points value (0,1,2,3,4), the expected points,
+    and the expected goal-difference error against the post-ET score.
+
+    The points-value distribution (rather than named tiers) keeps a single schema
+    across the two guess types, whose achievable tiers differ."""
+    rows = []
+    for (gh, ga, pen_pick) in _candidate_guesses(pick_max):
+        pv = {0: 0.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 0.0}
+        pgd = gh - ga
+        egde = 0.0
+        for (p, ah, aa, pens, adv) in outcomes:
+            if p <= 0:
+                continue
+            pv[ko_points((gh, ga, pen_pick), (ah, aa, pens, adv))] += p
+            egde += p * abs(pgd - (ah - aa))
+        exp_points = sum(k * v for k, v in pv.items())
+        rows.append({
+            "pick_home": gh, "pick_away": ga, "pen_pick": pen_pick,
+            "p_pts0": pv[0], "p_pts1": pv[1], "p_pts2": pv[2],
+            "p_pts3": pv[3], "p_pts4": pv[4],
+            "exp_points": exp_points, "exp_gd_error": egde,
+        })
+    return rows

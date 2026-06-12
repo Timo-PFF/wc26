@@ -106,12 +106,16 @@ def main():
             if r["state"] == "post" and hs is not None and as_ is not None:
                 actual = (int(hs), int(as_))
                 if is_ko:
-                    # The advancer is derivable from the score for decisive games;
-                    # shootouts need the winner field (not in the snapshot), so we
-                    # can only score non-shootout knockout games here.
-                    if r.get("decided_by") != "penalties":
+                    # Build the actual knockout outcome: post-ET score, whether it
+                    # went to penalties, and the advancer. The advancer is the
+                    # `winner` column (needed for shootouts), falling back to the
+                    # score for decisive games when winner is absent.
+                    pens = r.get("decided_by") == "penalties"
+                    adv = r.get("winner") or None
+                    if not adv and not pens:
                         adv = "home" if actual[0] > actual[1] else "away"
-                        ko_actual = (actual[0], actual[1], False, adv)
+                    if adv:
+                        ko_actual = (actual[0], actual[1], pens, adv)
                         pen_side = "home" if pen == r["home"] else "away"
                         fav1_side = "home" if fav1[0] > fav1[1] else "away"
                         row["actual_points"] = ko_points((pick[0], pick[1], pen_side), ko_actual)

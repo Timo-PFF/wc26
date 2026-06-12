@@ -47,7 +47,8 @@ DECIDED_BY = {"STATUS_FINAL_PEN": "penalties", "STATUS_FINAL_AET": "extra_time"}
 
 CSV_COLUMNS = [
     "event_id", "date", "stage", "knockout", "state", "status_detail",
-    "home", "away", "home_id", "away_id", "home_score", "away_score", "decided_by",
+    "home", "away", "home_id", "away_id", "home_score", "away_score",
+    "decided_by", "winner",
     "provider", "home_ml", "draw_ml", "away_ml",
     "over_under", "over_odds", "under_odds",
 ]
@@ -127,6 +128,14 @@ def _parse_event(ev):
     # Score only for finished games (the outcome we predict); blank otherwise.
     home_score = _num(home.get("score")) if completed else None
     away_score = _num(away.get("score")) if completed else None
+    # Advancer for finished games (needed to score knockout shootouts, where the
+    # post-ET score is a draw): which side ESPN flags as the winner.
+    if completed and home.get("winner"):
+        winner = "home"
+    elif completed and away.get("winner"):
+        winner = "away"
+    else:
+        winner = None
     return {
         "event_id": ev.get("id"),
         "date": ev.get("date") or "",
@@ -141,6 +150,7 @@ def _parse_event(ev):
         "home_score": home_score,
         "away_score": away_score,
         "decided_by": DECIDED_BY.get(status.get("name"), "regulation") if completed else None,
+        "winner": winner,
     }
 
 

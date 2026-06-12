@@ -26,9 +26,18 @@ import os
 from model.model import ScoreModel
 from model.odds import devig_1x2, devig_two_way
 from model.breakdown import game_breakdown
+from model.knockout import knockout_outcomes, ko_breakdown
 
-ROW_COLUMNS = [
+# Group games: probability of each scoring tier + expected GD error.
+GROUP_COLUMNS = [
     "pick_home", "pick_away", "p_exact", "p_gd", "p_outcome", "p_wrong",
+    "exp_points", "exp_gd_error",
+]
+# Knockout games: KO scoring is richer (post-ET result + advancer + penalties),
+# so we report the probability of each KO points value (0..4) instead of tiers.
+KO_COLUMNS = [
+    "pick_home", "pick_away", "pen_pick",
+    "p_pts0", "p_pts1", "p_pts2", "p_pts3", "p_pts4",
     "exp_points", "exp_gd_error",
 ]
 PICK_MAX = 6
@@ -64,15 +73,22 @@ def main():
                 continue
             two_way = devig_two_way(_f(r.get("over_odds")), _f(r.get("under_odds")))
             p_over = two_way[0] if two_way else None
-            matrix = model.predict_from_probs(probs, ou, p_over)
 
-            rows = game_breakdown(matrix, pick_max=PICK_MAX)
+            if r["knockout"] == "True":
+                lam_h, lam_a = model.lambdas(probs, ou, p_over)
+                outcomes = knockout_outcomes(lam_h, lam_a, model.rho)
+                rows = ko_breakdown(outcomes, pick_max=PICK_MAX)
+                columns = KO_COLUMNS
+            else:
+                matrix = model.predict_from_probs(probs, ou, p_over)
+                rows = game_breakdown(matrix, pick_max=PICK_MAX)
+                columns = GROUP_COLUMNS
             rows.sort(key=lambda x: x["exp_points"], reverse=True)
 
             name = f"{(r['date'] or '')[:10]}_{r['home']}-{r['away']}_{r['event_id']}.csv"
             path = os.path.join(args.out_dir, name)
             with open(path, "w", encoding="utf-8", newline="") as out:
-                w = csv.DictWriter(out, fieldnames=ROW_COLUMNS)
+                w = csv.DictWriter(out, fieldnames=columns)
                 w.writeheader()
                 for row in rows:
                     w.writerow({k: (round(v, ROUND) if isinstance(v, float) else v)
