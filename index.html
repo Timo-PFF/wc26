@@ -470,8 +470,8 @@
       <div id="standingsMeta" class="sub" style="margin-bottom:10px"></div>
       <div class="sub standings-hint" data-i18n="clickPlayerHint" style="margin-bottom:10px">Tip: click a name to see their picks.</div>
       <table>
-        <thead><tr><th data-i18n="thRank">#</th><th data-i18n="thPlayer">Player</th><th class="num" data-i18n="thPts">Pts</th><th class="num" data-i18n="thExact">Exact</th><th class="num" data-i18n="thGd">GD</th></tr></thead>
-        <tbody id="standingsBody"><tr><td colspan="5" class="loading" data-i18n="loading">Loading…</td></tr></tbody>
+        <thead><tr><th data-i18n="thRank">#</th><th data-i18n="thPlayer">Player</th><th class="num" data-i18n="thPts">Pts</th><th class="num" data-i18n="thExact" data-i18n-title="ttExact">Exact</th><th class="num" data-i18n="thGd" data-i18n-title="ttGd">GD</th><th class="num" data-i18n="thGdErr" data-i18n-title="ttGdErr">GD err</th></tr></thead>
+        <tbody id="standingsBody"><tr><td colspan="6" class="loading" data-i18n="loading">Loading…</td></tr></tbody>
       </table>
     </div>
     <div id="pointsChart"></div>
@@ -550,6 +550,10 @@
     document.querySelectorAll('[data-i18n-ph]').forEach(el => {
       const v = I18N[LANG][el.dataset.i18nPh];
       if (typeof v === 'string') el.placeholder = v;
+    });
+    document.querySelectorAll('[data-i18n-title]').forEach(el => {
+      const v = I18N[LANG][el.dataset.i18nTitle];
+      if (typeof v === 'string') el.title = v;
     });
     // Password reveal toggles: paint the eye icon for the current reveal state
     // (also the initial render) with a localized aria-label / tooltip.
@@ -967,10 +971,11 @@
       const m = byId[g.matchId];
       if (!live || !m) return;
       hasPick[g.player] = true;
-      if (!delta[g.player]) delta[g.player] = { points: 0, exact: 0, gd: 0 };
+      if (!delta[g.player]) delta[g.player] = { points: 0, exact: 0, gd: 0, gdErr: 0 };
       delta[g.player].points += scorePick(g, liveAsFinal(m, live.home, live.away));
       if (g.home === live.home && g.away === live.away) delta[g.player].exact += 1;
       if (g.home !== g.away && (g.home - g.away) === (live.home - live.away)) delta[g.player].gd += 1;
+      delta[g.player].gdErr += Math.abs((g.home - g.away) - (live.home - live.away));
     });
     return { delta, hasPick };
   }
@@ -1865,8 +1870,8 @@
   function computeStandings(guesses, players) {
     const byId = {};
     MATCHES.forEach(m => { byId[m.id] = m; });
-    const totals = {}, exact = {}, gd = {};
-    const ensure = p => { if (totals[p] == null) { totals[p] = 0; exact[p] = 0; gd[p] = 0; } };
+    const totals = {}, exact = {}, gd = {}, gdErr = {};
+    const ensure = p => { if (totals[p] == null) { totals[p] = 0; exact[p] = 0; gd[p] = 0; gdErr[p] = 0; } };
     (players || []).forEach(ensure);
 
     let finished = 0;
@@ -1884,10 +1889,12 @@
       // Correct goal difference — counted only for winner picks (a draw's GD is
       // trivially right, so it wouldn't discriminate). Includes exact winners.
       if (g.home !== g.away && (g.home - g.away) === (aHome - aAway)) gd[g.player] += 1;
+      // Total absolute goal-difference error: how far the predicted margin was off.
+      gdErr[g.player] += Math.abs((g.home - g.away) - (aHome - aAway));
     });
 
     const rows = Object.keys(totals).map(p =>
-      ({ player: p, points: totals[p], exact: exact[p], gd: gd[p] }));
+      ({ player: p, points: totals[p], exact: exact[p], gd: gd[p], gdErr: gdErr[p] }));
     rows.sort((a, b) =>
       b.points - a.points || b.exact - a.exact || b.gd - a.gd || a.player.localeCompare(b.player));
     let rank = 0, prev = null;
@@ -1900,28 +1907,28 @@
     if (pointsChart) { pointsChart.destroy(); pointsChart = null; }
     document.getElementById('pointsChart').innerHTML = '';   // cleared unless we render below
     if (SCRIPT_URL.startsWith('PASTE')) {
-      body.innerHTML = '<tr><td colspan="5" style="color:var(--bad)">' + escapeHtml(t('setScriptUrlFirst')) + '</td></tr>';
+      body.innerHTML = '<tr><td colspan="6" style="color:var(--bad)">' + escapeHtml(t('setScriptUrlFirst')) + '</td></tr>';
       return;
     }
     if (!AUTH) {
       document.getElementById('standingsMeta').textContent = '';
-      body.innerHTML = '<tr><td colspan="5" class="loading">' + escapeHtml(t('loginRequired')) + '</td></tr>';
+      body.innerHTML = '<tr><td colspan="6" class="loading">' + escapeHtml(t('loginRequired')) + '</td></tr>';
       return;
     }
-    body.innerHTML = '<tr><td colspan="5" class="loading">' + escapeHtml(t('loading')) + '</td></tr>';
+    body.innerHTML = '<tr><td colspan="6" class="loading">' + escapeHtml(t('loading')) + '</td></tr>';
     try {
       await loadPlayers(); await loadGuesses();
       const { rows, finished } = computeStandings(SHEET.guesses, SHEET.players);
       document.getElementById('standingsMeta').textContent = t('matchesScored')(finished);
-      if (!rows.length) { body.innerHTML = '<tr><td colspan="5" class="loading">' + escapeHtml(t('noPlayers')) + '</td></tr>'; return; }
+      if (!rows.length) { body.innerHTML = '<tr><td colspan="6" class="loading">' + escapeHtml(t('noPlayers')) + '</td></tr>'; return; }
 
       // Provisional live overlay: add each in-progress game's points to a "live
       // standing", re-ranked by the combined total. Settled + Δ shown per cell.
       const { delta, hasPick } = computeLiveDeltas(SHEET.guesses);
       rows.forEach(r => {
-        const d = delta[r.player] || { points: 0, exact: 0, gd: 0 };
+        const d = delta[r.player] || { points: 0, exact: 0, gd: 0, gdErr: 0 };
         r.live = !!hasPick[r.player];
-        r.dPoints = d.points; r.dExact = d.exact; r.dGd = d.gd;
+        r.dPoints = d.points; r.dExact = d.exact; r.dGd = d.gd; r.dGdErr = d.gdErr;
         r.tPoints = r.points + d.points; r.tExact = r.exact + d.exact; r.tGd = r.gd + d.gd;
       });
       rows.sort((a, b) => b.tPoints - a.tPoints || b.tExact - a.tExact || b.tGd - a.tGd || a.player.localeCompare(b.player));
@@ -1939,7 +1946,8 @@
         tr.innerHTML = '<td>' + r.rank + '</td><td>' + escapeHtml(r.player) +
           '</td><td class="num">' + cell(r.points, r.dPoints, r.live) +
           '</td><td class="num">' + cell(r.exact, r.dExact, r.live) +
-          '</td><td class="num">' + cell(r.gd, r.dGd, r.live) + '</td>';
+          '</td><td class="num">' + cell(r.gd, r.dGd, r.live) +
+          '</td><td class="num">' + cell(r.gdErr, r.dGdErr, r.live) + '</td>';
         tr.addEventListener('mouseenter', () => applyChartHighlight(r.player));
         tr.addEventListener('mouseleave', () => applyChartHighlight());
         // Click expands this player's picks below. Persistent chart pinning is the
@@ -1949,7 +1957,7 @@
       });
       renderPointsChart(SHEET.players, SHEET.guesses);
     } catch (e) {
-      body.innerHTML = '<tr><td colspan="5" style="color:var(--bad)">' + escapeHtml(t('couldNotLoadStandings')) + '</td></tr>';
+      body.innerHTML = '<tr><td colspan="6" style="color:var(--bad)">' + escapeHtml(t('couldNotLoadStandings')) + '</td></tr>';
     }
   }
 
@@ -1965,7 +1973,7 @@
     const exp = document.createElement('tr');
     exp.className = 'standings-expand';
     exp.dataset.expandFor = player;
-    exp.innerHTML = '<td colspan="5">' + playerGuessList(player) + '</td>';
+    exp.innerHTML = '<td colspan="6">' + playerGuessList(player) + '</td>';
     tr.after(exp);
   }
 
