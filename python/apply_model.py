@@ -18,8 +18,10 @@ prices; `pen_winner` is a simple best-guess (the side more likely to win) for th
 pool's separate penalty-winner pick. Refine later if needed.
 
 Also writes a small JSON sidecar (--fav-json) with the calibrated fav-by-1
-threshold and each game's implied mean total — enough to reproduce the fav-by-1
-1-0/2-1 decision (implied_mean >= threshold -> 2-1).
+threshold and, per game, the implied mean total + the fav-by-1 pick. The pick is
+included because the client can't recover the favourite for finished games (odds
+are stripped from the fixtures file once a game is over); the threshold +
+implied_mean still let it explain the 1-0/2-1 choice.
 
 Usage:
     python apply_model.py
@@ -79,10 +81,16 @@ def main():
             # Market-implied mean total goals (folds in the O/U price when present).
             imean = implied_total_mean(ou, p_over) if p_over is not None else ou
             is_ko = r["knockout"] == "True"
+            # The simple favourite-by-one strategy (calibrated implied-mean cutoff).
+            fav1 = fav_by_1_pick(probs.home >= probs.away, imean, model.fav_threshold)
+            # Sidecar entry: the implied mean + the actual fav-by-1 pick. The pick is
+            # included because the client can't recover the favourite for finished
+            # games (odds are stripped from the fixtures file once a game is over).
             fav_games.append({
                 "event_id": r["event_id"], "date": r["date"],
                 "home": r["home"], "away": r["away"],
                 "implied_mean": round(imean, 4),
+                "pick_home": fav1[0], "pick_away": fav1[1],
             })
 
             if is_ko:
@@ -96,8 +104,6 @@ def main():
                 m = model.predict_from_probs(probs, ou, p_over)
                 pick, ev, ml = best_pick(m, model.pick_max)
                 pen = ""
-            # The simple favourite-by-one strategy (calibrated implied-mean cutoff).
-            fav1 = fav_by_1_pick(probs.home >= probs.away, imean, model.fav_threshold)
 
             row = {
                 "event_id": r["event_id"], "date": r["date"], "stage": r["stage"],
