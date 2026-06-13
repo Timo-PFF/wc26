@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-13T06:01:29.953728Z",
+  "generatedAt": "2026-06-13T09:31:53.461001Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -265,7 +265,7 @@
         },
         "spread": {
           "line": "+1.5",
-          "odds": "+120"
+          "odds": "+125"
         }
       },
       "group": "B"
@@ -319,16 +319,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "BRA -150",
+        "details": "BRA -145",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-150",
+          "home": "-145",
           "away": "+425",
-          "draw": "+280"
+          "draw": "+275"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-155"
+          "odds": "-150"
         }
       },
       "group": "C"
