@@ -269,7 +269,8 @@
   .live-info { max-width: 680px; margin: 8px auto 0; padding: 8px 12px; background: var(--card);
     border: 1px solid var(--line); border-radius: 10px; font-size: .82rem; }
   .live-info .live-info-head { color: var(--muted); margin-bottom: 4px; }
-  .live-info .live-info-row { font-variant-numeric: tabular-nums; }
+  .live-info .live-info-row { font-variant-numeric: tabular-nums; cursor: pointer; border-radius: 5px; padding: 1px 4px; }
+  .live-info .live-info-row:hover { background: rgba(255,255,255,.06); }
   .live-info .li-live { color: var(--accent); font-weight: 600; }
   .live-info .li-final { color: var(--accent2); font-weight: 600; }
   /* Provisional live points added to the standings, e.g. "0 + 2" */
@@ -454,6 +455,7 @@
       <button id="svTable" class="active" onclick="setScheduleView('table')" data-i18n="svTable">Table</button>
       <button id="svGame" onclick="setScheduleView('game')" data-i18n="svGame">By game</button>
     </div>
+    <label class="hidetoggle" style="margin-bottom:10px"><input type="checkbox" id="scheduleTodayOnly" onchange="setScheduleTodayOnly(this.checked)" /> <span data-i18n="todayOnly">Show only today's games</span></label>
     <div id="scheduleMeta" class="sub" style="margin-bottom:10px"></div>
     <div id="scheduleBody"><div class="loading" data-i18n="loading">Loading…</div></div>
   </section>
@@ -522,6 +524,7 @@
   let VIEW_MODE = 'date';    // 'group' = by group/stage · 'date' = chronological (default)
   let SCHEDULE_VIEW = 'table';  // schedule tab layout: 'table' (matrix) | 'game' (read-only cards)
   let SCHEDULE_FILTER = null;   // by-game view: null | {type:'match',id} | {type:'team',abbr}
+  let SCHEDULE_TODAY_ONLY = false;  // results tab: show only games kicked off in the last 24h
   let LANG = 'en';           // 'en' | 'de' — affects all UI text + country names
   let HIDE_STARTED = false;  // pick tab: hide games that are scored / kicked off
   let lockSignature = '';    // ids of locked games at last render; drives auto-relock on the clock tick
@@ -942,8 +945,11 @@
   function drawLiveInfo() {
     const el = document.getElementById('liveInfo');
     if (!el || !LAST_LIVE) return;
+    // Each row links to the schedule/results, filtered to that game (same
+    // clickthrough as the groups/knockout tabs).
     const rows = LAST_LIVE.fetched.map(f =>
-      '<div class="live-info-row">' + escapeHtml(teamAbbr(f.m.home)) + ' – ' + escapeHtml(teamAbbr(f.m.away)) +
+      '<div class="live-info-row" onclick="showGameInSchedule(\'' + escapeHtml(f.m.id) + '\')">' +
+      escapeHtml(teamAbbr(f.m.home)) + ' – ' + escapeHtml(teamAbbr(f.m.away)) +
       ' <span class="' + (f.finished ? 'li-final' : 'li-live') + '">(' +
       escapeHtml(t(f.finished ? 'liFinished' : 'liOngoing')) + ')</span></div>').join('');
     const time = LAST_LIVE.at.toLocaleTimeString(localeTag(), { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -2231,6 +2237,17 @@
     loadSchedule();           // re-render from cache
   }
 
+  // Results tab: "today" = kicked off within the last 24 hours.
+  const TODAY_WINDOW_MS = 24 * 60 * 60 * 1000;
+  function kickedOffToday(m) {
+    const t = Date.parse(m.date);
+    return !isNaN(t) && (Date.now() - t) <= TODAY_WINDOW_MS;
+  }
+  function setScheduleTodayOnly(on) {
+    SCHEDULE_TODAY_ONLY = on;
+    loadSchedule();           // re-render from cache
+  }
+
   // From the Groups tab: jump to the schedule by-game view filtered to a game / team.
   function showGameInSchedule(id) {
     SCHEDULE_FILTER = { type: 'match', id: id };
@@ -2290,8 +2307,10 @@
   // Render the schedule in the chosen layout (table matrix or by-game cards).
   function renderSchedule(cfgPlayers, guesses) {
     const body = document.getElementById('scheduleBody');
-    // Show every kicked-off game: final results AND in-progress (live) ones.
-    const played = MATCHES.filter(m => isFinished(m) || isLive(m));
+    // Show every kicked-off game: final results AND in-progress (live) ones,
+    // optionally narrowed to games that kicked off in the last 24 hours.
+    let played = MATCHES.filter(m => isFinished(m) || isLive(m));
+    if (SCHEDULE_TODAY_ONLY) played = played.filter(kickedOffToday);
     const liveN = MATCHES.filter(isLive).length;
     let meta = t('completedGames')(MATCHES.filter(isFinished).length);
     if (liveN) meta += t('inProgress')(liveN);
