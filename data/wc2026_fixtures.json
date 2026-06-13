@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-13T20:06:16.514016Z",
+  "generatedAt": "2026-06-13T21:19:27.154637Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -219,11 +219,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_HALFTIME",
-        "state": "in",
-        "completed": false,
-        "detail": "HT",
-        "shortDetail": "HT"
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
       },
       "venue": {
         "fullName": "Levi's Stadium",
@@ -237,7 +237,7 @@
         "name": "Qatar",
         "abbreviation": "QAT",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/qat.png",
-        "score": 0,
+        "score": 1,
         "shootout": null,
         "winner": false
       },
@@ -252,22 +252,9 @@
         "shootout": null,
         "winner": false
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "SUI -525",
-        "overUnder": 2.5,
-        "moneyline": {
-          "home": "+1500",
-          "away": "-525",
-          "draw": "+600"
-        },
-        "spread": {
-          "line": "+1.5",
-          "odds": "+130"
-        }
-      },
+      "winner": "draw",
+      "decidedBy": "regulation",
+      "odds": null,
       "group": "B"
     },
     {
@@ -319,11 +306,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "BRA -150",
+        "details": "BRA -155",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-150",
-          "away": "+450",
+          "home": "-155",
+          "away": "+475",
           "draw": "+275"
         },
         "spread": {
@@ -643,7 +630,7 @@
         },
         "spread": {
           "line": "+0.5",
-          "odds": "-170"
+          "odds": "-175"
         }
       },
       "group": "E"
@@ -1264,10 +1251,10 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "POR -360",
+        "details": "POR -350",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-360",
+          "home": "-350",
           "away": "+1000",
           "draw": "+475"
         },
@@ -1642,16 +1629,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "CAN -340",
+        "details": "CAN -425",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-340",
-          "away": "+1000",
-          "draw": "+450"
+          "home": "-425",
+          "away": "+1200",
+          "draw": "+550"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "-110"
+          "odds": "-140"
         }
       },
       "group": "B"
@@ -3028,16 +3015,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "BIH -165",
+        "details": "BIH -200",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-165",
-          "away": "+500",
-          "draw": "+290"
+          "home": "-200",
+          "away": "+650",
+          "draw": "+320"
         },
         "spread": {
-          "line": "-0.5",
-          "odds": "-170"
+          "line": "-1.5",
+          "odds": "+145"
         }
       },
       "group": "B"
