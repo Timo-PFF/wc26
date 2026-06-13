@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-13T21:36:40.344022Z",
+  "generatedAt": "2026-06-13T22:44:48.814969Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -269,11 +269,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
+        "name": "STATUS_FIRST_HALF",
+        "state": "in",
         "completed": false,
-        "detail": "Sat, June 13th at 6:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "detail": "29'",
+        "shortDetail": "29'"
       },
       "venue": {
         "fullName": "MetLife Stadium",
@@ -287,7 +287,7 @@
         "name": "Brazil",
         "abbreviation": "BRA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -298,7 +298,7 @@
         "name": "Morocco",
         "abbreviation": "MAR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/mar.png",
-        "score": null,
+        "score": 1,
         "shootout": null,
         "winner": false
       },
@@ -306,16 +306,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "BRA -155",
+        "details": "BRA -150",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-155",
+          "home": "-150",
           "away": "+475",
-          "draw": "+275"
+          "draw": "+265"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-155"
+          "odds": "-150"
         }
       },
       "group": "C"
@@ -1629,12 +1629,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "CAN -360",
+        "details": "CAN -340",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-360",
+          "home": "-340",
           "away": "+1000",
-          "draw": "+500"
+          "draw": "+475"
         },
         "spread": {
           "line": "-1.5",
