@@ -364,8 +364,8 @@
     <div class="topbar-row">
       <div class="viewtoggle" id="viewToggle">
         <span class="vt-label" data-i18n="viewLabel">View:</span>
-        <button id="vtGroup" class="active" onclick="setView('group')" data-i18n="byGroup">By group</button>
-        <button id="vtDate" onclick="setView('date')" data-i18n="chronological">Chronological</button>
+        <button id="vtGroup" onclick="setView('group')" data-i18n="byGroup">By group</button>
+        <button id="vtDate" class="active" onclick="setView('date')" data-i18n="chronological">Chronological</button>
       </div>
       <button id="liveBtn" class="reload-btn" onclick="fetchLiveScores()" data-i18n="liveScores" disabled>⚡ Live scores</button>
       <button id="reloadBtn" class="reload-btn" onclick="reloadData()" data-i18n="reloadData">↻ Reload data</button>
@@ -519,7 +519,7 @@
   let playersLoaded = false;                 // public player list loaded
   let guessesLoaded = false;                 // private (auth'd) guesses loaded for the current login
   let FIXTURE_TITLE = null;  // set if the fixtures file carries its own title
-  let VIEW_MODE = 'group';   // 'group' = by group/stage · 'date' = chronological
+  let VIEW_MODE = 'date';    // 'group' = by group/stage · 'date' = chronological (default)
   let SCHEDULE_VIEW = 'table';  // schedule tab layout: 'table' (matrix) | 'game' (read-only cards)
   let SCHEDULE_FILTER = null;   // by-game view: null | {type:'match',id} | {type:'team',abbr}
   let LANG = 'en';           // 'en' | 'de' — affects all UI text + country names
