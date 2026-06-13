@@ -207,6 +207,10 @@
   #standingsBody tr { cursor: pointer; }
   #standingsBody tr:hover td { background: rgba(255,255,255,.04); }
   #standingsBody tr.sel td { background: rgba(61,220,151,.12); }
+  /* Synthetic benchmark row — tinted + italic so it's obviously not a real player. */
+  #standingsBody tr.fav-row td { background: rgba(150,120,230,.16); font-style: italic; }
+  #standingsBody tr.fav-row:hover td { background: rgba(150,120,230,.24); }
+  #standingsBody tr.fav-row td:nth-child(2) { border-left: 3px solid var(--accent2); }
   .chart-tooltip { position: absolute; pointer-events: none; z-index: 50; opacity: 0;
     transform: translate(-50%, calc(-100% - 10px)); transition: opacity .1s;
     background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 6px 9px;
@@ -491,6 +495,9 @@
   const SCRIPT_URL   = "https://script.google.com/macros/s/AKfycbxDl0jYS99LBobeb-g4bAJgQ4r9-GZwOeOqFm540YiDfeiQaXnblgdG6VjDIsRob848/exec";
   // 2) Where the fixtures live (ESPN-shaped file produced by python/fetch_fixtures.py):
   const FIXTURES_URL = "data/wc2026_fixtures.json";
+  // 3) Optional: the "Fav by 1" benchmark picks (python/apply_model.py sidecar).
+  //    A synthetic standings-only player that backs the favourite by one goal.
+  const FAV_PICKS_URL = "data/wc2026_fav_by_1.json";
   // (Scoring lives in scoring.js: SCORING + scorePick()/scoreGroup(), loaded above.)
   // =========================================================================
 
@@ -508,6 +515,7 @@
 
   let MATCHES = [];
   let SHEET = { players: [], guesses: [] };  // cached sheet data
+  let FAV_PICKS = null;  // "Fav by 1" benchmark: [{matchId,home,away}] once loaded, [] if unavailable
   let playersLoaded = false;                 // public player list loaded
   let guessesLoaded = false;                 // private (auth'd) guesses loaded for the current login
   let FIXTURE_TITLE = null;  // set if the fixtures file carries its own title
@@ -1866,6 +1874,29 @@
     btn.disabled = false;
   }
 
+  // ---- "Fav by 1" synthetic player (standings tab only) --------------------
+  // A non-human benchmark that backs the favourite by one goal (1-0, or 2-1 when
+  // the implied mean total clears a calibrated threshold). Its picks come from a
+  // sidecar JSON (python/apply_model.py); it is merged into the standings data
+  // locally so it never leaks into the other tabs / the sheet.
+  function favName() { return t('favPlayerName'); }
+  function favGuesses() {
+    return (FAV_PICKS || []).map(p =>
+      ({ player: favName(), matchId: p.matchId, home: p.home, away: p.away }));
+  }
+  async function loadFavPicks() {
+    if (FAV_PICKS !== null) return;            // already attempted (loaded or failed)
+    try {
+      const res = await fetch(FAV_PICKS_URL, { cache: 'no-store' });
+      const data = await res.json();
+      FAV_PICKS = (data.games || [])
+        .filter(g => g.pick_home != null && g.pick_away != null)
+        .map(g => ({ matchId: String(g.event_id), home: g.pick_home, away: g.pick_away }));
+    } catch (e) {
+      FAV_PICKS = [];                          // no benchmark available → simply absent
+    }
+  }
+
   // ---- Standings: combine sheet picks + fixtures results in the browser ----
   function computeStandings(guesses, players) {
     const byId = {};
@@ -1917,14 +1948,18 @@
     }
     body.innerHTML = '<tr><td colspan="6" class="loading">' + escapeHtml(t('loading')) + '</td></tr>';
     try {
-      await loadPlayers(); await loadGuesses();
-      const { rows, finished } = computeStandings(SHEET.guesses, SHEET.players);
+      await loadPlayers(); await loadGuesses(); await loadFavPicks();
+      // Merge the synthetic "Fav by 1" benchmark in locally (standings tab only).
+      const hasFav = !!(FAV_PICKS && FAV_PICKS.length);
+      const allGuesses = SHEET.guesses.concat(favGuesses());
+      const allPlayers = hasFav ? SHEET.players.concat([favName()]) : SHEET.players;
+      const { rows, finished } = computeStandings(allGuesses, allPlayers);
       document.getElementById('standingsMeta').textContent = t('matchesScored')(finished);
       if (!rows.length) { body.innerHTML = '<tr><td colspan="6" class="loading">' + escapeHtml(t('noPlayers')) + '</td></tr>'; return; }
 
       // Provisional live overlay: add each in-progress game's points to a "live
       // standing", re-ranked by the combined total. Settled + Δ shown per cell.
-      const { delta, hasPick } = computeLiveDeltas(SHEET.guesses);
+      const { delta, hasPick } = computeLiveDeltas(allGuesses);
       rows.forEach(r => {
         const d = delta[r.player] || { points: 0, exact: 0, gd: 0, gdErr: 0 };
         r.live = !!hasPick[r.player];
@@ -1942,6 +1977,7 @@
         const tr = document.createElement('tr');
         if (r.rank === 1) tr.className = 'rank1';
         if (CHART_SELECTED.has(r.player)) tr.classList.add('sel');
+        if (hasFav && r.player === favName()) tr.classList.add('fav-row');  // not a real player
         tr.dataset.player = r.player;
         tr.innerHTML = '<td>' + r.rank + '</td><td>' + escapeHtml(r.player) +
           '</td><td class="num">' + cell(r.points, r.dPoints, r.live) +
@@ -1955,7 +1991,7 @@
         tr.addEventListener('click', () => togglePlayerGuesses(tr, r.player));
         body.appendChild(tr);
       });
-      renderPointsChart(SHEET.players, SHEET.guesses);
+      renderPointsChart(allPlayers, allGuesses);
     } catch (e) {
       body.innerHTML = '<tr><td colspan="6" style="color:var(--bad)">' + escapeHtml(t('couldNotLoadStandings')) + '</td></tr>';
     }
@@ -1980,9 +2016,13 @@
   // One player's picks, grouped by group / knockout stage (same ordering as the
   // schedule). Each game shows the result, the pick, and points once scored.
   function playerGuessList(player) {
+    const isFav = player === favName();
     const lut = {};
-    SHEET.guesses.forEach(g => { if (g.player === player) lut[g.matchId] = g; });
-    const games = MATCHES.filter(m => lut[m.id]).slice().sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+    (isFav ? favGuesses() : SHEET.guesses).forEach(g => { if (g.player === player) lut[g.matchId] = g; });
+    let games = MATCHES.filter(m => lut[m.id]);
+    // The benchmark's upcoming picks are hidden — only show completed + live games.
+    if (isFav) games = games.filter(m => isFinished(m) || liveScoreOf(m));
+    games = games.slice().sort((a, b) => (a.date || '').localeCompare(b.date || ''));
     if (!games.length) return '<div class="pg-none">' + escapeHtml(t('noPicksYet')) + '</div>';
 
     const flag = side => {
@@ -2073,6 +2113,7 @@
       const hue = hueOf[p];
       return { label: p, data: series[p], _hue: hue,
         borderColor: chartColor(hue), backgroundColor: chartColor(hue),
+        borderDash: p === favName() ? [6, 4] : [],   // dashed line marks the benchmark
         borderWidth: 2, pointRadius: 0, pointHoverRadius: 4, tension: 0.15 };
     });
 
