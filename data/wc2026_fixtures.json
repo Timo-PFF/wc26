@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-14T18:22:20.076808Z",
+  "generatedAt": "2026-06-14T20:09:24.597614Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -419,11 +419,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_SECOND_HALF",
-        "state": "in",
-        "completed": false,
-        "detail": "58'",
-        "shortDetail": "58'"
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
       },
       "venue": {
         "fullName": "NRG Stadium",
@@ -437,9 +437,9 @@
         "name": "Germany",
         "abbreviation": "GER",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ger.png",
-        "score": 4,
+        "score": 7,
         "shootout": null,
-        "winner": false
+        "winner": true
       },
       "away": {
         "id": "11678",
@@ -452,22 +452,9 @@
         "shootout": null,
         "winner": false
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "GER -3000",
-        "overUnder": 4.5,
-        "moneyline": {
-          "home": "-3000",
-          "away": "+2800",
-          "draw": "+1500"
-        },
-        "spread": {
-          "line": "-3.5",
-          "odds": "-105"
-        }
-      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
       "group": "E"
     },
     {
@@ -482,11 +469,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
+        "name": "STATUS_FIRST_HALF",
+        "state": "in",
         "completed": false,
-        "detail": "Sun, June 14th at 4:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "detail": "7'",
+        "shortDetail": "7'"
       },
       "venue": {
         "fullName": "AT&T Stadium",
@@ -500,7 +487,7 @@
         "name": "Netherlands",
         "abbreviation": "NED",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ned.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -511,7 +498,7 @@
         "name": "Japan",
         "abbreviation": "JPN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/jpn.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -519,16 +506,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "NED +110",
+        "details": "NED +100",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+110",
-          "away": "+250",
-          "draw": "+230"
+          "home": "+100",
+          "away": "+270",
+          "draw": "+240"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+105"
+          "odds": "-105"
         }
       },
       "group": "F"
@@ -708,16 +695,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ESP -1100",
+        "details": "ESP -1000",
         "overUnder": 3.5,
         "moneyline": {
-          "home": "-1100",
+          "home": "-1000",
           "away": "+2200",
           "draw": "+1100"
         },
         "spread": {
           "line": "-2.5",
-          "odds": "-125"
+          "odds": "-115"
         }
       },
       "group": "H"
@@ -2031,16 +2018,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "GER -165",
+        "details": "GER -180",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-165",
-          "away": "+425",
+          "home": "-180",
+          "away": "+475",
           "draw": "+340"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-175"
+          "odds": "-190"
         }
       },
       "group": "E"
@@ -2098,7 +2085,7 @@
         "overUnder": 2.5,
         "moneyline": {
           "home": "-500",
-          "away": "+1200",
+          "away": "+1300",
           "draw": "+650"
         },
         "spread": {
@@ -3354,16 +3341,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "GER -130",
+        "details": "GER -135",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+360",
-          "away": "-130",
-          "draw": "+280"
+          "home": "+380",
+          "away": "-135",
+          "draw": "+290"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+105"
+          "odds": "+110"
         }
       },
       "group": "E"
@@ -3426,7 +3413,7 @@
         },
         "spread": {
           "line": "+1.5",
-          "odds": "+120"
+          "odds": "+125"
         }
       },
       "group": "E"
