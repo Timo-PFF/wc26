@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-14T21:55:06.122828Z",
+  "generatedAt": "2026-06-14T23:23:31.153590Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -469,11 +469,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_SECOND_HALF",
-        "state": "in",
-        "completed": false,
-        "detail": "90'+6'",
-        "shortDetail": "90'+6'"
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
       },
       "venue": {
         "fullName": "AT&T Stadium",
@@ -502,22 +502,9 @@
         "shootout": null,
         "winner": false
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "NED +100",
-        "overUnder": 2.5,
-        "moneyline": {
-          "home": "+100",
-          "away": "+270",
-          "draw": "+240"
-        },
-        "spread": {
-          "line": "-0.5",
-          "odds": "-105"
-        }
-      },
+      "winner": "draw",
+      "decidedBy": "regulation",
+      "odds": null,
       "group": "F"
     },
     {
@@ -532,11 +519,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
+        "name": "STATUS_FIRST_HALF",
+        "state": "in",
         "completed": false,
-        "detail": "Sun, June 14th at 7:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "detail": "8'",
+        "shortDetail": "8'"
       },
       "venue": {
         "fullName": "Lincoln Financial Field",
@@ -550,7 +537,7 @@
         "name": "Ivory Coast",
         "abbreviation": "CIV",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/civ.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -561,7 +548,7 @@
         "name": "Ecuador",
         "abbreviation": "ECU",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ecu.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -572,13 +559,13 @@
         "details": "ECU +150",
         "overUnder": 1.5,
         "moneyline": {
-          "home": "+235",
+          "home": "+225",
           "away": "+150",
-          "draw": "+190"
+          "draw": "+200"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "-180"
+          "odds": "-175"
         }
       },
       "group": "E"
@@ -2144,16 +2131,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "JPN -145",
+        "details": "JPN -155",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+450",
-          "away": "-145",
-          "draw": "+275"
+          "home": "+475",
+          "away": "-155",
+          "draw": "+285"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+120"
+          "odds": "+130"
         }
       },
       "group": "F"
@@ -3530,16 +3517,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "NED -200",
+        "details": "NED -215",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+550",
-          "away": "-200",
-          "draw": "+340"
+          "home": "+600",
+          "away": "-215",
+          "draw": "+360"
         },
         "spread": {
           "line": "+1.5",
-          "odds": "-180"
+          "odds": "-165"
         }
       },
       "group": "F"
@@ -4160,16 +4147,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ENG -340",
+        "details": "ENG -360",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+750",
-          "away": "-340",
+          "home": "+800",
+          "away": "-360",
           "draw": "+550"
         },
         "spread": {
           "line": "+1.5",
-          "odds": "-105"
+          "odds": "+100"
         }
       },
       "group": "L"
