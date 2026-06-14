@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-14T00:18:58.393800Z",
+  "generatedAt": "2026-06-14T05:19:09.419451Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -269,11 +269,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_SECOND_HALF",
-        "state": "in",
-        "completed": false,
-        "detail": "90'+5'",
-        "shortDetail": "90'+5'"
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
       },
       "venue": {
         "fullName": "MetLife Stadium",
@@ -302,22 +302,9 @@
         "shootout": null,
         "winner": false
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "BRA -150",
-        "overUnder": 2.5,
-        "moneyline": {
-          "home": "-150",
-          "away": "+475",
-          "draw": "+265"
-        },
-        "spread": {
-          "line": "-0.5",
-          "odds": "-150"
-        }
-      },
+      "winner": "draw",
+      "decidedBy": "regulation",
+      "odds": null,
       "group": "C"
     },
     {
@@ -332,11 +319,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
-        "completed": false,
-        "detail": "Sat, June 13th at 9:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
       },
       "venue": {
         "fullName": "Gillette Stadium",
@@ -350,7 +337,7 @@
         "name": "Haiti",
         "abbreviation": "HAI",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/hai.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -361,26 +348,13 @@
         "name": "Scotland",
         "abbreviation": "SCO",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sco.png",
-        "score": null,
+        "score": 1,
         "shootout": null,
-        "winner": false
+        "winner": true
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "SCO -190",
-        "overUnder": 2.5,
-        "moneyline": {
-          "home": "+500",
-          "away": "-190",
-          "draw": "+360"
-        },
-        "spread": {
-          "line": "+1.5",
-          "odds": "-185"
-        }
-      },
+      "winner": "away",
+      "decidedBy": "regulation",
+      "odds": null,
       "group": "C"
     },
     {
@@ -395,11 +369,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
+        "name": "STATUS_HALFTIME",
+        "state": "in",
         "completed": false,
-        "detail": "Sun, June 13th at 12:00 AM EDT",
-        "shortDetail": "Scheduled"
+        "detail": "HT",
+        "shortDetail": "HT"
       },
       "venue": {
         "fullName": "BC Place",
@@ -413,7 +387,7 @@
         "name": "Australia",
         "abbreviation": "AUS",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/aus.png",
-        "score": null,
+        "score": 1,
         "shootout": null,
         "winner": false
       },
@@ -424,7 +398,7 @@
         "name": "Türkiye",
         "abbreviation": "TUR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/tur.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -432,16 +406,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "TUR -145",
+        "details": "TUR -135",
         "overUnder": 2.5,
         "moneyline": {
           "home": "+425",
-          "away": "-145",
-          "draw": "+285"
+          "away": "-135",
+          "draw": "+270"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+120"
+          "odds": "+115"
         }
       },
       "group": "D"
@@ -495,12 +469,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "GER -3500",
+        "details": "GER -3000",
         "overUnder": 4.5,
         "moneyline": {
-          "home": "-3500",
+          "home": "-3000",
           "away": "+2800",
-          "draw": "+1500"
+          "draw": "+1400"
         },
         "spread": {
           "line": "-3.5",
@@ -563,11 +537,11 @@
         "moneyline": {
           "home": "+100",
           "away": "+255",
-          "draw": "+250"
+          "draw": "+240"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-105"
+          "odds": "+100"
         }
       },
       "group": "F"
@@ -621,16 +595,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ECU +145",
+        "details": "ECU +155",
         "overUnder": 1.5,
         "moneyline": {
-          "home": "+250",
-          "away": "+145",
+          "home": "+230",
+          "away": "+155",
           "draw": "+185"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "-175"
+          "odds": "-185"
         }
       },
       "group": "E"
@@ -684,16 +658,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "SWE -110",
+        "details": "SWE -105",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-110",
-          "away": "+320",
-          "draw": "+250"
+          "home": "-105",
+          "away": "+310",
+          "draw": "+245"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-115"
+          "odds": "-110"
         }
       },
       "group": "F"
@@ -1566,12 +1540,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "SUI -165",
+        "details": "SUI -170",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-165",
-          "away": "+475",
-          "draw": "+300"
+          "home": "-170",
+          "away": "+500",
+          "draw": "+310"
         },
         "spread": {
           "line": "-0.5",
@@ -1629,16 +1603,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "CAN -340",
+        "details": "CAN -360",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-340",
+          "home": "-360",
           "away": "+1000",
           "draw": "+475"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "-115"
+          "odds": "-120"
         }
       },
       "group": "B"
@@ -1755,16 +1729,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "USA -195",
+        "details": "USA -185",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-195",
-          "away": "+500",
+          "home": "-185",
+          "away": "+475",
           "draw": "+360"
         },
         "spread": {
-          "line": "-1.5",
-          "odds": "+150"
+          "line": "-0.5",
+          "odds": "-195"
         }
       },
       "group": "D"
@@ -1818,16 +1792,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "MAR -120",
+        "details": "MAR -125",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+380",
-          "away": "-120",
-          "draw": "+250"
+          "home": "+390",
+          "away": "-125",
+          "draw": "+255"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+100"
+          "odds": "+105"
         }
       },
       "group": "C"
@@ -1885,12 +1859,12 @@
         "overUnder": 3.5,
         "moneyline": {
           "home": "-1000",
-          "away": "+3500",
-          "draw": "+900"
+          "away": "+2000",
+          "draw": "+1100"
         },
         "spread": {
           "line": "-2.5",
-          "odds": "-135"
+          "odds": "-110"
         }
       },
       "group": "C"
@@ -3141,16 +3115,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "MAR -295",
+        "details": "MAR -330",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-295",
-          "away": "+850",
-          "draw": "+425"
+          "home": "-330",
+          "away": "+950",
+          "draw": "+450"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "-105"
+          "odds": "-115"
         }
       },
       "group": "C"
@@ -3645,11 +3619,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "PAR +110",
+        "details": "PAR +115",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+110",
-          "away": "+270",
+          "home": "+115",
+          "away": "+265",
           "draw": "+235"
         },
         "spread": {
