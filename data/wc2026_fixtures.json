@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-14T08:55:11.376903Z",
+  "generatedAt": "2026-06-14T13:18:42.260459Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -460,12 +460,12 @@
         "overUnder": 4.5,
         "moneyline": {
           "home": "-3500",
-          "away": "+3000",
-          "draw": "+1500"
+          "away": "+2800",
+          "draw": "+1600"
         },
         "spread": {
           "line": "-3.5",
-          "odds": "-110"
+          "odds": "-115"
         }
       },
       "group": "E"
@@ -591,7 +591,7 @@
         },
         "spread": {
           "line": "+0.5",
-          "odds": "-185"
+          "odds": "-190"
         }
       },
       "group": "E"
@@ -645,16 +645,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "SWE -105",
+        "details": "SWE +100",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-105",
+          "home": "+100",
           "away": "+310",
-          "draw": "+245"
+          "draw": "+235"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-110"
+          "odds": "-105"
         }
       },
       "group": "F"
@@ -708,12 +708,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ESP -1100",
+        "details": "ESP -1000",
         "overUnder": 3.5,
         "moneyline": {
-          "home": "-1100",
-          "away": "+2500",
-          "draw": "+1000"
+          "home": "-1000",
+          "away": "+2200",
+          "draw": "+1100"
         },
         "spread": {
           "line": "-2.5",
@@ -1473,7 +1473,7 @@
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-130"
+          "odds": "-135"
         }
       },
       "group": "A"
@@ -1527,11 +1527,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "SUI -170",
+        "details": "SUI -165",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-170",
-          "away": "+500",
+          "home": "-165",
+          "away": "+475",
           "draw": "+310"
         },
         "spread": {
@@ -1725,7 +1725,7 @@
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-180"
+          "odds": "-175"
         }
       },
       "group": "D"
@@ -1842,10 +1842,10 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "BRA -1000",
+        "details": "BRA -900",
         "overUnder": 3.5,
         "moneyline": {
-          "home": "-1000",
+          "home": "-900",
           "away": "+2000",
           "draw": "+1000"
         },
@@ -1914,7 +1914,7 @@
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-105"
+          "odds": "+100"
         }
       },
       "group": "D"
