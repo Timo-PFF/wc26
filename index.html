@@ -369,7 +369,6 @@
         <button id="vtDate" class="active" onclick="setView('date')" data-i18n="chronological">Chronological</button>
       </div>
       <button id="liveBtn" class="reload-btn" onclick="fetchLiveScores()" data-i18n="liveScores" disabled>⚡ Live scores</button>
-      <button id="reloadBtn" class="reload-btn" onclick="reloadData()" data-i18n="reloadData">↻ Reload data</button>
     </div>
   </div>
 
@@ -528,6 +527,7 @@
   let LANG = 'en';           // 'en' | 'de' — affects all UI text + country names
   let HIDE_STARTED = false;  // pick tab: hide games that are scored / kicked off
   let lockSignature = '';    // ids of locked games at last render; drives auto-relock on the clock tick
+  let kickoffSig = null;     // ids of locked games last seen by the global kickoff detector (any tab)
   let HIDDEN_GROUPS = new Set();  // pick tab (group view): section keys toggled off
   let SHOW_GROUP_FILTER = false;  // pick tab: is the group/stage filter panel expanded?
   let ONLY_UPCOMING = false;      // pick tab: only games kicking off within COUNTDOWN_SOON_MS
@@ -705,12 +705,28 @@
   function tick() {
     updateClock();
     updateLiveButton();   // enable/disable as games kick off / finish (cheap)
+    // Global kickoff detector (runs on every tab): when a game crosses kickoff its
+    // lock set changes, so we pull fresh guesses — the server now reveals everyone's
+    // picks for that game (incl. ones submitted minutes before kickoff) — and
+    // refresh whatever data tab is open. First tick just records the baseline.
+    const sig = MATCHES.filter(isLocked).map(m => m.id).join(',');
+    if (kickoffSig === null) kickoffSig = sig;
+    else if (sig !== kickoffSig) { kickoffSig = sig; onGameKickoff(); }
+
     if (document.getElementById('predict').style.display === 'none') return;
     updateCountdowns();   // cheap text-only update, safe while typing
     const a = document.activeElement;
     if (a && a.matches && a.matches('#matches input')) return;
-    const sig = MATCHES.filter(isLocked).map(m => m.id).join(',');
-    if (sig !== lockSignature) renderMatches();
+    if (sig !== lockSignature) renderMatches();   // picks tab: redraw the now-locked game
+  }
+
+  // A game just crossed kickoff: invalidate the cached guesses (so the newly-locked
+  // game's now-public picks load) and re-render the open data tab.
+  async function onGameKickoff() {
+    if (!AUTH) return;                       // guesses are private; nothing to refresh logged out
+    guessesLoaded = false;                   // force the next load to refetch
+    const tab = visibleDataTab();
+    if (tab) await tab.onShow();             // standings/schedule refetch + re-render now
   }
 
   function setLang(lang) {
@@ -1328,25 +1344,6 @@
     const ids = new Set(submitted.map(g => g.matchId));
     SHEET.guesses = SHEET.guesses.filter(g => !(g.player === player && ids.has(g.matchId)));
     submitted.forEach(g => SHEET.guesses.push({ player: player, matchId: g.matchId, home: g.home, away: g.away }));
-  }
-
-  // Manual refresh: refetch the sheet and re-render whatever's on screen.
-  async function reloadData() {
-    if (SCRIPT_URL.startsWith('PASTE')) return;
-    const btn = document.getElementById('reloadBtn');
-    const sel = document.getElementById('player');
-    const keep = AUTH ? AUTH.name : sel.value;
-    if (btn) btn.disabled = true;
-    try {
-      await loadPlayers(true);
-      guessesLoaded = false;            // force a fresh private fetch
-      setPlayers(SHEET.players);
-      if (keep && SHEET.players.includes(keep)) sel.value = keep;
-      await syncPlayer();               // re-apply picks + badge for the logged-in player
-      const tab = visibleDataTab();
-      if (tab) await tab.onShow();       // re-render the open data tab from fresh cache
-    } catch (e) { /* keep showing the last good data */ }
-    if (btn) btn.disabled = false;
   }
 
   // Fill the score inputs with `player`'s saved picks, clearing every other

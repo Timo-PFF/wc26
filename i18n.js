@@ -45,7 +45,7 @@ const I18N = {
     addErrDuplicate: 'That name has already joined — pick it above and enter its password.',
     addFailed: 'Could not create the account. Please try again.',
     viewLabel: 'View:', byGroup: 'By group', chronological: 'Chronological',
-    reloadData: '↻ Reload data', liveScores: '⚡ Live scores', logout: 'Logout',
+    liveScores: '⚡ Live scores', logout: 'Logout',
     loadingMatches: 'Loading matches…', loading: 'Loading…',
     nowLabel: 'Now:', hideStarted: 'Hide started games', showLabel: 'Show:', showPicks: 'show picks',
     countdown: (d, h, m, s) => 'Starts in ' +
@@ -155,7 +155,7 @@ const I18N = {
     addErrDuplicate: 'Dieser Name ist schon dabei — wähle ihn oben und gib das Passwort ein.',
     addFailed: 'Konto konnte nicht erstellt werden. Bitte erneut versuchen.',
     viewLabel: 'Ansicht:', byGroup: 'Nach Gruppe', chronological: 'Chronologisch',
-    reloadData: '↻ Daten neu laden', liveScores: '⚡ Live-Ergebnisse', logout: 'Logout',
+    liveScores: '⚡ Live-Ergebnisse', logout: 'Logout',
     loadingMatches: 'Spiele werden geladen…', loading: 'Wird geladen…',
     nowLabel: 'Jetzt:', hideStarted: 'Begonnene ausblenden', showLabel: 'Anzeigen:', showPicks: 'Tipps anzeigen',
     countdown: (d, h, m, s) => 'Beginnt in ' +
