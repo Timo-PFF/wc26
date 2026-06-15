@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-14T23:23:31.153590Z",
+  "generatedAt": "2026-06-15T02:03:15.646107Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -519,11 +519,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_FIRST_HALF",
-        "state": "in",
-        "completed": false,
-        "detail": "8'",
-        "shortDetail": "8'"
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
       },
       "venue": {
         "fullName": "Lincoln Financial Field",
@@ -537,9 +537,9 @@
         "name": "Ivory Coast",
         "abbreviation": "CIV",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/civ.png",
-        "score": 0,
+        "score": 1,
         "shootout": null,
-        "winner": false
+        "winner": true
       },
       "away": {
         "id": "209",
@@ -552,22 +552,9 @@
         "shootout": null,
         "winner": false
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "ECU +150",
-        "overUnder": 1.5,
-        "moneyline": {
-          "home": "+225",
-          "away": "+150",
-          "draw": "+200"
-        },
-        "spread": {
-          "line": "+0.5",
-          "odds": "-175"
-        }
-      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
       "group": "E"
     },
     {
@@ -691,7 +678,7 @@
         },
         "spread": {
           "line": "-2.5",
-          "odds": "-125"
+          "odds": "-130"
         }
       },
       "group": "H"
@@ -880,7 +867,7 @@
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-115"
+          "odds": "-110"
         }
       },
       "group": "G"
@@ -943,7 +930,7 @@
         },
         "spread": {
           "line": "-1.5",
-          "odds": "+135"
+          "odds": "+140"
         }
       },
       "group": "I"
@@ -1631,7 +1618,7 @@
         "overUnder": 2.5,
         "moneyline": {
           "home": "+100",
-          "away": "+310",
+          "away": "+320",
           "draw": "+235"
         },
         "spread": {
@@ -1762,7 +1749,7 @@
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+105"
+          "odds": "+110"
         }
       },
       "group": "C"
@@ -2005,16 +1992,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "GER -175",
+        "details": "GER -190",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-175",
-          "away": "+450",
-          "draw": "+350"
+          "home": "-190",
+          "away": "+500",
+          "draw": "+360"
         },
         "spread": {
-          "line": "-0.5",
-          "odds": "-185"
+          "line": "-1.5",
+          "odds": "+145"
         }
       },
       "group": "E"
@@ -2077,7 +2064,7 @@
         },
         "spread": {
           "line": "-2.5",
-          "odds": "+120"
+          "odds": "+125"
         }
       },
       "group": "E"
@@ -3328,16 +3315,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "GER -130",
+        "details": "GER -145",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+360",
-          "away": "-130",
-          "draw": "+280"
+          "home": "+400",
+          "away": "-145",
+          "draw": "+300"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+105"
+          "odds": "+120"
         }
       },
       "group": "E"
