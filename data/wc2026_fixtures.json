@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-16T08:33:39.800282Z",
+  "generatedAt": "2026-06-16T13:17:21.934630Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -856,16 +856,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "FRA -195",
+        "details": "FRA -215",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-195",
-          "away": "+550",
-          "draw": "+340"
+          "home": "-215",
+          "away": "+600",
+          "draw": "+360"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "+140"
+          "odds": "+130"
         }
       },
       "group": "I"
@@ -919,16 +919,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "NOR -500",
+        "details": "NOR -475",
         "overUnder": 2.5,
         "moneyline": {
           "home": "+1300",
-          "away": "-500",
+          "away": "-475",
           "draw": "+600"
         },
         "spread": {
           "line": "+1.5",
-          "odds": "+130"
+          "odds": "+125"
         }
       },
       "group": "I"
@@ -982,12 +982,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ARG -235",
+        "details": "ARG -225",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-235",
-          "away": "+700",
-          "draw": "+360"
+          "home": "-225",
+          "away": "+650",
+          "draw": "+350"
         },
         "spread": {
           "line": "-1.5",
@@ -1045,12 +1045,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "AUT -270",
+        "details": "AUT -275",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-270",
-          "away": "+750",
-          "draw": "+425"
+          "home": "-275",
+          "away": "+800",
+          "draw": "+400"
         },
         "spread": {
           "line": "-1.5",
@@ -1234,16 +1234,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "GHA +120",
+        "details": "GHA +125",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+120",
+          "home": "+125",
           "away": "+240",
-          "draw": "+235"
+          "draw": "+230"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+115"
+          "odds": "+120"
         }
       },
       "group": "L"
@@ -1868,8 +1868,8 @@
         "overUnder": 2.5,
         "moneyline": {
           "home": "-140",
-          "away": "+380",
-          "draw": "+310"
+          "away": "+400",
+          "draw": "+295"
         },
         "spread": {
           "line": "-0.5",
@@ -2308,9 +2308,9 @@
         "details": "EGY -160",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+450",
+          "home": "+475",
           "away": "-160",
-          "draw": "+310"
+          "draw": "+300"
         },
         "spread": {
           "line": "+0.5",
@@ -2818,7 +2818,7 @@
         },
         "spread": {
           "line": "-1.5",
-          "odds": "+135"
+          "odds": "+145"
         }
       },
       "group": "K"
@@ -3250,16 +3250,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "GER -135",
+        "details": "GER -140",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+380",
-          "away": "-135",
-          "draw": "+285"
+          "home": "+390",
+          "away": "-140",
+          "draw": "+290"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+110"
+          "odds": "+115"
         }
       },
       "group": "E"
@@ -3881,7 +3881,7 @@
       "odds": {
         "provider": "DraftKings",
         "details": "EGY +110",
-        "overUnder": 1.5,
+        "overUnder": 2.5,
         "moneyline": {
           "home": "+110",
           "away": "+300",
