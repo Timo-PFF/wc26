@@ -1,0 +1,247 @@
+{
+  "round": "round-of-32",
+  "source": "wc2026_fixtures_initial.json",
+  "note": "Pre-tournament R32 bracket. Slots reference group standings: rank 1=winner, 2=runner-up, 3=third-place (one of the listed candidate groups, per FIFA allocation).",
+  "matches": [
+    {
+      "match_id": "760486",
+      "date": "2026-06-28T19:00Z",
+      "home": {
+        "rank": 2,
+        "group": "A"
+      },
+      "away": {
+        "rank": 2,
+        "group": "B"
+      }
+    },
+    {
+      "match_id": "760487",
+      "date": "2026-06-29T17:00Z",
+      "home": {
+        "rank": 1,
+        "group": "C"
+      },
+      "away": {
+        "rank": 2,
+        "group": "F"
+      }
+    },
+    {
+      "match_id": "760489",
+      "date": "2026-06-29T20:30Z",
+      "home": {
+        "rank": 1,
+        "group": "E"
+      },
+      "away": {
+        "rank": 3,
+        "groups": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "F"
+        ]
+      }
+    },
+    {
+      "match_id": "760488",
+      "date": "2026-06-30T01:00Z",
+      "home": {
+        "rank": 1,
+        "group": "F"
+      },
+      "away": {
+        "rank": 2,
+        "group": "C"
+      }
+    },
+    {
+      "match_id": "760490",
+      "date": "2026-06-30T17:00Z",
+      "home": {
+        "rank": 2,
+        "group": "E"
+      },
+      "away": {
+        "rank": 2,
+        "group": "I"
+      }
+    },
+    {
+      "match_id": "760492",
+      "date": "2026-06-30T21:00Z",
+      "home": {
+        "rank": 1,
+        "group": "I"
+      },
+      "away": {
+        "rank": 3,
+        "groups": [
+          "C",
+          "D",
+          "F",
+          "G",
+          "H"
+        ]
+      }
+    },
+    {
+      "match_id": "760491",
+      "date": "2026-07-01T01:00Z",
+      "home": {
+        "rank": 1,
+        "group": "A"
+      },
+      "away": {
+        "rank": 3,
+        "groups": [
+          "C",
+          "E",
+          "F",
+          "H",
+          "I"
+        ]
+      }
+    },
+    {
+      "match_id": "760495",
+      "date": "2026-07-01T16:00Z",
+      "home": {
+        "rank": 1,
+        "group": "L"
+      },
+      "away": {
+        "rank": 3,
+        "groups": [
+          "E",
+          "H",
+          "I",
+          "J",
+          "K"
+        ]
+      }
+    },
+    {
+      "match_id": "760493",
+      "date": "2026-07-01T20:00Z",
+      "home": {
+        "rank": 1,
+        "group": "G"
+      },
+      "away": {
+        "rank": 3,
+        "groups": [
+          "A",
+          "E",
+          "H",
+          "I",
+          "J"
+        ]
+      }
+    },
+    {
+      "match_id": "760494",
+      "date": "2026-07-02T00:00Z",
+      "home": {
+        "rank": 1,
+        "group": "D"
+      },
+      "away": {
+        "rank": 3,
+        "groups": [
+          "B",
+          "E",
+          "F",
+          "I",
+          "J"
+        ]
+      }
+    },
+    {
+      "match_id": "760497",
+      "date": "2026-07-02T19:00Z",
+      "home": {
+        "rank": 1,
+        "group": "H"
+      },
+      "away": {
+        "rank": 2,
+        "group": "J"
+      }
+    },
+    {
+      "match_id": "760496",
+      "date": "2026-07-02T23:00Z",
+      "home": {
+        "rank": 2,
+        "group": "K"
+      },
+      "away": {
+        "rank": 2,
+        "group": "L"
+      }
+    },
+    {
+      "match_id": "760498",
+      "date": "2026-07-03T03:00Z",
+      "home": {
+        "rank": 1,
+        "group": "B"
+      },
+      "away": {
+        "rank": 3,
+        "groups": [
+          "E",
+          "F",
+          "G",
+          "I",
+          "J"
+        ]
+      }
+    },
+    {
+      "match_id": "760499",
+      "date": "2026-07-03T18:00Z",
+      "home": {
+        "rank": 2,
+        "group": "D"
+      },
+      "away": {
+        "rank": 2,
+        "group": "G"
+      }
+    },
+    {
+      "match_id": "760500",
+      "date": "2026-07-03T22:00Z",
+      "home": {
+        "rank": 1,
+        "group": "J"
+      },
+      "away": {
+        "rank": 2,
+        "group": "H"
+      }
+    },
+    {
+      "match_id": "760501",
+      "date": "2026-07-04T01:30Z",
+      "home": {
+        "rank": 1,
+        "group": "K"
+      },
+      "away": {
+        "rank": 3,
+        "groups": [
+          "D",
+          "E",
+          "I",
+          "J",
+          "L"
+        ]
+      }
+    }
+  ]
+}

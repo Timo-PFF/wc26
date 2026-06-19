@@ -244,6 +244,9 @@
   .h2h-table .h2h-cell:hover { background: rgba(61,220,151,.12); color: var(--accent); }
   .group-table .gteam { cursor: pointer; }
   .group-table tbody tr:hover .gteam { color: var(--accent); }
+  /* A team that has mathematically clinched its group seed (filled into the R32). */
+  .group-table tr.seed-locked .gpts { color: var(--accent2); }
+  .group-table .seed-lock { flex: 0 0 auto; font-size: 0.85em; cursor: help; filter: saturate(0.4); }
   .filter-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
   /* Schedule tab: one row per finished game, one column per player */
   .schedule-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -499,6 +502,9 @@
   // 3) Optional: the "Fav by 1" benchmark picks (python/apply_model.py sidecar).
   //    A synthetic standings-only player that backs the favourite by one goal.
   const FAV_PICKS_URL = "data/wc2026_fav_by_1.json";
+  // 4) Pre-tournament R32 bracket (placeholder slots). Compared to the live R32
+  //    fixtures to flag teams that have clinched their group seed (Groups tab).
+  const R32_BRACKET_URL = "data/wc2026_r32_bracket.json";
   // (Scoring lives in scoring.js: SCORING + scorePick()/scoreGroup(), loaded above.)
   // =========================================================================
 
@@ -517,6 +523,7 @@
   let MATCHES = [];
   let SHEET = { players: [], guesses: [] };  // cached sheet data
   let FAV_PICKS = null;  // "Fav by 1" benchmark: [{matchId,home,away}] once loaded, [] if unavailable
+  let R32_BRACKET = null;  // pre-tournament R32 bracket (for clinched-seed detection); {} if unavailable
   let playersLoaded = false;                 // public player list loaded
   let guessesLoaded = false;                 // private (auth'd) guesses loaded for the current login
   let FIXTURE_TITLE = null;  // set if the fixtures file carries its own title
@@ -2454,9 +2461,24 @@
   // ---- Groups tab: live group tables from the fixtures ----------------------
   // Standings per group from completed group-stage games: 3 pts win / 1 draw,
   // sorted by points, then goal difference, then goals scored, then name.
-  function renderGroups() {
+  // Load the pre-tournament R32 bracket once (used to flag clinched group seeds).
+  async function loadR32Bracket() {
+    if (R32_BRACKET !== null) return;
+    try { R32_BRACKET = await (await fetch(R32_BRACKET_URL, { cache: 'no-store' })).json(); }
+    catch (e) { R32_BRACKET = { matches: [] }; }
+  }
+
+  // Localized "secured this seed" tooltip for a clinched team.
+  function seedLockTitle(lock) {
+    const pos = lock.rank === 1 ? t('lockWinner') : lock.rank === 2 ? t('lockRunnerUp') : t('lockThird');
+    return t('seedLocked') + ' — ' + pos + (lock.group ? ' (' + t('group') + ' ' + lock.group + ')' : '');
+  }
+
+  async function renderGroups() {
     const body = document.getElementById('groupsBody');
+    await loadR32Bracket();
     const groups = computeGroups(MATCHES);   // { letter: {teams, matches} }, computed in groups.js
+    const locked = lockedSeeds(MATCHES, R32_BRACKET);   // teamAbbr -> {rank, group}, from groups.js
     const letters = Object.keys(groups);
     if (!letters.length) {
       body.innerHTML = '<div class="card">' + escapeHtml(t('noGroups')) + '</div>';
@@ -2470,10 +2492,12 @@
         const logo = teamLogo(r.side);
         const flag = logo ? '<img class="flag" src="' + escapeHtml(logo) + '" alt="" loading="lazy" />' : '';
         const goals = r.gf + '–' + r.ga + ' (' + (r.gd > 0 ? '+' : '') + r.gd + ')';
-        return '<tr>' +
+        const lock = locked[teamAbbr(r.side)];
+        const lockBadge = lock ? ' <span class="seed-lock" title="' + escapeHtml(seedLockTitle(lock)) + '">🔒</span>' : '';
+        return '<tr' + (lock ? ' class="seed-locked"' : '') + '>' +
           '<td class="gteam" onclick="showTeamInSchedule(\'' + escapeHtml(teamAbbr(r.side)) + '\')">' +
             flag + '<span class="tn">' + escapeHtml(teamName(r.side)) +
-            ' <span class="ab-paren">(' + escapeHtml(teamAbbr(r.side)) + ')</span></span></td>' +
+            ' <span class="ab-paren">(' + escapeHtml(teamAbbr(r.side)) + ')</span></span>' + lockBadge + '</td>' +
           '<td class="num">' + r.played + '</td>' +
           '<td class="goalcol">' + goals + '</td>' +
           '<td class="num gpts">' + r.pts + '</td></tr>';
