@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-19T18:06:11.264250Z",
+  "generatedAt": "2026-06-19T21:18:39.383370Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -1419,11 +1419,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
+        "name": "STATUS_HALFTIME",
+        "state": "in",
         "completed": false,
-        "detail": "Fri, June 19th at 3:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "detail": "HT",
+        "shortDetail": "HT"
       },
       "venue": {
         "fullName": "Lumen Field",
@@ -1437,7 +1437,7 @@
         "name": "United States",
         "abbreviation": "USA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
-        "score": null,
+        "score": 2,
         "shootout": null,
         "winner": false
       },
@@ -1448,7 +1448,7 @@
         "name": "Australia",
         "abbreviation": "AUS",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/aus.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -1456,16 +1456,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "USA -160",
+        "details": "USA -180",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-160",
-          "away": "+425",
+          "home": "-180",
+          "away": "+500",
           "draw": "+320"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-160"
+          "odds": "-185"
         }
       },
       "group": "D"
@@ -1519,11 +1519,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "MAR -150",
+        "details": "MAR -145",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+475",
-          "away": "-150",
+          "home": "+450",
+          "away": "-145",
           "draw": "+270"
         },
         "spread": {
@@ -3346,16 +3346,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "PAR +115",
+        "details": "PAR +110",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+115",
+          "home": "+110",
           "away": "+255",
-          "draw": "+235"
+          "draw": "+250"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+110"
+          "odds": "+105"
         }
       },
       "group": "D"
@@ -3409,16 +3409,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "USA +140",
+        "details": "TUR +155",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+180",
-          "away": "+140",
-          "draw": "+275"
+          "home": "+155",
+          "away": "+155",
+          "draw": "+290"
         },
         "spread": {
-          "line": "+0.5",
-          "odds": "-170"
+          "line": "-0.5",
+          "odds": "+145"
         }
       },
       "group": "D"
