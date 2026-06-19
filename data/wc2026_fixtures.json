@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-19T22:33:24.861755Z",
+  "generatedAt": "2026-06-19T23:44:47.364644Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -1469,11 +1469,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
+        "name": "STATUS_SECOND_HALF",
+        "state": "in",
         "completed": false,
-        "detail": "Fri, June 19th at 6:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "detail": "79'",
+        "shortDetail": "79'"
       },
       "venue": {
         "fullName": "Gillette Stadium",
@@ -1487,7 +1487,7 @@
         "name": "Scotland",
         "abbreviation": "SCO",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sco.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -1498,7 +1498,7 @@
         "name": "Morocco",
         "abbreviation": "MAR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/mar.png",
-        "score": null,
+        "score": 1,
         "shootout": null,
         "winner": false
       },
@@ -1511,11 +1511,11 @@
         "moneyline": {
           "home": "+425",
           "away": "-140",
-          "draw": "+260"
+          "draw": "+270"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+120"
+          "odds": "+125"
         }
       },
       "group": "C"
@@ -1574,7 +1574,7 @@
         "moneyline": {
           "home": "-900",
           "away": "+2000",
-          "draw": "+1000"
+          "draw": "+950"
         },
         "spread": {
           "line": "-2.5",
@@ -1767,7 +1767,7 @@
         },
         "spread": {
           "line": "-1.5",
-          "odds": "+140"
+          "odds": "+135"
         }
       },
       "group": "E"
@@ -2136,12 +2136,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "EGY -165",
+        "details": "EGY -160",
         "overUnder": 2.5,
         "moneyline": {
           "home": "+450",
-          "away": "-165",
-          "draw": "+320"
+          "away": "-160",
+          "draw": "+310"
         },
         "spread": {
           "line": "+0.5",
@@ -2829,16 +2829,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "MAR -360",
+        "details": "MAR -425",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-360",
-          "away": "+1000",
+          "home": "-425",
+          "away": "+1200",
           "draw": "+500"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "-125"
+          "odds": "-145"
         }
       },
       "group": "C"
@@ -2892,16 +2892,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "BRA -225",
+        "details": "BRA -255",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+550",
-          "away": "-225",
-          "draw": "+400"
+          "home": "+600",
+          "away": "-255",
+          "draw": "+450"
         },
         "spread": {
           "line": "+1.5",
-          "odds": "-150"
+          "odds": "-125"
         }
       },
       "group": "C"
@@ -3018,16 +3018,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "MEX +115",
+        "details": "MEX +110",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+235",
-          "away": "+115",
-          "draw": "+265"
+          "home": "+240",
+          "away": "+110",
+          "draw": "+270"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "-140"
+          "odds": "-130"
         }
       },
       "group": "A"
@@ -3396,16 +3396,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "TUR +155",
+        "details": "USA +150",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+155",
-          "away": "+155",
-          "draw": "+295"
+          "home": "+160",
+          "away": "+150",
+          "draw": "+285"
         },
         "spread": {
-          "line": "-0.5",
-          "odds": "+145"
+          "line": "+0.5",
+          "odds": "-180"
         }
       },
       "group": "D"
