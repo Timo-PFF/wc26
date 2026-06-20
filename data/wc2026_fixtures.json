@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-20T20:24:17.804133Z",
+  "generatedAt": "2026-06-20T21:51:31.253349Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -1669,11 +1669,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_FIRST_HALF",
+        "name": "STATUS_SECOND_HALF",
         "state": "in",
         "completed": false,
-        "detail": "22'",
-        "shortDetail": "22'"
+        "detail": "88'",
+        "shortDetail": "88'"
       },
       "venue": {
         "fullName": "BMO Field",
@@ -1687,7 +1687,7 @@
         "name": "Germany",
         "abbreviation": "GER",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ger.png",
-        "score": 0,
+        "score": 1,
         "shootout": null,
         "winner": false
       },
@@ -1698,7 +1698,7 @@
         "name": "Ivory Coast",
         "abbreviation": "CIV",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/civ.png",
-        "score": 0,
+        "score": 1,
         "shootout": null,
         "winner": false
       },
@@ -1778,7 +1778,7 @@
         },
         "spread": {
           "line": "-2.5",
-          "odds": "+130"
+          "odds": "+135"
         }
       },
       "group": "E"
@@ -2156,7 +2156,7 @@
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-175"
+          "odds": "-180"
         }
       },
       "group": "J"
@@ -3029,16 +3029,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "GER -145",
+        "details": "GER -150",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+400",
-          "away": "-145",
+          "home": "+425",
+          "away": "-150",
           "draw": "+300"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+120"
+          "odds": "+125"
         }
       },
       "group": "E"
@@ -3092,16 +3092,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "CIV -700",
+        "details": "CIV -650",
         "overUnder": 3.5,
         "moneyline": {
-          "home": "+1800",
-          "away": "-700",
-          "draw": "+800"
+          "home": "+1600",
+          "away": "-650",
+          "draw": "+750"
         },
         "spread": {
           "line": "+2.5",
-          "odds": "-135"
+          "odds": "-160"
         }
       },
       "group": "E"
@@ -3218,16 +3218,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "NED -310",
-        "overUnder": null,
+        "details": "NED -370",
+        "overUnder": 2.5,
         "moneyline": {
-          "home": "+900",
-          "away": "-310",
-          "draw": "+475"
+          "home": "+1000",
+          "away": "-370",
+          "draw": "+500"
         },
         "spread": {
           "line": "+1.5",
-          "odds": "-105"
+          "odds": "+100"
         }
       },
       "group": "F"
