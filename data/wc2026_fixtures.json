@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-21T15:30:04.962293Z",
+  "generatedAt": "2026-06-21T17:09:47.455998Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -1819,11 +1819,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
+        "name": "STATUS_HALFTIME",
+        "state": "in",
         "completed": false,
-        "detail": "Sun, June 21st at 12:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "detail": "HT",
+        "shortDetail": "HT"
       },
       "venue": {
         "fullName": "Mercedes-Benz Stadium",
@@ -1837,7 +1837,7 @@
         "name": "Spain",
         "abbreviation": "ESP",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/esp.png",
-        "score": null,
+        "score": 3,
         "shootout": null,
         "winner": false
       },
@@ -1848,7 +1848,7 @@
         "name": "Saudi Arabia",
         "abbreviation": "KSA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ksa.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -1865,7 +1865,7 @@
         },
         "spread": {
           "line": "-2.5",
-          "odds": "-130"
+          "odds": "-125"
         }
       },
       "group": "H"
@@ -1919,16 +1919,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "BEL -235",
+        "details": "BEL -240",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-235",
-          "away": "+650",
+          "home": "-240",
+          "away": "+700",
           "draw": "+380"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "+115"
+          "odds": "+110"
         }
       },
       "group": "G"
@@ -1982,12 +1982,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "URU -220",
+        "details": "URU -230",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-220",
-          "away": "+800",
-          "draw": "+320"
+          "home": "-230",
+          "away": "+850",
+          "draw": "+330"
         },
         "spread": {
           "line": "-1.5",
@@ -2864,11 +2864,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "KOR -155",
+        "details": "KOR -160",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+450",
-          "away": "-155",
+          "home": "+475",
+          "away": "-160",
           "draw": "+300"
         },
         "spread": {
@@ -3188,7 +3188,7 @@
         },
         "spread": {
           "line": "+2.5",
-          "odds": "-150"
+          "odds": "-145"
         }
       },
       "group": "F"
