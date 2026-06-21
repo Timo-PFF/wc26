@@ -4,12 +4,13 @@
  * use isKnockout(). Pure logic only: no DOM, no app state, no i18n — the tab
  * renderer in index.html turns this structure into HTML.
  *
- * Within each round the matches are numbered 1..n in match-id order (ESPN keeps
- * ids in match-number order). The 2026 bracket linkage between those numbers is
- * fixed and published, so we hard-code it once in KO_LINKAGE. We deliberately do
- * NOT read it from the placeholder opponent names ("Round of 32 3 Winner"),
- * because ESPN overwrites those with the real teams as the bracket fills — the
- * linkage has to keep working once games are played.
+ * The bracket linkage (which two matches' winners meet) is NOT derivable from
+ * the fixtures: ESPN labels feeders only as "Round of 32 N Winner", where N is a
+ * fixed bracket-position number that the feed never ties to a real match. So we
+ * pass in the connectivity explicitly — `feederMap` maps a match id to the two
+ * feeder match ids whose winners play it — built from
+ * data/wc2026_knockout_bracket.json (resolved against the official FIFA bracket).
+ * Keying by id means it keeps working as ESPN fills placeholders with real teams.
  *
  * buildBracket() folds that bracket into the two halves that meet at the final,
  * each ordered so a pre-order (home-feeder-first) walk lists every round left
@@ -17,17 +18,8 @@
  * and the bottom half upward — teams enter top and bottom, converge on the final.
  */
 
-// For each round, which previous-round match numbers (1-based) feed each match,
-// in that round's match-id order. This is the fixed 2026 bracket.
-const KO_LINKAGE = {
-  'round-of-16':   { from: 'round-of-32',   feeders: [[1, 3], [2, 5], [4, 6], [7, 8], [11, 12], [9, 10], [13, 15], [14, 16]] },
-  'quarterfinals': { from: 'round-of-16',   feeders: [[1, 2], [5, 6], [3, 4], [7, 8]] },
-  'semifinals':    { from: 'quarterfinals', feeders: [[1, 2], [3, 4]] },
-  'final':         { from: 'semifinals',    feeders: [[1, 2]] },
-};
-
-// Knockout matches grouped by stage slug, each sorted by numeric id. That id
-// order is the 1..n match numbering KO_LINKAGE refers to.
+// Knockout matches grouped by stage slug, each sorted by numeric id (only used
+// for the flat fallback layout and to locate the final / 3rd-place match).
 function koRoundsBySlug(matches) {
   const rounds = {};
   (matches || []).filter(isKnockout).forEach(m => {
@@ -39,27 +31,27 @@ function koRoundsBySlug(matches) {
   return rounds;
 }
 
-// Build the folded bracket from a full fixtures list. Returns:
+// Build the folded bracket from a full fixtures list + a feeder map
+// (matchId -> [homeFeederId, awayFeederId]). Returns:
 //   { empty }                                  — no knockout games at all
-//   { empty:false, folded:false, rounds }      — structure unexpected; render flat
+//   { empty:false, folded:false, rounds }      — no/!enough linkage; render flat
 //   { empty:false, folded:true, rounds, topRows, bottomRows, final, third }
 // topRows/bottomRows are { <slug>: [matches left→right] } for one half each.
-function buildBracket(matches) {
+function buildBracket(matches, feederMap) {
   const rounds = koRoundsBySlug(matches);
   const koCount = Object.values(rounds).reduce((n, l) => n + l.length, 0);
   if (!koCount) return { empty: true };
 
-  // The two matches that feed `m` (null for leaves / unknown linkage), looked up
-  // purely by match position — independent of whether the teams are resolved.
+  const byId = {};
+  (matches || []).forEach(m => { byId[m.id] = m; });
+  feederMap = feederMap || {};
+
+  // The two matches that feed `m` (null for round-of-32 leaves or missing
+  // linkage), looked up by id — independent of whether the teams are resolved.
   const feedersOf = m => {
-    const slug = (m.stage || {}).slug;
-    const link = KO_LINKAGE[slug];
-    if (!link) return [null, null];               // round-of-32 / 3rd-place
-    const pos = (rounds[slug] || []).indexOf(m);  // 0-based match number
-    const pair = pos >= 0 ? link.feeders[pos] : null;
-    if (!pair) return [null, null];
-    const prev = rounds[link.from] || [];
-    return [prev[pair[0] - 1] || null, prev[pair[1] - 1] || null];
+    const f = feederMap[m.id];
+    if (!f) return [null, null];
+    return [byId[f[0]] || null, byId[f[1]] || null];
   };
 
   const final = (rounds['final'] || [])[0] || null;

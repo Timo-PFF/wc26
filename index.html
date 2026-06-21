@@ -505,6 +505,9 @@
   // 4) Pre-tournament R32 bracket (placeholder slots). Compared to the live R32
   //    fixtures to flag teams that have clinched their group seed (Groups tab).
   const R32_BRACKET_URL = "data/wc2026_r32_bracket.json";
+  // 5) Knockout bracket connectivity (each match's two feeder match ids). Drives
+  //    the correct downstream placement in the Knockout tab.
+  const KO_BRACKET_URL = "data/wc2026_knockout_bracket.json";
   // (Scoring lives in scoring.js: SCORING + scorePick()/scoreGroup(), loaded above.)
   // =========================================================================
 
@@ -524,6 +527,7 @@
   let SHEET = { players: [], guesses: [] };  // cached sheet data
   let FAV_PICKS = null;  // "Fav by 1" benchmark: [{matchId,home,away}] once loaded, [] if unavailable
   let R32_BRACKET = null;  // pre-tournament R32 bracket (for clinched-seed detection); {} if unavailable
+  let KO_FEEDERS = null;   // knockout connectivity: matchId -> [homeFeederId, awayFeederId]; {} if unavailable
   let playersLoaded = false;                 // public player list loaded
   let guessesLoaded = false;                 // private (auth'd) guesses loaded for the current login
   let FIXTURE_TITLE = null;  // set if the fixtures file carries its own title
@@ -2602,9 +2606,20 @@
     return open + cards + '</div>';
   }
 
-  function renderKnockout() {
+  // Load the knockout connectivity once: matchId -> [homeFeederId, awayFeederId].
+  async function loadKoFeeders() {
+    if (KO_FEEDERS !== null) return;
+    try {
+      const doc = await (await fetch(KO_BRACKET_URL, { cache: 'no-store' })).json();
+      KO_FEEDERS = {};
+      (doc.matches || []).forEach(e => { KO_FEEDERS[e.match_id] = e.feeders; });
+    } catch (e) { KO_FEEDERS = {}; }   // bracket falls back to a flat layout
+  }
+
+  async function renderKnockout() {
     const body = document.getElementById('knockoutBody');
-    const b = buildBracket(MATCHES);
+    await loadKoFeeders();
+    const b = buildBracket(MATCHES, KO_FEEDERS);
     if (b.empty) { body.innerHTML = '<div class="card">' + escapeHtml(t('noKnockout')) + '</div>'; return; }
 
     let inner = '';
