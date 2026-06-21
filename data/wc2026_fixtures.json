@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-21T19:04:58.412255Z",
+  "generatedAt": "2026-06-21T20:45:30.538568Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -1869,11 +1869,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_FIRST_HALF",
+        "name": "STATUS_SECOND_HALF",
         "state": "in",
         "completed": false,
-        "detail": "2'",
-        "shortDetail": "2'"
+        "detail": "77'",
+        "shortDetail": "77'"
       },
       "venue": {
         "fullName": "SoFi Stadium",
@@ -1969,16 +1969,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "URU -240",
+        "details": "URU -245",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-240",
-          "away": "+800",
+          "home": "-245",
+          "away": "+850",
           "draw": "+340"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "+125"
+          "odds": "+120"
         }
       },
       "group": "H"
@@ -2095,12 +2095,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ARG -185",
+        "details": "ARG -190",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-185",
-          "away": "+550",
-          "draw": "+310"
+          "home": "-190",
+          "away": "+600",
+          "draw": "+320"
         },
         "spread": {
           "line": "-1.5",
@@ -3103,16 +3103,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "JPN +100",
+        "details": "JPN -105",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+100",
+          "home": "-105",
           "away": "+320",
-          "draw": "+235"
+          "draw": "+245"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-105"
+          "odds": "-110"
         }
       },
       "group": "F"
@@ -3607,12 +3607,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "EGY +110",
+        "details": "EGY +105",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+110",
-          "away": "+300",
-          "draw": "+215"
+          "home": "+105",
+          "away": "+310",
+          "draw": "+225"
         },
         "spread": {
           "line": "-0.5",
@@ -3799,13 +3799,13 @@
         "details": "ENG -425",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+950",
+          "home": "+1000",
           "away": "-425",
-          "draw": "+600"
+          "draw": "+650"
         },
         "spread": {
           "line": "+1.5",
-          "odds": "+110"
+          "odds": "+115"
         }
       },
       "group": "L"
