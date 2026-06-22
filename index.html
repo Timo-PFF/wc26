@@ -311,6 +311,18 @@
   .ko-match.ko-final { width: 104px; border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold) inset; }
   .ko-match.ko-final.ko-clickable:hover { border-color: var(--gold); }
   .ko-match.ko-third { width: 104px; opacity: .9; }
+  /* Rich hover tooltip for a knockout match. */
+  .ko-tip { position: fixed; z-index: 60; pointer-events: none; opacity: 0; transition: opacity .1s;
+    background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px;
+    font-size: 12px; max-width: 250px; box-shadow: 0 4px 16px rgba(0,0,0,.35); }
+  .ko-tip .ko-tip-round { color: var(--muted); font-weight: 600; margin-bottom: 5px; }
+  .ko-tip .ko-tip-team { display: flex; align-items: center; gap: 6px; margin: 2px 0; }
+  .ko-tip .ko-tip-team img { width: 18px; height: 18px; object-fit: contain; border-radius: 2px; flex: 0 0 auto; }
+  .ko-tip .ko-tip-team .noflag { width: 18px; flex: 0 0 auto; }
+  .ko-tip .ko-tip-team .nm { flex: 1; }
+  .ko-tip .ko-tip-team .sc { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .ko-tip .ko-tip-team.win .nm { font-weight: 700; color: var(--accent2); }
+  .ko-tip .ko-tip-meta { color: var(--muted); margin-top: 6px; font-size: 11px; }
   .ko-card-lbl { font-size: .6rem; color: var(--muted); text-align: center; }
   .ko-side { display: flex; align-items: center; gap: 4px; font-size: .74rem; line-height: 1.2; }
   .ko-side img.flag { width: 16px; height: 16px; object-fit: contain; flex: 0 0 auto; border-radius: 2px; background: #0d1426; }
@@ -2553,7 +2565,7 @@
     const ls = isFinished(m) ? null : liveScoreOf(m);
     const sc = (isFinished(m) && s && s.score != null) ? '<span class="sc">' + s.score + '</span>'
       : ls ? '<span class="sc">' + ls[side] + '</span>' : '';
-    return '<div class="ko-side' + (win ? ' win' : '') + '" title="' + escapeHtml(teamName(s)) + '">' +
+    return '<div class="ko-side' + (win ? ' win' : '') + '">' +
       logo + '<span class="abbr">' + escapeHtml(koSlotLabel(s)) + '</span>' + sc + '</div>';
   }
 
@@ -2581,12 +2593,71 @@
     const onclick = clickable ? ' onclick="showGameInSchedule(\'' + escapeHtml(m.id) + '\')"' : '';
     // Final and 3rd-place carry their round name inside the panel (no row label).
     const lbl = (isFinal || isThird) ? '<div class="ko-card-lbl">' + escapeHtml(stageLabel(m.stage)) + '</div>' : '';
-    return '<div class="' + cls + '"' + (attrs || '') + onclick + '>' +
+    return '<div class="' + cls + '" data-mid="' + escapeHtml(m.id) + '"' + (attrs || '') + onclick + '>' +
       lbl + koSideHtml(m, 'home') + koSideHtml(m, 'away') + koTagHtml(m) + '</div>';
   }
 
   function koRoundLabelHtml(stage) {
     return '<div class="ko-round-label">' + escapeHtml(stageLabel(stage)) + '</div>';
+  }
+
+  // ---- Knockout hover tooltip (full names, score, kickoff, venue) -----------
+  function koTooltipEl() {
+    let el = document.getElementById('koTooltip');
+    if (!el) { el = document.createElement('div'); el.id = 'koTooltip'; el.className = 'ko-tip'; document.body.appendChild(el); }
+    return el;
+  }
+  // Plain-text decided-by / live tag (mirrors koTagHtml).
+  function koTagText(m) {
+    if (isLive(m)) return t('liveLabel');
+    if (!isFinished(m)) return '';
+    const d = m.decidedBy || 'regulation';
+    if (d === 'penalties') {
+      const so = shootoutResult(m);
+      return (so && so.winSO != null && so.loseSO != null) ? t('penTag')(so.winSO, so.loseSO) : t('penTagPlain');
+    }
+    if (d === 'extra_time') return t('afterExtraTime');
+    return '';
+  }
+  function koTipTeam(m, side) {
+    const s = m[side];
+    const flag = (s && s.logo) ? '<img src="' + escapeHtml(s.logo) + '" alt="" loading="lazy" />' : '<span class="noflag"></span>';
+    const ls = isFinished(m) ? null : liveScoreOf(m);
+    const sc = (isFinished(m) && s && s.score != null) ? s.score : (ls ? ls[side] : '');
+    return '<div class="ko-tip-team' + (m.winner === side ? ' win' : '') + '">' + flag +
+      '<span class="nm">' + escapeHtml(teamName(s)) + '</span>' +
+      (sc !== '' ? '<span class="sc">' + sc + '</span>' : '') + '</div>';
+  }
+  function koTooltipHtml(m) {
+    const tag = koTagText(m);
+    const meta = [];
+    if (m.date) meta.push(kickoffLabel(m.date));
+    if (m.venue && m.venue.fullName) meta.push([m.venue.fullName, m.venue.city].filter(Boolean).join(', '));
+    return '<div class="ko-tip-round">' + escapeHtml(stageLabel(m.stage)) + (tag ? ' · ' + escapeHtml(tag) : '') + '</div>' +
+      koTipTeam(m, 'home') + koTipTeam(m, 'away') +
+      (meta.length ? '<div class="ko-tip-meta">' + escapeHtml(meta.join(' · ')) + '</div>' : '');
+  }
+  // Delegate hover on the knockout container once (its innerHTML re-renders but
+  // the element persists); a single tooltip follows the cursor, flipped to stay
+  // on-screen.
+  function bindKoTooltip() {
+    const body = document.getElementById('knockoutBody');
+    if (!body || body.dataset.ttBound) return;
+    body.dataset.ttBound = '1';
+    const tip = koTooltipEl();
+    body.addEventListener('mousemove', e => {
+      const box = e.target.closest && e.target.closest('.ko-match[data-mid]');
+      const m = box && MATCHES.find(x => x.id === box.dataset.mid);
+      if (!m) { tip.style.opacity = 0; return; }
+      tip.innerHTML = koTooltipHtml(m);
+      tip.style.opacity = 1;
+      const r = tip.getBoundingClientRect(), pad = 14;
+      let x = e.clientX + pad; if (x + r.width > window.innerWidth) x = e.clientX - pad - r.width;
+      let y = e.clientY + pad; if (y + r.height > window.innerHeight) y = window.innerHeight - r.height - 6;
+      tip.style.left = Math.max(6, x) + 'px';
+      tip.style.top = Math.max(6, y) + 'px';
+    });
+    body.addEventListener('mouseleave', () => { tip.style.opacity = 0; });
   }
 
   // A round as a row of cards (no label — only the final/3rd-place are labelled).
@@ -2618,6 +2689,7 @@
 
   async function renderKnockout() {
     const body = document.getElementById('knockoutBody');
+    bindKoTooltip();
     await loadKoFeeders();
     const b = buildBracket(MATCHES, KO_FEEDERS);
     if (b.empty) { body.innerHTML = '<div class="card">' + escapeHtml(t('noKnockout')) + '</div>'; return; }
