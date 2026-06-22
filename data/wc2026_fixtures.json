@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-22T22:13:24.415022Z",
+  "generatedAt": "2026-06-22T23:53:20.455201Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -2069,11 +2069,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_HALFTIME",
+        "name": "STATUS_DELAYED",
         "state": "in",
         "completed": false,
-        "detail": "HT",
-        "shortDetail": "HT"
+        "detail": "45'+3'",
+        "shortDetail": "Delay"
       },
       "venue": {
         "fullName": "Lincoln Financial Field",
@@ -2169,16 +2169,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "NOR +135",
+        "details": "NOR +130",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+135",
-          "away": "+210",
-          "draw": "+240"
+          "home": "+130",
+          "away": "+220",
+          "draw": "+245"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+125"
+          "odds": "+120"
         }
       },
       "group": "I"
