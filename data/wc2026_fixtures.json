@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-23T20:37:28.949188Z",
+  "generatedAt": "2026-06-23T23:19:18.919382Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -2269,11 +2269,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_FIRST_HALF",
-        "state": "in",
-        "completed": false,
-        "detail": "37'",
-        "shortDetail": "37'"
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
       },
       "venue": {
         "fullName": "Gillette Stadium",
@@ -2302,22 +2302,9 @@
         "shootout": null,
         "winner": false
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "ENG -550",
-        "overUnder": 2.5,
-        "moneyline": {
-          "home": "-550",
-          "away": "+1500",
-          "draw": "+650"
-        },
-        "spread": {
-          "line": "-1.5",
-          "odds": "-170"
-        }
-      },
+      "winner": "draw",
+      "decidedBy": "regulation",
+      "odds": null,
       "group": "L"
     },
     {
@@ -2378,7 +2365,7 @@
         },
         "spread": {
           "line": "+1.5",
-          "odds": "-145"
+          "odds": "-155"
         }
       },
       "group": "L"
@@ -2496,7 +2483,7 @@
       "odds": {
         "provider": "DraftKings",
         "details": "BIH -255",
-        "overUnder": 2.5,
+        "overUnder": 3.5,
         "moneyline": {
           "home": "-255",
           "away": "+650",
@@ -2504,7 +2491,7 @@
         },
         "spread": {
           "line": "-1.5",
-          "odds": "+105"
+          "odds": "+100"
         }
       },
       "group": "B"
@@ -2563,7 +2550,7 @@
         "moneyline": {
           "home": "+135",
           "away": "+240",
-          "draw": "+205"
+          "draw": "+210"
         },
         "spread": {
           "line": "-0.5",
@@ -3638,7 +3625,7 @@
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-155"
+          "odds": "-150"
         }
       },
       "group": "L"
@@ -3701,7 +3688,7 @@
         },
         "spread": {
           "line": "+1.5",
-          "odds": "+135"
+          "odds": "+140"
         }
       },
       "group": "L"
@@ -3947,9 +3934,9 @@
         "details": "AUT +190",
         "overUnder": 1.5,
         "moneyline": {
-          "home": "+290",
+          "home": "+300",
           "away": "+190",
-          "draw": "+125"
+          "draw": "+120"
         },
         "spread": {
           "line": "+0.5",
