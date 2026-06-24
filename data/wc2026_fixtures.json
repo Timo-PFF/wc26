@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-24T15:21:58.421513Z",
+  "generatedAt": "2026-06-24T19:16:11.035068Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -2456,11 +2456,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "BIH -280",
-        "overUnder": 2.5,
+        "details": "BIH -275",
+        "overUnder": 3.5,
         "moneyline": {
-          "home": "-280",
-          "away": "+750",
+          "home": "-275",
+          "away": "+700",
           "draw": "+450"
         },
         "spread": {
@@ -2519,16 +2519,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "SUI +145",
+        "details": "SUI +155",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+145",
-          "away": "+230",
-          "draw": "+205"
+          "home": "+155",
+          "away": "+215",
+          "draw": "+200"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+140"
+          "odds": "+145"
         }
       },
       "group": "B"
@@ -2645,11 +2645,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "BRA -310",
+        "details": "BRA -320",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+850",
-          "away": "-310",
+          "home": "+900",
+          "away": "-320",
           "draw": "+450"
         },
         "spread": {
@@ -2708,12 +2708,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "KOR -165",
+        "details": "KOR -170",
         "overUnder": 2.5,
         "moneyline": {
           "home": "+500",
-          "away": "-165",
-          "draw": "+300"
+          "away": "-170",
+          "draw": "+310"
         },
         "spread": {
           "line": "+0.5",
@@ -3086,16 +3086,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "PAR +195",
+        "details": "PAR +185",
         "overUnder": 1.5,
         "moneyline": {
-          "home": "+195",
-          "away": "+295",
+          "home": "+185",
+          "away": "+300",
           "draw": "+125"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+180"
+          "odds": "+175"
         }
       },
       "group": "D"
@@ -3527,16 +3527,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "BEL -525",
+        "details": "BEL -650",
         "overUnder": 3.5,
         "moneyline": {
-          "home": "+1400",
-          "away": "-525",
-          "draw": "+650"
+          "home": "+1600",
+          "away": "-650",
+          "draw": "+700"
         },
         "spread": {
           "line": "+2.5",
-          "odds": "-175"
+          "odds": "-150"
         }
       },
       "group": "G"
@@ -3590,16 +3590,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "CRO -135",
+        "details": "CRO -130",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-135",
-          "away": "+475",
-          "draw": "+245"
+          "home": "-130",
+          "away": "+450",
+          "draw": "+240"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-140"
+          "odds": "-135"
         }
       },
       "group": "L"
@@ -3788,7 +3788,7 @@
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-130"
+          "odds": "-135"
         }
       },
       "group": "K"
@@ -3908,13 +3908,13 @@
         "details": "AUT +190",
         "overUnder": 1.5,
         "moneyline": {
-          "home": "+300",
+          "home": "+295",
           "away": "+190",
-          "draw": "+120"
+          "draw": "+125"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "-225"
+          "odds": "-230"
         }
       },
       "group": "J"
