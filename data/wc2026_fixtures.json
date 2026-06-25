@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-24T22:50:11.596485Z",
+  "generatedAt": "2026-06-25T00:20:28.880152Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -2519,11 +2519,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_IN_PROGRESS",
+        "name": "STATUS_SECOND_HALF",
         "state": "in",
         "completed": false,
-        "detail": "2'",
-        "shortDetail": "2'"
+        "detail": "90'+8'",
+        "shortDetail": "90'+8'"
       },
       "venue": {
         "fullName": "Mercedes-Benz Stadium",
@@ -2537,7 +2537,7 @@
         "name": "Morocco",
         "abbreviation": "MAR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/mar.png",
-        "score": 0,
+        "score": 4,
         "shootout": null,
         "winner": false
       },
@@ -2548,7 +2548,7 @@
         "name": "Haiti",
         "abbreviation": "HAI",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/hai.png",
-        "score": 0,
+        "score": 2,
         "shootout": null,
         "winner": false
       },
@@ -2582,11 +2582,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_FIRST_HALF",
+        "name": "STATUS_SECOND_HALF",
         "state": "in",
         "completed": false,
-        "detail": "1'",
-        "shortDetail": "1'"
+        "detail": "90'+5'",
+        "shortDetail": "90'+5'"
       },
       "venue": {
         "fullName": "Hard Rock Stadium",
@@ -2611,7 +2611,7 @@
         "name": "Brazil",
         "abbreviation": "BRA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
-        "score": 0,
+        "score": 3,
         "shootout": null,
         "winner": false
       },
@@ -2682,16 +2682,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "KOR -170",
+        "details": "KOR -145",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+500",
-          "away": "-170",
-          "draw": "+310"
+          "home": "+450",
+          "away": "-145",
+          "draw": "+275"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+140"
+          "odds": "+120"
         }
       },
       "group": "A"
@@ -2745,16 +2745,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "MEX -105",
+        "details": "MEX -130",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+285",
-          "away": "-105",
-          "draw": "+280"
+          "home": "+350",
+          "away": "-130",
+          "draw": "+295"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "-115"
+          "odds": "+105"
         }
       },
       "group": "A"
