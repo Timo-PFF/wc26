@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-25T11:18:41.983742Z",
+  "generatedAt": "2026-06-25T13:38:27.205220Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -2756,16 +2756,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "GER -185",
+        "details": "GER -175",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+425",
-          "away": "-185",
-          "draw": "+390"
+          "home": "+400",
+          "away": "-175",
+          "draw": "+370"
         },
         "spread": {
-          "line": "+1.5",
-          "odds": "-180"
+          "line": "+0.5",
+          "odds": "+145"
         }
       },
       "group": "E"
@@ -2828,7 +2828,7 @@
         },
         "spread": {
           "line": "+2.5",
-          "odds": "-150"
+          "odds": "-155"
         }
       },
       "group": "E"
@@ -2886,8 +2886,8 @@
         "overUnder": 2.5,
         "moneyline": {
           "home": "-110",
-          "away": "+340",
-          "draw": "+250"
+          "away": "+320",
+          "draw": "+245"
         },
         "spread": {
           "line": "-0.5",
@@ -2954,7 +2954,7 @@
         },
         "spread": {
           "line": "+2.5",
-          "odds": "+100"
+          "odds": "+110"
         }
       },
       "group": "F"
@@ -3008,16 +3008,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "PAR +170",
+        "details": "PAR +165",
         "overUnder": 1.5,
         "moneyline": {
-          "home": "+170",
-          "away": "+320",
+          "home": "+165",
+          "away": "+330",
           "draw": "+130"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+160"
+          "odds": "+155"
         }
       },
       "group": "D"
@@ -3206,7 +3206,7 @@
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+135"
+          "odds": "+130"
         }
       },
       "group": "I"
@@ -3332,7 +3332,7 @@
         },
         "spread": {
           "line": "+1.5",
-          "odds": "-180"
+          "odds": "-185"
         }
       },
       "group": "H"
@@ -3458,7 +3458,7 @@
         },
         "spread": {
           "line": "+2.5",
-          "odds": "-145"
+          "odds": "-140"
         }
       },
       "group": "G"
