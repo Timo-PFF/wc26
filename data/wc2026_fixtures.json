@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-25T00:20:28.880152Z",
+  "generatedAt": "2026-06-25T04:48:57.537465Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -2519,11 +2519,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_SECOND_HALF",
-        "state": "in",
-        "completed": false,
-        "detail": "90'+8'",
-        "shortDetail": "90'+8'"
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
       },
       "venue": {
         "fullName": "Mercedes-Benz Stadium",
@@ -2539,7 +2539,7 @@
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/mar.png",
         "score": 4,
         "shootout": null,
-        "winner": false
+        "winner": true
       },
       "away": {
         "id": "2654",
@@ -2552,22 +2552,9 @@
         "shootout": null,
         "winner": false
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "MAR -330",
-        "overUnder": 2.5,
-        "moneyline": {
-          "home": "-330",
-          "away": "+900",
-          "draw": "+475"
-        },
-        "spread": {
-          "line": "-1.5",
-          "odds": "-115"
-        }
-      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
       "group": "C"
     },
     {
@@ -2582,11 +2569,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_SECOND_HALF",
-        "state": "in",
-        "completed": false,
-        "detail": "90'+5'",
-        "shortDetail": "90'+5'"
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
       },
       "venue": {
         "fullName": "Hard Rock Stadium",
@@ -2613,24 +2600,11 @@
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
         "score": 3,
         "shootout": null,
-        "winner": false
+        "winner": true
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "BRA -300",
-        "overUnder": 2.5,
-        "moneyline": {
-          "home": "+900",
-          "away": "-300",
-          "draw": "+425"
-        },
-        "spread": {
-          "line": "+1.5",
-          "odds": "-120"
-        }
-      },
+      "winner": "away",
+      "decidedBy": "regulation",
+      "odds": null,
       "group": "C"
     },
     {
@@ -2645,11 +2619,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
-        "completed": false,
-        "detail": "Wed, June 24th at 9:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
       },
       "venue": {
         "fullName": "Estadio BBVA",
@@ -2663,9 +2637,9 @@
         "name": "South Africa",
         "abbreviation": "RSA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/rsa.png",
-        "score": null,
+        "score": 1,
         "shootout": null,
-        "winner": false
+        "winner": true
       },
       "away": {
         "id": "451",
@@ -2674,26 +2648,13 @@
         "name": "South Korea",
         "abbreviation": "KOR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/kors.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "KOR -145",
-        "overUnder": 2.5,
-        "moneyline": {
-          "home": "+450",
-          "away": "-145",
-          "draw": "+275"
-        },
-        "spread": {
-          "line": "+0.5",
-          "odds": "+120"
-        }
-      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
       "group": "A"
     },
     {
@@ -2708,11 +2669,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
-        "completed": false,
-        "detail": "Wed, June 24th at 9:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
       },
       "venue": {
         "fullName": "Estadio Banorte",
@@ -2726,7 +2687,7 @@
         "name": "Czechia",
         "abbreviation": "CZE",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cze.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -2737,26 +2698,13 @@
         "name": "Mexico",
         "abbreviation": "MEX",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/mex.png",
-        "score": null,
+        "score": 3,
         "shootout": null,
-        "winner": false
+        "winner": true
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "MEX -130",
-        "overUnder": 2.5,
-        "moneyline": {
-          "home": "+350",
-          "away": "-130",
-          "draw": "+295"
-        },
-        "spread": {
-          "line": "+0.5",
-          "odds": "+105"
-        }
-      },
+      "winner": "away",
+      "decidedBy": "regulation",
+      "odds": null,
       "group": "A"
     },
     {
@@ -2808,16 +2756,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "GER -115",
+        "details": "GER -190",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+275",
-          "away": "-115",
-          "draw": "+310"
+          "home": "+450",
+          "away": "-190",
+          "draw": "+390"
         },
         "spread": {
-          "line": "+0.5",
-          "odds": "-105"
+          "line": "+1.5",
+          "odds": "-175"
         }
       },
       "group": "E"
@@ -2874,13 +2822,13 @@
         "details": "CIV -650",
         "overUnder": 3.5,
         "moneyline": {
-          "home": "+1700",
+          "home": "+1800",
           "away": "-650",
           "draw": "+750"
         },
         "spread": {
           "line": "+2.5",
-          "odds": "-160"
+          "odds": "-150"
         }
       },
       "group": "E"
@@ -2938,12 +2886,12 @@
         "overUnder": 2.5,
         "moneyline": {
           "home": "-115",
-          "away": "+340",
+          "away": "+350",
           "draw": "+255"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-120"
+          "odds": "-125"
         }
       },
       "group": "F"
@@ -2997,16 +2945,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "NED -750",
+        "details": "NED -1100",
         "overUnder": 3.5,
         "moneyline": {
-          "home": "+1900",
-          "away": "-750",
-          "draw": "+800"
+          "home": "+2500",
+          "away": "-1100",
+          "draw": "+1000"
         },
         "spread": {
           "line": "+2.5",
-          "odds": "-135"
+          "odds": "-110"
         }
       },
       "group": "F"
@@ -3060,16 +3008,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "PAR +195",
+        "details": "PAR +180",
         "overUnder": 1.5,
         "moneyline": {
-          "home": "+195",
-          "away": "+300",
-          "draw": "+120"
+          "home": "+180",
+          "away": "+310",
+          "draw": "+125"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+180"
+          "odds": "+175"
         }
       },
       "group": "D"
@@ -3123,16 +3071,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "USA -105",
+        "details": "USA -115",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+255",
-          "away": "-105",
-          "draw": "+300"
+          "home": "+275",
+          "away": "-115",
+          "draw": "+310"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "-110"
+          "odds": "-105"
         }
       },
       "group": "D"
@@ -3249,16 +3197,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "FRA -150",
+        "details": "FRA -155",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+370",
-          "away": "-150",
-          "draw": "+330"
+          "home": "+380",
+          "away": "-155",
+          "draw": "+340"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+125"
+          "odds": "+130"
         }
       },
       "group": "I"
@@ -3501,16 +3449,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "BEL -650",
+        "details": "BEL -600",
         "overUnder": 3.5,
         "moneyline": {
           "home": "+1600",
-          "away": "-650",
+          "away": "-600",
           "draw": "+700"
         },
         "spread": {
           "line": "+2.5",
-          "odds": "-150"
+          "odds": "-155"
         }
       },
       "group": "G"
@@ -3753,12 +3701,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "COD -130",
+        "details": "COD -135",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-130",
+          "home": "-135",
           "away": "+330",
-          "draw": "+310"
+          "draw": "+320"
         },
         "spread": {
           "line": "-0.5",
@@ -3896,8 +3844,8 @@
     {
       "id": "760486",
       "date": "2026-06-28T19:00Z",
-      "name": "Canada at Group A 2nd Place",
-      "shortName": "CAN @ 2A",
+      "name": "Canada at South Africa",
+      "shortName": "CAN @ RSA",
       "stage": {
         "slug": "round-of-32",
         "type": 13801,
@@ -3917,12 +3865,12 @@
         "country": "USA"
       },
       "home": {
-        "id": "5926",
-        "displayName": "Group A 2nd Place",
-        "shortDisplayName": "2A",
-        "name": "Group A 2nd Place",
-        "abbreviation": "2A",
-        "logo": "",
+        "id": "467",
+        "displayName": "South Africa",
+        "shortDisplayName": "South Africa",
+        "name": "South Africa",
+        "abbreviation": "RSA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/rsa.png",
         "score": null,
         "shootout": null,
         "winner": false
@@ -3940,14 +3888,27 @@
       },
       "winner": null,
       "decidedBy": null,
-      "odds": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "CAN -135",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+475",
+          "away": "-135",
+          "draw": "+245"
+        },
+        "spread": {
+          "line": "+0.5",
+          "odds": "+115"
+        }
+      },
       "group": null
     },
     {
       "id": "760487",
       "date": "2026-06-29T17:00Z",
-      "name": "Group F 2nd Place at Group C Winner",
-      "shortName": "2F @ 1C",
+      "name": "Group F 2nd Place at Brazil",
+      "shortName": "2F @ BRA",
       "stage": {
         "slug": "round-of-32",
         "type": 13801,
@@ -3967,12 +3928,12 @@
         "country": "USA"
       },
       "home": {
-        "id": "5927",
-        "displayName": "Group C Winner",
-        "shortDisplayName": "1C",
-        "name": "Group C Winner",
-        "abbreviation": "1C",
-        "logo": "",
+        "id": "205",
+        "displayName": "Brazil",
+        "shortDisplayName": "Brazil",
+        "name": "Brazil",
+        "abbreviation": "BRA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
         "score": null,
         "shootout": null,
         "winner": false
@@ -4046,8 +4007,8 @@
     {
       "id": "760488",
       "date": "2026-06-30T01:00Z",
-      "name": "Group C 2nd Place at Group F Winner",
-      "shortName": "2C @ 1F",
+      "name": "Morocco at Group F Winner",
+      "shortName": "MAR @ 1F",
       "stage": {
         "slug": "round-of-32",
         "type": 13801,
@@ -4078,12 +4039,12 @@
         "winner": false
       },
       "away": {
-        "id": "5930",
-        "displayName": "Group C 2nd Place",
-        "shortDisplayName": "2C",
-        "name": "Group C 2nd Place",
-        "abbreviation": "2C",
-        "logo": "",
+        "id": "2869",
+        "displayName": "Morocco",
+        "shortDisplayName": "Morocco",
+        "name": "Morocco",
+        "abbreviation": "MAR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/mar.png",
         "score": null,
         "shootout": null,
         "winner": false
