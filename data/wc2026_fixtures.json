@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-25T04:48:57.537465Z",
+  "generatedAt": "2026-06-25T08:30:14.772691Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -2759,13 +2759,13 @@
         "details": "GER -190",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+450",
+          "home": "+425",
           "away": "-190",
-          "draw": "+390"
+          "draw": "+400"
         },
         "spread": {
           "line": "+1.5",
-          "odds": "-175"
+          "odds": "-180"
         }
       },
       "group": "E"
@@ -2945,11 +2945,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "NED -1100",
+        "details": "NED -1000",
         "overUnder": 3.5,
         "moneyline": {
           "home": "+2500",
-          "away": "-1100",
+          "away": "-1000",
           "draw": "+1000"
         },
         "spread": {
