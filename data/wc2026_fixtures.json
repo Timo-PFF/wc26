@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-26T20:05:19.710124Z",
+  "generatedAt": "2026-06-26T21:38:42.267702Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -3019,11 +3019,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_HALFTIME",
-        "state": "in",
-        "completed": false,
-        "detail": "HT",
-        "shortDetail": "HT"
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
       },
       "venue": {
         "fullName": "BMO Field",
@@ -3037,9 +3037,9 @@
         "name": "Senegal",
         "abbreviation": "SEN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sen.png",
-        "score": 1,
+        "score": 5,
         "shootout": null,
-        "winner": false
+        "winner": true
       },
       "away": {
         "id": "4375",
@@ -3052,22 +3052,9 @@
         "shootout": null,
         "winner": false
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "SEN -475",
-        "overUnder": 3.5,
-        "moneyline": {
-          "home": "-475",
-          "away": "+1100",
-          "draw": "+600"
-        },
-        "spread": {
-          "line": "-2.5",
-          "odds": "+135"
-        }
-      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
       "group": "I"
     },
     {
@@ -3082,11 +3069,11 @@
         "knockout": false
       },
       "status": {
-        "name": "STATUS_HALFTIME",
-        "state": "in",
-        "completed": false,
-        "detail": "HT",
-        "shortDetail": "HT"
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
       },
       "venue": {
         "fullName": "Gillette Stadium",
@@ -3111,26 +3098,13 @@
         "name": "France",
         "abbreviation": "FRA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/fra.png",
-        "score": 3,
+        "score": 4,
         "shootout": null,
-        "winner": false
+        "winner": true
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "FRA -290",
-        "overUnder": 3.5,
-        "moneyline": {
-          "home": "+700",
-          "away": "-290",
-          "draw": "+475"
-        },
-        "spread": {
-          "line": "+1.5",
-          "odds": "-125"
-        }
-      },
+      "winner": "away",
+      "decidedBy": "regulation",
+      "odds": null,
       "group": "I"
     },
     {
@@ -3182,11 +3156,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "CPV +165",
+        "details": "CPV +160",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+165",
-          "away": "+175",
+          "home": "+160",
+          "away": "+180",
           "draw": "+230"
         },
         "spread": {
@@ -3245,16 +3219,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ESP -140",
+        "details": "ESP -150",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+475",
-          "away": "-140",
-          "draw": "+245"
+          "home": "+500",
+          "away": "-150",
+          "draw": "+260"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+115"
+          "odds": "+125"
         }
       },
       "group": "H"
@@ -3312,8 +3286,8 @@
         "overUnder": 1.5,
         "moneyline": {
           "home": "+150",
-          "away": "+295",
-          "draw": "+155"
+          "away": "+275",
+          "draw": "+165"
         },
         "spread": {
           "line": "-0.5",
