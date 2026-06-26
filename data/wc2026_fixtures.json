@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-26T13:34:56.412554Z",
+  "generatedAt": "2026-06-26T15:58:13.354099Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -3065,7 +3065,7 @@
         },
         "spread": {
           "line": "-1.5",
-          "odds": "-155"
+          "odds": "-160"
         }
       },
       "group": "I"
@@ -3119,16 +3119,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "FRA -150",
+        "details": "FRA -155",
         "overUnder": 3.5,
         "moneyline": {
-          "home": "+360",
-          "away": "-150",
+          "home": "+380",
+          "away": "-155",
           "draw": "+350"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+130"
+          "odds": "+135"
         }
       },
       "group": "I"
@@ -3497,16 +3497,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ENG -575",
+        "details": "ENG -600",
         "overUnder": 3.5,
         "moneyline": {
-          "home": "+1400",
-          "away": "-575",
-          "draw": "+700"
+          "home": "+1500",
+          "away": "-600",
+          "draw": "+750"
         },
         "spread": {
           "line": "+2.5",
-          "odds": "-155"
+          "odds": "-150"
         }
       },
       "group": "L"
@@ -3687,7 +3687,7 @@
       "odds": {
         "provider": "DraftKings",
         "details": "ARG -550",
-        "overUnder": 2.5,
+        "overUnder": 3.5,
         "moneyline": {
           "home": "+1400",
           "away": "-550",
@@ -4301,16 +4301,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "USA -225",
+        "details": "USA -230",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-225",
-          "away": "+650",
+          "home": "-230",
+          "away": "+700",
           "draw": "+360"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "+125"
+          "odds": "+120"
         }
       },
       "group": null
