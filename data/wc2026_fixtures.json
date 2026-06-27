@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-27T16:42:44.152296Z",
+  "generatedAt": "2026-06-27T18:15:09.504358Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -3356,16 +3356,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "CRO -110",
+        "details": "CRO -115",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-110",
+          "home": "-115",
           "away": "+425",
-          "draw": "+210"
+          "draw": "+220"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-120"
+          "odds": "-125"
         }
       },
       "group": "L"
@@ -3482,16 +3482,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "POR -105",
+        "details": "POR +105",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+265",
-          "away": "-105",
-          "draw": "+285"
+          "home": "+245",
+          "away": "+105",
+          "draw": "+280"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "-115"
+          "odds": "-125"
         }
       },
       "group": "K"
@@ -3617,7 +3617,7 @@
         },
         "spread": {
           "line": "+2.5",
-          "odds": "-145"
+          "odds": "-140"
         }
       },
       "group": "J"
@@ -3671,16 +3671,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "AUT +225",
+        "details": "AUT +265",
         "overUnder": 1.5,
         "moneyline": {
-          "home": "+295",
-          "away": "+225",
-          "draw": "+105"
+          "home": "+275",
+          "away": "+265",
+          "draw": "+100"
         },
         "spread": {
-          "line": "+0.5",
-          "odds": "-280"
+          "line": "-0.5",
+          "odds": "+245"
         }
       },
       "group": "J"
@@ -3860,16 +3860,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "GER -255",
+        "details": "GER -265",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-255",
-          "away": "+700",
+          "home": "-265",
+          "away": "+750",
           "draw": "+400"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "+105"
+          "odds": "+100"
         }
       },
       "group": null
