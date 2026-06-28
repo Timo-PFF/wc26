@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-28T21:43:24.907714Z",
+  "generatedAt": "2026-06-28T23:15:24.775215Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -3619,11 +3619,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_SECOND_HALF",
-        "state": "in",
-        "completed": false,
-        "detail": "60'",
-        "shortDetail": "60'"
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
       },
       "venue": {
         "fullName": "SoFi Stadium",
@@ -3648,26 +3648,13 @@
         "name": "Canada",
         "abbreviation": "CAN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/can.png",
-        "score": 0,
+        "score": 1,
         "shootout": null,
-        "winner": false
+        "winner": true
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "CAN -115",
-        "overUnder": 2.5,
-        "moneyline": {
-          "home": "+380",
-          "away": "-115",
-          "draw": "+240"
-        },
-        "spread": {
-          "line": "+0.5",
-          "odds": "-105"
-        }
-      },
+      "winner": "away",
+      "decidedBy": "regulation",
+      "odds": null,
       "group": null
     },
     {
@@ -3791,7 +3778,7 @@
         },
         "spread": {
           "line": "-1.5",
-          "odds": "-110"
+          "odds": "-105"
         }
       },
       "group": null
@@ -3845,16 +3832,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "NED +130",
+        "details": "NED +125",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+130",
-          "away": "+250",
-          "draw": "+215"
+          "home": "+125",
+          "away": "+255",
+          "draw": "+210"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+125"
+          "odds": "+120"
         }
       },
       "group": null
@@ -3917,7 +3904,7 @@
         },
         "spread": {
           "line": "+0.5",
-          "odds": "-130"
+          "odds": "-125"
         }
       },
       "group": null
@@ -4290,12 +4277,12 @@
         "overUnder": 2.5,
         "moneyline": {
           "home": "-340",
-          "away": "+1100",
+          "away": "+1000",
           "draw": "+450"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "-115"
+          "odds": "-110"
         }
       },
       "group": null
@@ -4412,16 +4399,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "SUI +100",
+        "details": "SUI +105",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+100",
-          "away": "+310",
-          "draw": "+240"
+          "home": "+105",
+          "away": "+300",
+          "draw": "+235"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-110"
+          "odds": "-105"
         }
       },
       "group": null
@@ -4480,7 +4467,7 @@
         "moneyline": {
           "home": "+230",
           "away": "+150",
-          "draw": "+195"
+          "draw": "+190"
         },
         "spread": {
           "line": "+0.5",
@@ -4538,11 +4525,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ARG -650",
+        "details": "ARG -600",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-650",
-          "away": "+1800",
+          "home": "-600",
+          "away": "+1700",
           "draw": "+700"
         },
         "spread": {
@@ -4601,16 +4588,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "COL -180",
+        "details": "COL -185",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-180",
-          "away": "+550",
+          "home": "-185",
+          "away": "+600",
           "draw": "+300"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-190"
+          "odds": "-195"
         }
       },
       "group": null
@@ -4618,8 +4605,8 @@
     {
       "id": "760502",
       "date": "2026-07-04T17:00Z",
-      "name": "Round of 32 3 Winner at Round of 32 1 Winner",
-      "shortName": "RD32 @ RD32",
+      "name": "Round of 32 3 Winner at Canada",
+      "shortName": "RD32 @ CAN",
       "stage": {
         "slug": "round-of-16",
         "type": 13800,
@@ -4639,12 +4626,12 @@
         "country": "USA"
       },
       "home": {
-        "id": "131525",
-        "displayName": "Round of 32 1 Winner",
-        "shortDisplayName": "RD32 W1",
-        "name": "Round of 32 1 Winner",
-        "abbreviation": "RD32",
-        "logo": "",
+        "id": "206",
+        "displayName": "Canada",
+        "shortDisplayName": "Canada",
+        "name": "Canada",
+        "abbreviation": "CAN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/can.png",
         "score": null,
         "shootout": null,
         "winner": false
