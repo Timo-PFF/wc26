@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-29T16:26:42.571904Z",
+  "generatedAt": "2026-06-29T18:32:31.240330Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -3669,11 +3669,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
+        "name": "STATUS_SECOND_HALF",
+        "state": "in",
         "completed": false,
-        "detail": "Mon, June 29th at 1:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "detail": "70'",
+        "shortDetail": "70'"
       },
       "venue": {
         "fullName": "NRG Stadium",
@@ -3687,7 +3687,7 @@
         "name": "Brazil",
         "abbreviation": "BRA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
-        "score": null,
+        "score": 1,
         "shootout": null,
         "winner": false
       },
@@ -3698,7 +3698,7 @@
         "name": "Japan",
         "abbreviation": "JPN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/jpn.png",
-        "score": null,
+        "score": 1,
         "shootout": null,
         "winner": false
       },
@@ -3706,16 +3706,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "BRA -125",
+        "details": "BRA -135",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-125",
-          "away": "+390",
-          "draw": "+255"
+          "home": "-135",
+          "away": "+425",
+          "draw": "+260"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-130"
+          "odds": "-140"
         }
       },
       "group": null
@@ -3778,7 +3778,7 @@
         },
         "spread": {
           "line": "-1.5",
-          "odds": "+100"
+          "odds": "+105"
         }
       },
       "group": null
@@ -3895,16 +3895,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "NOR +105",
+        "details": "NOR +115",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+265",
-          "away": "+105",
-          "draw": "+255"
+          "home": "+250",
+          "away": "+115",
+          "draw": "+245"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "-130"
+          "odds": "-140"
         }
       },
       "group": null
@@ -3962,12 +3962,12 @@
         "overUnder": 3.5,
         "moneyline": {
           "home": "-370",
-          "away": "+950",
+          "away": "+1000",
           "draw": "+500"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "-140"
+          "odds": "-135"
         }
       },
       "group": null
@@ -4210,10 +4210,10 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "USA -260",
+        "details": "USA -265",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-260",
+          "home": "-265",
           "away": "+800",
           "draw": "+390"
         },
