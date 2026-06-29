@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-28T23:15:24.775215Z",
+  "generatedAt": "2026-06-29T01:38:55.044850Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -3832,12 +3832,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "NED +125",
+        "details": "NED +130",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+125",
-          "away": "+255",
-          "draw": "+210"
+          "home": "+130",
+          "away": "+250",
+          "draw": "+215"
         },
         "spread": {
           "line": "-0.5",
@@ -3904,7 +3904,7 @@
         },
         "spread": {
           "line": "+0.5",
-          "odds": "-125"
+          "odds": "-130"
         }
       },
       "group": null
@@ -4525,11 +4525,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ARG -600",
+        "details": "ARG -650",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-600",
-          "away": "+1700",
+          "home": "-650",
+          "away": "+1800",
           "draw": "+700"
         },
         "spread": {
@@ -4588,16 +4588,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "COL -185",
+        "details": "COL -180",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-185",
-          "away": "+600",
+          "home": "-180",
+          "away": "+550",
           "draw": "+300"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-195"
+          "odds": "-190"
         }
       },
       "group": null
