@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-29T21:56:43.206480Z",
+  "generatedAt": "2026-06-29T23:12:48.061025Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -3719,11 +3719,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
+        "name": "STATUS_OVERTIME",
+        "state": "in",
         "completed": false,
-        "detail": "Mon, June 29th at 4:30 PM EDT",
-        "shortDetail": "Scheduled"
+        "detail": "120'",
+        "shortDetail": "120'"
       },
       "venue": {
         "fullName": "Gillette Stadium",
@@ -3737,7 +3737,7 @@
         "name": "Germany",
         "abbreviation": "GER",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ger.png",
-        "score": null,
+        "score": 1,
         "shootout": null,
         "winner": false
       },
@@ -3748,7 +3748,7 @@
         "name": "Paraguay",
         "abbreviation": "PAR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/par.png",
-        "score": null,
+        "score": 1,
         "shootout": null,
         "winner": false
       },
@@ -3756,11 +3756,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "GER -285",
+        "details": "GER -300",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-285",
-          "away": "+850",
+          "home": "-300",
+          "away": "+950",
           "draw": "+400"
         },
         "spread": {
@@ -3819,16 +3819,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "NED +135",
+        "details": "NED +140",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+135",
-          "away": "+240",
-          "draw": "+210"
+          "home": "+140",
+          "away": "+230",
+          "draw": "+205"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+125"
+          "odds": "+130"
         }
       },
       "group": null
@@ -3891,7 +3891,7 @@
         },
         "spread": {
           "line": "+0.5",
-          "odds": "-135"
+          "odds": "-130"
         }
       },
       "group": null
@@ -3945,16 +3945,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "FRA -370",
+        "details": "FRA -390",
         "overUnder": 3.5,
         "moneyline": {
-          "home": "-370",
+          "home": "-390",
           "away": "+1000",
-          "draw": "+500"
+          "draw": "+550"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "-135"
+          "odds": "-140"
         }
       },
       "group": null
@@ -4323,16 +4323,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "POR -125",
+        "details": "POR -130",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-125",
-          "away": "+370",
+          "home": "-130",
+          "away": "+400",
           "draw": "+265"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-135"
+          "odds": "-140"
         }
       },
       "group": null
@@ -4395,7 +4395,7 @@
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-105"
+          "odds": "+100"
         }
       },
       "group": null
@@ -4692,8 +4692,8 @@
     {
       "id": "760504",
       "date": "2026-07-05T20:00Z",
-      "name": "Round of 32 6 Winner at Round of 32 4 Winner",
-      "shortName": "RD32 @ RD32",
+      "name": "Round of 32 6 Winner at Brazil",
+      "shortName": "RD32 @ BRA",
       "stage": {
         "slug": "round-of-16",
         "type": 13800,
@@ -4713,12 +4713,12 @@
         "country": "USA"
       },
       "home": {
-        "id": "131528",
-        "displayName": "Round of 32 4 Winner",
-        "shortDisplayName": "RD32 W4",
-        "name": "Round of 32 4 Winner",
-        "abbreviation": "RD32",
-        "logo": "",
+        "id": "205",
+        "displayName": "Brazil",
+        "shortDisplayName": "Brazil",
+        "name": "Brazil",
+        "abbreviation": "BRA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
         "score": null,
         "shootout": null,
         "winner": false
