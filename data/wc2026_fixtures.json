@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-30T12:21:36.326759Z",
+  "generatedAt": "2026-06-30T17:26:41.115718Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -3819,11 +3819,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
+        "name": "STATUS_FIRST_HALF",
+        "state": "in",
         "completed": false,
-        "detail": "Tue, June 30th at 1:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "detail": "26'",
+        "shortDetail": "26'"
       },
       "venue": {
         "fullName": "AT&T Stadium",
@@ -3837,7 +3837,7 @@
         "name": "Ivory Coast",
         "abbreviation": "CIV",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/civ.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -3848,7 +3848,7 @@
         "name": "Norway",
         "abbreviation": "NOR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/nor.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -3859,9 +3859,9 @@
         "details": "NOR +115",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+255",
+          "home": "+260",
           "away": "+115",
-          "draw": "+240"
+          "draw": "+230"
         },
         "spread": {
           "line": "+0.5",
@@ -3923,8 +3923,8 @@
         "overUnder": 3.5,
         "moneyline": {
           "home": "-340",
-          "away": "+900",
-          "draw": "+475"
+          "away": "+950",
+          "draw": "+500"
         },
         "spread": {
           "line": "-1.5",
@@ -3986,12 +3986,12 @@
         "overUnder": 1.5,
         "moneyline": {
           "home": "+130",
-          "away": "+285",
-          "draw": "+190"
+          "away": "+295",
+          "draw": "+185"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+120"
+          "odds": "+115"
         }
       },
       "group": null
@@ -4045,16 +4045,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ENG -360",
+        "details": "ENG -350",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-360",
+          "home": "-350",
           "away": "+1200",
-          "draw": "+450"
+          "draw": "+425"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "-120"
+          "odds": "-115"
         }
       },
       "group": null
@@ -4612,16 +4612,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "MAR -130",
+        "details": "MAR -125",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+390",
-          "away": "-130",
-          "draw": "+265"
+          "home": "+400",
+          "away": "-125",
+          "draw": "+255"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+110"
+          "odds": "+105"
         }
       },
       "group": null
