@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-30T21:17:52.459897Z",
+  "generatedAt": "2026-06-30T22:53:54.784118Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -3869,11 +3869,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
+        "name": "STATUS_HALFTIME",
+        "state": "in",
         "completed": false,
-        "detail": "Tue, June 30th at 5:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "detail": "HT",
+        "shortDetail": "HT"
       },
       "venue": {
         "fullName": "MetLife Stadium",
@@ -3887,7 +3887,7 @@
         "name": "France",
         "abbreviation": "FRA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/fra.png",
-        "score": null,
+        "score": 1,
         "shootout": null,
         "winner": false
       },
@@ -3898,7 +3898,7 @@
         "name": "Sweden",
         "abbreviation": "SWE",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/swe.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -3906,16 +3906,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "FRA -350",
+        "details": "FRA -340",
         "overUnder": 3.5,
         "moneyline": {
-          "home": "-350",
-          "away": "+1000",
+          "home": "-340",
+          "away": "+900",
           "draw": "+500"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "-135"
+          "odds": "-120"
         }
       },
       "group": null
@@ -3969,11 +3969,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "MEX +125",
+        "details": "MEX +120",
         "overUnder": 1.5,
         "moneyline": {
-          "home": "+125",
-          "away": "+300",
+          "home": "+120",
+          "away": "+310",
           "draw": "+190"
         },
         "spread": {
@@ -4095,16 +4095,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "BEL +125",
+        "details": "BEL +120",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+125",
-          "away": "+250",
+          "home": "+120",
+          "away": "+260",
           "draw": "+225"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+115"
+          "odds": "+110"
         }
       },
       "group": null
@@ -4284,16 +4284,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "POR -125",
+        "details": "POR -130",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-125",
-          "away": "+380",
-          "draw": "+260"
+          "home": "-130",
+          "away": "+400",
+          "draw": "+265"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-130"
+          "odds": "-140"
         }
       },
       "group": null
@@ -4599,16 +4599,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "MAR -120",
+        "details": "MAR -125",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+380",
-          "away": "-120",
+          "home": "+400",
+          "away": "-125",
           "draw": "+255"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+100"
+          "odds": "+105"
         }
       },
       "group": null
@@ -4710,20 +4710,7 @@
       },
       "winner": null,
       "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "BRA -110",
-        "overUnder": 2.5,
-        "moneyline": {
-          "home": "-110",
-          "away": "+310",
-          "draw": "+260"
-        },
-        "spread": {
-          "line": "-0.5",
-          "odds": "-115"
-        }
-      },
+      "odds": null,
       "group": null
     },
     {
