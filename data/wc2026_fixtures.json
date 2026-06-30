@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-06-29T23:12:48.061025Z",
+  "generatedAt": "2026-06-30T01:34:16.802942Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -3719,11 +3719,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_OVERTIME",
+        "name": "STATUS_IN_PROGRESS",
         "state": "in",
         "completed": false,
-        "detail": "120'",
-        "shortDetail": "120'"
+        "detail": "63'",
+        "shortDetail": "63'"
       },
       "venue": {
         "fullName": "Gillette Stadium",
@@ -3945,16 +3945,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "FRA -390",
+        "details": "FRA -350",
         "overUnder": 3.5,
         "moneyline": {
-          "home": "-390",
-          "away": "+1000",
-          "draw": "+550"
+          "home": "-350",
+          "away": "+900",
+          "draw": "+500"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "-140"
+          "odds": "-135"
         }
       },
       "group": null
@@ -4008,16 +4008,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "MEX +125",
+        "details": "MEX +120",
         "overUnder": 1.5,
         "moneyline": {
-          "home": "+125",
-          "away": "+290",
-          "draw": "+195"
+          "home": "+120",
+          "away": "+300",
+          "draw": "+190"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+120"
+          "odds": "+115"
         }
       },
       "group": null
