@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-01T19:22:29.235753Z",
+  "generatedAt": "2026-07-01T21:11:04.632052Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4019,11 +4019,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
+        "name": "STATUS_FIRST_HALF",
+        "state": "in",
         "completed": false,
-        "detail": "Wed, July 1st at 4:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "detail": "29'",
+        "shortDetail": "29'"
       },
       "venue": {
         "fullName": "Lumen Field",
@@ -4037,7 +4037,7 @@
         "name": "Belgium",
         "abbreviation": "BEL",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bel.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -4048,7 +4048,7 @@
         "name": "Senegal",
         "abbreviation": "SEN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sen.png",
-        "score": null,
+        "score": 1,
         "shootout": null,
         "winner": false
       },
@@ -4056,16 +4056,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "BEL +110",
+        "details": "BEL -105",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+110",
-          "away": "+265",
-          "draw": "+235"
+          "home": "-105",
+          "away": "+310",
+          "draw": "+245"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+105"
+          "odds": "-110"
         }
       },
       "group": null
@@ -4191,7 +4191,7 @@
         },
         "spread": {
           "line": "-1.5",
-          "odds": "+100"
+          "odds": "-105"
         }
       },
       "group": null
@@ -4563,9 +4563,9 @@
         "details": "MAR -120",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+380",
+          "home": "+390",
           "away": "-120",
-          "draw": "+255"
+          "draw": "+250"
         },
         "spread": {
           "line": "+0.5",
@@ -4703,8 +4703,8 @@
     {
       "id": "760505",
       "date": "2026-07-06T00:00Z",
-      "name": "Round of 32 8 Winner at Mexico",
-      "shortName": "RD32 @ MEX",
+      "name": "England at Mexico",
+      "shortName": "ENG @ MEX",
       "stage": {
         "slug": "round-of-16",
         "type": 13800,
@@ -4735,19 +4735,32 @@
         "winner": false
       },
       "away": {
-        "id": "131532",
-        "displayName": "Round of 32 8 Winner",
-        "shortDisplayName": "RD32 W8",
-        "name": "Round of 32 8 Winner",
-        "abbreviation": "RD32",
-        "logo": "",
+        "id": "448",
+        "displayName": "England",
+        "shortDisplayName": "England",
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png",
         "score": null,
         "shootout": null,
         "winner": false
       },
       "winner": null,
       "decidedBy": null,
-      "odds": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "ENG +130",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+240",
+          "away": "+130",
+          "draw": "+220"
+        },
+        "spread": {
+          "line": "+0.5",
+          "odds": "-155"
+        }
+      },
       "group": null
     },
     {
