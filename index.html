@@ -1993,8 +1993,15 @@
         r.tPoints = r.points + d.points; r.tExact = r.exact + d.exact; r.tGd = r.gd + d.gd;
       });
       rows.sort((a, b) => b.tPoints - a.tPoints || b.tExact - a.tExact || b.tGd - a.tGd || a.player.localeCompare(b.player));
-      let rk = 0, pv = null;
-      rows.forEach((r, i) => { if (r.tPoints !== pv) { rk = i + 1; pv = r.tPoints; } r.rank = rk; });
+      // Rank real players only — the "Fav by 1" benchmark sits in its sorted spot
+      // but carries no rank and doesn't push the players below it down a place.
+      let rk = 0, pv = null, realN = 0;
+      rows.forEach(r => {
+        if (hasFav && r.player === favName()) { r.rank = null; return; }
+        realN++;
+        if (r.tPoints !== pv) { rk = realN; pv = r.tPoints; }
+        r.rank = rk;
+      });
 
       // base count, plus a green "+Δ" for players with a stake in a live game.
       const cell = (base, d, live) => base + (live ? ' <span class="live-delta">+' + d + '</span>' : '');
@@ -2005,7 +2012,7 @@
         if (CHART_SELECTED.has(r.player)) tr.classList.add('sel');
         if (hasFav && r.player === favName()) tr.classList.add('fav-row');  // not a real player
         tr.dataset.player = r.player;
-        tr.innerHTML = '<td>' + r.rank + '</td><td>' + escapeHtml(r.player) +
+        tr.innerHTML = '<td>' + (r.rank == null ? '' : r.rank) + '</td><td>' + escapeHtml(r.player) +
           '</td><td class="num">' + cell(r.points, r.dPoints, r.live) +
           '</td><td class="num">' + cell(r.exact, r.dExact, r.live) +
           '</td><td class="num">' + cell(r.gd, r.dGd, r.live) +
