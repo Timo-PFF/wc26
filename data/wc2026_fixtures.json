@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-01T05:09:56.872722Z",
+  "generatedAt": "2026-07-01T09:00:29.432286Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4006,16 +4006,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ENG -350",
+        "details": "ENG -340",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-350",
+          "home": "-340",
           "away": "+1200",
           "draw": "+425"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "-115"
+          "odds": "-110"
         }
       },
       "group": null
@@ -4132,16 +4132,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "USA -265",
+        "details": "USA -255",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-265",
-          "away": "+800",
-          "draw": "+400"
+          "home": "-255",
+          "away": "+750",
+          "draw": "+380"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "+105"
+          "odds": "+110"
         }
       },
       "group": null
@@ -4456,7 +4456,7 @@
         },
         "spread": {
           "line": "-1.5",
-          "odds": "-170"
+          "odds": "-175"
         }
       },
       "group": null
@@ -4582,7 +4582,7 @@
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+100"
+          "odds": "+105"
         }
       },
       "group": null
@@ -4636,11 +4636,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "FRA -500",
+        "details": "FRA -550",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+1500",
-          "away": "-500",
+          "home": "+1700",
+          "away": "-550",
           "draw": "+600"
         },
         "spread": {
