@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-02T21:20:37.398656Z",
+  "generatedAt": "2026-07-02T22:42:34.579628Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4206,16 +4206,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "POR -150",
+        "details": "POR -145",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-150",
+          "home": "-145",
           "away": "+450",
-          "draw": "+280"
+          "draw": "+270"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-155"
+          "odds": "-150"
         }
       },
       "group": null
@@ -4269,16 +4269,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "SUI -105",
+        "details": "SUI +100",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-105",
-          "away": "+340",
-          "draw": "+230"
+          "home": "+100",
+          "away": "+330",
+          "draw": "+225"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-110"
+          "odds": "-105"
         }
       },
       "group": null
@@ -4458,16 +4458,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "COL -190",
+        "details": "COL -225",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-190",
-          "away": "+600",
-          "draw": "+310"
+          "home": "-225",
+          "away": "+750",
+          "draw": "+330"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "+150"
+          "odds": "+130"
         }
       },
       "group": null
@@ -4727,8 +4727,8 @@
     {
       "id": "760506",
       "date": "2026-07-06T19:00Z",
-      "name": "Round of 32 12 Winner at Round of 32 11 Winner",
-      "shortName": "RD32 @ RD32",
+      "name": "Spain at Round of 32 11 Winner",
+      "shortName": "ESP @ RD32",
       "stage": {
         "slug": "round-of-16",
         "type": 13800,
@@ -4759,12 +4759,12 @@
         "winner": false
       },
       "away": {
-        "id": "131536",
-        "displayName": "Round of 32 12 Winner",
-        "shortDisplayName": "RD32 W12",
-        "name": "Round of 32 12 Winner",
-        "abbreviation": "RD32",
-        "logo": "",
+        "id": "164",
+        "displayName": "Spain",
+        "shortDisplayName": "Spain",
+        "name": "Spain",
+        "abbreviation": "ESP",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/esp.png",
         "score": null,
         "shootout": null,
         "winner": false
@@ -4823,16 +4823,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "USA +155",
+        "details": "USA +160",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+155",
-          "away": "+180",
+          "home": "+160",
+          "away": "+175",
           "draw": "+245"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+150"
+          "odds": "+155"
         }
       },
       "group": null
