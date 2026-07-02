@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-01T22:50:34.078580Z",
+  "generatedAt": "2026-07-02T00:18:17.999122Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4019,11 +4019,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
-        "completed": false,
-        "detail": "Wed, July 1st at 4:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "name": "STATUS_FINAL_AET",
+        "state": "post",
+        "completed": true,
+        "detail": "AET",
+        "shortDetail": "AET"
       },
       "venue": {
         "fullName": "Lumen Field",
@@ -4037,9 +4037,9 @@
         "name": "Belgium",
         "abbreviation": "BEL",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bel.png",
-        "score": null,
+        "score": 3,
         "shootout": null,
-        "winner": false
+        "winner": true
       },
       "away": {
         "id": "654",
@@ -4048,26 +4048,13 @@
         "name": "Senegal",
         "abbreviation": "SEN",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sen.png",
-        "score": null,
+        "score": 2,
         "shootout": null,
         "winner": false
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "BEL +100",
-        "overUnder": 2.5,
-        "moneyline": {
-          "home": "+100",
-          "away": "+300",
-          "draw": "+240"
-        },
-        "spread": {
-          "line": "-0.5",
-          "odds": "-105"
-        }
-      },
+      "winner": "home",
+      "decidedBy": "extra_time",
+      "odds": null,
       "group": null
     },
     {
@@ -4119,16 +4106,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "USA -265",
+        "details": "USA -270",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-265",
-          "away": "+800",
+          "home": "-270",
+          "away": "+750",
           "draw": "+400"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "+100"
+          "odds": "-105"
         }
       },
       "group": null
@@ -4191,7 +4178,7 @@
         },
         "spread": {
           "line": "-1.5",
-          "odds": "+100"
+          "odds": "-105"
         }
       },
       "group": null
@@ -4245,16 +4232,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "POR -125",
+        "details": "POR -130",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-125",
-          "away": "+380",
-          "draw": "+260"
+          "home": "-130",
+          "away": "+400",
+          "draw": "+270"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-130"
+          "odds": "-140"
         }
       },
       "group": null
@@ -4563,9 +4550,9 @@
         "details": "MAR -120",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+380",
+          "home": "+390",
           "away": "-120",
-          "draw": "+255"
+          "draw": "+250"
         },
         "spread": {
           "line": "+0.5",
@@ -4749,16 +4736,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ENG +125",
+        "details": "ENG +130",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+245",
-          "away": "+125",
+          "home": "+240",
+          "away": "+130",
           "draw": "+220"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "-150"
+          "odds": "-155"
         }
       },
       "group": null
