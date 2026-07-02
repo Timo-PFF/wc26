@@ -1024,11 +1024,12 @@
       const m = byId[g.matchId];
       if (!live || !m) return;
       hasPick[g.player] = true;
-      if (!delta[g.player]) delta[g.player] = { points: 0, exact: 0, gd: 0, gdErr: 0 };
+      if (!delta[g.player]) delta[g.player] = { points: 0, exact: 0, gd: 0, gdErr: 0, scored: 0 };
       delta[g.player].points += scorePick(g, liveAsFinal(m, live.home, live.away));
       if (g.home === live.home && g.away === live.away) delta[g.player].exact += 1;
       if (g.home !== g.away && (g.home - g.away) === (live.home - live.away)) delta[g.player].gd += 1;
       delta[g.player].gdErr += Math.abs((g.home - g.away) - (live.home - live.away));
+      delta[g.player].scored += 1;   // live games this player guessed (per-game divisor)
     });
     return { delta, hasPick };
   }
@@ -1927,8 +1928,8 @@
   function computeStandings(guesses, players) {
     const byId = {};
     MATCHES.forEach(m => { byId[m.id] = m; });
-    const totals = {}, exact = {}, gd = {}, gdErr = {};
-    const ensure = p => { if (totals[p] == null) { totals[p] = 0; exact[p] = 0; gd[p] = 0; gdErr[p] = 0; } };
+    const totals = {}, exact = {}, gd = {}, gdErr = {}, scored = {};
+    const ensure = p => { if (totals[p] == null) { totals[p] = 0; exact[p] = 0; gd[p] = 0; gdErr[p] = 0; scored[p] = 0; } };
     (players || []).forEach(ensure);
 
     let finished = 0;
@@ -1948,10 +1949,11 @@
       if (g.home !== g.away && (g.home - g.away) === (aHome - aAway)) gd[g.player] += 1;
       // Total absolute goal-difference error: how far the predicted margin was off.
       gdErr[g.player] += Math.abs((g.home - g.away) - (aHome - aAway));
+      scored[g.player] += 1;   // scored games this player actually guessed (per-game divisor)
     });
 
     const rows = Object.keys(totals).map(p =>
-      ({ player: p, points: totals[p], exact: exact[p], gd: gd[p], gdErr: gdErr[p] }));
+      ({ player: p, points: totals[p], exact: exact[p], gd: gd[p], gdErr: gdErr[p], scored: scored[p] }));
     rows.sort((a, b) =>
       b.points - a.points || b.exact - a.exact || b.gd - a.gd || a.player.localeCompare(b.player));
     let rank = 0, prev = null;
@@ -1987,10 +1989,15 @@
       // standing", re-ranked by the combined total. Settled + Δ shown per cell.
       const { delta, hasPick } = computeLiveDeltas(allGuesses);
       rows.forEach(r => {
-        const d = delta[r.player] || { points: 0, exact: 0, gd: 0, gdErr: 0 };
+        const d = delta[r.player] || { points: 0, exact: 0, gd: 0, gdErr: 0, scored: 0 };
         r.live = !!hasPick[r.player];
         r.dPoints = d.points; r.dExact = d.exact; r.dGd = d.gd; r.dGdErr = d.gdErr;
         r.tPoints = r.points + d.points; r.tExact = r.exact + d.exact; r.tGd = r.gd + d.gd;
+        // GD error as a PER-GAME average over the scored games the player guessed
+        // (finished + live), so players who skipped games aren't flattered by a
+        // small running total. null when they have no scored guesses yet.
+        const n = r.scored + d.scored;
+        r.gdErrAvg = n > 0 ? (r.gdErr + d.gdErr) / n : null;
       });
       rows.sort((a, b) => b.tPoints - a.tPoints || b.tExact - a.tExact || b.tGd - a.tGd || a.player.localeCompare(b.player));
       // Rank real players only — the "Fav by 1" benchmark sits in its sorted spot
@@ -2016,7 +2023,7 @@
           '</td><td class="num">' + cell(r.points, r.dPoints, r.live) +
           '</td><td class="num">' + cell(r.exact, r.dExact, r.live) +
           '</td><td class="num">' + cell(r.gd, r.dGd, r.live) +
-          '</td><td class="num">' + cell(r.gdErr, r.dGdErr, r.live) + '</td>';
+          '</td><td class="num">' + (r.gdErrAvg == null ? '—' : r.gdErrAvg.toFixed(2)) + '</td>';
         tr.addEventListener('mouseenter', () => applyChartHighlight(r.player));
         tr.addEventListener('mouseleave', () => applyChartHighlight());
         // Click expands this player's picks below. Persistent chart pinning is the
