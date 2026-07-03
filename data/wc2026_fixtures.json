@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-03T15:22:59.673186Z",
+  "generatedAt": "2026-07-03T17:01:32.332919Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4306,12 +4306,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "EGY +135",
+        "details": "EGY +140",
         "overUnder": 1.5,
         "moneyline": {
-          "home": "+270",
-          "away": "+135",
-          "draw": "+185"
+          "home": "+260",
+          "away": "+140",
+          "draw": "+190"
         },
         "spread": {
           "line": "+0.5",
