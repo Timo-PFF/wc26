@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-03T20:01:24.128926Z",
+  "generatedAt": "2026-07-03T21:20:28.689139Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4269,11 +4269,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_END_OF_REGULATION",
-        "state": "in",
-        "completed": false,
-        "detail": "ET",
-        "shortDetail": "ET"
+        "name": "STATUS_FINAL_PEN",
+        "state": "post",
+        "completed": true,
+        "detail": "FT-Pens",
+        "shortDetail": "FT-Pens"
       },
       "venue": {
         "fullName": "AT&T Stadium",
@@ -4288,7 +4288,7 @@
         "abbreviation": "AUS",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/aus.png",
         "score": 1,
-        "shootout": null,
+        "shootout": 2,
         "winner": false
       },
       "away": {
@@ -4299,25 +4299,12 @@
         "abbreviation": "EGY",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/egy.png",
         "score": 1,
-        "shootout": null,
-        "winner": false
+        "shootout": 4,
+        "winner": true
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "EGY +150",
-        "overUnder": 1.5,
-        "moneyline": {
-          "home": "+255",
-          "away": "+150",
-          "draw": "+175"
-        },
-        "spread": {
-          "line": "+0.5",
-          "odds": "-180"
-        }
-      },
+      "winner": "away",
+      "decidedBy": "penalties",
+      "odds": null,
       "group": null
     },
     {
@@ -4495,16 +4482,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "MAR -120",
+        "details": "MAR -110",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+350",
-          "away": "-120",
-          "draw": "+245"
+          "home": "+330",
+          "away": "-110",
+          "draw": "+235"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+100"
+          "odds": "-110"
         }
       },
       "group": null
@@ -4747,11 +4734,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ESP -115",
+        "details": "ESP -110",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+300",
-          "away": "-115",
+          "home": "+295",
+          "away": "-110",
           "draw": "+265"
         },
         "spread": {
@@ -4827,8 +4814,8 @@
     {
       "id": "760509",
       "date": "2026-07-07T16:00Z",
-      "name": "Round of 32 16 Winner at Round of 32 14 Winner",
-      "shortName": "RD32 @ RD32",
+      "name": "Egypt at Round of 32 14 Winner",
+      "shortName": "EGY @ RD32",
       "stage": {
         "slug": "round-of-16",
         "type": 13800,
@@ -4859,12 +4846,12 @@
         "winner": false
       },
       "away": {
-        "id": "131540",
-        "displayName": "Round of 32 16 Winner",
-        "shortDisplayName": "RD32 W16",
-        "name": "Round of 32 16 Winner",
-        "abbreviation": "RD32",
-        "logo": "",
+        "id": "2620",
+        "displayName": "Egypt",
+        "shortDisplayName": "Egypt",
+        "name": "Egypt",
+        "abbreviation": "EGY",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/egy.png",
         "score": null,
         "shootout": null,
         "winner": false
