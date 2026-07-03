@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-03T04:29:24.787110Z",
+  "generatedAt": "2026-07-03T07:49:05.825383Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4219,11 +4219,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_IN_PROGRESS",
-        "state": "in",
-        "completed": false,
-        "detail": "56'",
-        "shortDetail": "56'"
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
       },
       "venue": {
         "fullName": "BC Place",
@@ -4239,7 +4239,7 @@
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sui.png",
         "score": 2,
         "shootout": null,
-        "winner": false
+        "winner": true
       },
       "away": {
         "id": "624",
@@ -4252,22 +4252,9 @@
         "shootout": null,
         "winner": false
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "SUI +100",
-        "overUnder": 2.5,
-        "moneyline": {
-          "home": "+100",
-          "away": "+330",
-          "draw": "+225"
-        },
-        "spread": {
-          "line": "-0.5",
-          "odds": "-105"
-        }
-      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
       "group": null
     },
     {
@@ -4319,16 +4306,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "EGY +145",
+        "details": "EGY +140",
         "overUnder": 1.5,
         "moneyline": {
-          "home": "+255",
-          "away": "+145",
-          "draw": "+185"
+          "home": "+260",
+          "away": "+140",
+          "draw": "+190"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "-170"
+          "odds": "-165"
         }
       },
       "group": null
@@ -4382,11 +4369,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ARG -700",
+        "details": "ARG -650",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-700",
-          "away": "+2000",
+          "home": "-650",
+          "away": "+1900",
           "draw": "+700"
         },
         "spread": {
@@ -4580,7 +4567,7 @@
         },
         "spread": {
           "line": "+1.5",
-          "odds": "+135"
+          "odds": "+130"
         }
       },
       "group": null
@@ -4643,7 +4630,7 @@
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-120"
+          "odds": "-125"
         }
       },
       "group": null
@@ -4763,13 +4750,13 @@
         "details": "ESP -105",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+295",
+          "home": "+300",
           "away": "-105",
           "draw": "+260"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "-115"
+          "odds": "-110"
         }
       },
       "group": null
@@ -4832,7 +4819,7 @@
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+155"
+          "odds": "+150"
         }
       },
       "group": null
@@ -4890,8 +4877,8 @@
     {
       "id": "760508",
       "date": "2026-07-07T20:00Z",
-      "name": "Round of 32 15 Winner at Round of 32 13 Winner",
-      "shortName": "RD32 @ RD32",
+      "name": "Round of 32 15 Winner at Switzerland",
+      "shortName": "RD32 @ SUI",
       "stage": {
         "slug": "round-of-16",
         "type": 13800,
@@ -4911,12 +4898,12 @@
         "country": "Canada"
       },
       "home": {
-        "id": "131537",
-        "displayName": "Round of 32 13 Winner",
-        "shortDisplayName": "RD32 W13",
-        "name": "Round of 32 13 Winner",
-        "abbreviation": "RD32",
-        "logo": "",
+        "id": "475",
+        "displayName": "Switzerland",
+        "shortDisplayName": "Switzerland",
+        "name": "Switzerland",
+        "abbreviation": "SUI",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sui.png",
         "score": null,
         "shootout": null,
         "winner": false
