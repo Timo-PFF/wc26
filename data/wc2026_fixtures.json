@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-03T17:01:32.332919Z",
+  "generatedAt": "2026-07-03T18:22:11.075929Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4306,12 +4306,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "EGY +140",
+        "details": "EGY +135",
         "overUnder": 1.5,
         "moneyline": {
-          "home": "+260",
-          "away": "+140",
-          "draw": "+190"
+          "home": "+255",
+          "away": "+135",
+          "draw": "+185"
         },
         "spread": {
           "line": "+0.5",
@@ -4369,11 +4369,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ARG -650",
+        "details": "ARG -700",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-650",
-          "away": "+1800",
+          "home": "-700",
+          "away": "+1700",
           "draw": "+700"
         },
         "spread": {
@@ -4432,12 +4432,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "COL -230",
+        "details": "COL -235",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-230",
+          "home": "-235",
           "away": "+750",
-          "draw": "+340"
+          "draw": "+330"
         },
         "spread": {
           "line": "-1.5",
@@ -4495,12 +4495,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "MAR -125",
+        "details": "MAR -130",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+400",
-          "away": "-125",
-          "draw": "+250"
+          "home": "+390",
+          "away": "-130",
+          "draw": "+245"
         },
         "spread": {
           "line": "+0.5",
@@ -4558,12 +4558,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "FRA -525",
+        "details": "FRA -550",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+1800",
-          "away": "-525",
-          "draw": "+600"
+          "home": "+1700",
+          "away": "-550",
+          "draw": "+550"
         },
         "spread": {
           "line": "+1.5",
@@ -4625,8 +4625,8 @@
         "overUnder": 2.5,
         "moneyline": {
           "home": "-120",
-          "away": "+320",
-          "draw": "+280"
+          "away": "+310",
+          "draw": "+275"
         },
         "spread": {
           "line": "-0.5",
@@ -4687,9 +4687,9 @@
         "details": "ENG +140",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+220",
+          "home": "+215",
           "away": "+140",
-          "draw": "+215"
+          "draw": "+210"
         },
         "spread": {
           "line": "+0.5",
@@ -4747,12 +4747,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ESP -105",
+        "details": "ESP -110",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+300",
-          "away": "-105",
-          "draw": "+260"
+          "home": "+295",
+          "away": "-110",
+          "draw": "+255"
         },
         "spread": {
           "line": "+0.5",
@@ -4810,10 +4810,10 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "USA +155",
+        "details": "USA +150",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+155",
+          "home": "+150",
           "away": "+180",
           "draw": "+240"
         },
