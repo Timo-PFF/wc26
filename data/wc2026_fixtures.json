@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-03T13:04:46.437138Z",
+  "generatedAt": "2026-07-03T15:22:59.673186Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4309,9 +4309,9 @@
         "details": "EGY +135",
         "overUnder": 1.5,
         "moneyline": {
-          "home": "+265",
+          "home": "+270",
           "away": "+135",
-          "draw": "+195"
+          "draw": "+185"
         },
         "spread": {
           "line": "+0.5",
@@ -4369,12 +4369,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ARG -700",
+        "details": "ARG -650",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-700",
-          "away": "+1900",
-          "draw": "+750"
+          "home": "-650",
+          "away": "+1800",
+          "draw": "+700"
         },
         "spread": {
           "line": "-2.5",
@@ -4558,11 +4558,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "FRA -550",
+        "details": "FRA -525",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+1700",
-          "away": "-550",
+          "home": "+1800",
+          "away": "-525",
           "draw": "+600"
         },
         "spread": {
@@ -4621,11 +4621,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "BRA -115",
+        "details": "BRA -120",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-115",
-          "away": "+310",
+          "home": "-120",
+          "away": "+320",
           "draw": "+280"
         },
         "spread": {
