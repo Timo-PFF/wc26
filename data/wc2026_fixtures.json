@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-02T22:42:34.579628Z",
+  "generatedAt": "2026-07-03T00:17:04.498401Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4169,11 +4169,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
+        "name": "STATUS_FIRST_HALF",
+        "state": "in",
         "completed": false,
-        "detail": "Thu, July 2nd at 7:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "detail": "45'",
+        "shortDetail": "45'"
       },
       "venue": {
         "fullName": "BMO Field",
@@ -4187,7 +4187,7 @@
         "name": "Portugal",
         "abbreviation": "POR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/por.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -4198,7 +4198,7 @@
         "name": "Croatia",
         "abbreviation": "CRO",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cro.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -4215,7 +4215,7 @@
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-150"
+          "odds": "-155"
         }
       },
       "group": null
