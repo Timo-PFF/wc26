@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-03T07:49:05.825383Z",
+  "generatedAt": "2026-07-03T10:47:39.937826Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4306,16 +4306,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "EGY +140",
+        "details": "EGY +135",
         "overUnder": 1.5,
         "moneyline": {
-          "home": "+260",
-          "away": "+140",
-          "draw": "+190"
+          "home": "+265",
+          "away": "+135",
+          "draw": "+195"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "-165"
+          "odds": "-160"
         }
       },
       "group": null
@@ -4369,12 +4369,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ARG -650",
+        "details": "ARG -700",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-650",
+          "home": "-700",
           "away": "+1900",
-          "draw": "+700"
+          "draw": "+750"
         },
         "spread": {
           "line": "-2.5",
@@ -4567,7 +4567,7 @@
         },
         "spread": {
           "line": "+1.5",
-          "odds": "+130"
+          "odds": "+125"
         }
       },
       "group": null
@@ -4756,7 +4756,7 @@
         },
         "spread": {
           "line": "+0.5",
-          "odds": "-110"
+          "odds": "-115"
         }
       },
       "group": null
