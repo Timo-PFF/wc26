@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-03T18:22:11.075929Z",
+  "generatedAt": "2026-07-03T20:01:24.128926Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4269,11 +4269,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
+        "name": "STATUS_END_OF_REGULATION",
+        "state": "in",
         "completed": false,
-        "detail": "Fri, July 3rd at 2:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "detail": "ET",
+        "shortDetail": "ET"
       },
       "venue": {
         "fullName": "AT&T Stadium",
@@ -4287,7 +4287,7 @@
         "name": "Australia",
         "abbreviation": "AUS",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/aus.png",
-        "score": null,
+        "score": 1,
         "shootout": null,
         "winner": false
       },
@@ -4298,7 +4298,7 @@
         "name": "Egypt",
         "abbreviation": "EGY",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/egy.png",
-        "score": null,
+        "score": 1,
         "shootout": null,
         "winner": false
       },
@@ -4306,16 +4306,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "EGY +135",
+        "details": "EGY +150",
         "overUnder": 1.5,
         "moneyline": {
           "home": "+255",
-          "away": "+135",
-          "draw": "+185"
+          "away": "+150",
+          "draw": "+175"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "-165"
+          "odds": "-180"
         }
       },
       "group": null
@@ -4495,16 +4495,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "MAR -130",
+        "details": "MAR -120",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+390",
-          "away": "-130",
+          "home": "+350",
+          "away": "-120",
           "draw": "+245"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "+105"
+          "odds": "+100"
         }
       },
       "group": null
@@ -4689,7 +4689,7 @@
         "moneyline": {
           "home": "+215",
           "away": "+140",
-          "draw": "+210"
+          "draw": "+220"
         },
         "spread": {
           "line": "+0.5",
@@ -4747,12 +4747,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ESP -110",
+        "details": "ESP -115",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+295",
-          "away": "-110",
-          "draw": "+255"
+          "home": "+300",
+          "away": "-115",
+          "draw": "+265"
         },
         "spread": {
           "line": "+0.5",
@@ -4810,16 +4810,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "USA +150",
+        "details": "USA +165",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+150",
-          "away": "+180",
+          "home": "+165",
+          "away": "+165",
           "draw": "+240"
         },
         "spread": {
-          "line": "-0.5",
-          "odds": "+150"
+          "line": "+0.5",
+          "odds": "-195"
         }
       },
       "group": null
