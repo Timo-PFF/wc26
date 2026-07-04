@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-04T20:33:19.460184Z",
+  "generatedAt": "2026-07-04T21:34:45.487762Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4469,11 +4469,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
+        "name": "STATUS_FIRST_HALF",
+        "state": "in",
         "completed": false,
-        "detail": "Sat, July 4th at 5:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "detail": "26'",
+        "shortDetail": "26'"
       },
       "venue": {
         "fullName": "Lincoln Financial Field",
@@ -4487,7 +4487,7 @@
         "name": "Paraguay",
         "abbreviation": "PAR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/par.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -4498,7 +4498,7 @@
         "name": "France",
         "abbreviation": "FRA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/fra.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -4506,16 +4506,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "FRA -550",
+        "details": "FRA -500",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+1800",
-          "away": "-550",
-          "draw": "+550"
+          "home": "+1600",
+          "away": "-500",
+          "draw": "+500"
         },
         "spread": {
           "line": "+1.5",
-          "odds": "+120"
+          "odds": "+115"
         }
       },
       "group": null
@@ -4821,12 +4821,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ARG -285",
+        "details": "ARG -275",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-285",
+          "home": "-275",
           "away": "+850",
-          "draw": "+380"
+          "draw": "+370"
         },
         "spread": {
           "line": "-1.5",
