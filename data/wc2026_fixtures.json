@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-04T21:34:45.487762Z",
+  "generatedAt": "2026-07-04T22:35:53.083746Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4469,11 +4469,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_FIRST_HALF",
+        "name": "STATUS_SECOND_HALF",
         "state": "in",
         "completed": false,
-        "detail": "26'",
-        "shortDetail": "26'"
+        "detail": "66'",
+        "shortDetail": "66'"
       },
       "venue": {
         "fullName": "Lincoln Financial Field",
@@ -4821,11 +4821,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ARG -275",
+        "details": "ARG -265",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-275",
-          "away": "+850",
+          "home": "-265",
+          "away": "+800",
           "draw": "+370"
         },
         "spread": {
