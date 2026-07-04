@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-03T22:38:43.307455Z",
+  "generatedAt": "2026-07-04T00:15:29.700687Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4319,11 +4319,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_IN_PROGRESS",
+        "name": "STATUS_END_OF_REGULATION",
         "state": "in",
         "completed": false,
-        "detail": "31'",
-        "shortDetail": "31'"
+        "detail": "ET",
+        "shortDetail": "ET"
       },
       "venue": {
         "fullName": "Hard Rock Stadium",
@@ -4348,7 +4348,7 @@
         "name": "Cape Verde",
         "abbreviation": "CPV",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cpv.png",
-        "score": 0,
+        "score": 1,
         "shootout": null,
         "winner": false
       },
@@ -4428,7 +4428,7 @@
         },
         "spread": {
           "line": "-1.5",
-          "odds": "+125"
+          "odds": "+120"
         }
       },
       "group": null
@@ -4485,9 +4485,9 @@
         "details": "MAR -115",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+340",
+          "home": "+360",
           "away": "-115",
-          "draw": "+240"
+          "draw": "+235"
         },
         "spread": {
           "line": "+0.5",
@@ -4797,11 +4797,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "USA +165",
+        "details": "BEL +155",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+165",
-          "away": "+165",
+          "home": "+170",
+          "away": "+155",
           "draw": "+240"
         },
         "spread": {
