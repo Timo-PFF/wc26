@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-04T22:35:53.083746Z",
+  "generatedAt": "2026-07-04T23:41:03.575086Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4469,11 +4469,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_SECOND_HALF",
-        "state": "in",
-        "completed": false,
-        "detail": "66'",
-        "shortDetail": "66'"
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
       },
       "venue": {
         "fullName": "Lincoln Financial Field",
@@ -4498,26 +4498,13 @@
         "name": "France",
         "abbreviation": "FRA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/fra.png",
-        "score": 0,
+        "score": 1,
         "shootout": null,
-        "winner": false
+        "winner": true
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "FRA -500",
-        "overUnder": 2.5,
-        "moneyline": {
-          "home": "+1600",
-          "away": "-500",
-          "draw": "+500"
-        },
-        "spread": {
-          "line": "+1.5",
-          "odds": "+115"
-        }
-      },
+      "winner": "away",
+      "decidedBy": "regulation",
+      "odds": null,
       "group": null
     },
     {
@@ -4569,16 +4556,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "BRA -120",
+        "details": "BRA -125",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-120",
-          "away": "+310",
+          "home": "-125",
+          "away": "+330",
           "draw": "+275"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-125"
+          "odds": "-130"
         }
       },
       "group": null
@@ -4830,7 +4817,7 @@
         },
         "spread": {
           "line": "-1.5",
-          "odds": "+110"
+          "odds": "+115"
         }
       },
       "group": null
@@ -4901,8 +4888,8 @@
     {
       "id": "760510",
       "date": "2026-07-09T20:00Z",
-      "name": "Morocco at Round of 16 1 Winner",
-      "shortName": "MAR @ RD16 W1",
+      "name": "Morocco at France",
+      "shortName": "MAR @ FRA",
       "stage": {
         "slug": "quarterfinals",
         "type": 13799,
@@ -4922,12 +4909,12 @@
         "country": "USA"
       },
       "home": {
-        "id": "19282",
-        "displayName": "Round of 16 1 Winner",
-        "shortDisplayName": "RD16 W1",
-        "name": "Round of 16 1 Winner",
-        "abbreviation": "RD16 W1",
-        "logo": "",
+        "id": "478",
+        "displayName": "France",
+        "shortDisplayName": "France",
+        "name": "France",
+        "abbreviation": "FRA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/fra.png",
         "score": null,
         "shootout": null,
         "winner": false
