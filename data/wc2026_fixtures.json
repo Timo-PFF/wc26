@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-05T14:02:59.674922Z",
+  "generatedAt": "2026-07-05T15:24:27.588746Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4556,11 +4556,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "BRA -125",
+        "details": "BRA -130",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-125",
-          "away": "+340",
+          "home": "-130",
+          "away": "+350",
           "draw": "+275"
         },
         "spread": {
