@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-04T23:41:03.575086Z",
+  "generatedAt": "2026-07-05T04:16:38.677940Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4556,16 +4556,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "BRA -125",
+        "details": "BRA -130",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-125",
-          "away": "+330",
-          "draw": "+275"
+          "home": "-130",
+          "away": "+340",
+          "draw": "+280"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-130"
+          "odds": "-135"
         }
       },
       "group": null
@@ -4622,7 +4622,7 @@
         "details": "ENG +140",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+205",
+          "home": "+215",
           "away": "+140",
           "draw": "+220"
         },
@@ -4745,12 +4745,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "USA +155",
+        "details": "USA +160",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+155",
+          "home": "+160",
           "away": "+170",
-          "draw": "+240"
+          "draw": "+230"
         },
         "spread": {
           "line": "-0.5",
@@ -4808,12 +4808,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ARG -265",
+        "details": "ARG -260",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-265",
-          "away": "+800",
-          "draw": "+370"
+          "home": "-260",
+          "away": "+750",
+          "draw": "+360"
         },
         "spread": {
           "line": "-1.5",
@@ -4932,7 +4932,20 @@
       },
       "winner": null,
       "decidedBy": null,
-      "odds": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "FRA -175",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-175",
+          "away": "+500",
+          "draw": "+285"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "-180"
+        }
+      },
       "group": null
     },
     {
