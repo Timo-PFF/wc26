@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-05T22:35:39.265912Z",
+  "generatedAt": "2026-07-05T23:41:53.092614Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4732,11 +4732,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "USA +165",
+        "details": "BEL +160",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+165",
-          "away": "+165",
+          "home": "+170",
+          "away": "+160",
           "draw": "+235"
         },
         "spread": {
