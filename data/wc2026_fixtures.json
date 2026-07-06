@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-06T04:24:20.244464Z",
+  "generatedAt": "2026-07-06T08:48:39.652493Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4659,7 +4659,7 @@
         "details": "ESP -110",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+285",
+          "home": "+295",
           "away": "-110",
           "draw": "+265"
         },
@@ -4719,16 +4719,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "USA +160",
+        "details": "USA +155",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+160",
-          "away": "+165",
+          "home": "+155",
+          "away": "+175",
           "draw": "+240"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+150"
+          "odds": "+145"
         }
       },
       "group": null
@@ -4782,12 +4782,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ARG -255",
+        "details": "ARG -260",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-255",
-          "away": "+750",
-          "draw": "+360"
+          "home": "-260",
+          "away": "+800",
+          "draw": "+370"
         },
         "spread": {
           "line": "-1.5",
@@ -4845,16 +4845,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "COL +130",
+        "details": "COL +135",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+240",
-          "away": "+130",
+          "home": "+230",
+          "away": "+135",
           "draw": "+210"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "-155"
+          "odds": "-160"
         }
       },
       "group": null
@@ -5019,7 +5019,20 @@
       },
       "winner": null,
       "decidedBy": null,
-      "odds": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "ENG -105",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+280",
+          "away": "-105",
+          "draw": "+255"
+        },
+        "spread": {
+          "line": "+0.5",
+          "odds": "-115"
+        }
+      },
       "group": null
     },
     {
