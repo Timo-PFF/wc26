@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-07T17:35:29.999842Z",
+  "generatedAt": "2026-07-07T19:24:52.858370Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4719,11 +4719,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_IN_PROGRESS",
-        "state": "in",
-        "completed": false,
-        "detail": "14'",
-        "shortDetail": "14'"
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
       },
       "venue": {
         "fullName": "Mercedes-Benz Stadium",
@@ -4737,9 +4737,9 @@
         "name": "Argentina",
         "abbreviation": "ARG",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/arg.png",
-        "score": 0,
+        "score": 3,
         "shootout": null,
-        "winner": false
+        "winner": true
       },
       "away": {
         "id": "2620",
@@ -4748,26 +4748,13 @@
         "name": "Egypt",
         "abbreviation": "EGY",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/egy.png",
-        "score": 0,
+        "score": 2,
         "shootout": null,
         "winner": false
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "ARG -310",
-        "overUnder": 2.5,
-        "moneyline": {
-          "home": "-310",
-          "away": "+1000",
-          "draw": "+390"
-        },
-        "spread": {
-          "line": "-1.5",
-          "odds": "+100"
-        }
-      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
       "group": null
     },
     {
@@ -4819,16 +4806,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "COL +125",
+        "details": "COL +130",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+245",
-          "away": "+125",
-          "draw": "+210"
+          "home": "+250",
+          "away": "+130",
+          "draw": "+200"
         },
         "spread": {
           "line": "+0.5",
-          "odds": "-155"
+          "odds": "-160"
         }
       },
       "group": null
@@ -4945,12 +4932,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ESP -160",
+        "details": "ESP -165",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-160",
+          "home": "-165",
           "away": "+450",
-          "draw": "+290"
+          "draw": "+295"
         },
         "spread": {
           "line": "-0.5",
@@ -5025,8 +5012,8 @@
     {
       "id": "760513",
       "date": "2026-07-12T01:00Z",
-      "name": "Round of 16 8 Winner at Round of 16 7 Winner",
-      "shortName": "RD16 W8 @ RD16 W7",
+      "name": "Round of 16 8 Winner at Argentina",
+      "shortName": "RD16 W8 @ ARG",
       "stage": {
         "slug": "quarterfinals",
         "type": 13799,
@@ -5046,12 +5033,12 @@
         "country": "USA"
       },
       "home": {
-        "id": "19280",
-        "displayName": "Round of 16 7 Winner",
-        "shortDisplayName": "RD16 W7",
-        "name": "Round of 16 7 Winner",
-        "abbreviation": "RD16 W7",
-        "logo": "",
+        "id": "202",
+        "displayName": "Argentina",
+        "shortDisplayName": "Argentina",
+        "name": "Argentina",
+        "abbreviation": "ARG",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/arg.png",
         "score": null,
         "shootout": null,
         "winner": false
