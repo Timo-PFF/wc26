@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-06T23:20:01.912212Z",
+  "generatedAt": "2026-07-07T05:49:35.878240Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4669,11 +4669,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
-        "completed": false,
-        "detail": "Mon, July 6th at 8:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
       },
       "venue": {
         "fullName": "Lumen Field",
@@ -4687,7 +4687,7 @@
         "name": "United States",
         "abbreviation": "USA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
-        "score": null,
+        "score": 1,
         "shootout": null,
         "winner": false
       },
@@ -4698,26 +4698,13 @@
         "name": "Belgium",
         "abbreviation": "BEL",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bel.png",
-        "score": null,
+        "score": 4,
         "shootout": null,
-        "winner": false
+        "winner": true
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "USA +155",
-        "overUnder": 2.5,
-        "moneyline": {
-          "home": "+155",
-          "away": "+185",
-          "draw": "+225"
-        },
-        "spread": {
-          "line": "-0.5",
-          "odds": "+145"
-        }
-      },
+      "winner": "away",
+      "decidedBy": "regulation",
+      "odds": null,
       "group": null
     },
     {
@@ -4769,16 +4756,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ARG -270",
+        "details": "ARG -300",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-270",
-          "away": "+850",
-          "draw": "+370"
+          "home": "-300",
+          "away": "+950",
+          "draw": "+390"
         },
         "spread": {
           "line": "-1.5",
-          "odds": "+110"
+          "odds": "+100"
         }
       },
       "group": null
@@ -4832,11 +4819,11 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "COL +130",
+        "details": "COL +125",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+240",
-          "away": "+130",
+          "home": "+245",
+          "away": "+125",
           "draw": "+210"
         },
         "spread": {
@@ -4912,8 +4899,8 @@
     {
       "id": "760511",
       "date": "2026-07-10T19:00Z",
-      "name": "Round of 16 6 Winner at Spain",
-      "shortName": "RD16 W6 @ ESP",
+      "name": "Belgium at Spain",
+      "shortName": "BEL @ ESP",
       "stage": {
         "slug": "quarterfinals",
         "type": 13799,
@@ -4944,19 +4931,32 @@
         "winner": false
       },
       "away": {
-        "id": "19279",
-        "displayName": "Round of 16 6 Winner",
-        "shortDisplayName": "RD16 W6",
-        "name": "Round of 16 6 Winner",
-        "abbreviation": "RD16 W6",
-        "logo": "",
+        "id": "459",
+        "displayName": "Belgium",
+        "shortDisplayName": "Belgium",
+        "name": "Belgium",
+        "abbreviation": "BEL",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bel.png",
         "score": null,
         "shootout": null,
         "winner": false
       },
       "winner": null,
       "decidedBy": null,
-      "odds": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "ESP -160",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-160",
+          "away": "+450",
+          "draw": "+290"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "-165"
+        }
+      },
       "group": null
     },
     {
