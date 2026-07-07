@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-07T21:09:23.791847Z",
+  "generatedAt": "2026-07-07T22:41:20.117940Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4769,11 +4769,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_HALFTIME",
+        "name": "STATUS_SECOND_HALF",
         "state": "in",
         "completed": false,
-        "detail": "HT",
-        "shortDetail": "HT"
+        "detail": "49'",
+        "shortDetail": "49'"
       },
       "venue": {
         "fullName": "BC Place",
