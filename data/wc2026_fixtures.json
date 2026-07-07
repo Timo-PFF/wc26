@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-07T15:33:41.278410Z",
+  "generatedAt": "2026-07-07T17:35:29.999842Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4719,11 +4719,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
+        "name": "STATUS_IN_PROGRESS",
+        "state": "in",
         "completed": false,
-        "detail": "Tue, July 7th at 12:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "detail": "14'",
+        "shortDetail": "14'"
       },
       "venue": {
         "fullName": "Mercedes-Benz Stadium",
@@ -4737,7 +4737,7 @@
         "name": "Argentina",
         "abbreviation": "ARG",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/arg.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -4748,7 +4748,7 @@
         "name": "Egypt",
         "abbreviation": "EGY",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/egy.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
