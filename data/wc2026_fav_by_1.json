@@ -717,25 +717,25 @@
       "date": "2026-07-01T16:00Z",
       "home": "ENG",
       "away": "COD",
-      "implied_mean": 2.5687,
-      "pick_home": 1,
-      "pick_away": 0
+      "implied_mean": 2.6741,
+      "pick_home": 2,
+      "pick_away": 1
     },
     {
       "event_id": "760493",
       "date": "2026-07-01T20:00Z",
       "home": "BEL",
       "away": "SEN",
-      "implied_mean": 2.5868,
-      "pick_home": 1,
-      "pick_away": 0
+      "implied_mean": 2.8687,
+      "pick_home": 2,
+      "pick_away": 1
     },
     {
       "event_id": "760494",
       "date": "2026-07-02T00:00Z",
       "home": "USA",
       "away": "BIH",
-      "implied_mean": 2.8687,
+      "implied_mean": 3.0172,
       "pick_home": 2,
       "pick_away": 1
     },
@@ -744,7 +744,7 @@
       "date": "2026-07-02T19:00Z",
       "home": "ESP",
       "away": "AUT",
-      "implied_mean": 2.7384,
+      "implied_mean": 2.9101,
       "pick_home": 2,
       "pick_away": 1
     },
@@ -753,9 +753,9 @@
       "date": "2026-07-02T23:00Z",
       "home": "POR",
       "away": "CRO",
-      "implied_mean": 2.4885,
-      "pick_home": 1,
-      "pick_away": 0
+      "implied_mean": 2.8262,
+      "pick_home": 2,
+      "pick_away": 1
     },
     {
       "event_id": "760498",
@@ -780,7 +780,7 @@
       "date": "2026-07-03T22:00Z",
       "home": "ARG",
       "away": "CPV",
-      "implied_mean": 2.9652,
+      "implied_mean": 3.0412,
       "pick_home": 2,
       "pick_away": 1
     },
@@ -789,7 +789,7 @@
       "date": "2026-07-04T01:30Z",
       "home": "COL",
       "away": "GHA",
-      "implied_mean": 2.3697,
+      "implied_mean": 2.4885,
       "pick_home": 1,
       "pick_away": 0
     },
@@ -798,7 +798,7 @@
       "date": "2026-07-04T17:00Z",
       "home": "CAN",
       "away": "MAR",
-      "implied_mean": 2.3697,
+      "implied_mean": 2.3076,
       "pick_home": 0,
       "pick_away": 1
     },
@@ -807,7 +807,7 @@
       "date": "2026-07-04T21:00Z",
       "home": "PAR",
       "away": "FRA",
-      "implied_mean": 3.0902,
+      "implied_mean": 2.9101,
       "pick_home": 1,
       "pick_away": 2
     },
@@ -816,7 +816,88 @@
       "date": "2026-07-05T20:00Z",
       "home": "BRA",
       "away": "NOR",
-      "implied_mean": 2.6108,
+      "implied_mean": 2.8687,
+      "pick_home": 2,
+      "pick_away": 1
+    },
+    {
+      "event_id": "760505",
+      "date": "2026-07-06T01:00Z",
+      "home": "MEX",
+      "away": "ENG",
+      "implied_mean": 2.2327,
+      "pick_home": 0,
+      "pick_away": 1
+    },
+    {
+      "event_id": "760506",
+      "date": "2026-07-06T19:00Z",
+      "home": "POR",
+      "away": "ESP",
+      "implied_mean": 2.8262,
+      "pick_home": 1,
+      "pick_away": 2
+    },
+    {
+      "event_id": "760507",
+      "date": "2026-07-07T00:00Z",
+      "home": "USA",
+      "away": "BEL",
+      "implied_mean": 2.8081,
+      "pick_home": 2,
+      "pick_away": 1
+    },
+    {
+      "event_id": "760509",
+      "date": "2026-07-07T16:00Z",
+      "home": "ARG",
+      "away": "EGY",
+      "implied_mean": 2.5687,
+      "pick_home": 1,
+      "pick_away": 0
+    },
+    {
+      "event_id": "760508",
+      "date": "2026-07-07T20:00Z",
+      "home": "SUI",
+      "away": "COL",
+      "implied_mean": 2.2975,
+      "pick_home": 0,
+      "pick_away": 1
+    },
+    {
+      "event_id": "760510",
+      "date": "2026-07-09T20:00Z",
+      "home": "FRA",
+      "away": "MAR",
+      "implied_mean": 2.5687,
+      "pick_home": 1,
+      "pick_away": 0
+    },
+    {
+      "event_id": "760511",
+      "date": "2026-07-10T19:00Z",
+      "home": "ESP",
+      "away": "BEL",
+      "implied_mean": 2.7823,
+      "pick_home": 2,
+      "pick_away": 1
+    },
+    {
+      "event_id": "760512",
+      "date": "2026-07-11T21:00Z",
+      "home": "NOR",
+      "away": "ENG",
+      "implied_mean": 2.885,
+      "pick_home": 1,
+      "pick_away": 2
+    },
+    {
+      "event_id": "760513",
+      "date": "2026-07-12T01:00Z",
+      "home": "ARG",
+      "away": "SUI",
+      "implied_mean": 2.3697,
       "pick_home": 1,
       "pick_away": 0
     }
