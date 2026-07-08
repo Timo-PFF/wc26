@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-07T22:41:20.117940Z",
+  "generatedAt": "2026-07-08T00:09:20.281520Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4769,11 +4769,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_SECOND_HALF",
-        "state": "in",
-        "completed": false,
-        "detail": "49'",
-        "shortDetail": "49'"
+        "name": "STATUS_FINAL_PEN",
+        "state": "post",
+        "completed": true,
+        "detail": "FT-Pens",
+        "shortDetail": "FT-Pens"
       },
       "venue": {
         "fullName": "BC Place",
@@ -4788,8 +4788,8 @@
         "abbreviation": "SUI",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sui.png",
         "score": 0,
-        "shootout": null,
-        "winner": false
+        "shootout": 4,
+        "winner": true
       },
       "away": {
         "id": "208",
@@ -4799,25 +4799,12 @@
         "abbreviation": "COL",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/col.png",
         "score": 0,
-        "shootout": null,
+        "shootout": 3,
         "winner": false
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "COL +140",
-        "overUnder": 2.5,
-        "moneyline": {
-          "home": "+250",
-          "away": "+140",
-          "draw": "+185"
-        },
-        "spread": {
-          "line": "+0.5",
-          "odds": "-165"
-        }
-      },
+      "winner": "home",
+      "decidedBy": "penalties",
+      "odds": null,
       "group": null
     },
     {
@@ -4869,16 +4856,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "FRA -180",
+        "details": "FRA -170",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-180",
-          "away": "+550",
-          "draw": "+295"
+          "home": "-170",
+          "away": "+500",
+          "draw": "+285"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-185"
+          "odds": "-175"
         }
       },
       "group": null
@@ -4998,7 +4985,7 @@
         "details": "ENG -115",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+295",
+          "home": "+310",
           "away": "-115",
           "draw": "+270"
         },
@@ -5012,8 +4999,8 @@
     {
       "id": "760513",
       "date": "2026-07-12T01:00Z",
-      "name": "Round of 16 8 Winner at Argentina",
-      "shortName": "RD16 W8 @ ARG",
+      "name": "Switzerland at Argentina",
+      "shortName": "SUI @ ARG",
       "stage": {
         "slug": "quarterfinals",
         "type": 13799,
@@ -5044,19 +5031,32 @@
         "winner": false
       },
       "away": {
-        "id": "19281",
-        "displayName": "Round of 16 8 Winner",
-        "shortDisplayName": "RD16 W8",
-        "name": "Round of 16 8 Winner",
-        "abbreviation": "RD16 W8",
-        "logo": "",
+        "id": "475",
+        "displayName": "Switzerland",
+        "shortDisplayName": "Switzerland",
+        "name": "Switzerland",
+        "abbreviation": "SUI",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sui.png",
         "score": null,
         "shootout": null,
         "winner": false
       },
       "winner": null,
       "decidedBy": null,
-      "odds": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "ARG -140",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-140",
+          "away": "+425",
+          "draw": "+250"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "-145"
+        }
+      },
       "group": null
     },
     {
