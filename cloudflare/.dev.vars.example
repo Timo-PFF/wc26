@@ -1,0 +1,10 @@
+# Copy to `.dev.vars` (gitignored) for local `wrangler dev`. These become env.* .
+#
+# SESSION_SECRET signs session tokens. For local dev any string works. To keep
+# EXISTING logins valid after cutover, paste the old Apps Script value here
+# (Apps Script editor -> Project Settings -> Script Properties -> SESSION_SECRET).
+SESSION_SECRET=dev-secret-change-me
+
+# Overrides the [vars] FIXTURES_URL from wrangler.toml if you want a different
+# (e.g. dev) fixtures file locally. Optional.
+# FIXTURES_URL=https://raw.githubusercontent.com/Timo-PFF/wc26/main/data/wc2026_fixtures.json

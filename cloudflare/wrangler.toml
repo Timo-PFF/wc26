@@ -1,0 +1,19 @@
+name = "wc26-api"
+main = "src/worker.js"
+compatibility_date = "2025-01-01"
+
+# Non-secret config. Same fixtures file the frontend + old backend use, for lock state.
+[vars]
+FIXTURES_URL = "https://raw.githubusercontent.com/Timo-PFF/wc26/main/data/wc2026_fixtures.json"
+
+# D1 binding. For LOCAL dev (`wrangler dev` / `--local` execute) the id is ignored,
+# so the placeholder is fine. Before deploying REMOTELY, run:
+#   npx wrangler d1 create wc26
+# and paste the printed database_id below.
+[[d1_databases]]
+binding = "DB"
+database_name = "wc26"
+database_id = "f97f4801-1e75-4e67-b991-64bd45791be2"
+
+# SESSION_SECRET is NOT set here (it's a secret). Local dev reads it from .dev.vars;
+# for production run:  npx wrangler secret put SESSION_SECRET

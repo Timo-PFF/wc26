@@ -507,8 +507,14 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
   // ====== CONFIG ===========================================================
-  // 1) Paste your deployed Apps Script web-app URL (ends in /exec):
-  const SCRIPT_URL   = "https://script.google.com/macros/s/AKfycbxDl0jYS99LBobeb-g4bAJgQ4r9-GZwOeOqFm540YiDfeiQaXnblgdG6VjDIsRob848/exec";
+  // 1) Backend API base — Cloudflare Worker + D1 (see cloudflare/). Replaced the
+  //    Google Apps Script backend (retired; its /exec URL is in git history).
+  const SCRIPT_URL   = "https://wc26-api.pool-riske.workers.dev";
+  // Optional ?api=<url> override: point every backend call at a different server
+  // (e.g. a local `wrangler dev` Cloudflare Worker) WITHOUT editing this file, so
+  // the D1 backend can be tested against the live site while Apps Script keeps
+  // serving. Empty/absent → SCRIPT_URL (the deployed backend).
+  const API_BASE = new URLSearchParams(location.search).get('api') || SCRIPT_URL;
   // 2) Where the fixtures live (ESPN-shaped file produced by python/fetch_fixtures.py):
   const FIXTURES_URL = "data/wc2026_fixtures.json";
   // 3) Optional: the "Fav by 1" benchmark picks (python/apply_model.py sidecar).
@@ -1162,7 +1168,7 @@
 
   // Fetch the public league list (id + display name) and fill the league picker.
   async function loadLeagues() {
-    const data = await fetch(SCRIPT_URL + '?action=leagues').then(r => r.json());
+    const data = await fetch(API_BASE + '?action=leagues').then(r => r.json());
     LEAGUES = data.leagues || [];
     const sel = document.getElementById('leagueSelect');
     sel.querySelectorAll('option:not([data-i18n])').forEach(o => o.remove());
@@ -1230,7 +1236,7 @@
     const btn = document.getElementById('addBtn');
     btn.disabled = true;
     try {
-      const res = await fetch(SCRIPT_URL, {
+      const res = await fetch(API_BASE, {
         method: 'POST',
         body: JSON.stringify({ action: 'addPlayer', league: LEAGUE, name: name, password: pw, leaguePassword: leaguePw })
       });
@@ -1274,7 +1280,7 @@
     const btn = document.getElementById('loginBtn');
     btn.disabled = true;
     try {
-      const res = await fetch(SCRIPT_URL, {
+      const res = await fetch(API_BASE, {
         method: 'POST',
         body: JSON.stringify({ action: 'auth', league: LEAGUE, name: name, password: pw })
       });
@@ -1303,7 +1309,7 @@
     const tok = loadToken(LEAGUE);
     if (!tok || SCRIPT_URL.startsWith('PASTE')) { updatePlayerBadge(); return; }
     try {
-      const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'resume', token: tok }) });
+      const res = await fetch(API_BASE, { method: 'POST', body: JSON.stringify({ action: 'resume', token: tok }) });
       const data = await res.json();
       if (data.ok) {
         const lg = findLeague(data.league);
@@ -1339,7 +1345,7 @@
   async function loadPlayers(force) {
     if (SCRIPT_URL.startsWith('PASTE') || !LEAGUE) return SHEET.players;
     if (playersLoaded && !force) return SHEET.players;
-    const cfg = await fetch(SCRIPT_URL + '?league=' + encodeURIComponent(LEAGUE)).then(r => r.json());
+    const cfg = await fetch(API_BASE + '?league=' + encodeURIComponent(LEAGUE)).then(r => r.json());
     SHEET.players = cfg.players || [];
     playersLoaded = true;
     return SHEET.players;
@@ -1351,7 +1357,7 @@
   async function loadGuesses(force) {
     if (!AUTH || SCRIPT_URL.startsWith('PASTE')) { SHEET.guesses = []; guessesLoaded = false; return SHEET.guesses; }
     if (guessesLoaded && !force) return SHEET.guesses;
-    const res = await fetch(SCRIPT_URL, {
+    const res = await fetch(API_BASE, {
       method: 'POST',
       body: JSON.stringify({ action: 'guesses', token: AUTH.token })
     });
@@ -1468,7 +1474,7 @@
   async function switchToLink(league, name) {
     if (!AUTH || SCRIPT_URL.startsWith('PASTE')) return;
     try {
-      const res = await fetch(SCRIPT_URL, { method: 'POST',
+      const res = await fetch(API_BASE, { method: 'POST',
         body: JSON.stringify({ action: 'switchLink', token: AUTH.token, league: league, name: name }) });
       const data = await res.json();
       if (!data.ok) { msg(t('switchFailed'), 'err'); showTab('predict'); return; }
@@ -1881,7 +1887,7 @@
     const btn = document.getElementById('submitBtn');
     btn.disabled = true; msg(t('saving'), 'ok');
     try {
-      const res = await fetch(SCRIPT_URL, {
+      const res = await fetch(API_BASE, {
         method: 'POST',
         body: JSON.stringify({ token: AUTH.token, guesses: guesses }) // text/plain → no CORS preflight
       });

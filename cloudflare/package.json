@@ -1,0 +1,19 @@
+{
+  "name": "wc26-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cloudflare Worker + D1 backend for the World Cup prediction pool (replaces the Apps Script backend).",
+  "scripts": {
+    "dev": "wrangler dev",
+    "seed:build": "node import/csv_to_sql.mjs",
+    "db:init:local": "wrangler d1 execute wc26 --local --file=schema.sql",
+    "db:seed:local": "wrangler d1 execute wc26 --local --file=seed/seed.sql",
+    "db:init:remote": "wrangler d1 execute wc26 --remote --file=schema.sql",
+    "db:seed:remote": "wrangler d1 execute wc26 --remote --file=seed/seed.sql",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^3.90.0"
+  }
+}

@@ -1,0 +1,14 @@
+# Cloudflare / wrangler local state
+.wrangler/
+node_modules/
+
+# Local asdf tooling pin (kept untracked to avoid the CRLF/LF phantom-diff)
+.tool-versions
+
+# Secrets — never commit
+.dev.vars
+
+# Seed data holds password hashes + league join passwords: keep it OUT of the
+# public repo. Export CSVs and the generated seed.sql stay local only.
+seed/*.csv
+seed/seed.sql
