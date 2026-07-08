@@ -110,14 +110,31 @@ export async function linkedOthers(env, league, name) {
 
 // --- Guesses ---------------------------------------------------------------
 
-// All picks for one league. The (league, player, matchId) primary key already
-// guarantees one row per pick, so no dedup pass is needed (the old Sheet reader
-// deduped defensively because the sheet could accumulate duplicate rows).
-export async function getGuesses(env, league) {
+// Picks for a set of matches in a league — the live (active) matches. `matchIds`
+// is small (the remaining games), so this is backed by idx_guesses_league_match
+// and reads only those rows. Exact league match (canonical id) keeps the index
+// usable — no COLLATE NOCASE, which would force a full scan.
+export async function getGuessesByMatches(env, league, matchIds) {
+  if (!matchIds.length) return [];
+  const placeholders = matchIds.map(() => '?').join(', ');
   const { results } = await env.DB
-    .prepare('SELECT player, matchId, guessHome, guessAway, penaltyWinner FROM guesses WHERE league = ? COLLATE NOCASE')
-    .bind(String(league))
+    .prepare(`SELECT player, matchId, guessHome, guessAway, penaltyWinner FROM guesses WHERE league = ? AND matchId IN (${placeholders})`)
+    .bind(String(league), ...matchIds.map(String))
     .all();
+  return mapGuessRows(results);
+}
+
+// A single player's picks in a league (fallback when the active set can't be
+// determined; own picks are never private). Index-backed by idx_guesses_league_player.
+export async function getOwnGuesses(env, league, player) {
+  const { results } = await env.DB
+    .prepare('SELECT player, matchId, guessHome, guessAway, penaltyWinner FROM guesses WHERE league = ? AND player = ?')
+    .bind(String(league), String(player))
+    .all();
+  return mapGuessRows(results);
+}
+
+function mapGuessRows(results) {
   return results
     .filter((r) => String(r.player).trim() && String(r.matchId).trim())
     .map((r) => ({

@@ -526,6 +526,11 @@
   // 5) Knockout bracket connectivity (each match's two feeder match ids). Drives
   //    the correct downstream placement in the Knockout tab.
   const KO_BRACKET_URL = "data/wc2026_knockout_bracket.json";
+  // 6) Finished-match picks (public snapshot, committed; built by cloudflare/import/
+  //    build_historical.mjs). The backend serves only the LIVE matches (the fixture
+  //    ids not in this file); the client merges this static history with them, so
+  //    the vast majority of picks never hit the backend.
+  const HISTORICAL_URL = "data/wc2026_historical_guesses.csv";
   // (Scoring lives in scoring.js: SCORING + scorePick()/scoreGroup(), loaded above.)
   // =========================================================================
 
@@ -1362,9 +1367,50 @@
       body: JSON.stringify({ action: 'guesses', token: AUTH.token })
     });
     const data = await res.json();
-    SHEET.guesses = data.ok ? (data.guesses || []) : [];
+    const live = data.ok ? (data.guesses || []) : [];
+    // Finished matches come from the committed static snapshot (public); the API
+    // only returns the live matches. Merge them (disjoint match sets).
+    const lg = String(LEAGUE || '').toLowerCase();
+    const history = (await loadHistoricalGuesses()).filter(g => g.league.toLowerCase() === lg);
+    SHEET.guesses = mergeGuesses(history, live);
     guessesLoaded = !!data.ok;
     return SHEET.guesses;
+  }
+
+  // Finished-match picks (public snapshot). Loaded + parsed once; filtered to the
+  // current league at merge time. On failure (e.g. not yet committed) → live only.
+  let HIST_GUESSES = null;
+  async function loadHistoricalGuesses() {
+    if (HIST_GUESSES !== null) return HIST_GUESSES;
+    try {
+      const text = await (await fetch(HISTORICAL_URL, { cache: 'no-store' })).text();
+      HIST_GUESSES = parseGuessCsv(text);
+    } catch (e) {
+      HIST_GUESSES = [];
+    }
+    return HIST_GUESSES;
+  }
+
+  // Parse the snapshot CSV — unquoted columns league,player,matchId,home,away,penaltyWinner
+  // (build_historical.mjs guarantees no field needs escaping), so a plain split is safe.
+  function parseGuessCsv(text) {
+    const lines = text.replace(/^﻿/, '').split(/\r?\n/);
+    const out = [];
+    for (let i = 1; i < lines.length; i++) {         // skip header
+      const c = lines[i].split(',');
+      if (c.length < 5 || !c[1] || !c[2]) continue;
+      out.push({ league: c[0], player: c[1], matchId: c[2],
+                 home: parseInt(c[3], 10), away: parseInt(c[4], 10),
+                 penaltyWinner: (c[5] || '').trim() });
+    }
+    return out;
+  }
+
+  // Union of snapshot (finished) + live (API) picks. The two match sets are
+  // disjoint, but dedup by (player, matchId) anyway — the live value wins.
+  function mergeGuesses(history, live) {
+    const seen = new Set(live.map(g => g.player + '|' + g.matchId));
+    return live.concat(history.filter(g => !seen.has(g.player + '|' + g.matchId)));
   }
 
   // Reflect a just-saved submission in the cache (mirrors the backend's

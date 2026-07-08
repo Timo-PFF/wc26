@@ -5,12 +5,13 @@
 
 import { md5 } from './md5.js';
 import { issueToken, verifyToken, resolvePlayer } from './auth.js';
-import { lockedMatchIds } from './locks.js';
+import { lockedMatchIds, guessScope } from './locks.js';
 import {
   getLeague,
   getPlayer,
   playersForLeague,
-  getGuesses,
+  getGuessesByMatches,
+  getOwnGuesses,
   linkGroupFor,
   linkedOthers,
   normalize,
@@ -99,15 +100,25 @@ export async function switchLink(env, body) {
 }
 
 // ---- Read the caller's (privacy-filtered) guesses -------------------------
-// The caller's OWN picks (any state) plus everyone's picks for LOCKED games,
-// scoped to the caller's league. Unplayed games stay private.
+// Serves ONLY the live (active) matches — those not in the frozen snapshot the
+// client loads separately. Same privacy rule: the caller's OWN picks (any state)
+// plus everyone's picks for LOCKED games, scoped to the caller's league.
 export async function getGuessesFor(env, body) {
   const p = await resolvePlayer(env, body);
   if (!p) return { ok: false, error: 'unauthorized' };
-  const locked = (await lockedMatchIds(env)) || {}; // {} when unknown → only own picks
+
+  const { locked, active } = await guessScope(env);
   const mine = normalize(p.name);
-  const all = await getGuesses(env, p.league);
-  const out = all.filter((g) => normalize(g.player) === mine || locked[String(g.matchId)]);
+
+  // If the active set can't be determined (fixtures or snapshot unreachable),
+  // fall back to the caller's own picks only — never private, tiny, index-backed.
+  if (!active) {
+    return { ok: true, league: p.league, guesses: await getOwnGuesses(env, p.league, p.name) };
+  }
+
+  const lockedMap = locked || {};
+  const rows = await getGuessesByMatches(env, p.league, active);
+  const out = rows.filter((g) => normalize(g.player) === mine || lockedMap[String(g.matchId)]);
   return { ok: true, league: p.league, guesses: out };
 }
 

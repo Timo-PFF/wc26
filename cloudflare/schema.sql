@@ -35,5 +35,9 @@ CREATE TABLE IF NOT EXISTS links (
   name   TEXT NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_guesses_league ON guesses (league);
+-- Reads are scoped to a league + a small set of active matchIds (idx_..._match),
+-- with a per-player fallback (idx_..._player). Both are composite so the query
+-- planner can use them without a full table scan.
+CREATE INDEX IF NOT EXISTS idx_guesses_league_match ON guesses (league, matchId);
+CREATE INDEX IF NOT EXISTS idx_guesses_league_player ON guesses (league, player);
 CREATE INDEX IF NOT EXISTS idx_links_linkid ON links (linkId);

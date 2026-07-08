@@ -8,3 +8,8 @@ SESSION_SECRET=dev-secret-change-me
 # Overrides the [vars] FIXTURES_URL from wrangler.toml if you want a different
 # (e.g. dev) fixtures file locally. Optional.
 # FIXTURES_URL=https://raw.githubusercontent.com/Timo-PFF/wc26/main/data/wc2026_fixtures.json
+
+# For local dev, point the Worker at your static server's copy of the snapshot so
+# it derives the live matches from your LOCAL data (prod default in wrangler.toml
+# is the GitHub raw URL). Assumes you serve the repo root on :8000.
+SNAPSHOT_URL=http://localhost:8000/data/wc2026_historical_guesses.csv

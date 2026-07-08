@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "wrangler dev",
     "seed:build": "node import/csv_to_sql.mjs",
+    "historical:build": "node import/build_historical.mjs",
     "db:init:local": "wrangler d1 execute wc26 --local --file=schema.sql",
     "db:seed:local": "wrangler d1 execute wc26 --local --file=seed/seed.sql",
     "db:init:remote": "wrangler d1 execute wc26 --remote --file=schema.sql",

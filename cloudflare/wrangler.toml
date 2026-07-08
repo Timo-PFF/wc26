@@ -2,9 +2,14 @@ name = "wc26-api"
 main = "src/worker.js"
 compatibility_date = "2025-01-01"
 
-# Non-secret config. Same fixtures file the frontend + old backend use, for lock state.
+# Non-secret config.
+#  FIXTURES_URL — same fixtures file the frontend uses, for lock state.
+#  SNAPSHOT_URL — the committed finished-guesses snapshot; the Worker derives the
+#    live matches as the fixture ids NOT in it. 404 (before it's committed) is safe:
+#    the Worker just falls back to serving all matches until the file is live.
 [vars]
 FIXTURES_URL = "https://raw.githubusercontent.com/Timo-PFF/wc26/main/data/wc2026_fixtures.json"
+SNAPSHOT_URL = "https://raw.githubusercontent.com/Timo-PFF/wc26/main/data/wc2026_historical_guesses.csv"
 
 # D1 binding. For LOCAL dev (`wrangler dev` / `--local` execute) the id is ignored,
 # so the placeholder is fine. Before deploying REMOTELY, run:
