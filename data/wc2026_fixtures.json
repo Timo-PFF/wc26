@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-11T21:01:36.976910Z",
+  "generatedAt": "2026-07-11T22:01:18.487432Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4919,11 +4919,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
+        "name": "STATUS_HALFTIME",
+        "state": "in",
         "completed": false,
-        "detail": "Sat, July 11th at 5:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "detail": "HT",
+        "shortDetail": "HT"
       },
       "venue": {
         "fullName": "Hard Rock Stadium",
@@ -4937,7 +4937,7 @@
         "name": "Norway",
         "abbreviation": "NOR",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/nor.png",
-        "score": null,
+        "score": 1,
         "shootout": null,
         "winner": false
       },
@@ -4948,7 +4948,7 @@
         "name": "England",
         "abbreviation": "ENG",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png",
-        "score": null,
+        "score": 1,
         "shootout": null,
         "winner": false
       },
