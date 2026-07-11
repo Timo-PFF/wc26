@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-11T22:01:18.487432Z",
+  "generatedAt": "2026-07-11T23:04:17.199882Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4919,11 +4919,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_HALFTIME",
+        "name": "STATUS_SECOND_HALF",
         "state": "in",
         "completed": false,
-        "detail": "HT",
-        "shortDetail": "HT"
+        "detail": "84'",
+        "shortDetail": "84'"
       },
       "venue": {
         "fullName": "Hard Rock Stadium",
