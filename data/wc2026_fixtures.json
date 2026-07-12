@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-11T23:04:17.199882Z",
+  "generatedAt": "2026-07-12T00:06:33.870500Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4919,11 +4919,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_SECOND_HALF",
+        "name": "STATUS_OVERTIME",
         "state": "in",
         "completed": false,
-        "detail": "84'",
-        "shortDetail": "84'"
+        "detail": "107'",
+        "shortDetail": "107'"
       },
       "venue": {
         "fullName": "Hard Rock Stadium",
@@ -4948,7 +4948,7 @@
         "name": "England",
         "abbreviation": "ENG",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png",
-        "score": 1,
+        "score": 2,
         "shootout": null,
         "winner": false
       },
@@ -5019,12 +5019,12 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ARG -145",
+        "details": "ARG -140",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "-145",
+          "home": "-140",
           "away": "+450",
-          "draw": "+255"
+          "draw": "+245"
         },
         "spread": {
           "line": "-0.5",
@@ -5091,7 +5091,7 @@
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+135"
+          "odds": "+130"
         }
       },
       "group": null
