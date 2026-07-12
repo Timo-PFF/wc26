@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-12T00:06:33.870500Z",
+  "generatedAt": "2026-07-12T03:53:14.621249Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -4919,11 +4919,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_OVERTIME",
-        "state": "in",
-        "completed": false,
-        "detail": "107'",
-        "shortDetail": "107'"
+        "name": "STATUS_FINAL_AET",
+        "state": "post",
+        "completed": true,
+        "detail": "AET",
+        "shortDetail": "AET"
       },
       "venue": {
         "fullName": "Hard Rock Stadium",
@@ -4950,24 +4950,11 @@
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png",
         "score": 2,
         "shootout": null,
-        "winner": false
+        "winner": true
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "ENG -125",
-        "overUnder": 2.5,
-        "moneyline": {
-          "home": "+330",
-          "away": "-125",
-          "draw": "+280"
-        },
-        "spread": {
-          "line": "+0.5",
-          "odds": "+100"
-        }
-      },
+      "winner": "away",
+      "decidedBy": "extra_time",
+      "odds": null,
       "group": null
     },
     {
@@ -4982,11 +4969,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
-        "completed": false,
-        "detail": "Sat, July 11th at 9:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "name": "STATUS_FINAL_AET",
+        "state": "post",
+        "completed": true,
+        "detail": "AET",
+        "shortDetail": "AET"
       },
       "venue": {
         "fullName": "GEHA Field at Arrowhead Stadium",
@@ -5000,9 +4987,9 @@
         "name": "Argentina",
         "abbreviation": "ARG",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/arg.png",
-        "score": null,
+        "score": 3,
         "shootout": null,
-        "winner": false
+        "winner": true
       },
       "away": {
         "id": "475",
@@ -5011,26 +4998,13 @@
         "name": "Switzerland",
         "abbreviation": "SUI",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sui.png",
-        "score": null,
+        "score": 1,
         "shootout": null,
         "winner": false
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "ARG -140",
-        "overUnder": 2.5,
-        "moneyline": {
-          "home": "-140",
-          "away": "+450",
-          "draw": "+245"
-        },
-        "spread": {
-          "line": "-0.5",
-          "odds": "-150"
-        }
-      },
+      "winner": "home",
+      "decidedBy": "extra_time",
+      "odds": null,
       "group": null
     },
     {
@@ -5086,12 +5060,12 @@
         "overUnder": 2.5,
         "moneyline": {
           "home": "+135",
-          "away": "+215",
+          "away": "+220",
           "draw": "+225"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+130"
+          "odds": "+125"
         }
       },
       "group": null
@@ -5099,8 +5073,8 @@
     {
       "id": "760515",
       "date": "2026-07-15T19:00Z",
-      "name": "Quarterfinal 4 Winner at Quarterfinal 3 Winner",
-      "shortName": "QW4 @ QFW3",
+      "name": "Argentina at England",
+      "shortName": "ARG @ ENG",
       "stage": {
         "slug": "semifinals",
         "type": 13798,
@@ -5120,23 +5094,23 @@
         "country": "USA"
       },
       "home": {
-        "id": "17630",
-        "displayName": "Quarterfinal 3 Winner",
-        "shortDisplayName": "QF W3",
-        "name": "Quarterfinal 3 Winner",
-        "abbreviation": "QFW3",
-        "logo": "",
+        "id": "448",
+        "displayName": "England",
+        "shortDisplayName": "England",
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png",
         "score": null,
         "shootout": null,
         "winner": false
       },
       "away": {
-        "id": "17632",
-        "displayName": "Quarterfinal 4 Winner",
-        "shortDisplayName": "QF W4",
-        "name": "Quarterfinal 4 Winner",
-        "abbreviation": "QW4",
-        "logo": "",
+        "id": "202",
+        "displayName": "Argentina",
+        "shortDisplayName": "Argentina",
+        "name": "Argentina",
+        "abbreviation": "ARG",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/arg.png",
         "score": null,
         "shootout": null,
         "winner": false
