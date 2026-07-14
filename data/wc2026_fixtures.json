@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-14T04:12:56.835832Z",
+  "generatedAt": "2026-07-14T08:53:57.901038Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -5119,16 +5119,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "ENG +160",
+        "details": "ENG +165",
         "overUnder": 2.5,
         "moneyline": {
-          "home": "+160",
-          "away": "+205",
-          "draw": "+195"
+          "home": "+165",
+          "away": "+200",
+          "draw": "+190"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+150"
+          "odds": "+160"
         }
       },
       "group": null
