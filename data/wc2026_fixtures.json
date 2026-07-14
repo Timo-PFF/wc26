@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-14T08:53:57.901038Z",
+  "generatedAt": "2026-07-14T12:20:43.036177Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -5060,8 +5060,8 @@
         "overUnder": 2.5,
         "moneyline": {
           "home": "+140",
-          "away": "+215",
-          "draw": "+215"
+          "away": "+220",
+          "draw": "+205"
         },
         "spread": {
           "line": "-0.5",
