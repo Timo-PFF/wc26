@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-14T22:35:51.527934Z",
+  "generatedAt": "2026-07-15T00:55:55.240560Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -5115,7 +5115,7 @@
         },
         "spread": {
           "line": "-0.5",
-          "odds": "+165"
+          "odds": "+160"
         }
       },
       "group": null
