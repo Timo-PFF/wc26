@@ -870,16 +870,16 @@
       "date": "2026-07-09T20:00Z",
       "home": "FRA",
       "away": "MAR",
-      "implied_mean": 2.5687,
-      "pick_home": 1,
-      "pick_away": 0
+      "implied_mean": 2.6953,
+      "pick_home": 2,
+      "pick_away": 1
     },
     {
       "event_id": "760511",
       "date": "2026-07-10T19:00Z",
       "home": "ESP",
       "away": "BEL",
-      "implied_mean": 2.7823,
+      "implied_mean": 2.9101,
       "pick_home": 2,
       "pick_away": 1
     },
@@ -888,7 +888,7 @@
       "date": "2026-07-11T21:00Z",
       "home": "NOR",
       "away": "ENG",
-      "implied_mean": 2.885,
+      "implied_mean": 2.8687,
       "pick_home": 1,
       "pick_away": 2
     },
@@ -897,7 +897,43 @@
       "date": "2026-07-12T01:00Z",
       "home": "ARG",
       "away": "SUI",
-      "implied_mean": 2.3697,
+      "implied_mean": 2.338,
+      "pick_home": 1,
+      "pick_away": 0
+    },
+    {
+      "event_id": "760514",
+      "date": "2026-07-14T19:00Z",
+      "home": "FRA",
+      "away": "ESP",
+      "implied_mean": 2.7182,
+      "pick_home": 2,
+      "pick_away": 1
+    },
+    {
+      "event_id": "760515",
+      "date": "2026-07-15T19:00Z",
+      "home": "ENG",
+      "away": "ARG",
+      "implied_mean": 2.2688,
+      "pick_home": 1,
+      "pick_away": 0
+    },
+    {
+      "event_id": "760516",
+      "date": "2026-07-18T21:00Z",
+      "home": "FRA",
+      "away": "ENG",
+      "implied_mean": 3.3927,
+      "pick_home": 2,
+      "pick_away": 1
+    },
+    {
+      "event_id": "760517",
+      "date": "2026-07-19T19:00Z",
+      "home": "ESP",
+      "away": "ARG",
+      "implied_mean": 2.338,
       "pick_home": 1,
       "pick_away": 0
     }

@@ -95,11 +95,11 @@ event_id,date,stage,knockout,state,status_detail,home,away,home_id,away_id,home_
 760507,2026-07-07T00:00Z,round-of-16,True,post,FT,USA,BEL,660,459,1,4,regulation,away,DraftKings,155,225.0,185,2.5,-125.0,105.0
 760509,2026-07-07T16:00Z,round-of-16,True,post,FT,ARG,EGY,202,2620,3,2,regulation,home,DraftKings,-310,390.0,1000,2.5,100.0,-125.0
 760508,2026-07-07T20:00Z,round-of-16,True,post,FT-Pens,SUI,COL,475,208,0,0,penalties,home,DraftKings,250,185.0,140,2.5,135.0,-170.0
-760510,2026-07-09T20:00Z,quarterfinals,True,pre,Scheduled,FRA,MAR,478,2869,,,,,DraftKings,-170,285.0,500,2.5,100.0,-125.0
-760511,2026-07-10T19:00Z,quarterfinals,True,pre,Scheduled,ESP,BEL,164,459,,,,,DraftKings,-165,295.0,450,2.5,-125.0,100.0
-760512,2026-07-11T21:00Z,quarterfinals,True,pre,Scheduled,NOR,ENG,464,448,,,,,DraftKings,310,270.0,-115,2.5,-140.0,110.0
-760513,2026-07-12T01:00Z,quarterfinals,True,pre,Scheduled,ARG,SUI,202,475,,,,,DraftKings,-140,250.0,425,2.5,125.0,-155.0
-760514,2026-07-14T19:00Z,semifinals,True,pre,Scheduled,QFW1,QFW2,17631,17629,,,,,,,,,,,
-760515,2026-07-15T19:00Z,semifinals,True,pre,Scheduled,QFW3,QW4,17630,17632,,,,,,,,,,,
-760516,2026-07-18T21:00Z,3rd-place-match,True,pre,Scheduled,SF L1,SF L2,5958,5959,,,,,,,,,,,
-760517,2026-07-19T19:00Z,final,True,pre,Scheduled,SFW1,SFW2,5960,5961,,,,,,,,,,,
+760510,2026-07-09T20:00Z,quarterfinals,True,post,FT,FRA,MAR,478,2869,2,0,regulation,home,DraftKings,-170,280.0,500,2.5,-115.0,-110.0
+760511,2026-07-10T19:00Z,quarterfinals,True,post,FT,ESP,BEL,164,459,2,1,regulation,home,DraftKings,-165,290.0,475,2.5,-140.0,115.0
+760512,2026-07-11T21:00Z,quarterfinals,True,post,AET,NOR,ENG,464,448,1,2,extra_time,away,DraftKings,330,280.0,-125,2.5,-135.0,110.0
+760513,2026-07-12T01:00Z,quarterfinals,True,post,AET,ARG,SUI,202,475,3,1,extra_time,home,DraftKings,-135,225.0,500,2.5,130.0,-160.0
+760514,2026-07-14T19:00Z,semifinals,True,post,FT,FRA,ESP,478,164,0,2,regulation,away,DraftKings,160,190.0,210,2.5,-115.0,-105.0
+760515,2026-07-15T19:00Z,semifinals,True,post,FT,ENG,ARG,448,202,1,2,regulation,away,DraftKings,170,180.0,205,2.5,140.0,-175.0
+760516,2026-07-18T21:00Z,3rd-place-match,True,pre,Scheduled,FRA,ENG,478,448,,,,,DraftKings,-115,285.0,285,3.5,115.0,-145.0
+760517,2026-07-19T19:00Z,final,True,pre,Scheduled,ESP,ARG,164,202,,,,,DraftKings,130,195.0,255,2.5,130.0,-160.0

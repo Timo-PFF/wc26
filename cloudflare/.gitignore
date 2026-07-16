@@ -12,3 +12,6 @@ node_modules/
 # public repo. Export CSVs and the generated seed.sql stay local only.
 seed/*.csv
 seed/seed.sql
+
+# Local D1 backups (wrangler d1 export) — same secrets; keep out of the repo.
+backup-*.sql
