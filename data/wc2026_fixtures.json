@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-18T18:35:08.644588Z",
+  "generatedAt": "2026-07-18T22:02:09.182704Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -5119,11 +5119,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_SCHEDULED",
-        "state": "pre",
+        "name": "STATUS_HALFTIME",
+        "state": "in",
         "completed": false,
-        "detail": "Sat, July 18th at 5:00 PM EDT",
-        "shortDetail": "Scheduled"
+        "detail": "HT",
+        "shortDetail": "HT"
       },
       "venue": {
         "fullName": "Hard Rock Stadium",
@@ -5137,7 +5137,7 @@
         "name": "France",
         "abbreviation": "FRA",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/fra.png",
-        "score": null,
+        "score": 0,
         "shootout": null,
         "winner": false
       },
@@ -5148,7 +5148,7 @@
         "name": "England",
         "abbreviation": "ENG",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png",
-        "score": null,
+        "score": 4,
         "shootout": null,
         "winner": false
       },
@@ -5156,16 +5156,16 @@
       "decidedBy": null,
       "odds": {
         "provider": "DraftKings",
-        "details": "FRA -120",
+        "details": "FRA -145",
         "overUnder": 3.5,
         "moneyline": {
-          "home": "-120",
-          "away": "+285",
-          "draw": "+300"
+          "home": "-145",
+          "away": "+350",
+          "draw": "+310"
         },
         "spread": {
           "line": "-0.5",
-          "odds": "-125"
+          "odds": "-145"
         }
       },
       "group": null
