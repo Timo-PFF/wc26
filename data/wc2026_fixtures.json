@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-19T19:51:05.744788Z",
+  "generatedAt": "2026-07-19T21:03:48.887276Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -5169,11 +5169,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_FIRST_HALF",
+        "name": "STATUS_SECOND_HALF",
         "state": "in",
         "completed": false,
-        "detail": "25'",
-        "shortDetail": "25'"
+        "detail": "83'",
+        "shortDetail": "83'"
       },
       "venue": {
         "fullName": "MetLife Stadium",
