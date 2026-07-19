@@ -1,6 +1,6 @@
 {
   "source": "ESPN site.api scoreboard (fifa.world)",
-  "generatedAt": "2026-07-19T21:03:48.887276Z",
+  "generatedAt": "2026-07-19T22:04:58.322512Z",
   "range": {
     "start": "20260611",
     "end": "20260719"
@@ -5169,11 +5169,11 @@
         "knockout": true
       },
       "status": {
-        "name": "STATUS_SECOND_HALF",
-        "state": "in",
-        "completed": false,
-        "detail": "83'",
-        "shortDetail": "83'"
+        "name": "STATUS_FINAL_AET",
+        "state": "post",
+        "completed": true,
+        "detail": "AET",
+        "shortDetail": "AET"
       },
       "venue": {
         "fullName": "MetLife Stadium",
@@ -5187,9 +5187,9 @@
         "name": "Spain",
         "abbreviation": "ESP",
         "logo": "https://a.espncdn.com/i/teamlogos/countries/500/esp.png",
-        "score": 0,
+        "score": 1,
         "shootout": null,
-        "winner": false
+        "winner": true
       },
       "away": {
         "id": "202",
@@ -5202,22 +5202,9 @@
         "shootout": null,
         "winner": false
       },
-      "winner": null,
-      "decidedBy": null,
-      "odds": {
-        "provider": "DraftKings",
-        "details": "ESP +125",
-        "overUnder": 2.5,
-        "moneyline": {
-          "home": "+125",
-          "away": "+265",
-          "draw": "+205"
-        },
-        "spread": {
-          "line": "-0.5",
-          "odds": "+115"
-        }
-      },
+      "winner": "home",
+      "decidedBy": "extra_time",
+      "odds": null,
       "group": null
     }
   ]
