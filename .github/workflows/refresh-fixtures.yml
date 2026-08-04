@@ -8,13 +8,13 @@ name: Refresh fixtures
 # API response fails the job (red) instead of committing junk.
 
 on:
-  schedule:
-    # Twice an hour (at :07 and :37) during the tournament — the client
-    # live-scores feature handles real-time within a game, so the JSON only needs
-    # periodic refreshes. Deliberately off the :00/:30 boundary: GitHub delays/drops
-    # scheduled runs under load, which peaks at the top of the hour.
-    - cron: '7,37 * * * *'
-  workflow_dispatch:   # manual "Run workflow" button
+  # Auto-refresh DISABLED — the tournament is over, so the fixtures no longer change.
+  # Re-enable by uncommenting the schedule below (was: twice an hour at :07/:37,
+  # deliberately off the :00/:30 boundary, since GitHub drops scheduled runs under
+  # the peak load at the top of the hour).
+  # schedule:
+  #   - cron: '7,37 * * * *'
+  workflow_dispatch:   # manual "Run workflow" button (still available)
 
 # Never run two refreshes at once (a slow run shouldn't overlap the next tick).
 concurrency:
