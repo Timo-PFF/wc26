@@ -1,0 +1,47 @@
+{
+  "events": [
+    {
+      "id": "760486",
+      "competitions": [
+        {
+          "id": "760486",
+          "status": {
+            "type": {
+              "name": "STATUS_FINAL_PEN",
+              "state": "post",
+              "completed": true,
+              "detail": "FT-Pens",
+              "shortDetail": "FT-Pens"
+            }
+          },
+          "competitors": [
+            {
+              "id": "5926",
+              "homeAway": "home",
+              "winner": true,
+              "score": "1",
+              "team": {
+                "id": "5926",
+                "abbreviation": "2A",
+                "displayName": "Group A 2nd Place"
+              },
+              "shootoutScore": "4"
+            },
+            {
+              "id": "5924",
+              "homeAway": "away",
+              "winner": false,
+              "score": "1",
+              "team": {
+                "id": "5924",
+                "abbreviation": "2B",
+                "displayName": "Group B 2nd Place"
+              },
+              "shootoutScore": "3"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -30,7 +30,7 @@ import json
 import os
 from collections import defaultdict
 
-BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data")
+BASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "wc2026")
 GUESSES = os.path.join(BASE, "guesses_export.json")
 FIXTURES = os.path.join(BASE, "wc2026_fixtures.json")
 EXCLUDE = {"760516", "760517"}  # final + 3rd place: not played yet — clear once played

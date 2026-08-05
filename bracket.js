@@ -9,7 +9,7 @@
  * fixed bracket-position number that the feed never ties to a real match. So we
  * pass in the connectivity explicitly — `feederMap` maps a match id to the two
  * feeder match ids whose winners play it — built from
- * data/wc2026_knockout_bracket.json (resolved against the official FIFA bracket).
+ * data/wc2026/wc2026_knockout_bracket.json (resolved against the official FIFA bracket).
  * Keying by id means it keeps working as ESPN fills placeholders with real teams.
  *
  * buildBracket() folds that bracket into the two halves that meet at the final,

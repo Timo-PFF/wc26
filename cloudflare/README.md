@@ -9,7 +9,7 @@ shapes, so the static frontend is unchanged — it just points at this Worker's 
 - **Store:** D1 (SQLite), tables mirror the old Sheet tabs (`schema.sql`).
 - **Auth:** same HMAC-SHA256 token format + legacy MD5 password hashes preserved.
 - **Reads:** picks for finished matches are frozen in a committed static file
-  (`data/wc2026_historical_guesses.csv`); the Worker serves only the **live**
+  (`data/wc2026/wc2026_historical_guesses.csv`); the Worker serves only the **live**
   matches (fixture ids not in that file) and the frontend merges the two. This
   keeps the D1 read volume tiny (a handful of rows per request instead of the whole
   guesses table). The split is derived from the snapshot at runtime — no hardcoded
@@ -50,7 +50,7 @@ Then build the public finished-match snapshot (safe to commit — completed-game
 picks are already visible to pool members):
 
 ```bash
-npm run historical:build  # fixtures + seed/guesses.csv -> data/wc2026_historical_guesses.csv
+npm run historical:build  # fixtures + seed/guesses.csv -> data/wc2026/wc2026_historical_guesses.csv
 ```
 
 Commit that CSV; the Worker (and frontend) read it from the repo's raw URL. Re-run
@@ -69,7 +69,7 @@ connection lost"), so point it at the committed **raw GitHub URL** instead — t
 Worker reaches the public internet fine (same as it fetches fixtures):
 
 ```
-SNAPSHOT_URL=https://raw.githubusercontent.com/Timo-PFF/wc26/main/data/wc2026_historical_guesses.csv
+SNAPSHOT_URL=https://raw.githubusercontent.com/Timo-PFF/wc26/main/data/wc2026/wc2026_historical_guesses.csv
 ```
 
 Smoke test:
@@ -112,6 +112,44 @@ Cutover / updates ordering (important):
 
 `SCRIPT_URL` in `index.html` already points at the Worker; the prod `SNAPSHOT_URL`
 in `wrangler.toml` already points at the committed CSV.
+
+## Reusing this backend for a future tournament
+
+The Worker **code** (`src/`, `schema.sql`, `import/`) is tournament-agnostic — only
+config + data change. Stand up a new tournament as an **isolated instance** (its own
+D1 + Worker + `SCRIPT_URL`) via a wrangler *environment*, no code touched. `wc2026`
+stays the top-level default, so its `npm run *` scripts keep working unchanged.
+
+1. **New D1:** `npx wrangler d1 create wc2028` — note the printed `database_id`.
+2. **Add an env to `wrangler.toml`:**
+   ```toml
+   [env.wc2028]
+   name = "wc2028-api"                        # unique worker name → its own URL
+
+   [env.wc2028.vars]
+   FIXTURES_URL = "https://raw.githubusercontent.com/Timo-PFF/wc26/main/data/wc2028/wc2028_fixtures.json"
+   SNAPSHOT_URL = "https://raw.githubusercontent.com/Timo-PFF/wc26/main/data/wc2028/wc2028_historical_guesses.csv"
+
+   [[env.wc2028.d1_databases]]
+   binding = "DB"
+   database_name = "wc2028"
+   database_id = "<the id from step 1>"
+   ```
+3. **Secret + schema + seed** (target the env / new DB explicitly):
+   ```bash
+   npx wrangler secret put SESSION_SECRET --env wc2028
+   npx wrangler d1 execute wc2028 --remote --file=schema.sql
+   # export the new pool's Sheet → seed/ → build seed.sql, then:
+   npx wrangler d1 execute wc2028 --remote --file=seed/seed.sql
+   ```
+4. **Deploy:** `npx wrangler deploy --env wc2028` → prints the new Worker URL.
+5. **Frontend:** add an entry to `data/tournaments.json` (`id`, `name`, `api` = the
+   new URL, `files` under `data/wc2028/…`) and set `"default": "wc2028"`. No frontend
+   code change — that's the whole point of the manifest.
+
+Caveat: the `import/` tooling (`build_historical.mjs`, `csv_to_sql.mjs`) currently
+hardcodes `data/wc2026/` + `seed/` paths — repoint those at the new tournament's
+`data/wc2028/` / seed when you get there (or parameterize them by an env var).
 
 ### Notes
 

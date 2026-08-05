@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url';
 import { readTable } from './csv.mjs';
 
 const seedPath = (n) => fileURLToPath(new URL('../seed/' + n, import.meta.url));
-const dataPath = (n) => fileURLToPath(new URL('../../data/' + n, import.meta.url));
+const dataPath = (n) => fileURLToPath(new URL('../../data/wc2026/' + n, import.meta.url));
 
 const norm = (s) => String(s ?? '').trim().toLowerCase();
 

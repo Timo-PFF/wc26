@@ -1,0 +1,17 @@
+{
+  "default": "wc2026",
+  "tournaments": [
+    {
+      "id": "wc2026",
+      "name": "World Cup 2026",
+      "api": "https://wc26-api.pool-riske.workers.dev",
+      "files": {
+        "fixtures": "data/wc2026/wc2026_fixtures.json",
+        "favPicks": "data/wc2026/wc2026_fav_by_1.json",
+        "r32Bracket": "data/wc2026/wc2026_r32_bracket.json",
+        "koBracket": "data/wc2026/wc2026_knockout_bracket.json",
+        "historicalGuesses": "data/wc2026/wc2026_historical_guesses.csv"
+      }
+    }
+  ]
+}
