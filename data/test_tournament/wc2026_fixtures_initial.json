@@ -1,0 +1,6147 @@
+{
+  "source": "ESPN site.api scoreboard (fifa.world)",
+  "generatedAt": "2026-06-11T10:51:35.438061Z",
+  "range": {
+    "start": "20260611",
+    "end": "20260719"
+  },
+  "count": 104,
+  "matches": [
+    {
+      "id": "760415",
+      "date": "2026-06-11T19:00Z",
+      "name": "South Africa at Mexico",
+      "shortName": "RSA @ MEX",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Thu, June 11th at 3:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Estadio Banorte",
+        "city": "Mexico City",
+        "country": "Mexico"
+      },
+      "home": {
+        "id": "203",
+        "displayName": "Mexico",
+        "shortDisplayName": "Mexico",
+        "name": "Mexico",
+        "abbreviation": "MEX",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/mex.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "467",
+        "displayName": "South Africa",
+        "shortDisplayName": "South Africa",
+        "name": "South Africa",
+        "abbreviation": "RSA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/rsa.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "MEX -235",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-235",
+          "away": "+750",
+          "draw": "+340"
+        },
+        "spread": {
+          "line": "-1.5",
+          "odds": "+125"
+        }
+      },
+      "group": "A"
+    },
+    {
+      "id": "760414",
+      "date": "2026-06-12T02:00Z",
+      "name": "Czechia at South Korea",
+      "shortName": "CZE @ KOR",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Thu, June 11th at 10:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Estadio Akron",
+        "city": "Guadalajara",
+        "country": "Mexico"
+      },
+      "home": {
+        "id": "451",
+        "displayName": "South Korea",
+        "shortDisplayName": "South Korea",
+        "name": "South Korea",
+        "abbreviation": "KOR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/kors.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "450",
+        "displayName": "Czechia",
+        "shortDisplayName": "Czechia",
+        "name": "Czechia",
+        "abbreviation": "CZE",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cze.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "KOR +170",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+170",
+          "away": "+185",
+          "draw": "+210"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "+150"
+        }
+      },
+      "group": "A"
+    },
+    {
+      "id": "760416",
+      "date": "2026-06-12T19:00Z",
+      "name": "Bosnia-Herzegovina at Canada",
+      "shortName": "BIH @ CAN",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Fri, June 12th at 3:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "BMO Field",
+        "city": "Toronto",
+        "country": "Canada"
+      },
+      "home": {
+        "id": "206",
+        "displayName": "Canada",
+        "shortDisplayName": "Canada",
+        "name": "Canada",
+        "abbreviation": "CAN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/can.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "452",
+        "displayName": "Bosnia-Herzegovina",
+        "shortDisplayName": "Bosnia-Herz",
+        "name": "Bosnia-Herzegovina",
+        "abbreviation": "BIH",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bih.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "CAN -120",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-120",
+          "away": "+360",
+          "draw": "+255"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "-135"
+        }
+      },
+      "group": "B"
+    },
+    {
+      "id": "760417",
+      "date": "2026-06-13T01:00Z",
+      "name": "Paraguay at United States",
+      "shortName": "PAR @ USA",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Fri, June 12th at 9:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "SoFi Stadium",
+        "city": "Inglewood, California",
+        "country": "USA"
+      },
+      "home": {
+        "id": "660",
+        "displayName": "United States",
+        "shortDisplayName": "USA",
+        "name": "United States",
+        "abbreviation": "USA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "210",
+        "displayName": "Paraguay",
+        "shortDisplayName": "Paraguay",
+        "name": "Paraguay",
+        "abbreviation": "PAR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/par.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "USA -105",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-105",
+          "away": "+310",
+          "draw": "+240"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "-115"
+        }
+      },
+      "group": "D"
+    },
+    {
+      "id": "760420",
+      "date": "2026-06-13T19:00Z",
+      "name": "Switzerland at Qatar",
+      "shortName": "SUI @ QAT",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sat, June 13th at 3:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Levi's Stadium",
+        "city": "Santa Clara, California",
+        "country": "USA"
+      },
+      "home": {
+        "id": "4398",
+        "displayName": "Qatar",
+        "shortDisplayName": "Qatar",
+        "name": "Qatar",
+        "abbreviation": "QAT",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/qat.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "475",
+        "displayName": "Switzerland",
+        "shortDisplayName": "Switzerland",
+        "name": "Switzerland",
+        "abbreviation": "SUI",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sui.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "SUI -425",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+1100",
+          "away": "-425",
+          "draw": "+550"
+        },
+        "spread": {
+          "line": "+1.5",
+          "odds": "+115"
+        }
+      },
+      "group": "B"
+    },
+    {
+      "id": "760419",
+      "date": "2026-06-13T22:00Z",
+      "name": "Morocco at Brazil",
+      "shortName": "MAR @ BRA",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sat, June 13th at 6:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "MetLife Stadium",
+        "city": "East Rutherford, New Jersey",
+        "country": "USA"
+      },
+      "home": {
+        "id": "205",
+        "displayName": "Brazil",
+        "shortDisplayName": "Brazil",
+        "name": "Brazil",
+        "abbreviation": "BRA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "2869",
+        "displayName": "Morocco",
+        "shortDisplayName": "Morocco",
+        "name": "Morocco",
+        "abbreviation": "MAR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/mar.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "BRA -145",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-145",
+          "away": "+450",
+          "draw": "+275"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "-165"
+        }
+      },
+      "group": "C"
+    },
+    {
+      "id": "760418",
+      "date": "2026-06-14T01:00Z",
+      "name": "Scotland at Haiti",
+      "shortName": "SCO @ HAI",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sat, June 13th at 9:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Gillette Stadium",
+        "city": "Foxborough, Massachusetts",
+        "country": "USA"
+      },
+      "home": {
+        "id": "2654",
+        "displayName": "Haiti",
+        "shortDisplayName": "Haiti",
+        "name": "Haiti",
+        "abbreviation": "HAI",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/hai.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "580",
+        "displayName": "Scotland",
+        "shortDisplayName": "Scotland",
+        "name": "Scotland",
+        "abbreviation": "SCO",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sco.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "SCO -180",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+500",
+          "away": "-180",
+          "draw": "+330"
+        },
+        "spread": {
+          "line": "+0.5",
+          "odds": "+140"
+        }
+      },
+      "group": "C"
+    },
+    {
+      "id": "760421",
+      "date": "2026-06-14T04:00Z",
+      "name": "Türkiye at Australia",
+      "shortName": "TUR @ AUS",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sun, June 13th at 12:00 AM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "BC Place",
+        "city": "Vancouver",
+        "country": "Canada"
+      },
+      "home": {
+        "id": "628",
+        "displayName": "Australia",
+        "shortDisplayName": "Australia",
+        "name": "Australia",
+        "abbreviation": "AUS",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/aus.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "465",
+        "displayName": "Türkiye",
+        "shortDisplayName": "Türkiye",
+        "name": "Türkiye",
+        "abbreviation": "TUR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/tur.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "TUR -145",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+425",
+          "away": "-145",
+          "draw": "+285"
+        },
+        "spread": {
+          "line": "+0.5",
+          "odds": "+115"
+        }
+      },
+      "group": "D"
+    },
+    {
+      "id": "760422",
+      "date": "2026-06-14T17:00Z",
+      "name": "Curaçao at Germany",
+      "shortName": "CUW @ GER",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sun, June 14th at 1:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "NRG Stadium",
+        "city": "Houston, Texas",
+        "country": "USA"
+      },
+      "home": {
+        "id": "481",
+        "displayName": "Germany",
+        "shortDisplayName": "Germany",
+        "name": "Germany",
+        "abbreviation": "GER",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ger.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "11678",
+        "displayName": "Curaçao",
+        "shortDisplayName": "Curaçao",
+        "name": "Curaçao",
+        "abbreviation": "CUW",
+        "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/11678.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "GER -3500",
+        "overUnder": 4.5,
+        "moneyline": {
+          "home": "-3500",
+          "away": "+2800",
+          "draw": "+1500"
+        },
+        "spread": {
+          "line": "-3.5",
+          "odds": "-105"
+        }
+      },
+      "group": "E"
+    },
+    {
+      "id": "760425",
+      "date": "2026-06-14T20:00Z",
+      "name": "Japan at Netherlands",
+      "shortName": "JPN @ NED",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sun, June 14th at 4:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "AT&T Stadium",
+        "city": "Arlington, Texas",
+        "country": "USA"
+      },
+      "home": {
+        "id": "449",
+        "displayName": "Netherlands",
+        "shortDisplayName": "Netherlands",
+        "name": "Netherlands",
+        "abbreviation": "NED",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ned.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "627",
+        "displayName": "Japan",
+        "shortDisplayName": "Japan",
+        "name": "Japan",
+        "abbreviation": "JPN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/jpn.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "NED +100",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+100",
+          "away": "+260",
+          "draw": "+245"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "-110"
+        }
+      },
+      "group": "F"
+    },
+    {
+      "id": "760423",
+      "date": "2026-06-14T23:00Z",
+      "name": "Ecuador at Ivory Coast",
+      "shortName": "ECU @ CIV",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sun, June 14th at 7:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Lincoln Financial Field",
+        "city": "Philadelphia, Pennsylvania",
+        "country": "USA"
+      },
+      "home": {
+        "id": "4789",
+        "displayName": "Ivory Coast",
+        "shortDisplayName": "Ivory Coast",
+        "name": "Ivory Coast",
+        "abbreviation": "CIV",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/civ.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "209",
+        "displayName": "Ecuador",
+        "shortDisplayName": "Ecuador",
+        "name": "Ecuador",
+        "abbreviation": "ECU",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ecu.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "ECU +145",
+        "overUnder": 1.5,
+        "moneyline": {
+          "home": "+260",
+          "away": "+145",
+          "draw": "+185"
+        },
+        "spread": {
+          "line": "+0.5",
+          "odds": "-180"
+        }
+      },
+      "group": "E"
+    },
+    {
+      "id": "760424",
+      "date": "2026-06-15T02:00Z",
+      "name": "Tunisia at Sweden",
+      "shortName": "TUN @ SWE",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sun, June 14th at 10:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Estadio BBVA",
+        "city": "Guadalupe",
+        "country": "Mexico"
+      },
+      "home": {
+        "id": "466",
+        "displayName": "Sweden",
+        "shortDisplayName": "Sweden",
+        "name": "Sweden",
+        "abbreviation": "SWE",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/swe.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "659",
+        "displayName": "Tunisia",
+        "shortDisplayName": "Tunisia",
+        "name": "Tunisia",
+        "abbreviation": "TUN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/tun.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "SWE -110",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-110",
+          "away": "+330",
+          "draw": "+245"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "-120"
+        }
+      },
+      "group": "F"
+    },
+    {
+      "id": "760428",
+      "date": "2026-06-15T16:00Z",
+      "name": "Cape Verde at Spain",
+      "shortName": "CPV @ ESP",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Mon, June 15th at 12:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Mercedes-Benz Stadium",
+        "city": "Atlanta, Georgia",
+        "country": "USA"
+      },
+      "home": {
+        "id": "164",
+        "displayName": "Spain",
+        "shortDisplayName": "Spain",
+        "name": "Spain",
+        "abbreviation": "ESP",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/esp.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "2597",
+        "displayName": "Cape Verde",
+        "shortDisplayName": "Cape Verde",
+        "name": "Cape Verde",
+        "abbreviation": "CPV",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cpv.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "ESP -1200",
+        "overUnder": 3.5,
+        "moneyline": {
+          "home": "-1200",
+          "away": "+2500",
+          "draw": "+1100"
+        },
+        "spread": {
+          "line": "-2.5",
+          "odds": "-125"
+        }
+      },
+      "group": "H"
+    },
+    {
+      "id": "760426",
+      "date": "2026-06-15T19:00Z",
+      "name": "Egypt at Belgium",
+      "shortName": "EGY @ BEL",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Mon, June 15th at 3:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Lumen Field",
+        "city": "Seattle, Washington",
+        "country": "USA"
+      },
+      "home": {
+        "id": "459",
+        "displayName": "Belgium",
+        "shortDisplayName": "Belgium",
+        "name": "Belgium",
+        "abbreviation": "BEL",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bel.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "2620",
+        "displayName": "Egypt",
+        "shortDisplayName": "Egypt",
+        "name": "Egypt",
+        "abbreviation": "EGY",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/egy.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "BEL -155",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-155",
+          "away": "+425",
+          "draw": "+285"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "-165"
+        }
+      },
+      "group": "G"
+    },
+    {
+      "id": "760429",
+      "date": "2026-06-15T22:00Z",
+      "name": "Uruguay at Saudi Arabia",
+      "shortName": "URU @ KSA",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Mon, June 15th at 6:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Hard Rock Stadium",
+        "city": "Miami Gardens, Florida",
+        "country": "USA"
+      },
+      "home": {
+        "id": "655",
+        "displayName": "Saudi Arabia",
+        "shortDisplayName": "Saudi Arabia",
+        "name": "Saudi Arabia",
+        "abbreviation": "KSA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ksa.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "212",
+        "displayName": "Uruguay",
+        "shortDisplayName": "Uruguay",
+        "name": "Uruguay",
+        "abbreviation": "URU",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/uru.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "URU -220",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+650",
+          "away": "-220",
+          "draw": "+350"
+        },
+        "spread": {
+          "line": "+1.5",
+          "odds": "-170"
+        }
+      },
+      "group": "H"
+    },
+    {
+      "id": "760427",
+      "date": "2026-06-16T01:00Z",
+      "name": "New Zealand at Iran",
+      "shortName": "NZL @ IRN",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Mon, June 15th at 9:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "SoFi Stadium",
+        "city": "Inglewood, California",
+        "country": "USA"
+      },
+      "home": {
+        "id": "469",
+        "displayName": "Iran",
+        "shortDisplayName": "Iran",
+        "name": "Iran",
+        "abbreviation": "IRN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/irn.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "2666",
+        "displayName": "New Zealand",
+        "shortDisplayName": "New Zealand",
+        "name": "New Zealand",
+        "abbreviation": "NZL",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/nzl.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "IRN -120",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-120",
+          "away": "+370",
+          "draw": "+250"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "-130"
+        }
+      },
+      "group": "G"
+    },
+    {
+      "id": "760432",
+      "date": "2026-06-16T19:00Z",
+      "name": "Senegal at France",
+      "shortName": "SEN @ FRA",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Tue, June 16th at 3:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "MetLife Stadium",
+        "city": "East Rutherford, New Jersey",
+        "country": "USA"
+      },
+      "home": {
+        "id": "478",
+        "displayName": "France",
+        "shortDisplayName": "France",
+        "name": "France",
+        "abbreviation": "FRA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/fra.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "654",
+        "displayName": "Senegal",
+        "shortDisplayName": "Senegal",
+        "name": "Senegal",
+        "abbreviation": "SEN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sen.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "FRA -210",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-210",
+          "away": "+600",
+          "draw": "+340"
+        },
+        "spread": {
+          "line": "-1.5",
+          "odds": "+135"
+        }
+      },
+      "group": "I"
+    },
+    {
+      "id": "760430",
+      "date": "2026-06-16T22:00Z",
+      "name": "Norway at Iraq",
+      "shortName": "NOR @ IRQ",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Tue, June 16th at 6:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Gillette Stadium",
+        "city": "Foxborough, Massachusetts",
+        "country": "USA"
+      },
+      "home": {
+        "id": "4375",
+        "displayName": "Iraq",
+        "shortDisplayName": "Iraq",
+        "name": "Iraq",
+        "abbreviation": "IRQ",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/irq.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "464",
+        "displayName": "Norway",
+        "shortDisplayName": "Norway",
+        "name": "Norway",
+        "abbreviation": "NOR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/nor.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "NOR -475",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+1300",
+          "away": "-475",
+          "draw": "+600"
+        },
+        "spread": {
+          "line": "+1.5",
+          "odds": "+120"
+        }
+      },
+      "group": "I"
+    },
+    {
+      "id": "760433",
+      "date": "2026-06-17T01:00Z",
+      "name": "Algeria at Argentina",
+      "shortName": "ALG @ ARG",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Tue, June 16th at 9:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "GEHA Field at Arrowhead Stadium",
+        "city": "Kansas City, Missouri",
+        "country": "USA"
+      },
+      "home": {
+        "id": "202",
+        "displayName": "Argentina",
+        "shortDisplayName": "Argentina",
+        "name": "Argentina",
+        "abbreviation": "ARG",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/arg.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "624",
+        "displayName": "Algeria",
+        "shortDisplayName": "Algeria",
+        "name": "Algeria",
+        "abbreviation": "ALG",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/alg.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "ARG -245",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-245",
+          "away": "+800",
+          "draw": "+360"
+        },
+        "spread": {
+          "line": "-1.5",
+          "odds": "+110"
+        }
+      },
+      "group": "J"
+    },
+    {
+      "id": "760431",
+      "date": "2026-06-17T04:00Z",
+      "name": "Jordan at Austria",
+      "shortName": "JOR @ AUT",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Wed, June 16th at 12:00 AM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Levi's Stadium",
+        "city": "Santa Clara, California",
+        "country": "USA"
+      },
+      "home": {
+        "id": "474",
+        "displayName": "Austria",
+        "shortDisplayName": "Austria",
+        "name": "Austria",
+        "abbreviation": "AUT",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/aut.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "2917",
+        "displayName": "Jordan",
+        "shortDisplayName": "Jordan",
+        "name": "Jordan",
+        "abbreviation": "JOR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/jor.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "AUT -310",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-310",
+          "away": "+850",
+          "draw": "+450"
+        },
+        "spread": {
+          "line": "-1.5",
+          "odds": "-120"
+        }
+      },
+      "group": "J"
+    },
+    {
+      "id": "760435",
+      "date": "2026-06-17T17:00Z",
+      "name": "Congo DR at Portugal",
+      "shortName": "COD @ POR",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Wed, June 17th at 1:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "NRG Stadium",
+        "city": "Houston, Texas",
+        "country": "USA"
+      },
+      "home": {
+        "id": "482",
+        "displayName": "Portugal",
+        "shortDisplayName": "Portugal",
+        "name": "Portugal",
+        "abbreviation": "POR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/por.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "2850",
+        "displayName": "Congo DR",
+        "shortDisplayName": "Congo DR",
+        "name": "Congo DR",
+        "abbreviation": "COD",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/rdc.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "POR -350",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-350",
+          "away": "+1000",
+          "draw": "+475"
+        },
+        "spread": {
+          "line": "-1.5",
+          "odds": "-130"
+        }
+      },
+      "group": "K"
+    },
+    {
+      "id": "760437",
+      "date": "2026-06-17T20:00Z",
+      "name": "Croatia at England",
+      "shortName": "CRO @ ENG",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Wed, June 17th at 4:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "AT&T Stadium",
+        "city": "Arlington, Texas",
+        "country": "USA"
+      },
+      "home": {
+        "id": "448",
+        "displayName": "England",
+        "shortDisplayName": "England",
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "477",
+        "displayName": "Croatia",
+        "shortDisplayName": "Croatia",
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cro.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "ENG -140",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-140",
+          "away": "+380",
+          "draw": "+285"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "-150"
+        }
+      },
+      "group": "L"
+    },
+    {
+      "id": "760434",
+      "date": "2026-06-17T23:00Z",
+      "name": "Panama at Ghana",
+      "shortName": "PAN @ GHA",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Wed, June 17th at 7:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "BMO Field",
+        "city": "Toronto",
+        "country": "Canada"
+      },
+      "home": {
+        "id": "4469",
+        "displayName": "Ghana",
+        "shortDisplayName": "Ghana",
+        "name": "Ghana",
+        "abbreviation": "GHA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/gha.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "2659",
+        "displayName": "Panama",
+        "shortDisplayName": "Panama",
+        "name": "Panama",
+        "abbreviation": "PAN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/pan.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "GHA +110",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+110",
+          "away": "+260",
+          "draw": "+245"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "+100"
+        }
+      },
+      "group": "L"
+    },
+    {
+      "id": "760436",
+      "date": "2026-06-18T02:00Z",
+      "name": "Colombia at Uzbekistan",
+      "shortName": "COL @ UZB",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Wed, June 17th at 10:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Estadio Banorte",
+        "city": "Mexico City",
+        "country": "Mexico"
+      },
+      "home": {
+        "id": "2570",
+        "displayName": "Uzbekistan",
+        "shortDisplayName": "Uzbekistan",
+        "name": "Uzbekistan",
+        "abbreviation": "UZB",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/uzb.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "208",
+        "displayName": "Colombia",
+        "shortDisplayName": "Colombia",
+        "name": "Colombia",
+        "abbreviation": "COL",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/col.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "COL -250",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+750",
+          "away": "-250",
+          "draw": "+370"
+        },
+        "spread": {
+          "line": "+1.5",
+          "odds": "-150"
+        }
+      },
+      "group": "K"
+    },
+    {
+      "id": "760438",
+      "date": "2026-06-18T16:00Z",
+      "name": "South Africa at Czechia",
+      "shortName": "RSA @ CZE",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Thu, June 18th at 12:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Mercedes-Benz Stadium",
+        "city": "Atlanta, Georgia",
+        "country": "USA"
+      },
+      "home": {
+        "id": "450",
+        "displayName": "Czechia",
+        "shortDisplayName": "Czechia",
+        "name": "Czechia",
+        "abbreviation": "CZE",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cze.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "467",
+        "displayName": "South Africa",
+        "shortDisplayName": "South Africa",
+        "name": "South Africa",
+        "abbreviation": "RSA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/rsa.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "CZE -105",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-105",
+          "away": "+320",
+          "draw": "+240"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "-115"
+        }
+      },
+      "group": "A"
+    },
+    {
+      "id": "760439",
+      "date": "2026-06-18T19:00Z",
+      "name": "Bosnia-Herzegovina at Switzerland",
+      "shortName": "BIH @ SUI",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Thu, June 18th at 3:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "SoFi Stadium",
+        "city": "Inglewood, California",
+        "country": "USA"
+      },
+      "home": {
+        "id": "475",
+        "displayName": "Switzerland",
+        "shortDisplayName": "Switzerland",
+        "name": "Switzerland",
+        "abbreviation": "SUI",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sui.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "452",
+        "displayName": "Bosnia-Herzegovina",
+        "shortDisplayName": "Bosnia-Herz",
+        "name": "Bosnia-Herzegovina",
+        "abbreviation": "BIH",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bih.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "SUI -160",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-160",
+          "away": "+450",
+          "draw": "+310"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "-175"
+        }
+      },
+      "group": "B"
+    },
+    {
+      "id": "760440",
+      "date": "2026-06-18T22:00Z",
+      "name": "Qatar at Canada",
+      "shortName": "QAT @ CAN",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Thu, June 18th at 6:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "BC Place",
+        "city": "Vancouver",
+        "country": "Canada"
+      },
+      "home": {
+        "id": "206",
+        "displayName": "Canada",
+        "shortDisplayName": "Canada",
+        "name": "Canada",
+        "abbreviation": "CAN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/can.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "4398",
+        "displayName": "Qatar",
+        "shortDisplayName": "Qatar",
+        "name": "Qatar",
+        "abbreviation": "QAT",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/qat.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "CAN -320",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-320",
+          "away": "+1000",
+          "draw": "+425"
+        },
+        "spread": {
+          "line": "-1.5",
+          "odds": "-110"
+        }
+      },
+      "group": "B"
+    },
+    {
+      "id": "760441",
+      "date": "2026-06-19T01:00Z",
+      "name": "South Korea at Mexico",
+      "shortName": "KOR @ MEX",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Thu, June 18th at 9:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Estadio Akron",
+        "city": "Guadalajara",
+        "country": "Mexico"
+      },
+      "home": {
+        "id": "203",
+        "displayName": "Mexico",
+        "shortDisplayName": "Mexico",
+        "name": "Mexico",
+        "abbreviation": "MEX",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/mex.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "451",
+        "displayName": "South Korea",
+        "shortDisplayName": "South Korea",
+        "name": "South Korea",
+        "abbreviation": "KOR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/kors.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "MEX -125",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-125",
+          "away": "+370",
+          "draw": "+265"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "-135"
+        }
+      },
+      "group": "A"
+    },
+    {
+      "id": "760442",
+      "date": "2026-06-19T19:00Z",
+      "name": "Australia at United States",
+      "shortName": "AUS @ USA",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Fri, June 19th at 3:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Lumen Field",
+        "city": "Seattle, Washington",
+        "country": "USA"
+      },
+      "home": {
+        "id": "660",
+        "displayName": "United States",
+        "shortDisplayName": "USA",
+        "name": "United States",
+        "abbreviation": "USA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "628",
+        "displayName": "Australia",
+        "shortDisplayName": "Australia",
+        "name": "Australia",
+        "abbreviation": "AUS",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/aus.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "USA -130",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-130",
+          "away": "+350",
+          "draw": "+295"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "-145"
+        }
+      },
+      "group": "D"
+    },
+    {
+      "id": "760445",
+      "date": "2026-06-19T22:00Z",
+      "name": "Morocco at Scotland",
+      "shortName": "MAR @ SCO",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Fri, June 19th at 6:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Gillette Stadium",
+        "city": "Foxborough, Massachusetts",
+        "country": "USA"
+      },
+      "home": {
+        "id": "580",
+        "displayName": "Scotland",
+        "shortDisplayName": "Scotland",
+        "name": "Scotland",
+        "abbreviation": "SCO",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sco.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "2869",
+        "displayName": "Morocco",
+        "shortDisplayName": "Morocco",
+        "name": "Morocco",
+        "abbreviation": "MAR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/mar.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "MAR +100",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+320",
+          "away": "+100",
+          "draw": "+230"
+        },
+        "spread": {
+          "line": "+0.5",
+          "odds": "-125"
+        }
+      },
+      "group": "C"
+    },
+    {
+      "id": "760444",
+      "date": "2026-06-20T00:30Z",
+      "name": "Haiti at Brazil",
+      "shortName": "HAI @ BRA",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Fri, June 19th at 8:30 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Lincoln Financial Field",
+        "city": "Philadelphia, Pennsylvania",
+        "country": "USA"
+      },
+      "home": {
+        "id": "205",
+        "displayName": "Brazil",
+        "shortDisplayName": "Brazil",
+        "name": "Brazil",
+        "abbreviation": "BRA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "2654",
+        "displayName": "Haiti",
+        "shortDisplayName": "Haiti",
+        "name": "Haiti",
+        "abbreviation": "HAI",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/hai.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "BRA -1200",
+        "overUnder": 3.5,
+        "moneyline": {
+          "home": "-1200",
+          "away": "+2500",
+          "draw": "+1200"
+        },
+        "spread": {
+          "line": "-2.5",
+          "odds": "-145"
+        }
+      },
+      "group": "C"
+    },
+    {
+      "id": "760443",
+      "date": "2026-06-20T03:00Z",
+      "name": "Paraguay at Türkiye",
+      "shortName": "PAR @ TUR",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Fri, June 19th at 11:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Levi's Stadium",
+        "city": "Santa Clara, California",
+        "country": "USA"
+      },
+      "home": {
+        "id": "465",
+        "displayName": "Türkiye",
+        "shortDisplayName": "Türkiye",
+        "name": "Türkiye",
+        "abbreviation": "TUR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/tur.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "210",
+        "displayName": "Paraguay",
+        "shortDisplayName": "Paraguay",
+        "name": "Paraguay",
+        "abbreviation": "PAR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/par.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "TUR +125",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+125",
+          "away": "+245",
+          "draw": "+220"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "+110"
+        }
+      },
+      "group": "D"
+    },
+    {
+      "id": "760447",
+      "date": "2026-06-20T17:00Z",
+      "name": "Sweden at Netherlands",
+      "shortName": "SWE @ NED",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sat, June 20th at 1:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "NRG Stadium",
+        "city": "Houston, Texas",
+        "country": "USA"
+      },
+      "home": {
+        "id": "449",
+        "displayName": "Netherlands",
+        "shortDisplayName": "Netherlands",
+        "name": "Netherlands",
+        "abbreviation": "NED",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ned.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "466",
+        "displayName": "Sweden",
+        "shortDisplayName": "Sweden",
+        "name": "Sweden",
+        "abbreviation": "SWE",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/swe.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "NED -155",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-155",
+          "away": "+425",
+          "draw": "+320"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "-175"
+        }
+      },
+      "group": "F"
+    },
+    {
+      "id": "760448",
+      "date": "2026-06-20T20:00Z",
+      "name": "Ivory Coast at Germany",
+      "shortName": "CIV @ GER",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sat, June 20th at 4:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "BMO Field",
+        "city": "Toronto",
+        "country": "Canada"
+      },
+      "home": {
+        "id": "481",
+        "displayName": "Germany",
+        "shortDisplayName": "Germany",
+        "name": "Germany",
+        "abbreviation": "GER",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ger.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "4789",
+        "displayName": "Ivory Coast",
+        "shortDisplayName": "Ivory Coast",
+        "name": "Ivory Coast",
+        "abbreviation": "CIV",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/civ.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "GER -180",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-180",
+          "away": "+475",
+          "draw": "+340"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "-200"
+        }
+      },
+      "group": "E"
+    },
+    {
+      "id": "760446",
+      "date": "2026-06-21T00:00Z",
+      "name": "Curaçao at Ecuador",
+      "shortName": "CUW @ ECU",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sat, June 20th at 8:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "GEHA Field at Arrowhead Stadium",
+        "city": "Kansas City, Missouri",
+        "country": "USA"
+      },
+      "home": {
+        "id": "209",
+        "displayName": "Ecuador",
+        "shortDisplayName": "Ecuador",
+        "name": "Ecuador",
+        "abbreviation": "ECU",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ecu.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "11678",
+        "displayName": "Curaçao",
+        "shortDisplayName": "Curaçao",
+        "name": "Curaçao",
+        "abbreviation": "CUW",
+        "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/11678.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "ECU -500",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-500",
+          "away": "+1200",
+          "draw": "+650"
+        },
+        "spread": {
+          "line": "-1.5",
+          "odds": "-170"
+        }
+      },
+      "group": "E"
+    },
+    {
+      "id": "760449",
+      "date": "2026-06-21T04:00Z",
+      "name": "Japan at Tunisia",
+      "shortName": "JPN @ TUN",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sun, June 20th at 12:00 AM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Estadio BBVA",
+        "city": "Guadalupe",
+        "country": "Mexico"
+      },
+      "home": {
+        "id": "659",
+        "displayName": "Tunisia",
+        "shortDisplayName": "Tunisia",
+        "name": "Tunisia",
+        "abbreviation": "TUN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/tun.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "627",
+        "displayName": "Japan",
+        "shortDisplayName": "Japan",
+        "name": "Japan",
+        "abbreviation": "JPN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/jpn.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "JPN -140",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+425",
+          "away": "-140",
+          "draw": "+270"
+        },
+        "spread": {
+          "line": "+0.5",
+          "odds": "+110"
+        }
+      },
+      "group": "F"
+    },
+    {
+      "id": "760453",
+      "date": "2026-06-21T16:00Z",
+      "name": "Saudi Arabia at Spain",
+      "shortName": "KSA @ ESP",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sun, June 21st at 12:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Mercedes-Benz Stadium",
+        "city": "Atlanta, Georgia",
+        "country": "USA"
+      },
+      "home": {
+        "id": "164",
+        "displayName": "Spain",
+        "shortDisplayName": "Spain",
+        "name": "Spain",
+        "abbreviation": "ESP",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/esp.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "655",
+        "displayName": "Saudi Arabia",
+        "shortDisplayName": "Saudi Arabia",
+        "name": "Saudi Arabia",
+        "abbreviation": "KSA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ksa.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "ESP -1000",
+        "overUnder": 3.5,
+        "moneyline": {
+          "home": "-1000",
+          "away": "+2200",
+          "draw": "+1000"
+        },
+        "spread": {
+          "line": "-2.5",
+          "odds": "-105"
+        }
+      },
+      "group": "H"
+    },
+    {
+      "id": "760451",
+      "date": "2026-06-21T19:00Z",
+      "name": "Iran at Belgium",
+      "shortName": "IRN @ BEL",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sun, June 21st at 3:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "SoFi Stadium",
+        "city": "Inglewood, California",
+        "country": "USA"
+      },
+      "home": {
+        "id": "459",
+        "displayName": "Belgium",
+        "shortDisplayName": "Belgium",
+        "name": "Belgium",
+        "abbreviation": "BEL",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bel.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "469",
+        "displayName": "Iran",
+        "shortDisplayName": "Iran",
+        "name": "Iran",
+        "abbreviation": "IRN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/irn.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "BEL -245",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-245",
+          "away": "+700",
+          "draw": "+380"
+        },
+        "spread": {
+          "line": "-1.5",
+          "odds": "+110"
+        }
+      },
+      "group": "G"
+    },
+    {
+      "id": "760450",
+      "date": "2026-06-21T22:00Z",
+      "name": "Cape Verde at Uruguay",
+      "shortName": "CPV @ URU",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sun, June 21st at 6:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Hard Rock Stadium",
+        "city": "Miami Gardens, Florida",
+        "country": "USA"
+      },
+      "home": {
+        "id": "212",
+        "displayName": "Uruguay",
+        "shortDisplayName": "Uruguay",
+        "name": "Uruguay",
+        "abbreviation": "URU",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/uru.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "2597",
+        "displayName": "Cape Verde",
+        "shortDisplayName": "Cape Verde",
+        "name": "Cape Verde",
+        "abbreviation": "CPV",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cpv.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "URU -225",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-225",
+          "away": "+650",
+          "draw": "+360"
+        },
+        "spread": {
+          "line": "-1.5",
+          "odds": "+125"
+        }
+      },
+      "group": "H"
+    },
+    {
+      "id": "760452",
+      "date": "2026-06-22T01:00Z",
+      "name": "Egypt at New Zealand",
+      "shortName": "EGY @ NZL",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sun, June 21st at 9:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "BC Place",
+        "city": "Vancouver",
+        "country": "Canada"
+      },
+      "home": {
+        "id": "2666",
+        "displayName": "New Zealand",
+        "shortDisplayName": "New Zealand",
+        "name": "New Zealand",
+        "abbreviation": "NZL",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/nzl.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "2620",
+        "displayName": "Egypt",
+        "shortDisplayName": "Egypt",
+        "name": "Egypt",
+        "abbreviation": "EGY",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/egy.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "EGY -130",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+370",
+          "away": "-130",
+          "draw": "+285"
+        },
+        "spread": {
+          "line": "+0.5",
+          "odds": "+105"
+        }
+      },
+      "group": "G"
+    },
+    {
+      "id": "760456",
+      "date": "2026-06-22T17:00Z",
+      "name": "Austria at Argentina",
+      "shortName": "AUT @ ARG",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Mon, June 22nd at 1:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "AT&T Stadium",
+        "city": "Arlington, Texas",
+        "country": "USA"
+      },
+      "home": {
+        "id": "202",
+        "displayName": "Argentina",
+        "shortDisplayName": "Argentina",
+        "name": "Argentina",
+        "abbreviation": "ARG",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/arg.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "474",
+        "displayName": "Austria",
+        "shortDisplayName": "Austria",
+        "name": "Austria",
+        "abbreviation": "AUT",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/aut.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "ARG -155",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-155",
+          "away": "+475",
+          "draw": "+290"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "-170"
+        }
+      },
+      "group": "J"
+    },
+    {
+      "id": "760457",
+      "date": "2026-06-22T21:00Z",
+      "name": "Iraq at France",
+      "shortName": "IRQ @ FRA",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Mon, June 22nd at 5:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Lincoln Financial Field",
+        "city": "Philadelphia, Pennsylvania",
+        "country": "USA"
+      },
+      "home": {
+        "id": "478",
+        "displayName": "France",
+        "shortDisplayName": "France",
+        "name": "France",
+        "abbreviation": "FRA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/fra.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "4375",
+        "displayName": "Iraq",
+        "shortDisplayName": "Iraq",
+        "name": "Iraq",
+        "abbreviation": "IRQ",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/irq.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "FRA -800",
+        "overUnder": 3.5,
+        "moneyline": {
+          "home": "-800",
+          "away": "+2500",
+          "draw": "+800"
+        },
+        "spread": {
+          "line": "-2.5",
+          "odds": "+100"
+        }
+      },
+      "group": "I"
+    },
+    {
+      "id": "760454",
+      "date": "2026-06-23T00:00Z",
+      "name": "Senegal at Norway",
+      "shortName": "SEN @ NOR",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Mon, June 22nd at 8:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "MetLife Stadium",
+        "city": "East Rutherford, New Jersey",
+        "country": "USA"
+      },
+      "home": {
+        "id": "464",
+        "displayName": "Norway",
+        "shortDisplayName": "Norway",
+        "name": "Norway",
+        "abbreviation": "NOR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/nor.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "654",
+        "displayName": "Senegal",
+        "shortDisplayName": "Senegal",
+        "name": "Senegal",
+        "abbreviation": "SEN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sen.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "NOR +115",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+115",
+          "away": "+240",
+          "draw": "+260"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "+100"
+        }
+      },
+      "group": "I"
+    },
+    {
+      "id": "760455",
+      "date": "2026-06-23T03:00Z",
+      "name": "Algeria at Jordan",
+      "shortName": "ALG @ JOR",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Mon, June 22nd at 11:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Levi's Stadium",
+        "city": "Santa Clara, California",
+        "country": "USA"
+      },
+      "home": {
+        "id": "2917",
+        "displayName": "Jordan",
+        "shortDisplayName": "Jordan",
+        "name": "Jordan",
+        "abbreviation": "JOR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/jor.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "624",
+        "displayName": "Algeria",
+        "shortDisplayName": "Algeria",
+        "name": "Algeria",
+        "abbreviation": "ALG",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/alg.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "ALG -190",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+550",
+          "away": "-190",
+          "draw": "+330"
+        },
+        "spread": {
+          "line": "+1.5",
+          "odds": "-200"
+        }
+      },
+      "group": "J"
+    },
+    {
+      "id": "760461",
+      "date": "2026-06-23T17:00Z",
+      "name": "Uzbekistan at Portugal",
+      "shortName": "UZB @ POR",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Tue, June 23rd at 1:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "NRG Stadium",
+        "city": "Houston, Texas",
+        "country": "USA"
+      },
+      "home": {
+        "id": "482",
+        "displayName": "Portugal",
+        "shortDisplayName": "Portugal",
+        "name": "Portugal",
+        "abbreviation": "POR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/por.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "2570",
+        "displayName": "Uzbekistan",
+        "shortDisplayName": "Uzbekistan",
+        "name": "Uzbekistan",
+        "abbreviation": "UZB",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/uzb.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "POR -425",
+        "overUnder": 3.5,
+        "moneyline": {
+          "home": "-425",
+          "away": "+1100",
+          "draw": "+550"
+        },
+        "spread": {
+          "line": "-1.5",
+          "odds": "-145"
+        }
+      },
+      "group": "K"
+    },
+    {
+      "id": "760458",
+      "date": "2026-06-23T20:00Z",
+      "name": "Ghana at England",
+      "shortName": "GHA @ ENG",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Tue, June 23rd at 4:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Gillette Stadium",
+        "city": "Foxborough, Massachusetts",
+        "country": "USA"
+      },
+      "home": {
+        "id": "448",
+        "displayName": "England",
+        "shortDisplayName": "England",
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "4469",
+        "displayName": "Ghana",
+        "shortDisplayName": "Ghana",
+        "name": "Ghana",
+        "abbreviation": "GHA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/gha.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "ENG -320",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-320",
+          "away": "+900",
+          "draw": "+450"
+        },
+        "spread": {
+          "line": "-1.5",
+          "odds": "-120"
+        }
+      },
+      "group": "L"
+    },
+    {
+      "id": "760460",
+      "date": "2026-06-23T23:00Z",
+      "name": "Croatia at Panama",
+      "shortName": "CRO @ PAN",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Tue, June 23rd at 7:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "BMO Field",
+        "city": "Toronto",
+        "country": "Canada"
+      },
+      "home": {
+        "id": "2659",
+        "displayName": "Panama",
+        "shortDisplayName": "Panama",
+        "name": "Panama",
+        "abbreviation": "PAN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/pan.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "477",
+        "displayName": "Croatia",
+        "shortDisplayName": "Croatia",
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cro.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "CRO -180",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+550",
+          "away": "-180",
+          "draw": "+300"
+        },
+        "spread": {
+          "line": "+0.5",
+          "odds": "+140"
+        }
+      },
+      "group": "L"
+    },
+    {
+      "id": "760459",
+      "date": "2026-06-24T02:00Z",
+      "name": "Congo DR at Colombia",
+      "shortName": "COD @ COL",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Tue, June 23rd at 10:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Estadio Akron",
+        "city": "Guadalajara",
+        "country": "Mexico"
+      },
+      "home": {
+        "id": "208",
+        "displayName": "Colombia",
+        "shortDisplayName": "Colombia",
+        "name": "Colombia",
+        "abbreviation": "COL",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/col.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "2850",
+        "displayName": "Congo DR",
+        "shortDisplayName": "Congo DR",
+        "name": "Congo DR",
+        "abbreviation": "COD",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/rdc.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "COL -220",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-220",
+          "away": "+700",
+          "draw": "+340"
+        },
+        "spread": {
+          "line": "-1.5",
+          "odds": "+135"
+        }
+      },
+      "group": "K"
+    },
+    {
+      "id": "760462",
+      "date": "2026-06-24T19:00Z",
+      "name": "Qatar at Bosnia-Herzegovina",
+      "shortName": "QAT @ BIH",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Wed, June 24th at 3:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Lumen Field",
+        "city": "Seattle, Washington",
+        "country": "USA"
+      },
+      "home": {
+        "id": "452",
+        "displayName": "Bosnia-Herzegovina",
+        "shortDisplayName": "Bosnia-Herz",
+        "name": "Bosnia-Herzegovina",
+        "abbreviation": "BIH",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bih.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "4398",
+        "displayName": "Qatar",
+        "shortDisplayName": "Qatar",
+        "name": "Qatar",
+        "abbreviation": "QAT",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/qat.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "BIH -160",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-160",
+          "away": "+500",
+          "draw": "+290"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "-175"
+        }
+      },
+      "group": "B"
+    },
+    {
+      "id": "760463",
+      "date": "2026-06-24T19:00Z",
+      "name": "Canada at Switzerland",
+      "shortName": "CAN @ SUI",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Wed, June 24th at 3:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "BC Place",
+        "city": "Vancouver",
+        "country": "Canada"
+      },
+      "home": {
+        "id": "475",
+        "displayName": "Switzerland",
+        "shortDisplayName": "Switzerland",
+        "name": "Switzerland",
+        "abbreviation": "SUI",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sui.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "206",
+        "displayName": "Canada",
+        "shortDisplayName": "Canada",
+        "name": "Canada",
+        "abbreviation": "CAN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/can.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "SUI +115",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+115",
+          "away": "+250",
+          "draw": "+245"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "+105"
+        }
+      },
+      "group": "B"
+    },
+    {
+      "id": "760464",
+      "date": "2026-06-24T22:00Z",
+      "name": "Haiti at Morocco",
+      "shortName": "HAI @ MAR",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Wed, June 24th at 6:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Mercedes-Benz Stadium",
+        "city": "Atlanta, Georgia",
+        "country": "USA"
+      },
+      "home": {
+        "id": "2869",
+        "displayName": "Morocco",
+        "shortDisplayName": "Morocco",
+        "name": "Morocco",
+        "abbreviation": "MAR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/mar.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "2654",
+        "displayName": "Haiti",
+        "shortDisplayName": "Haiti",
+        "name": "Haiti",
+        "abbreviation": "HAI",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/hai.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "MAR -285",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-285",
+          "away": "+850",
+          "draw": "+425"
+        },
+        "spread": {
+          "line": "-1.5",
+          "odds": "-110"
+        }
+      },
+      "group": "C"
+    },
+    {
+      "id": "760465",
+      "date": "2026-06-24T22:00Z",
+      "name": "Brazil at Scotland",
+      "shortName": "BRA @ SCO",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Wed, June 24th at 6:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Hard Rock Stadium",
+        "city": "Miami Gardens, Florida",
+        "country": "USA"
+      },
+      "home": {
+        "id": "580",
+        "displayName": "Scotland",
+        "shortDisplayName": "Scotland",
+        "name": "Scotland",
+        "abbreviation": "SCO",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sco.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "205",
+        "displayName": "Brazil",
+        "shortDisplayName": "Brazil",
+        "name": "Brazil",
+        "abbreviation": "BRA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "BRA -205",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+500",
+          "away": "-205",
+          "draw": "+390"
+        },
+        "spread": {
+          "line": "+1.5",
+          "odds": "-170"
+        }
+      },
+      "group": "C"
+    },
+    {
+      "id": "760466",
+      "date": "2026-06-25T01:00Z",
+      "name": "South Korea at South Africa",
+      "shortName": "KOR @ RSA",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Wed, June 24th at 9:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Estadio BBVA",
+        "city": "Guadalupe",
+        "country": "Mexico"
+      },
+      "home": {
+        "id": "467",
+        "displayName": "South Africa",
+        "shortDisplayName": "South Africa",
+        "name": "South Africa",
+        "abbreviation": "RSA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/rsa.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "451",
+        "displayName": "South Korea",
+        "shortDisplayName": "South Korea",
+        "name": "South Korea",
+        "abbreviation": "KOR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/kors.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "KOR -105",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+300",
+          "away": "-105",
+          "draw": "+250"
+        },
+        "spread": {
+          "line": "+0.5",
+          "odds": "-120"
+        }
+      },
+      "group": "A"
+    },
+    {
+      "id": "760467",
+      "date": "2026-06-25T01:00Z",
+      "name": "Mexico at Czechia",
+      "shortName": "MEX @ CZE",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Wed, June 24th at 9:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Estadio Banorte",
+        "city": "Mexico City",
+        "country": "Mexico"
+      },
+      "home": {
+        "id": "450",
+        "displayName": "Czechia",
+        "shortDisplayName": "Czechia",
+        "name": "Czechia",
+        "abbreviation": "CZE",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cze.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "203",
+        "displayName": "Mexico",
+        "shortDisplayName": "Mexico",
+        "name": "Mexico",
+        "abbreviation": "MEX",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/mex.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "MEX -125",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+370",
+          "away": "-125",
+          "draw": "+265"
+        },
+        "spread": {
+          "line": "+0.5",
+          "odds": "+100"
+        }
+      },
+      "group": "A"
+    },
+    {
+      "id": "760468",
+      "date": "2026-06-25T20:00Z",
+      "name": "Germany at Ecuador",
+      "shortName": "GER @ ECU",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Thu, June 25th at 4:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "MetLife Stadium",
+        "city": "East Rutherford, New Jersey",
+        "country": "USA"
+      },
+      "home": {
+        "id": "209",
+        "displayName": "Ecuador",
+        "shortDisplayName": "Ecuador",
+        "name": "Ecuador",
+        "abbreviation": "ECU",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ecu.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "481",
+        "displayName": "Germany",
+        "shortDisplayName": "Germany",
+        "name": "Germany",
+        "abbreviation": "GER",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ger.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "GER -135",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+380",
+          "away": "-135",
+          "draw": "+290"
+        },
+        "spread": {
+          "line": "+0.5",
+          "odds": "+105"
+        }
+      },
+      "group": "E"
+    },
+    {
+      "id": "760473",
+      "date": "2026-06-25T20:00Z",
+      "name": "Ivory Coast at Curaçao",
+      "shortName": "CIV @ CUW",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Thu, June 25th at 4:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Lincoln Financial Field",
+        "city": "Philadelphia, Pennsylvania",
+        "country": "USA"
+      },
+      "home": {
+        "id": "11678",
+        "displayName": "Curaçao",
+        "shortDisplayName": "Curaçao",
+        "name": "Curaçao",
+        "abbreviation": "CUW",
+        "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/11678.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "4789",
+        "displayName": "Ivory Coast",
+        "shortDisplayName": "Ivory Coast",
+        "name": "Ivory Coast",
+        "abbreviation": "CIV",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/civ.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "CIV -450",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+1200",
+          "away": "-450",
+          "draw": "+600"
+        },
+        "spread": {
+          "line": "+1.5",
+          "odds": "+115"
+        }
+      },
+      "group": "E"
+    },
+    {
+      "id": "760471",
+      "date": "2026-06-25T23:00Z",
+      "name": "Sweden at Japan",
+      "shortName": "SWE @ JPN",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Thu, June 25th at 7:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "AT&T Stadium",
+        "city": "Arlington, Texas",
+        "country": "USA"
+      },
+      "home": {
+        "id": "627",
+        "displayName": "Japan",
+        "shortDisplayName": "Japan",
+        "name": "Japan",
+        "abbreviation": "JPN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/jpn.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "466",
+        "displayName": "Sweden",
+        "shortDisplayName": "Sweden",
+        "name": "Sweden",
+        "abbreviation": "SWE",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/swe.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "JPN +110",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+110",
+          "away": "+255",
+          "draw": "+245"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "+100"
+        }
+      },
+      "group": "F"
+    },
+    {
+      "id": "760472",
+      "date": "2026-06-25T23:00Z",
+      "name": "Netherlands at Tunisia",
+      "shortName": "NED @ TUN",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Thu, June 25th at 7:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "GEHA Field at Arrowhead Stadium",
+        "city": "Kansas City, Missouri",
+        "country": "USA"
+      },
+      "home": {
+        "id": "659",
+        "displayName": "Tunisia",
+        "shortDisplayName": "Tunisia",
+        "name": "Tunisia",
+        "abbreviation": "TUN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/tun.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "449",
+        "displayName": "Netherlands",
+        "shortDisplayName": "Netherlands",
+        "name": "Netherlands",
+        "abbreviation": "NED",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ned.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "NED -200",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+550",
+          "away": "-200",
+          "draw": "+340"
+        },
+        "spread": {
+          "line": "+1.5",
+          "odds": "-195"
+        }
+      },
+      "group": "F"
+    },
+    {
+      "id": "760469",
+      "date": "2026-06-26T02:00Z",
+      "name": "Australia at Paraguay",
+      "shortName": "AUS @ PAR",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Thu, June 25th at 10:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Levi's Stadium",
+        "city": "Santa Clara, California",
+        "country": "USA"
+      },
+      "home": {
+        "id": "210",
+        "displayName": "Paraguay",
+        "shortDisplayName": "Paraguay",
+        "name": "Paraguay",
+        "abbreviation": "PAR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/par.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "628",
+        "displayName": "Australia",
+        "shortDisplayName": "Australia",
+        "name": "Australia",
+        "abbreviation": "AUS",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/aus.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "PAR +115",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+115",
+          "away": "+260",
+          "draw": "+230"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "+105"
+        }
+      },
+      "group": "D"
+    },
+    {
+      "id": "760470",
+      "date": "2026-06-26T02:00Z",
+      "name": "United States at Türkiye",
+      "shortName": "USA @ TUR",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Thu, June 25th at 10:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "SoFi Stadium",
+        "city": "Inglewood, California",
+        "country": "USA"
+      },
+      "home": {
+        "id": "465",
+        "displayName": "Türkiye",
+        "shortDisplayName": "Türkiye",
+        "name": "Türkiye",
+        "abbreviation": "TUR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/tur.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "660",
+        "displayName": "United States",
+        "shortDisplayName": "USA",
+        "name": "United States",
+        "abbreviation": "USA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "USA +155",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+170",
+          "away": "+155",
+          "draw": "+255"
+        },
+        "spread": {
+          "line": "+0.5",
+          "odds": "-200"
+        }
+      },
+      "group": "D"
+    },
+    {
+      "id": "760474",
+      "date": "2026-06-26T19:00Z",
+      "name": "Iraq at Senegal",
+      "shortName": "IRQ @ SEN",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Fri, June 26th at 3:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "BMO Field",
+        "city": "Toronto",
+        "country": "Canada"
+      },
+      "home": {
+        "id": "654",
+        "displayName": "Senegal",
+        "shortDisplayName": "Senegal",
+        "name": "Senegal",
+        "abbreviation": "SEN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sen.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "4375",
+        "displayName": "Iraq",
+        "shortDisplayName": "Iraq",
+        "name": "Iraq",
+        "abbreviation": "IRQ",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/irq.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "SEN -235",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-235",
+          "away": "+700",
+          "draw": "+370"
+        },
+        "spread": {
+          "line": "-1.5",
+          "odds": "+120"
+        }
+      },
+      "group": "I"
+    },
+    {
+      "id": "760475",
+      "date": "2026-06-26T19:00Z",
+      "name": "France at Norway",
+      "shortName": "FRA @ NOR",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Fri, June 26th at 3:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Gillette Stadium",
+        "city": "Foxborough, Massachusetts",
+        "country": "USA"
+      },
+      "home": {
+        "id": "464",
+        "displayName": "Norway",
+        "shortDisplayName": "Norway",
+        "name": "Norway",
+        "abbreviation": "NOR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/nor.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "478",
+        "displayName": "France",
+        "shortDisplayName": "France",
+        "name": "France",
+        "abbreviation": "FRA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/fra.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "FRA -120",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+350",
+          "away": "-120",
+          "draw": "+270"
+        },
+        "spread": {
+          "line": "+0.5",
+          "odds": "-105"
+        }
+      },
+      "group": "I"
+    },
+    {
+      "id": "760478",
+      "date": "2026-06-27T00:00Z",
+      "name": "Saudi Arabia at Cape Verde",
+      "shortName": "KSA @ CPV",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Fri, June 26th at 8:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "NRG Stadium",
+        "city": "Houston, Texas",
+        "country": "USA"
+      },
+      "home": {
+        "id": "2597",
+        "displayName": "Cape Verde",
+        "shortDisplayName": "Cape Verde",
+        "name": "Cape Verde",
+        "abbreviation": "CPV",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cpv.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "655",
+        "displayName": "Saudi Arabia",
+        "shortDisplayName": "Saudi Arabia",
+        "name": "Saudi Arabia",
+        "abbreviation": "KSA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ksa.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "CPV +160",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+160",
+          "away": "+185",
+          "draw": "+225"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "+145"
+        }
+      },
+      "group": "H"
+    },
+    {
+      "id": "760479",
+      "date": "2026-06-27T00:00Z",
+      "name": "Spain at Uruguay",
+      "shortName": "ESP @ URU",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Fri, June 26th at 8:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Estadio Akron",
+        "city": "Guadalajara",
+        "country": "Mexico"
+      },
+      "home": {
+        "id": "212",
+        "displayName": "Uruguay",
+        "shortDisplayName": "Uruguay",
+        "name": "Uruguay",
+        "abbreviation": "URU",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/uru.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "164",
+        "displayName": "Spain",
+        "shortDisplayName": "Spain",
+        "name": "Spain",
+        "abbreviation": "ESP",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/esp.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "ESP -155",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+450",
+          "away": "-155",
+          "draw": "+300"
+        },
+        "spread": {
+          "line": "+0.5",
+          "odds": "+125"
+        }
+      },
+      "group": "H"
+    },
+    {
+      "id": "760476",
+      "date": "2026-06-27T03:00Z",
+      "name": "Iran at Egypt",
+      "shortName": "IRN @ EGY",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Fri, June 26th at 11:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Lumen Field",
+        "city": "Seattle, Washington",
+        "country": "USA"
+      },
+      "home": {
+        "id": "2620",
+        "displayName": "Egypt",
+        "shortDisplayName": "Egypt",
+        "name": "Egypt",
+        "abbreviation": "EGY",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/egy.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "469",
+        "displayName": "Iran",
+        "shortDisplayName": "Iran",
+        "name": "Iran",
+        "abbreviation": "IRN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/irn.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "EGY +130",
+        "overUnder": 1.5,
+        "moneyline": {
+          "home": "+130",
+          "away": "+265",
+          "draw": "+205"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "+115"
+        }
+      },
+      "group": "G"
+    },
+    {
+      "id": "760477",
+      "date": "2026-06-27T03:00Z",
+      "name": "Belgium at New Zealand",
+      "shortName": "BEL @ NZL",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Fri, June 26th at 11:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "BC Place",
+        "city": "Vancouver",
+        "country": "Canada"
+      },
+      "home": {
+        "id": "2666",
+        "displayName": "New Zealand",
+        "shortDisplayName": "New Zealand",
+        "name": "New Zealand",
+        "abbreviation": "NZL",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/nzl.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "459",
+        "displayName": "Belgium",
+        "shortDisplayName": "Belgium",
+        "name": "Belgium",
+        "abbreviation": "BEL",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bel.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "BEL -340",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+900",
+          "away": "-340",
+          "draw": "+500"
+        },
+        "spread": {
+          "line": "+1.5",
+          "odds": "-110"
+        }
+      },
+      "group": "G"
+    },
+    {
+      "id": "760480",
+      "date": "2026-06-27T21:00Z",
+      "name": "Ghana at Croatia",
+      "shortName": "GHA @ CRO",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sat, June 27th at 5:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Lincoln Financial Field",
+        "city": "Philadelphia, Pennsylvania",
+        "country": "USA"
+      },
+      "home": {
+        "id": "477",
+        "displayName": "Croatia",
+        "shortDisplayName": "Croatia",
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cro.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "4469",
+        "displayName": "Ghana",
+        "shortDisplayName": "Ghana",
+        "name": "Ghana",
+        "abbreviation": "GHA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/gha.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "CRO -150",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "-150",
+          "away": "+450",
+          "draw": "+285"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "-165"
+        }
+      },
+      "group": "L"
+    },
+    {
+      "id": "760485",
+      "date": "2026-06-27T21:00Z",
+      "name": "England at Panama",
+      "shortName": "ENG @ PAN",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sat, June 27th at 5:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "MetLife Stadium",
+        "city": "East Rutherford, New Jersey",
+        "country": "USA"
+      },
+      "home": {
+        "id": "2659",
+        "displayName": "Panama",
+        "shortDisplayName": "Panama",
+        "name": "Panama",
+        "abbreviation": "PAN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/pan.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "448",
+        "displayName": "England",
+        "shortDisplayName": "England",
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "ENG -340",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+750",
+          "away": "-340",
+          "draw": "+550"
+        },
+        "spread": {
+          "line": "+1.5",
+          "odds": "-110"
+        }
+      },
+      "group": "L"
+    },
+    {
+      "id": "760481",
+      "date": "2026-06-27T23:30Z",
+      "name": "Portugal at Colombia",
+      "shortName": "POR @ COL",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sat, June 27th at 7:30 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Hard Rock Stadium",
+        "city": "Miami Gardens, Florida",
+        "country": "USA"
+      },
+      "home": {
+        "id": "208",
+        "displayName": "Colombia",
+        "shortDisplayName": "Colombia",
+        "name": "Colombia",
+        "abbreviation": "COL",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/col.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "482",
+        "displayName": "Portugal",
+        "shortDisplayName": "Portugal",
+        "name": "Portugal",
+        "abbreviation": "POR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/por.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "POR +120",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+250",
+          "away": "+120",
+          "draw": "+235"
+        },
+        "spread": {
+          "line": "+0.5",
+          "odds": "-145"
+        }
+      },
+      "group": "K"
+    },
+    {
+      "id": "760482",
+      "date": "2026-06-27T23:30Z",
+      "name": "Uzbekistan at Congo DR",
+      "shortName": "UZB @ COD",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sat, June 27th at 7:30 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Mercedes-Benz Stadium",
+        "city": "Atlanta, Georgia",
+        "country": "USA"
+      },
+      "home": {
+        "id": "2850",
+        "displayName": "Congo DR",
+        "shortDisplayName": "Congo DR",
+        "name": "Congo DR",
+        "abbreviation": "COD",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/rdc.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "2570",
+        "displayName": "Uzbekistan",
+        "shortDisplayName": "Uzbekistan",
+        "name": "Uzbekistan",
+        "abbreviation": "UZB",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/uzb.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "COD +135",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+135",
+          "away": "+215",
+          "draw": "+235"
+        },
+        "spread": {
+          "line": "-0.5",
+          "odds": "+120"
+        }
+      },
+      "group": "K"
+    },
+    {
+      "id": "760483",
+      "date": "2026-06-28T02:00Z",
+      "name": "Argentina at Jordan",
+      "shortName": "ARG @ JOR",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sat, June 27th at 10:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "AT&T Stadium",
+        "city": "Arlington, Texas",
+        "country": "USA"
+      },
+      "home": {
+        "id": "2917",
+        "displayName": "Jordan",
+        "shortDisplayName": "Jordan",
+        "name": "Jordan",
+        "abbreviation": "JOR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/jor.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "202",
+        "displayName": "Argentina",
+        "shortDisplayName": "Argentina",
+        "name": "Argentina",
+        "abbreviation": "ARG",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/arg.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "ARG -525",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+1400",
+          "away": "-525",
+          "draw": "+650"
+        },
+        "spread": {
+          "line": "+1.5",
+          "odds": "+130"
+        }
+      },
+      "group": "J"
+    },
+    {
+      "id": "760484",
+      "date": "2026-06-28T02:00Z",
+      "name": "Austria at Algeria",
+      "shortName": "AUT @ ALG",
+      "stage": {
+        "slug": "group-stage",
+        "type": 13802,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sat, June 27th at 10:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "GEHA Field at Arrowhead Stadium",
+        "city": "Kansas City, Missouri",
+        "country": "USA"
+      },
+      "home": {
+        "id": "624",
+        "displayName": "Algeria",
+        "shortDisplayName": "Algeria",
+        "name": "Algeria",
+        "abbreviation": "ALG",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/alg.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "474",
+        "displayName": "Austria",
+        "shortDisplayName": "Austria",
+        "name": "Austria",
+        "abbreviation": "AUT",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/aut.png",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": {
+        "provider": "DraftKings",
+        "details": "AUT +125",
+        "overUnder": 2.5,
+        "moneyline": {
+          "home": "+275",
+          "away": "+125",
+          "draw": "+220"
+        },
+        "spread": {
+          "line": "+0.5",
+          "odds": "-155"
+        }
+      },
+      "group": "J"
+    },
+    {
+      "id": "760486",
+      "date": "2026-06-28T19:00Z",
+      "name": "Group B 2nd Place at Group A 2nd Place",
+      "shortName": "2B @ 2A",
+      "stage": {
+        "slug": "round-of-32",
+        "type": 13801,
+        "label": "Round of 32",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sun, June 28th at 3:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "SoFi Stadium",
+        "city": "Inglewood, California",
+        "country": "USA"
+      },
+      "home": {
+        "id": "5926",
+        "displayName": "Group A 2nd Place",
+        "shortDisplayName": "2A",
+        "name": "Group A 2nd Place",
+        "abbreviation": "2A",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "5924",
+        "displayName": "Group B 2nd Place",
+        "shortDisplayName": "2B",
+        "name": "Group B 2nd Place",
+        "abbreviation": "2B",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760487",
+      "date": "2026-06-29T17:00Z",
+      "name": "Group F 2nd Place at Group C Winner",
+      "shortName": "2F @ 1C",
+      "stage": {
+        "slug": "round-of-32",
+        "type": 13801,
+        "label": "Round of 32",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Mon, June 29th at 1:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "NRG Stadium",
+        "city": "Houston, Texas",
+        "country": "USA"
+      },
+      "home": {
+        "id": "5927",
+        "displayName": "Group C Winner",
+        "shortDisplayName": "1C",
+        "name": "Group C Winner",
+        "abbreviation": "1C",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "5934",
+        "displayName": "Group F 2nd Place",
+        "shortDisplayName": "2F",
+        "name": "Group F 2nd Place",
+        "abbreviation": "2F",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760489",
+      "date": "2026-06-29T20:30Z",
+      "name": "Third Place Group A/B/C/D/F at Group E Winner",
+      "shortName": "3RD @ 1E",
+      "stage": {
+        "slug": "round-of-32",
+        "type": 13801,
+        "label": "Round of 32",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Mon, June 29th at 4:30 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Gillette Stadium",
+        "city": "Foxborough, Massachusetts",
+        "country": "USA"
+      },
+      "home": {
+        "id": "5931",
+        "displayName": "Group E Winner",
+        "shortDisplayName": "1E",
+        "name": "Group E Winner",
+        "abbreviation": "1E",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "131541",
+        "displayName": "Third Place Group A/B/C/D/F",
+        "shortDisplayName": "3RD A/B/C/D/F",
+        "name": "Third Place Group A/B/C/D/F",
+        "abbreviation": "3RD",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760488",
+      "date": "2026-06-30T01:00Z",
+      "name": "Group C 2nd Place at Group F Winner",
+      "shortName": "2C @ 1F",
+      "stage": {
+        "slug": "round-of-32",
+        "type": 13801,
+        "label": "Round of 32",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Mon, June 29th at 9:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Estadio BBVA",
+        "city": "Guadalupe",
+        "country": "Mexico"
+      },
+      "home": {
+        "id": "5933",
+        "displayName": "Group F Winner",
+        "shortDisplayName": "1F",
+        "name": "Group F Winner",
+        "abbreviation": "1F",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "5930",
+        "displayName": "Group C 2nd Place",
+        "shortDisplayName": "2C",
+        "name": "Group C 2nd Place",
+        "abbreviation": "2C",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760490",
+      "date": "2026-06-30T17:00Z",
+      "name": "Group I 2nd Place at Group E 2nd Place",
+      "shortName": "2I @ 2E",
+      "stage": {
+        "slug": "round-of-32",
+        "type": 13801,
+        "label": "Round of 32",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Tue, June 30th at 1:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "AT&T Stadium",
+        "city": "Arlington, Texas",
+        "country": "USA"
+      },
+      "home": {
+        "id": "5932",
+        "displayName": "Group E 2nd Place",
+        "shortDisplayName": "2E",
+        "name": "Group E 2nd Place",
+        "abbreviation": "2E",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "131501",
+        "displayName": "Group I 2nd Place",
+        "shortDisplayName": "2I",
+        "name": "Group I 2nd Place",
+        "abbreviation": "2I",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760492",
+      "date": "2026-06-30T21:00Z",
+      "name": "Third Place Group C/D/F/G/H at Group I Winner",
+      "shortName": "3RD @ 1I",
+      "stage": {
+        "slug": "round-of-32",
+        "type": 13801,
+        "label": "Round of 32",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Tue, June 30th at 5:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "MetLife Stadium",
+        "city": "East Rutherford, New Jersey",
+        "country": "USA"
+      },
+      "home": {
+        "id": "131505",
+        "displayName": "Group I Winner",
+        "shortDisplayName": "1I",
+        "name": "Group I Winner",
+        "abbreviation": "1I",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "131544",
+        "displayName": "Third Place Group C/D/F/G/H",
+        "shortDisplayName": "3RD C/D/F/G/H",
+        "name": "Third Place Group C/D/F/G/H",
+        "abbreviation": "3RD",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760491",
+      "date": "2026-07-01T01:00Z",
+      "name": "Third Place Group C/E/F/H/I at Group A Winner",
+      "shortName": "3RD @ 1A",
+      "stage": {
+        "slug": "round-of-32",
+        "type": 13801,
+        "label": "Round of 32",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Tue, June 30th at 9:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Estadio Banorte",
+        "city": "Mexico City",
+        "country": "Mexico"
+      },
+      "home": {
+        "id": "5923",
+        "displayName": "Group A Winner",
+        "shortDisplayName": "1A",
+        "name": "Group A Winner",
+        "abbreviation": "1A",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "131545",
+        "displayName": "Third Place Group C/E/F/H/I",
+        "shortDisplayName": "3RD C/E/F/H/I",
+        "name": "Third Place Group C/E/F/H/I",
+        "abbreviation": "3RD",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760495",
+      "date": "2026-07-01T16:00Z",
+      "name": "Third Place Group E/H/I/J/K at Group L Winner",
+      "shortName": "3RD @ 1L",
+      "stage": {
+        "slug": "round-of-32",
+        "type": 13801,
+        "label": "Round of 32",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Wed, July 1st at 12:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Mercedes-Benz Stadium",
+        "city": "Atlanta, Georgia",
+        "country": "USA"
+      },
+      "home": {
+        "id": "131508",
+        "displayName": "Group L Winner",
+        "shortDisplayName": "1L",
+        "name": "Group L Winner",
+        "abbreviation": "1L",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "131548",
+        "displayName": "Third Place Group E/H/I/J/K",
+        "shortDisplayName": "3RD E/H/I/J/K",
+        "name": "Third Place Group E/H/I/J/K",
+        "abbreviation": "3RD",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760493",
+      "date": "2026-07-01T20:00Z",
+      "name": "Third Place Group A/E/H/I/J at Group G Winner",
+      "shortName": "3RD @ 1G",
+      "stage": {
+        "slug": "round-of-32",
+        "type": 13801,
+        "label": "Round of 32",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Wed, July 1st at 4:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Lumen Field",
+        "city": "Seattle, Washington",
+        "country": "USA"
+      },
+      "home": {
+        "id": "5935",
+        "displayName": "Group G Winner",
+        "shortDisplayName": "1G",
+        "name": "Group G Winner",
+        "abbreviation": "1G",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "131542",
+        "displayName": "Third Place Group A/E/H/I/J",
+        "shortDisplayName": "3RD A/E/H/I/J",
+        "name": "Third Place Group A/E/H/I/J",
+        "abbreviation": "3RD",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760494",
+      "date": "2026-07-02T00:00Z",
+      "name": "Third Place Group B/E/F/I/J at Group D Winner",
+      "shortName": "3RD @ 1D",
+      "stage": {
+        "slug": "round-of-32",
+        "type": 13801,
+        "label": "Round of 32",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Wed, July 1st at 8:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Levi's Stadium",
+        "city": "Santa Clara, California",
+        "country": "USA"
+      },
+      "home": {
+        "id": "5929",
+        "displayName": "Group D Winner",
+        "shortDisplayName": "1D",
+        "name": "Group D Winner",
+        "abbreviation": "1D",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "131543",
+        "displayName": "Third Place Group B/E/F/I/J",
+        "shortDisplayName": "3RD B/E/F/I/J",
+        "name": "Third Place Group B/E/F/I/J",
+        "abbreviation": "3RD",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760497",
+      "date": "2026-07-02T19:00Z",
+      "name": "Group J 2nd Place at Group H Winner",
+      "shortName": "2J @ 1H",
+      "stage": {
+        "slug": "round-of-32",
+        "type": 13801,
+        "label": "Round of 32",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Thu, July 2nd at 3:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "SoFi Stadium",
+        "city": "Inglewood, California",
+        "country": "USA"
+      },
+      "home": {
+        "id": "5937",
+        "displayName": "Group H Winner",
+        "shortDisplayName": "1H",
+        "name": "Group H Winner",
+        "abbreviation": "1H",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "131502",
+        "displayName": "Group J 2nd Place",
+        "shortDisplayName": "2J",
+        "name": "Group J 2nd Place",
+        "abbreviation": "2J",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760496",
+      "date": "2026-07-02T23:00Z",
+      "name": "Group L 2nd Place at Group K 2nd Place",
+      "shortName": "2L @ 2K",
+      "stage": {
+        "slug": "round-of-32",
+        "type": 13801,
+        "label": "Round of 32",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Thu, July 2nd at 7:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "BMO Field",
+        "city": "Toronto",
+        "country": "Canada"
+      },
+      "home": {
+        "id": "131503",
+        "displayName": "Group K 2nd Place",
+        "shortDisplayName": "2K",
+        "name": "Group K 2nd Place",
+        "abbreviation": "2K",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "131504",
+        "displayName": "Group L 2nd Place",
+        "shortDisplayName": "2L",
+        "name": "Group L 2nd Place",
+        "abbreviation": "2L",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760498",
+      "date": "2026-07-03T03:00Z",
+      "name": "Third Place Group E/F/G/I/J at Group B Winner",
+      "shortName": "3RD @ 1B",
+      "stage": {
+        "slug": "round-of-32",
+        "type": 13801,
+        "label": "Round of 32",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Thu, July 2nd at 11:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "BC Place",
+        "city": "Vancouver",
+        "country": "Canada"
+      },
+      "home": {
+        "id": "5925",
+        "displayName": "Group B Winner",
+        "shortDisplayName": "1B",
+        "name": "Group B Winner",
+        "abbreviation": "1B",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "131547",
+        "displayName": "Third Place Group E/F/G/I/J",
+        "shortDisplayName": "3RD E/F/G/I/J",
+        "name": "Third Place Group E/F/G/I/J",
+        "abbreviation": "3RD",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760499",
+      "date": "2026-07-03T18:00Z",
+      "name": "Group G 2nd Place at Group D 2nd Place",
+      "shortName": "2G @ 2D",
+      "stage": {
+        "slug": "round-of-32",
+        "type": 13801,
+        "label": "Round of 32",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Fri, July 3rd at 2:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "AT&T Stadium",
+        "city": "Arlington, Texas",
+        "country": "USA"
+      },
+      "home": {
+        "id": "5928",
+        "displayName": "Group D 2nd Place",
+        "shortDisplayName": "2D",
+        "name": "Group D 2nd Place",
+        "abbreviation": "2D",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "5936",
+        "displayName": "Group G 2nd Place",
+        "shortDisplayName": "2G",
+        "name": "Group G 2nd Place",
+        "abbreviation": "2G",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760500",
+      "date": "2026-07-03T22:00Z",
+      "name": "Group H 2nd Place at Group J Winner",
+      "shortName": "2H @ 1J",
+      "stage": {
+        "slug": "round-of-32",
+        "type": 13801,
+        "label": "Round of 32",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Fri, July 3rd at 6:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Hard Rock Stadium",
+        "city": "Miami Gardens, Florida",
+        "country": "USA"
+      },
+      "home": {
+        "id": "131506",
+        "displayName": "Group J Winner",
+        "shortDisplayName": "1J",
+        "name": "Group J Winner",
+        "abbreviation": "1J",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "5938",
+        "displayName": "Group H 2nd Place",
+        "shortDisplayName": "2H",
+        "name": "Group H 2nd Place",
+        "abbreviation": "2H",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760501",
+      "date": "2026-07-04T01:30Z",
+      "name": "Third Place Group D/E/I/J/L at Group K Winner",
+      "shortName": "3RD @ 1K",
+      "stage": {
+        "slug": "round-of-32",
+        "type": 13801,
+        "label": "Round of 32",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Fri, July 3rd at 9:30 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "GEHA Field at Arrowhead Stadium",
+        "city": "Kansas City, Missouri",
+        "country": "USA"
+      },
+      "home": {
+        "id": "131507",
+        "displayName": "Group K Winner",
+        "shortDisplayName": "1K",
+        "name": "Group K Winner",
+        "abbreviation": "1K",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "131546",
+        "displayName": "Third Place Group D/E/I/J/L",
+        "shortDisplayName": "3RD D/E/I/J/L",
+        "name": "Third Place Group D/E/I/J/L",
+        "abbreviation": "3RD",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760502",
+      "date": "2026-07-04T17:00Z",
+      "name": "Round of 32 3 Winner at Round of 32 1 Winner",
+      "shortName": "RD32 @ RD32",
+      "stage": {
+        "slug": "round-of-16",
+        "type": 13800,
+        "label": "Round of 16",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sat, July 4th at 1:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "NRG Stadium",
+        "city": "Houston, Texas",
+        "country": "USA"
+      },
+      "home": {
+        "id": "131525",
+        "displayName": "Round of 32 1 Winner",
+        "shortDisplayName": "RD32 W1",
+        "name": "Round of 32 1 Winner",
+        "abbreviation": "RD32",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "131527",
+        "displayName": "Round of 32 3 Winner",
+        "shortDisplayName": "RD32 W3",
+        "name": "Round of 32 3 Winner",
+        "abbreviation": "RD32",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760503",
+      "date": "2026-07-04T21:00Z",
+      "name": "Round of 32 5 Winner at Round of 32 2 Winner",
+      "shortName": "RD32 @ RD32",
+      "stage": {
+        "slug": "round-of-16",
+        "type": 13800,
+        "label": "Round of 16",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sat, July 4th at 5:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Lincoln Financial Field",
+        "city": "Philadelphia, Pennsylvania",
+        "country": "USA"
+      },
+      "home": {
+        "id": "131526",
+        "displayName": "Round of 32 2 Winner",
+        "shortDisplayName": "RD32 W2",
+        "name": "Round of 32 2 Winner",
+        "abbreviation": "RD32",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "131529",
+        "displayName": "Round of 32 5 Winner",
+        "shortDisplayName": "RD32 W5",
+        "name": "Round of 32 5 Winner",
+        "abbreviation": "RD32",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760504",
+      "date": "2026-07-05T20:00Z",
+      "name": "Round of 32 6 Winner at Round of 32 4 Winner",
+      "shortName": "RD32 @ RD32",
+      "stage": {
+        "slug": "round-of-16",
+        "type": 13800,
+        "label": "Round of 16",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sun, July 5th at 4:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "MetLife Stadium",
+        "city": "East Rutherford, New Jersey",
+        "country": "USA"
+      },
+      "home": {
+        "id": "131528",
+        "displayName": "Round of 32 4 Winner",
+        "shortDisplayName": "RD32 W4",
+        "name": "Round of 32 4 Winner",
+        "abbreviation": "RD32",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "131530",
+        "displayName": "Round of 32 6 Winner",
+        "shortDisplayName": "RD32 W6",
+        "name": "Round of 32 6 Winner",
+        "abbreviation": "RD32",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760505",
+      "date": "2026-07-06T00:00Z",
+      "name": "Round of 32 8 Winner at Round of 32 7 Winner",
+      "shortName": "RD32 @ RD32",
+      "stage": {
+        "slug": "round-of-16",
+        "type": 13800,
+        "label": "Round of 16",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sun, July 5th at 8:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Estadio Banorte",
+        "city": "Mexico City",
+        "country": "Mexico"
+      },
+      "home": {
+        "id": "131531",
+        "displayName": "Round of 32 7 Winner",
+        "shortDisplayName": "RD32 W7",
+        "name": "Round of 32 7 Winner",
+        "abbreviation": "RD32",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "131532",
+        "displayName": "Round of 32 8 Winner",
+        "shortDisplayName": "RD32 W8",
+        "name": "Round of 32 8 Winner",
+        "abbreviation": "RD32",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760506",
+      "date": "2026-07-06T19:00Z",
+      "name": "Round of 32 12 Winner at Round of 32 11 Winner",
+      "shortName": "RD32 @ RD32",
+      "stage": {
+        "slug": "round-of-16",
+        "type": 13800,
+        "label": "Round of 16",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Mon, July 6th at 3:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "AT&T Stadium",
+        "city": "Arlington, Texas",
+        "country": "USA"
+      },
+      "home": {
+        "id": "131535",
+        "displayName": "Round of 32 11 Winner",
+        "shortDisplayName": "RD32 W11",
+        "name": "Round of 32 11 Winner",
+        "abbreviation": "RD32",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "131536",
+        "displayName": "Round of 32 12 Winner",
+        "shortDisplayName": "RD32 W12",
+        "name": "Round of 32 12 Winner",
+        "abbreviation": "RD32",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760507",
+      "date": "2026-07-07T00:00Z",
+      "name": "Round of 32 10 Winner at Round of 32 9 Winner",
+      "shortName": "RD32 @ RD32",
+      "stage": {
+        "slug": "round-of-16",
+        "type": 13800,
+        "label": "Round of 16",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Mon, July 6th at 8:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Lumen Field",
+        "city": "Seattle, Washington",
+        "country": "USA"
+      },
+      "home": {
+        "id": "131533",
+        "displayName": "Round of 32 9 Winner",
+        "shortDisplayName": "RD32 W9",
+        "name": "Round of 32 9 Winner",
+        "abbreviation": "RD32",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "131534",
+        "displayName": "Round of 32 10 Winner",
+        "shortDisplayName": "RD32 W10",
+        "name": "Round of 32 10 Winner",
+        "abbreviation": "RD32",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760509",
+      "date": "2026-07-07T16:00Z",
+      "name": "Round of 32 16 Winner at Round of 32 14 Winner",
+      "shortName": "RD32 @ RD32",
+      "stage": {
+        "slug": "round-of-16",
+        "type": 13800,
+        "label": "Round of 16",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Tue, July 7th at 12:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Mercedes-Benz Stadium",
+        "city": "Atlanta, Georgia",
+        "country": "USA"
+      },
+      "home": {
+        "id": "131538",
+        "displayName": "Round of 32 14 Winner",
+        "shortDisplayName": "RD32 W14",
+        "name": "Round of 32 14 Winner",
+        "abbreviation": "RD32",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "131540",
+        "displayName": "Round of 32 16 Winner",
+        "shortDisplayName": "RD32 W16",
+        "name": "Round of 32 16 Winner",
+        "abbreviation": "RD32",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760508",
+      "date": "2026-07-07T20:00Z",
+      "name": "Round of 32 15 Winner at Round of 32 13 Winner",
+      "shortName": "RD32 @ RD32",
+      "stage": {
+        "slug": "round-of-16",
+        "type": 13800,
+        "label": "Round of 16",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Tue, July 7th at 4:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "BC Place",
+        "city": "Vancouver",
+        "country": "Canada"
+      },
+      "home": {
+        "id": "131537",
+        "displayName": "Round of 32 13 Winner",
+        "shortDisplayName": "RD32 W13",
+        "name": "Round of 32 13 Winner",
+        "abbreviation": "RD32",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "131539",
+        "displayName": "Round of 32 15 Winner",
+        "shortDisplayName": "RD32 W15",
+        "name": "Round of 32 15 Winner",
+        "abbreviation": "RD32",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760510",
+      "date": "2026-07-09T20:00Z",
+      "name": "Round of 16 2 Winner at Round of 16 1 Winner",
+      "shortName": "RD16 W2 @ RD16 W1",
+      "stage": {
+        "slug": "quarterfinals",
+        "type": 13799,
+        "label": "Quarterfinals",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Thu, July 9th at 4:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Gillette Stadium",
+        "city": "Foxborough, Massachusetts",
+        "country": "USA"
+      },
+      "home": {
+        "id": "19282",
+        "displayName": "Round of 16 1 Winner",
+        "shortDisplayName": "RD16 W1",
+        "name": "Round of 16 1 Winner",
+        "abbreviation": "RD16 W1",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "19283",
+        "displayName": "Round of 16 2 Winner",
+        "shortDisplayName": "RD16 W2",
+        "name": "Round of 16 2 Winner",
+        "abbreviation": "RD16 W2",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760511",
+      "date": "2026-07-10T19:00Z",
+      "name": "Round of 16 6 Winner at Round of 16 5 Winner",
+      "shortName": "RD16 W6 @ RD16 W5",
+      "stage": {
+        "slug": "quarterfinals",
+        "type": 13799,
+        "label": "Quarterfinals",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Fri, July 10th at 3:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "SoFi Stadium",
+        "city": "Inglewood, California",
+        "country": "USA"
+      },
+      "home": {
+        "id": "19278",
+        "displayName": "Round of 16 5 Winner",
+        "shortDisplayName": "RD16 W5",
+        "name": "Round of 16 5 Winner",
+        "abbreviation": "RD16 W5",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "19279",
+        "displayName": "Round of 16 6 Winner",
+        "shortDisplayName": "RD16 W6",
+        "name": "Round of 16 6 Winner",
+        "abbreviation": "RD16 W6",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760512",
+      "date": "2026-07-11T21:00Z",
+      "name": "Round of 16 4 Winner at Round of 16 3 Winner",
+      "shortName": "RD16 W4 @ RD16 W3",
+      "stage": {
+        "slug": "quarterfinals",
+        "type": 13799,
+        "label": "Quarterfinals",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sat, July 11th at 5:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Hard Rock Stadium",
+        "city": "Miami Gardens, Florida",
+        "country": "USA"
+      },
+      "home": {
+        "id": "19284",
+        "displayName": "Round of 16 3 Winner",
+        "shortDisplayName": "RD16 W3",
+        "name": "Round of 16 3 Winner",
+        "abbreviation": "RD16 W3",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "19285",
+        "displayName": "Round of 16 4 Winner",
+        "shortDisplayName": "RD16 W4",
+        "name": "Round of 16 4 Winner",
+        "abbreviation": "RD16 W4",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760513",
+      "date": "2026-07-12T01:00Z",
+      "name": "Round of 16 8 Winner at Round of 16 7 Winner",
+      "shortName": "RD16 W8 @ RD16 W7",
+      "stage": {
+        "slug": "quarterfinals",
+        "type": 13799,
+        "label": "Quarterfinals",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sat, July 11th at 9:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "GEHA Field at Arrowhead Stadium",
+        "city": "Kansas City, Missouri",
+        "country": "USA"
+      },
+      "home": {
+        "id": "19280",
+        "displayName": "Round of 16 7 Winner",
+        "shortDisplayName": "RD16 W7",
+        "name": "Round of 16 7 Winner",
+        "abbreviation": "RD16 W7",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "19281",
+        "displayName": "Round of 16 8 Winner",
+        "shortDisplayName": "RD16 W8",
+        "name": "Round of 16 8 Winner",
+        "abbreviation": "RD16 W8",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760514",
+      "date": "2026-07-14T19:00Z",
+      "name": "Quarterfinal 2 Winner at Quarterfinal 1 Winner",
+      "shortName": "QFW2 @ QFW1",
+      "stage": {
+        "slug": "semifinals",
+        "type": 13798,
+        "label": "Semifinals",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Tue, July 14th at 3:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "AT&T Stadium",
+        "city": "Arlington, Texas",
+        "country": "USA"
+      },
+      "home": {
+        "id": "17631",
+        "displayName": "Quarterfinal 1 Winner",
+        "shortDisplayName": "QF W1",
+        "name": "Quarterfinal 1 Winner",
+        "abbreviation": "QFW1",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "17629",
+        "displayName": "Quarterfinal 2 Winner",
+        "shortDisplayName": "QF W2",
+        "name": "Quarterfinal 2 Winner",
+        "abbreviation": "QFW2",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760515",
+      "date": "2026-07-15T19:00Z",
+      "name": "Quarterfinal 4 Winner at Quarterfinal 3 Winner",
+      "shortName": "QW4 @ QFW3",
+      "stage": {
+        "slug": "semifinals",
+        "type": 13798,
+        "label": "Semifinals",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Wed, July 15th at 3:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Mercedes-Benz Stadium",
+        "city": "Atlanta, Georgia",
+        "country": "USA"
+      },
+      "home": {
+        "id": "17630",
+        "displayName": "Quarterfinal 3 Winner",
+        "shortDisplayName": "QF W3",
+        "name": "Quarterfinal 3 Winner",
+        "abbreviation": "QFW3",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "17632",
+        "displayName": "Quarterfinal 4 Winner",
+        "shortDisplayName": "QF W4",
+        "name": "Quarterfinal 4 Winner",
+        "abbreviation": "QW4",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760516",
+      "date": "2026-07-18T21:00Z",
+      "name": "Semifinal 2 Loser at Semifinal 1 Loser",
+      "shortName": "SF L2 @ SF L1",
+      "stage": {
+        "slug": "3rd-place-match",
+        "type": 13797,
+        "label": "Third-Place Match",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sat, July 18th at 5:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "Hard Rock Stadium",
+        "city": "Miami Gardens, Florida",
+        "country": "USA"
+      },
+      "home": {
+        "id": "5958",
+        "displayName": "Semifinal 1 Loser",
+        "shortDisplayName": "SF L1",
+        "name": "Semifinal 1 Loser",
+        "abbreviation": "SF L1",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "5959",
+        "displayName": "Semifinal 2 Loser",
+        "shortDisplayName": "SF L2",
+        "name": "Semifinal 2 Loser",
+        "abbreviation": "SF L2",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "760517",
+      "date": "2026-07-19T19:00Z",
+      "name": "Semifinal 2 Winner at Semifinal 1 Winner",
+      "shortName": "SFW2 @ SFW1",
+      "stage": {
+        "slug": "final",
+        "type": 13803,
+        "label": "Final",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_SCHEDULED",
+        "state": "pre",
+        "completed": false,
+        "detail": "Sun, July 19th at 3:00 PM EDT",
+        "shortDetail": "Scheduled"
+      },
+      "venue": {
+        "fullName": "MetLife Stadium",
+        "city": "East Rutherford, New Jersey",
+        "country": "USA"
+      },
+      "home": {
+        "id": "5960",
+        "displayName": "Semifinal 1 Winner",
+        "shortDisplayName": "SF W1",
+        "name": "Semifinal 1 Winner",
+        "abbreviation": "SFW1",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "5961",
+        "displayName": "Semifinal 2 Winner",
+        "shortDisplayName": "SF W2",
+        "name": "Semifinal 2 Winner",
+        "abbreviation": "SFW2",
+        "logo": "",
+        "score": null,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": null,
+      "decidedBy": null,
+      "odds": null,
+      "group": null
+    }
+  ]
+}

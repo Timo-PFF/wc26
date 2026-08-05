@@ -30,6 +30,7 @@ const I18N = {
     seedLocked: 'Seed clinched', lockWinner: 'won the group', lockRunnerUp: 'runner-up', lockThird: '3rd place',
     playAs: name => 'You play as <b>' + name + '</b>',
     retrievingLogin: 'Retrieving your login…',
+    chooseTournament: 'Tournament',
     chooseLeague: 'Choose your league', selectLeague: '— select your league —',
     leagueRequired: 'Please select your league first.',
     whoLabel: 'Who are you?', selectName: '— select your name —',
@@ -87,34 +88,8 @@ const I18N = {
     penTagPlain: 'pens',
     noKnockout: 'No knockout games yet.',
     vs: 'vs',
-    scoringRules: (g, k) =>
-      '<h2 class="rules-title">Scoring rules</h2>' +
-      '<div class="rules-sub">Group stage</div>' +
-      '<ul class="rules-list">' +
-        '<li><b>' + g.exact + '</b> — exact score (incl. exact draw)</li>' +
-        '<li><b>' + g.goalDifference + '</b> — correct winner + goal difference</li>' +
-        '<li><b>' + g.outcome + '</b> — correct winner, or a correctly predicted draw</li>' +
-        '<li><b>0</b> — otherwise</li>' +
-      '</ul>' +
-      '<div class="rules-sub">Knockout stage</div>' +
-      '<p class="rules-note">You predict either an outright winner or a draw — and for a draw you also pick who wins the shootout. The number of penalties scored never matters: only the result after 90/120 minutes and, if it goes that far, which team wins on penalties.</p>' +
-      '<div class="rules-mode">If you predict an outright <b>winner</b>:</div>' +
-      '<ul class="rules-list">' +
-        '<li><b>' + k.exact + '</b> — exact score (before penalties)</li>' +
-        '<li><b>' + k.goalDifference + '</b> — correct winner + goal difference</li>' +
-        '<li><b>' + k.winner + '</b> — correct winner</li>' +
-        '<li><b>' + k.shootoutCalled + '</b> — it went to penalties and the team you picked won the shootout</li>' +
-        '<li><b>0</b> — wrong winner</li>' +
-      '</ul>' +
-      '<div class="rules-mode">If you predict a <b>draw</b> (and pick a penalty winner):</div>' +
-      '<ul class="rules-list">' +
-        '<li><b>' + k.drawBase + '</b> — it really was a draw after extra time</li>' +
-        '<li><b>+' + k.drawExactBonus + '</b> — your exact score (after extra time) was right</li>' +
-        '<li><b>+' + k.drawPenBonus + '</b> — you also picked the correct penalty winner (so a perfect call = ' + (k.drawBase + k.drawExactBonus + k.drawPenBonus) + ')</li>' +
-        '<li><b>' + k.penWinnerDecisive + '</b> — the game was decided in normal/extra time, but the team you picked on penalties is the one that advanced</li>' +
-        '<li><b>0</b> — otherwise</li>' +
-      '</ul>' +
-      '<p class="rules-note">Standings tie-break: most exact-score hits, then goal-difference hits.</p>',
+    // scoringRules removed: the rules panel is now rendered per-tournament by the
+    // active scoring module (scoringRulesHtml in scoring.js / scoring_test_tournament.js).
     selectNameFirst: 'Please select your name first.',
     enterScore: 'Enter at least one score before submitting.',
     saving: 'Saving…',
@@ -141,6 +116,7 @@ const I18N = {
     seedLocked: 'Platz sicher', lockWinner: 'Gruppensieger', lockRunnerUp: 'Gruppenzweiter', lockThird: 'Gruppendritter',
     playAs: name => 'Du spielst als <b>' + name + '</b>',
     retrievingLogin: 'Anmeldung läuft …',
+    chooseTournament: 'Turnier',
     chooseLeague: 'Wähle deine Liga', selectLeague: '— Liga auswählen —',
     leagueRequired: 'Bitte zuerst deine Liga wählen.',
     whoLabel: 'Wer bist du?', selectName: '— wähle deinen Namen —',
@@ -198,34 +174,7 @@ const I18N = {
     penTagPlain: 'i.E.',
     noKnockout: 'Noch keine K.-o.-Spiele.',
     vs: 'gegen',
-    scoringRules: (g, k) =>
-      '<h2 class="rules-title">Wertung</h2>' +
-      '<div class="rules-sub">Gruppenphase</div>' +
-      '<ul class="rules-list">' +
-        '<li><b>' + g.exact + '</b> — exaktes Ergebnis (inkl. exaktes Remis)</li>' +
-        '<li><b>' + g.goalDifference + '</b> — richtiger Sieger + Tordifferenz</li>' +
-        '<li><b>' + g.outcome + '</b> — richtiger Sieger oder korrekt getipptes Remis</li>' +
-        '<li><b>0</b> — sonst</li>' +
-      '</ul>' +
-      '<div class="rules-sub">K.-o.-Phase</div>' +
-      '<p class="rules-note">Du tippst entweder einen Sieger oder ein Remis — beim Remis wählst du zusätzlich, wer das Elfmeterschießen gewinnt. Die Anzahl der verwandelten Elfmeter zählt nie: nur das Ergebnis nach 90/120 Minuten und, falls es so weit kommt, welches Team im Elfmeterschießen gewinnt.</p>' +
-      '<div class="rules-mode">Wenn du einen <b>Sieger</b> tippst:</div>' +
-      '<ul class="rules-list">' +
-        '<li><b>' + k.exact + '</b> — exaktes Ergebnis (vor dem Elfmeterschießen)</li>' +
-        '<li><b>' + k.goalDifference + '</b> — richtiger Sieger + Tordifferenz</li>' +
-        '<li><b>' + k.winner + '</b> — richtiger Sieger</li>' +
-        '<li><b>' + k.shootoutCalled + '</b> — es ging ins Elfmeterschießen und dein getipptes Team hat gewonnen</li>' +
-        '<li><b>0</b> — falscher Sieger</li>' +
-      '</ul>' +
-      '<div class="rules-mode">Wenn du ein <b>Remis</b> tippst (und einen Elfmeter-Sieger wählst):</div>' +
-      '<ul class="rules-list">' +
-        '<li><b>' + k.drawBase + '</b> — es war wirklich ein Remis nach Verlängerung</li>' +
-        '<li><b>+' + k.drawExactBonus + '</b> — dein exaktes Ergebnis (nach Verlängerung) stimmt</li>' +
-        '<li><b>+' + k.drawPenBonus + '</b> — du hast auch den richtigen Elfmeter-Sieger getippt (perfekter Tipp = ' + (k.drawBase + k.drawExactBonus + k.drawPenBonus) + ')</li>' +
-        '<li><b>' + k.penWinnerDecisive + '</b> — das Spiel wurde in regulärer Zeit/Verlängerung entschieden, aber das von dir beim Elfmeterschießen gewählte Team ist weitergekommen</li>' +
-        '<li><b>0</b> — sonst</li>' +
-      '</ul>' +
-      '<p class="rules-note">Gleichstand in der Tabelle: meiste exakte Tipps, dann Tordifferenz-Treffer.</p>',
+    // scoringRules removed: rendered per-tournament by the scoring module (scoringRulesHtml).
     selectNameFirst: 'Bitte zuerst deinen Namen wählen.',
     enterScore: 'Gib mindestens ein Ergebnis ein, bevor du absendest.',
     saving: 'Wird gespeichert…',

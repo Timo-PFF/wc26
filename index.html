@@ -402,6 +402,8 @@
   <!-- WHO ARE YOU (pick your league, then your name) — the landing tab -->
   <section id="who">
     <div class="card">
+      <label for="tournamentSelect" data-i18n="chooseTournament">Tournament</label>
+      <select id="tournamentSelect" onchange="onTournamentChosen()"></select>
       <label for="leagueSelect" data-i18n="chooseLeague">Choose your league</label>
       <select id="leagueSelect" onchange="onLeagueChosen()"><option value="" data-i18n="selectLeague">— select your league —</option></select>
 
@@ -501,7 +503,7 @@
 <!-- Translation tables (I18N / STAGE_DE / DE_NAMES / translatePlaceholder).
      Must load before the inline script below, which reads them. -->
 <script src="i18n.js"></script>
-<script src="scoring.js"></script>
+<!-- scoring is per-tournament: loaded dynamically from tournaments.json in init() -->
 <script src="groups.js"></script>
 <script src="bracket.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -513,6 +515,8 @@
   // data/<id>/ folder, and add one manifest entry. loadTournamentConfig() (called
   // first in init()) fills these in before any loader runs.
   const TOURNAMENTS_URL = "data/tournaments.json";
+  let TOURNAMENTS = [];         // all tournaments from the manifest (drives the picker)
+  let ACTIVE_TOURNAMENT = null; // the selected one
   let SCRIPT_URL;       // backend API base (Cloudflare Worker) for the active tournament
   let API_BASE;         // SCRIPT_URL, unless a ?api=<url> override is set (local testing)
   let FIXTURES_URL;     // ESPN-shaped fixtures (python/fetch_fixtures.py)
@@ -521,9 +525,21 @@
   let KO_BRACKET_URL;   // knockout feeder connectivity (downstream placement)
   let HISTORICAL_URL;   // finished-match picks snapshot (cloudflare/import/build_historical.mjs)
 
+  // Which tournament is active: an explicit ?t=<id> (used by the picker on switch),
+  // else the first entry with default==1, else the first entry listed.
+  function pickTournament(list) {
+    const want = new URLSearchParams(location.search).get('t');
+    return (want && list.find(x => x.id === want))
+        || list.find(x => x.default === 1)
+        || list[0];
+  }
+
   async function loadTournamentConfig() {
     const cfg = await (await fetch(TOURNAMENTS_URL, { cache: 'no-store' })).json();
-    const t = cfg.tournaments.find(x => x.id === cfg.default) || cfg.tournaments[0];
+    TOURNAMENTS = cfg.tournaments || [];
+    const t = pickTournament(TOURNAMENTS);
+    if (!t) throw new Error('no tournaments in manifest');
+    ACTIVE_TOURNAMENT = t;
     SCRIPT_URL = t.api;
     // ?api=<url> override still wins, for pointing at a local `wrangler dev` Worker.
     API_BASE = new URLSearchParams(location.search).get('api') || SCRIPT_URL;
@@ -533,7 +549,47 @@
     KO_BRACKET_URL = t.files.koBracket;
     HISTORICAL_URL = t.files.historicalGuesses;
   }
-  // (Scoring lives in scoring.js: SCORING + scorePick()/scoreGroup(), loaded above.)
+
+  // Fill the login-page tournament dropdown and select the active one.
+  function populateTournaments() {
+    const sel = document.getElementById('tournamentSelect');
+    if (!sel) return;
+    sel.innerHTML = '';
+    TOURNAMENTS.forEach(t => {
+      const o = document.createElement('option');
+      o.value = t.id; o.textContent = t.name;
+      sel.appendChild(o);
+    });
+    if (ACTIVE_TOURNAMENT) sel.value = ACTIVE_TOURNAMENT.id;
+  }
+
+  // Switch tournaments by reloading with ?t=<id>: a full reload resets ALL state
+  // (backend URL, fixtures, leagues, login) cleanly. Other query params are kept.
+  function onTournamentChosen() {
+    const id = document.getElementById('tournamentSelect').value;
+    if (!id || (ACTIVE_TOURNAMENT && id === ACTIVE_TOURNAMENT.id)) return;
+    const params = new URLSearchParams(location.search);
+    params.set('t', id);
+    location.search = params.toString();
+  }
+
+  // Load a classic <script> dynamically, resolving once it has executed. Used to
+  // pull in the ACTIVE tournament's scoring module (its own scorePick() + the
+  // SCORING/KO_SCORING constants) before anything scores a pick — so a tournament
+  // can ship entirely different scoring logic, not just different constants.
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      // Cache-bust: the scoring module differs per tournament (and changes on
+      // updates), so always load the current one, never a stale cached copy.
+      s.src = src + (src.includes('?') ? '&' : '?') + 'v=' + Date.now();
+      s.onload = resolve;
+      s.onerror = () => reject(new Error('failed to load ' + src));
+      document.head.appendChild(s);
+    });
+  }
+  // Scoring is no longer a static <script>; each tournament references its own
+  // scoring JS in tournaments.json (must define scorePick), loaded in init().
   // =========================================================================
 
   // ====== i18n ==============================================================
@@ -620,11 +676,13 @@
     if (upLbl) upLbl.textContent = t('onlyUpcoming')(Math.round(COUNTDOWN_SOON_MS / (60 * 60 * 1000)));
   }
 
-  // Full scoring rules panel (group + knockout), shown in the login tab. Point
-  // values come straight from the SCORING / KO_SCORING constants in scoring.js.
+  // Full scoring rules panel (group + knockout), shown in the login tab. The active
+  // tournament's scoring module owns the rules text (scoringRulesHtml), so a
+  // tournament with a different ruleset renders its own; falls back to empty if the
+  // module doesn't define it.
   function renderScoringRules() {
     const el = document.getElementById('scoringRules');
-    if (el) el.innerHTML = t('scoringRules')(SCORING, KO_SCORING);
+    if (el) el.innerHTML = (typeof scoringRulesHtml === 'function') ? scoringRulesHtml(LANG) : '';
   }
 
   // Read the three pick-tab filter checkboxes and re-render.
@@ -1118,11 +1176,13 @@
     // data file path for the active tournament; everything below depends on them.
     try {
       await loadTournamentConfig();
+      await loadScript(ACTIVE_TOURNAMENT.scoring || 'scoring.js');   // per-tournament scoring module
     } catch (e) {
       document.getElementById('matches').innerHTML =
-        '<div class="card" style="color:var(--bad)">Could not load data/tournaments.json.</div>';
+        '<div class="card" style="color:var(--bad)">Could not load the tournament configuration.</div>';
       return;
     }
+    populateTournaments();
     // ?fav — prefill picks with 2-1 for the betting favourite (gimmick).
     FAV_GUESS = new URLSearchParams(location.search).has('fav');
     // Optional ?lang=de / ?lang=en to start in a given language.
@@ -1893,9 +1953,10 @@
     const lut = {};
     SHEET.guesses.forEach(g => { (lut[g.player] = lut[g.player] || {})[g.matchId] = g; });
 
+    const ptsMap = showPts ? matchPoints(scoreM) : {};
     const rows = players.map(p => {
       const g = (lut[p] || {})[m.id];
-      return { player: p, guess: g, pts: (g && showPts) ? scorePick(g, scoreM) : null };
+      return { player: p, guess: g, pts: (g && showPts) ? (ptsMap[p] || 0) : null };
     }).sort((a, b) => showPts
       ? (b.pts == null ? -1 : b.pts) - (a.pts == null ? -1 : a.pts) || a.player.localeCompare(b.player)
       : (b.guess ? 1 : 0) - (a.guess ? 1 : 0) || a.player.localeCompare(b.player));
@@ -1906,7 +1967,7 @@
       '<tr><td>' + escapeHtml(r.player) + '</td>' +
       '<td class="guess">' + formatGuessCell(r.guess, m) + '</td>' +
       (showPts ? '<td class="num ' + ptsClass(r.pts) + (live ? ' live-pts' : '') + '">' +
-        (r.pts == null ? '—' : r.pts) + '</td>' : '') +
+        fmtPts(r.pts) + '</td>' : '') +
       '</tr>'
     ).join('');
     return '<table class="reveal-table">' + head + body + '</table>';
@@ -1988,6 +2049,23 @@
   }
 
   // ---- Standings: combine sheet picks + fixtures results in the browser ----
+  // Points may be fractional when a scoring module distributes a fixed pool per
+  // game — show at most one decimal, integers unchanged.
+  function fmtPts(v) { return v == null ? '—' : (Math.round(v * 10) / 10).toString(); }
+
+  // Per-player points for ONE scored match `sm` (already final / live-as-final),
+  // honoring the active module's game-level scheme (gamePoints) when it defines
+  // one, else per-pick scorePick. Uses the canonical SHEET pool so every display
+  // (standings, by-game, per-player) agrees. Benchmark ("Fav by 1") picks are not
+  // in SHEET.guesses, so callers score that row separately.
+  function matchPoints(sm) {
+    const gg = SHEET.guesses.filter(g => String(g.matchId) === String(sm.id));
+    if (typeof gamePoints === 'function') return gamePoints(sm, gg, SHEET.players);
+    const out = {};
+    gg.forEach(g => { out[g.player] = scorePick(g, sm); });
+    return out;
+  }
+
   function computeStandings(guesses, players) {
     const byId = {};
     MATCHES.forEach(m => { byId[m.id] = m; });
@@ -1998,6 +2076,13 @@
     let finished = 0;
     MATCHES.forEach(m => { if (isFinished(m)) finished++; });
 
+    // A scoring module may distribute a game's points across ALL players (a
+    // parimutuel pool, say) rather than scoring each pick independently. When it
+    // exposes gamePoints(), points come from there; the accuracy columns
+    // (exact / GD / GD-error / count) stay per-pick either way.
+    const useGame = (typeof gamePoints === 'function');
+    const byMatch = {};
+
     guesses.forEach(g => {
       const m = byId[g.matchId];
       if (!m) return;
@@ -2005,7 +2090,8 @@
       if (!isFinished(m)) return;   // only FINAL games are scored (skips pre-game + live)
       const aHome = homeScore(m), aAway = awayScore(m);
       if (aHome == null || aAway == null) return;
-      totals[g.player] += scorePick(g, m);
+      if (useGame) (byMatch[g.matchId] = byMatch[g.matchId] || []).push(g);
+      else totals[g.player] += scorePick(g, m);
       if (g.home === aHome && g.away === aAway) exact[g.player] += 1;
       // Correct goal difference — counted only for winner picks (a draw's GD is
       // trivially right, so it wouldn't discriminate). Includes exact winners.
@@ -2014,6 +2100,14 @@
       gdErr[g.player] += Math.abs((g.home - g.away) - (aHome - aAway));
       scored[g.player] += 1;   // scored games this player actually guessed (per-game divisor)
     });
+
+    // Game-level points: distribute each finished game's pool across players.
+    if (useGame) {
+      MATCHES.filter(isFinished).forEach(m => {
+        const gp = gamePoints(m, byMatch[m.id] || [], players || []);
+        Object.keys(gp).forEach(p => { ensure(p); totals[p] += gp[p]; });
+      });
+    }
 
     const rows = Object.keys(totals).map(p =>
       ({ player: p, points: totals[p], exact: exact[p], gd: gd[p], gdErr: gdErr[p], scored: scored[p] }));
@@ -2041,8 +2135,13 @@
     try {
       await loadPlayers(); await loadGuesses(); await loadFavPicks();
       // Merge the synthetic "Fav by 1" benchmark in locally (standings tab only).
-      const hasFav = !!(FAV_PICKS && FAV_PICKS.length);
-      const allGuesses = SHEET.guesses.concat(favGuesses());
+      // The active scoring module declares whether it applies (FAV_BOT) — only for
+      // per-pick scoring where a player's points depend on their own pick alone; a
+      // game-level pool has no coherent slot for a synthetic non-participant. Both
+      // the players AND their guesses must be gated, or the picks leak into the pool.
+      const favBot = (typeof FAV_BOT !== 'undefined') ? !!FAV_BOT : (typeof gamePoints !== 'function');
+      const hasFav = !!(FAV_PICKS && FAV_PICKS.length) && favBot;
+      const allGuesses = hasFav ? SHEET.guesses.concat(favGuesses()) : SHEET.guesses;
       const allPlayers = hasFav ? SHEET.players.concat([favName()]) : SHEET.players;
       const { rows, finished } = computeStandings(allGuesses, allPlayers);
       document.getElementById('standingsMeta').textContent = t('matchesScored')(finished);
@@ -2083,7 +2182,7 @@
         if (hasFav && r.player === favName()) tr.classList.add('fav-row');  // not a real player
         tr.dataset.player = r.player;
         tr.innerHTML = '<td>' + (r.rank == null ? '' : r.rank) + '</td><td>' + escapeHtml(r.player) +
-          '</td><td class="num">' + cell(r.points, r.dPoints, r.live) +
+          '</td><td class="num">' + cell(fmtPts(r.points), r.dPoints, r.live) +
           '</td><td class="num">' + cell(r.exact, r.dExact, r.live) +
           '</td><td class="num">' + cell(r.gd, r.dGd, r.live) +
           '</td><td class="num">' + (r.gdErrAvg == null ? '—' : r.gdErrAvg.toFixed(2)) + '</td>';
@@ -2136,7 +2235,10 @@
       const g = lut[m.id];
       const live = !isFinished(m) ? liveScoreOf(m) : null;
       const scored = isFinished(m) || !!live;
-      const pts = scored ? scorePick(g, live ? liveAsFinal(m, live.home, live.away) : m) : null;
+      const scoreM = live ? liveAsFinal(m, live.home, live.away) : m;
+      // Benchmark scores per-pick (its picks aren't in the shared pool); a real
+      // player gets their share of the game-level scheme (or per-pick if none).
+      const pts = scored ? (isFav ? scorePick(g, scoreM) : (matchPoints(scoreM)[player] || 0)) : null;
       var result;
       if (isFinished(m)) {
         result = '<span class="score"' + (shootoutResult(m) ? ' title="' + escapeHtml(t('penaltyWinner')) + '"' : '') +
@@ -2147,7 +2249,7 @@
         result = '<span class="pg-vs">' + escapeHtml(t('vs')) + '</span>';
       }
       const ptsCell = scored
-        ? '<td class="num ' + ptsClass(pts) + (live ? ' live-pts' : '') + '">' + pts + '</td>'
+        ? '<td class="num ' + ptsClass(pts) + (live ? ' live-pts' : '') + '">' + fmtPts(pts) + '</td>'
         : '<td class="num pg-upcoming">—</td>';
       return '<tr><td class="pg-game">' + flag(m.home) + escapeHtml(teamAbbr(m.home)) + ' ' + result + ' ' +
         escapeHtml(teamAbbr(m.away)) + flag(m.away) + '</td>' +
@@ -2191,15 +2293,28 @@
     guesses.forEach(g => { (lut[g.player] = lut[g.player] || {})[g.matchId] = g; });
 
     const series = {};   // player -> cumulative points after game 0..N (index 0 = start)
-    players.forEach(p => {
-      let run = 0; const arr = [0];
+    if (typeof gamePoints === 'function') {
+      // Game-level pool: each game distributes points across players together, so
+      // build the cumulative curves game-by-game rather than pick-by-pick.
+      const byMatch = {};
+      guesses.forEach(g => { (byMatch[g.matchId] = byMatch[g.matchId] || []).push(g); });
+      const run = {};
+      players.forEach(p => { run[p] = 0; series[p] = [0]; });
       completed.forEach(m => {
-        const g = (lut[p] || {})[m.id];
-        if (g) run += scorePick(g, m);
-        arr.push(run);
+        const gp = gamePoints(m, byMatch[m.id] || [], cfgPlayers || []);
+        players.forEach(p => { run[p] += (gp[p] || 0); series[p].push(run[p]); });
       });
-      series[p] = arr;
-    });
+    } else {
+      players.forEach(p => {
+        let run = 0; const arr = [0];
+        completed.forEach(m => {
+          const g = (lut[p] || {})[m.id];
+          if (g) run += scorePick(g, m);
+          arr.push(run);
+        });
+        series[p] = arr;
+      });
+    }
     // Each player's colour is fixed by their position in the Players sheet (with
     // any guess-only names appended alphabetically), so it stays the same no
     // matter how the current standings shuffle. Guard against an empty divisor.
@@ -2494,10 +2609,12 @@
       return ls ? liveAsFinal(m, ls.home, ls.away) : null;
     };
 
+    const gpByMatch = {};   // matchId -> { player: points } for the active scheme
     completed.forEach(m => {
       const sm = scoreMatch(m);
       if (!sm) return;   // contributes nothing yet
-      players.forEach(p => { const g = (lut[p] || {})[m.id]; if (g) total[p] += scorePick(g, sm); });
+      gpByMatch[m.id] = matchPoints(sm);
+      players.forEach(p => { total[p] += (gpByMatch[m.id][p] || 0); });
     });
     players.sort((a, b) => total[b] - total[a] || a.localeCompare(b));
 
@@ -2506,10 +2623,10 @@
       if (!g) return '<td><div class="pcell"><span class="g pts-none">—</span></div></td>';
       const sm = scoreMatch(m);
       if (!sm) return '<td><div class="pcell"><span class="g">' + formatGuessCompact(g, m) + '</span></div></td>';
-      const pts = scorePick(g, sm);
+      const pts = (gpByMatch[m.id] || {})[p] || 0;
       const liveCls = isFinished(m) ? '' : ' live-pts';   // accent-tint provisional points
       return '<td><div class="pcell"><span class="g">' + formatGuessCompact(g, m) +
-        '</span><span class="p ' + ptsClass(pts) + liveCls + '">' + pts + '</span></div></td>';
+        '</span><span class="p ' + ptsClass(pts) + liveCls + '">' + fmtPts(pts) + '</span></div></td>';
     };
 
     // Team logo (browser caches by URL — same files the picks tab loads).

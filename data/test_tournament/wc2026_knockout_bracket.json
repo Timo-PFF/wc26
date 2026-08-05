@@ -1,0 +1,166 @@
+{
+  "note": "Knockout bracket connectivity for WC2026. Each match lists the two fixture match_ids whose winners (or losers, for the 3rd-place game) meet. Bracket numbering resolved from the official FIFA bracket.",
+  "source": "wc2026_fixtures.json feeders + official bracket (FIFA match numbers)",
+  "matches": [
+    {
+      "match_id": "760502",
+      "round": "round-of-16",
+      "date": "2026-07-04T17:00Z",
+      "feeders": [
+        "760486",
+        "760488"
+      ],
+      "take": "winners"
+    },
+    {
+      "match_id": "760503",
+      "round": "round-of-16",
+      "date": "2026-07-04T21:00Z",
+      "feeders": [
+        "760489",
+        "760492"
+      ],
+      "take": "winners"
+    },
+    {
+      "match_id": "760504",
+      "round": "round-of-16",
+      "date": "2026-07-05T20:00Z",
+      "feeders": [
+        "760487",
+        "760490"
+      ],
+      "take": "winners"
+    },
+    {
+      "match_id": "760505",
+      "round": "round-of-16",
+      "date": "2026-07-06T00:00Z",
+      "feeders": [
+        "760491",
+        "760495"
+      ],
+      "take": "winners"
+    },
+    {
+      "match_id": "760506",
+      "round": "round-of-16",
+      "date": "2026-07-06T19:00Z",
+      "feeders": [
+        "760496",
+        "760497"
+      ],
+      "take": "winners"
+    },
+    {
+      "match_id": "760507",
+      "round": "round-of-16",
+      "date": "2026-07-07T00:00Z",
+      "feeders": [
+        "760494",
+        "760493"
+      ],
+      "take": "winners"
+    },
+    {
+      "match_id": "760509",
+      "round": "round-of-16",
+      "date": "2026-07-07T16:00Z",
+      "feeders": [
+        "760500",
+        "760499"
+      ],
+      "take": "winners"
+    },
+    {
+      "match_id": "760508",
+      "round": "round-of-16",
+      "date": "2026-07-07T20:00Z",
+      "feeders": [
+        "760498",
+        "760501"
+      ],
+      "take": "winners"
+    },
+    {
+      "match_id": "760510",
+      "round": "quarterfinals",
+      "date": "2026-07-09T20:00Z",
+      "feeders": [
+        "760503",
+        "760502"
+      ],
+      "take": "winners"
+    },
+    {
+      "match_id": "760511",
+      "round": "quarterfinals",
+      "date": "2026-07-10T19:00Z",
+      "feeders": [
+        "760506",
+        "760507"
+      ],
+      "take": "winners"
+    },
+    {
+      "match_id": "760512",
+      "round": "quarterfinals",
+      "date": "2026-07-11T21:00Z",
+      "feeders": [
+        "760504",
+        "760505"
+      ],
+      "take": "winners"
+    },
+    {
+      "match_id": "760513",
+      "round": "quarterfinals",
+      "date": "2026-07-12T01:00Z",
+      "feeders": [
+        "760509",
+        "760508"
+      ],
+      "take": "winners"
+    },
+    {
+      "match_id": "760514",
+      "round": "semifinals",
+      "date": "2026-07-14T19:00Z",
+      "feeders": [
+        "760510",
+        "760511"
+      ],
+      "take": "winners"
+    },
+    {
+      "match_id": "760515",
+      "round": "semifinals",
+      "date": "2026-07-15T19:00Z",
+      "feeders": [
+        "760512",
+        "760513"
+      ],
+      "take": "winners"
+    },
+    {
+      "match_id": "760516",
+      "round": "3rd-place-match",
+      "date": "2026-07-18T21:00Z",
+      "feeders": [
+        "760514",
+        "760515"
+      ],
+      "take": "losers"
+    },
+    {
+      "match_id": "760517",
+      "round": "final",
+      "date": "2026-07-19T19:00Z",
+      "feeders": [
+        "760514",
+        "760515"
+      ],
+      "take": "winners"
+    }
+  ]
+}
