@@ -66,13 +66,14 @@
   .topbar { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; margin: 10px 2px 0; }
   .topbar-row { display: flex; align-items: center; gap: 10px 14px; flex-wrap: wrap; justify-content: flex-end; }
   .badge { background: var(--card); border: 1px solid var(--accent); color: var(--ink);
-    border-radius: 12px; padding: 6px 14px; font-size: .85rem; cursor: pointer; text-align: right; line-height: 1.35; }
+    border-radius: 12px; padding: 6px 14px; font-size: .85rem; text-align: right; line-height: 1.35; }
   .badge b { color: var(--accent); }
+  .badge .badge-name { cursor: pointer; }
+  .badge .badge-name:hover { text-decoration: underline; }
   .badge .badge-league { color: var(--muted); font-weight: 400; }
-  .badge .badge-link { font-size: .78rem; color: var(--muted); }
-  .badge .badge-link .badge-league { color: var(--accent2); }
-  .badge .badge-switch { cursor: pointer; }
-  .badge .badge-switch:hover { color: var(--ink); text-decoration: underline; }
+  .badge .badge-league-select { font: inherit; color: var(--accent); background: var(--card);
+    border: 1px solid var(--accent); border-radius: 8px; padding: 1px 4px; cursor: pointer; }
+  .pw-mismatch { color: var(--bad); }
   .reload-btn {
     padding: 5px 11px; border: 1px solid var(--line); background: var(--card); color: var(--muted);
     border-radius: 8px; cursor: pointer; font-size: .78rem;
@@ -374,7 +375,7 @@
        Stacked and right-aligned, sitting under the language flags in the header. -->
   <div class="topbar">
     <div class="topbar-row">
-      <button id="playerBadge" class="badge" onclick="onBadgeClick(event)" style="display:none"></button>
+      <div id="playerBadge" class="badge" style="display:none"></div>
       <button id="logoutBtn" class="reload-btn" onclick="logout()" data-i18n="logout" style="display:none">Log out</button>
     </div>
     <div class="topbar-row">
@@ -404,33 +405,58 @@
     <div class="card">
       <label for="tournamentSelect" data-i18n="chooseTournament">Tournament</label>
       <select id="tournamentSelect" onchange="onTournamentChosen()"></select>
-      <label for="leagueSelect" data-i18n="chooseLeague">Choose your league</label>
-      <select id="leagueSelect" onchange="onLeagueChosen()"><option value="" data-i18n="selectLeague">— select your league —</option></select>
-
-      <div id="leagueGated" style="display:none">
-        <label for="player" data-i18n="whoLabel">Who are you?</label>
-        <select id="player" onchange="onPlayerChosen()"><option value="" data-i18n="selectName">— select your name —</option></select>
-        <form class="addrow" id="loginRow" style="display:none" onsubmit="login(); return false;">
-          <input id="loginUser" type="text" class="visually-hidden" autocomplete="username" tabindex="-1" aria-hidden="true" />
+      <!-- GLOBAL login / register — shown when logged out. Identity is global (one
+           account across every tournament); a league is chosen AFTER logging in. -->
+      <div id="authGate">
+        <label data-i18n="logInLabel">Log in</label>
+        <form class="addrow" id="loginForm" onsubmit="login(); return false;">
+          <input id="loginName" type="text" maxlength="40" autocomplete="username" data-i18n-ph="namePlaceholder" placeholder="Your name" />
           <span class="pw-wrap">
             <input id="loginPw" type="password" autocomplete="current-password" data-i18n-ph="passwordPlaceholder" placeholder="Password" />
             <button type="button" class="pw-toggle" onclick="togglePw('loginPw', this)"></button>
           </span>
-          <button id="loginBtn" type="submit" data-i18n="continueBtn">Continue</button>
+          <button id="loginBtn" type="submit" data-i18n="logIn">Log in</button>
         </form>
-        <div class="addlabel" data-i18n="addLabel">New here? Create your account</div>
-        <form class="addrow" id="addForm" onsubmit="addMe(); return false;">
-          <input id="newName" type="text" maxlength="40" autocomplete="username" data-i18n-ph="addNamePlaceholder" placeholder="Your name" />
+        <div class="addlabel" data-i18n="registerLabel">New here? Create your account</div>
+        <form class="addrow" id="registerForm" onsubmit="registerUser(); return false;">
+          <input id="newName" type="text" maxlength="40" autocomplete="username" data-i18n-ph="namePlaceholder" placeholder="Your name" />
           <span class="pw-wrap">
             <input id="newPw" type="password" maxlength="64" autocomplete="new-password" data-i18n-ph="passwordPlaceholder" placeholder="Your password" />
             <button type="button" class="pw-toggle" onclick="togglePw('newPw', this)"></button>
           </span>
-          <span class="pw-wrap">
-            <input id="leaguePw" type="password" maxlength="64" autocomplete="off" data-i18n-ph="leaguePasswordPlaceholder" placeholder="League password" />
-            <button type="button" class="pw-toggle" onclick="togglePw('leaguePw', this)"></button>
-          </span>
-          <button id="addBtn" type="submit" data-i18n="addMe">Add me</button>
+          <button id="registerBtn" type="submit" data-i18n="createAccount">Create account</button>
         </form>
+      </div>
+
+      <!-- League chooser + join + change-password — shown when logged in. -->
+      <div id="leagueArea" style="display:none">
+        <div id="noLeaguesHint" class="sub" style="display:none" data-i18n="noLeaguesHint">You haven't joined a league in this tournament yet — join one below.</div>
+        <div class="addlabel" data-i18n="joinLeagueLabel">Join another league</div>
+        <form class="addrow" id="joinForm" onsubmit="joinLeagueSubmit(); return false;">
+          <select id="joinLeagueSelect"></select>
+          <span class="pw-wrap">
+            <input id="joinCode" type="password" maxlength="64" autocomplete="off" data-i18n-ph="joinCodePlaceholder" placeholder="Join code" />
+            <button type="button" class="pw-toggle" onclick="togglePw('joinCode', this)"></button>
+          </span>
+          <button id="joinBtn" type="submit" data-i18n="joinBtn">Join</button>
+        </form>
+        <div class="addlabel" data-i18n="changePwLabel">Change your password</div>
+        <form class="addrow" id="changePwForm" onsubmit="changePasswordSubmit(); return false;">
+          <span class="pw-wrap">
+            <input id="oldPw" type="password" maxlength="64" autocomplete="current-password" data-i18n-ph="oldPasswordPlaceholder" placeholder="Current password" />
+            <button type="button" class="pw-toggle" onclick="togglePw('oldPw', this)"></button>
+          </span>
+          <span class="pw-wrap">
+            <input id="chNewPw" type="password" maxlength="64" autocomplete="new-password" oninput="checkPwMatch()" data-i18n-ph="newPasswordPlaceholder" placeholder="New password" />
+            <button type="button" class="pw-toggle" onclick="togglePw('chNewPw', this)"></button>
+          </span>
+          <span class="pw-wrap">
+            <input id="chNewPw2" type="password" maxlength="64" autocomplete="new-password" oninput="checkPwMatch()" data-i18n-ph="confirmPasswordPlaceholder" placeholder="Repeat new password" />
+            <button type="button" class="pw-toggle" onclick="togglePw('chNewPw2', this)"></button>
+          </span>
+          <button id="changePwBtn" type="submit" data-i18n="changePwBtn" disabled>Change</button>
+        </form>
+        <div id="pwMatchHint" class="sub"></div>
       </div>
       <div id="addMsg" class="msg"></div>
     </div>
@@ -626,9 +652,9 @@
   let ONLY_NOPICK = false;        // pick tab: only games without a saved pick
   let ONLY_MYPICK = false;        // pick tab: only games the player has picked
   let FAV_GUESS = false;          // ?fav gimmick: prefill 2-1 for the betting favourite
-  let AUTH = null;                // { name, token } once the player logs in / adds themselves
-  let LEAGUES = [];               // [{id, name}] available pools (from the backend)
-  let LEAGUE = null;              // current league id
+  let AUTH = null;                // { userId, name, token, leagues:[{id,name}] } once logged in (global identity)
+  let LEAGUES = [];               // [{id, name}] ALL leagues in the tournament (for the join dropdown)
+  let LEAGUE = null;              // currently-viewed league id (one of AUTH.leagues)
   let LEAGUE_NAME = '';           // current league display name (for the badge)
 
   function setView(mode) {
@@ -870,17 +896,18 @@
   function addMsg(text, kind) { showMsg('addMsg', text, kind); } // in the add-name card
   function clearMsg(id) { const el = document.getElementById(id); el.textContent = ''; el.className = 'msg'; }
 
-  // Session token persistence (keeps you logged in across refreshes). One token
-  // per league, since identity is league-scoped — so you can be logged into more
-  // than one pool in the same browser.
-  function tokenKey(league)        { return 'wc26_token_' + (league || ''); }
-  function loadToken(league)       { try { return localStorage.getItem(tokenKey(league)); } catch (e) { return null; } }
-  function saveToken(league, t)    { try { localStorage.setItem(tokenKey(league), t); } catch (e) {} }
-  function clearToken(league)      { try { localStorage.removeItem(tokenKey(league)); } catch (e) {} }
-  // Remember the last league chosen, so a bare visit (no ?league=) reopens it.
-  const LEAGUE_KEY = 'wc26_league';
-  function loadLastLeague()        { try { return localStorage.getItem(LEAGUE_KEY); } catch (e) { return null; } }
-  function saveLastLeague(id)      { try { localStorage.setItem(LEAGUE_KEY, id); } catch (e) {} }
+  // Session token persistence (keeps you logged in across refreshes). Identity is
+  // GLOBAL now, so it's one token per backend — the same login works across every
+  // tournament this Worker serves. Keyed by API_BASE so a ?api= override (local
+  // dev) keeps its own token separate from prod.
+  function tokenKey()              { return 'wc26_tok_' + (API_BASE || ''); }
+  function loadToken()             { try { return localStorage.getItem(tokenKey()); } catch (e) { return null; } }
+  function saveToken(t)            { try { localStorage.setItem(tokenKey(), t); } catch (e) {} }
+  function clearToken()            { try { localStorage.removeItem(tokenKey()); } catch (e) {} }
+  // Remember the last league chosen PER TOURNAMENT, so a revisit reopens it.
+  function leagueKey()             { return 'wc26_league_' + (ACTIVE_TOURNAMENT ? ACTIVE_TOURNAMENT.id : ''); }
+  function loadLastLeague()        { try { return localStorage.getItem(leagueKey()); } catch (e) { return null; } }
+  function saveLastLeague(id)      { try { localStorage.setItem(leagueKey(), id); } catch (e) {} }
   // Canonical league record for an id (case-insensitive), or null.
   function findLeague(id) {
     if (!id) return null;
@@ -1212,18 +1239,18 @@
       document.getElementById('matches').innerHTML =
         '<div class="card" style="color:var(--bad)">' + escapeHtml(t('couldNotLoadFixtures')(fixturesUrl)) + '</div>';
     }
-    // Leagues, then open the league from ?league= (or the last one used). That
-    // loads its player list and resumes a saved session if there is one.
+    // Load all leagues (for the join dropdown), then restore the global session:
+    // resumeSession() → afterLogin() opens the user's saved/first league, or leaves
+    // the login form up if there's no valid token.
     if (!SCRIPT_URL.startsWith('PASTE')) {
       try {
         await loadLeagues();
-        const urlLeague = new URLSearchParams(location.search).get('league');
-        const startLg = findLeague(urlLeague) || findLeague(loadLastLeague());
-        if (startLg) await selectLeague(startLg.id);
+        await resumeSession();
       } catch (e) {
         msg(t('couldNotLoadPlayers'), 'err');
       }
     }
+    showAuthState();
     setupPenListeners();       // delegated handlers for the knockout penalty picker
     updateLiveButton();
     // Auto-pull live scores on load when a game is in progress — this also makes
@@ -1232,110 +1259,173 @@
     setInterval(tick, 1000);   // live clock + auto-lock games as their kickoff passes
   }
 
-  // Repopulate the "who are you?" dropdown, keeping the placeholder option
-  // (the only <option> with a data-i18n key).
-  function setPlayers(players) {
-    const sel = document.getElementById('player');
-    sel.querySelectorAll('option:not([data-i18n])').forEach(o => o.remove());
-    (players || []).forEach(p => {
-      const o = document.createElement('option'); o.value = p; o.textContent = p; sel.appendChild(o);
-    });
+  // All leagues in the active tournament (id + name) — populates the JOIN dropdown.
+  // The "your leagues" picker is filled separately from the user's memberships.
+  async function loadLeagues() {
+    const data = await fetch(API_BASE + '?action=leagues&t=' + encodeURIComponent(ACTIVE_TOURNAMENT.id)).then(r => r.json());
+    LEAGUES = data.leagues || [];
   }
 
-  // Fetch the public league list (id + display name) and fill the league picker.
-  async function loadLeagues() {
-    const data = await fetch(API_BASE + '?action=leagues').then(r => r.json());
-    LEAGUES = data.leagues || [];
-    const sel = document.getElementById('leagueSelect');
-    sel.querySelectorAll('option:not([data-i18n])').forEach(o => o.remove());
-    LEAGUES.forEach(l => {
+  // Toggle the login card between logged-out (login/register) and logged-in
+  // (league chooser + join + change password).
+  function showAuthState() {
+    const out = !AUTH;
+    document.getElementById('authGate').style.display = out ? '' : 'none';
+    document.getElementById('leagueArea').style.display = out ? 'none' : '';
+  }
+
+  // After a successful login/register/resume: load the user's leagues for this
+  // tournament, fill the pickers, and open a league (or prompt to join one).
+  async function afterLogin() {
+    showAuthState();
+    updatePlayerBadge();
+    await loadMyLeagues();
+    populateJoinDropdown();
+    document.getElementById('noLeaguesHint').style.display = AUTH.leagues.length ? 'none' : '';
+    const prefs = [new URLSearchParams(location.search).get('league'), loadLastLeague()]
+      .filter(Boolean).map(s => s.toLowerCase());
+    let startId = null;
+    for (const p of prefs) { const m = AUTH.leagues.find(l => l.id.toLowerCase() === p); if (m) { startId = m.id; break; } }
+    if (!startId && AUTH.leagues[0]) startId = AUTH.leagues[0].id;
+    if (startId) { await selectLeague(startId); showTab('predict'); }
+    else { LEAGUE = null; LEAGUE_NAME = ''; updatePlayerBadge(); }   // no leagues yet → stay on Who to join
+  }
+
+  // The leagues the logged-in user belongs to in the active tournament.
+  async function loadMyLeagues() {
+    if (!AUTH) return;
+    try {
+      const res = await fetch(API_BASE, { method: 'POST',
+        body: JSON.stringify({ action: 'myLeagues', token: AUTH.token, tournamentId: ACTIVE_TOURNAMENT.id }) });
+      const data = await res.json();
+      AUTH.leagues = data.ok ? (data.leagues || []) : [];
+    } catch (e) { AUTH.leagues = AUTH.leagues || []; }
+  }
+
+  // "Join another league" dropdown — leagues the user hasn't joined yet. The whole
+  // join form hides when there's nothing left to join.
+  function populateJoinDropdown() {
+    const sel = document.getElementById('joinLeagueSelect');
+    if (!sel) return;
+    const mine = new Set((AUTH ? AUTH.leagues : []).map(l => l.id.toLowerCase()));
+    sel.innerHTML = '';
+    LEAGUES.filter(l => !mine.has(l.id.toLowerCase())).forEach(l => {
       const o = document.createElement('option'); o.value = l.id; o.textContent = l.name; sel.appendChild(o);
     });
+    const form = document.getElementById('joinForm');
+    if (form) form.style.display = sel.options.length ? '' : 'none';
   }
 
-  // Switch to a league: load its names, reset any prior login, and resume this
-  // league's saved session if there is one.
+  // View one of the user's joined leagues: set it current, load its member list +
+  // the user's guesses for it, and prefill picks. Called after login / on switch.
   async function selectLeague(id) {
     const lg = findLeague(id);
     if (!lg) return;
     LEAGUE = lg.id; LEAGUE_NAME = lg.name;
     saveLastLeague(LEAGUE);
-    document.getElementById('leagueSelect').value = LEAGUE;
-    document.getElementById('leagueGated').style.display = '';
-    // Reset prior login state when (re)entering a league.
-    AUTH = null; guessesLoaded = false; SHEET.guesses = []; playersLoaded = false;
-    document.getElementById('submitBtn').disabled = true;
-    document.getElementById('player').value = '';
-    document.getElementById('loginRow').style.display = 'none';
-    applyUserPicks(null, []);   // clear any previous league's picks from the inputs
-    try { setPlayers(await loadPlayers(true)); }
-    catch (e) { msg(t('couldNotLoadPlayers'), 'err'); }
-    // Placeholder badge while we verify a saved token for this league.
-    const tok = loadToken(LEAGUE);
-    if (tok) {
-      const badge = document.getElementById('playerBadge');
-      badge.textContent = t('retrievingLogin'); badge.style.display = '';
-    } else {
-      updatePlayerBadge();
-    }
-    await resumeSession();   // logs in if the token is valid; else clears the placeholder
+    guessesLoaded = false; playersLoaded = false; SHEET.guesses = [];
+    document.getElementById('submitBtn').disabled = !AUTH;
+    applyUserPicks(null, []);   // clear the previous league's picks from the inputs
+    try { await loadPlayers(true); } catch (e) { msg(t('couldNotLoadPlayers'), 'err'); }
+    await syncPlayer();          // badge (rebuilds the switcher) + this league's guesses + picks
+    renderMatches();
+    const tab = visibleDataTab(); if (tab) await tab.onShow();   // refresh the open standings/schedule
   }
 
-  // League-picker handler.
-  function onLeagueChosen() {
-    clearMsg('addMsg');
-    const id = document.getElementById('leagueSelect').value;
-    if (!id) {
-      LEAGUE = null; LEAGUE_NAME = ''; AUTH = null;
-      document.getElementById('leagueGated').style.display = 'none';
-      document.getElementById('submitBtn').disabled = true;
-      applyUserPicks(null, []); updatePlayerBadge();
-      return;
-    }
-    selectLeague(id);
+  // Join a league by code (or code-free if eligible via inheritance).
+  async function joinLeagueSubmit() {
+    if (!AUTH) return;
+    const id = document.getElementById('joinLeagueSelect').value;
+    const code = document.getElementById('joinCode').value;
+    if (!id) return;
+    if (SCRIPT_URL.startsWith('PASTE')) { addMsg(t('setScriptUrl'), 'err'); return; }
+    const btn = document.getElementById('joinBtn'); btn.disabled = true;
+    try {
+      const res = await fetch(API_BASE, { method: 'POST',
+        body: JSON.stringify({ action: 'joinLeague', token: AUTH.token, tournamentId: ACTIVE_TOURNAMENT.id, leagueId: id, joinCode: code }) });
+      const data = await res.json();
+      if (data.ok) {
+        document.getElementById('joinCode').value = '';
+        clearMsg('addMsg');
+        await loadMyLeagues();
+        populateJoinDropdown();
+        document.getElementById('noLeaguesHint').style.display = 'none';
+        await selectLeague(data.joined);
+        showTab('predict');
+      } else {
+        addMsg(t(data.error === 'bad_join_code' ? 'badJoinCode' : 'joinFailed'), 'err');
+      }
+    } catch (e) { addMsg(t('joinFailed'), 'err'); }
+    btn.disabled = false;
   }
 
-  // Self-service account creation: needs the league's join password. On success
-  // the backend returns a session token + the refreshed player list for the league.
-  async function addMe() {
-    const input = document.getElementById('newName');
+  // Live check that the two new-password fields match; gate the Change button and
+  // show an inline mismatch hint as the user types.
+  function checkPwMatch() {
+    const a = document.getElementById('chNewPw').value;
+    const b = document.getElementById('chNewPw2').value;
+    const match = a.length > 0 && a === b;
+    const hint = document.getElementById('pwMatchHint');
+    const bad = b.length > 0 && !match;
+    hint.textContent = bad ? t('pwMismatch') : '';
+    hint.className = bad ? 'sub pw-mismatch' : 'sub';
+    document.getElementById('changePwBtn').disabled = !match;
+  }
+
+  // Change own password (verify the current one first). The new password must be
+  // entered twice and match — enforced live (checkPwMatch) and re-checked here.
+  async function changePasswordSubmit() {
+    if (!AUTH) return;
+    const oldPw = document.getElementById('oldPw').value;
+    const newPw = document.getElementById('chNewPw').value;
+    const newPw2 = document.getElementById('chNewPw2').value;
+    if (!oldPw || !newPw) { addMsg(t('needPassword'), 'err'); return; }
+    if (newPw !== newPw2) { addMsg(t('pwMismatch'), 'err'); return; }
+    if (SCRIPT_URL.startsWith('PASTE')) { addMsg(t('setScriptUrl'), 'err'); return; }
+    const btn = document.getElementById('changePwBtn'); btn.disabled = true;
+    try {
+      const res = await fetch(API_BASE, { method: 'POST',
+        body: JSON.stringify({ action: 'changePassword', token: AUTH.token, oldPassword: oldPw, newPassword: newPw }) });
+      const data = await res.json();
+      if (data.ok) {
+        document.getElementById('oldPw').value = '';
+        document.getElementById('chNewPw').value = '';
+        document.getElementById('chNewPw2').value = '';
+        addMsg(t('passwordChanged'), 'ok');
+      } else {
+        addMsg(t(data.error === 'bad_password' ? 'badOldPassword' : 'addFailed'), 'err');
+      }
+    } catch (e) { addMsg(t('addFailed'), 'err'); }
+    checkPwMatch();   // re-gate: cleared fields → disabled; retained matching fields → enabled
+  }
+
+  // Create a GLOBAL account (name + password). No league yet — you join one after.
+  async function registerUser() {
+    const nameInput = document.getElementById('newName');
     const pwInput = document.getElementById('newPw');
-    const leaguePwInput = document.getElementById('leaguePw');
-    const name = input.value.trim();
+    const name = nameInput.value.trim();
     const pw = pwInput.value;
-    const leaguePw = leaguePwInput.value;
-    if (!LEAGUE) { addMsg(t('leagueRequired'), 'err'); return; }
     if (!name) { addMsg(t('addErrEmpty'), 'err'); return; }
     if (!pw) { addMsg(t('needPassword'), 'err'); return; }
     if (SCRIPT_URL.startsWith('PASTE')) { addMsg(t('setScriptUrl'), 'err'); return; }
 
-    const btn = document.getElementById('addBtn');
+    const btn = document.getElementById('registerBtn');
     btn.disabled = true;
     try {
       const res = await fetch(API_BASE, {
         method: 'POST',
-        body: JSON.stringify({ action: 'addPlayer', league: LEAGUE, name: name, password: pw, leaguePassword: leaguePw })
+        body: JSON.stringify({ action: 'register', name: name, password: pw })
       });
       const data = await res.json();
       if (data.ok) {
-        AUTH = { name: data.name, token: data.token, links: data.links || [] };   // logged in with a session token
-        saveToken(data.league, data.token);
+        AUTH = { userId: data.userId, name: data.name, token: data.token, leagues: [] };
+        saveToken(data.token);
         guessesLoaded = false;
-        clearMsg('addMsg');   // drop any earlier error
-        input.value = ''; pwInput.value = ''; leaguePwInput.value = '';
-        // Refresh the player list so the new name shows up everywhere; fall back
-        // to the add response's list if the refetch fails.
-        let players = data.players;
-        try { players = await loadPlayers(true); } catch (e) { /* keep response list */ }
-        setPlayers(players);
-        document.getElementById('player').value = data.name;
-        document.getElementById('submitBtn').disabled = false;
-        await syncPlayer();   // badge + (empty) prefill, loads this user's guesses
-        showTab('predict');   // switch only after the add + reload finished
+        clearMsg('addMsg');
+        nameInput.value = ''; pwInput.value = '';
+        await afterLogin();   // memberships (none yet) → prompt to join a league
       } else {
-        const codes = { empty: 'addErrEmpty', no_password: 'needPassword',
-          bad_league_password: 'badLeaguePassword', bad_league: 'leagueRequired',
-          duplicate: 'addErrDuplicate' };
+        const codes = { empty: 'addErrEmpty', no_password: 'needPassword', name_taken: 'nameTaken' };
         addMsg(t(codes[data.error] || 'addFailed'), 'err');
       }
     } catch (e) {
@@ -1344,12 +1434,11 @@
     btn.disabled = false;
   }
 
-  // Returning player: verify the password for the selected name in this league.
+  // Global login (name + password) — one identity across every tournament.
   async function login() {
-    const name = document.getElementById('player').value;
+    const name = document.getElementById('loginName').value.trim();
     const pw = document.getElementById('loginPw').value;
-    if (!LEAGUE) { addMsg(t('leagueRequired'), 'err'); return; }
-    if (!name) return;
+    if (!name) { addMsg(t('nameRequired'), 'err'); return; }
     if (!pw) { addMsg(t('needPassword'), 'err'); return; }
     if (SCRIPT_URL.startsWith('PASTE')) { addMsg(t('setScriptUrl'), 'err'); return; }
 
@@ -1358,21 +1447,19 @@
     try {
       const res = await fetch(API_BASE, {
         method: 'POST',
-        body: JSON.stringify({ action: 'auth', league: LEAGUE, name: name, password: pw })
+        body: JSON.stringify({ action: 'login', name: name, password: pw })
       });
       const data = await res.json();
       if (data.ok) {
-        AUTH = { name: data.name, token: data.token, links: data.links || [] };
-        saveToken(data.league, data.token);
+        AUTH = { userId: data.userId, name: data.name, token: data.token, leagues: [] };
+        saveToken(data.token);
         guessesLoaded = false;
-        clearMsg('addMsg');   // drop any earlier "wrong password" error
+        clearMsg('addMsg');
         document.getElementById('loginPw').value = '';
-        document.getElementById('loginRow').style.display = 'none';
-        document.getElementById('submitBtn').disabled = false;
-        await syncPlayer();
-        showTab('predict');
+        await afterLogin();
       } else {
-        addMsg(t(data.error === 'bad_password' ? 'badPassword' : 'addFailed'), 'err');
+        const codes = { no_user: 'noSuchUser', bad_password: 'badPassword', no_password: 'needPassword' };
+        addMsg(t(codes[data.error] || 'addFailed'), 'err');
       }
     } catch (e) {
       addMsg(t('addFailed'), 'err');
@@ -1380,49 +1467,48 @@
     btn.disabled = false;
   }
 
-  // Restore the current league's saved session token so the user stays logged in.
+  // Restore the saved GLOBAL session so the user stays logged in across refreshes.
   async function resumeSession() {
-    const tok = loadToken(LEAGUE);
-    if (!tok || SCRIPT_URL.startsWith('PASTE')) { updatePlayerBadge(); return; }
+    const tok = loadToken();
+    if (!tok || SCRIPT_URL.startsWith('PASTE')) { showAuthState(); updatePlayerBadge(); return; }
     try {
       const res = await fetch(API_BASE, { method: 'POST', body: JSON.stringify({ action: 'resume', token: tok }) });
       const data = await res.json();
       if (data.ok) {
-        const lg = findLeague(data.league);
-        if (lg) { LEAGUE = lg.id; LEAGUE_NAME = lg.name; }
-        AUTH = { name: data.name, token: data.token, links: data.links || [] };
-        saveToken(LEAGUE, data.token);  // sliding expiry
+        AUTH = { userId: data.userId, name: data.name, token: data.token, leagues: [] };
+        saveToken(data.token);   // sliding expiry
         guessesLoaded = false;
-        document.getElementById('submitBtn').disabled = false;
-        await syncPlayer();
-        showTab('predict');
+        await afterLogin();
       } else {
-        clearToken(LEAGUE);             // expired / invalid → forget it
-        updatePlayerBadge();            // remove the "retrieving" placeholder
+        clearToken();            // expired / invalid → forget it
+        showAuthState(); updatePlayerBadge();
       }
     } catch (e) {
-      updatePlayerBadge();              // transient/offline — clear placeholder, keep token for next load
+      showAuthState(); updatePlayerBadge();   // transient/offline — keep token for next load
     }
   }
 
   function logout() {
-    if (LEAGUE) clearToken(LEAGUE);   // forget this league's session (stay in the league)
+    clearToken();
     AUTH = null;
     guessesLoaded = false;
     SHEET.guesses = [];
+    LEAGUE = null; LEAGUE_NAME = '';
     document.getElementById('submitBtn').disabled = true;
-    document.getElementById('player').value = '';
     applyUserPicks(null, []);   // clear inputs
+    showAuthState();
     updatePlayerBadge();        // hide badge + logout button
     showTab('who');
   }
 
-  // Public player list for the current league (dropdown) — cached; force=true refetches.
+  // Public member list for the current league (SHEET.players). Cached; force refetches.
   async function loadPlayers(force) {
     if (SCRIPT_URL.startsWith('PASTE') || !LEAGUE) return SHEET.players;
     if (playersLoaded && !force) return SHEET.players;
-    const cfg = await fetch(API_BASE + '?league=' + encodeURIComponent(LEAGUE)).then(r => r.json());
-    SHEET.players = cfg.players || [];
+    const url = API_BASE + '?action=members&t=' + encodeURIComponent(ACTIVE_TOURNAMENT.id) +
+      '&league=' + encodeURIComponent(LEAGUE);
+    const cfg = await fetch(url).then(r => r.json());
+    SHEET.players = cfg.members || [];
     playersLoaded = true;
     return SHEET.players;
   }
@@ -1431,11 +1517,11 @@
   // just YOUR picks plus everyone's picks for already-locked games. Cached until
   // a submit/reload/new-login invalidates it (guessesLoaded = false).
   async function loadGuesses(force) {
-    if (!AUTH || SCRIPT_URL.startsWith('PASTE')) { SHEET.guesses = []; guessesLoaded = false; return SHEET.guesses; }
+    if (!AUTH || !LEAGUE || SCRIPT_URL.startsWith('PASTE')) { SHEET.guesses = []; guessesLoaded = false; return SHEET.guesses; }
     if (guessesLoaded && !force) return SHEET.guesses;
     const res = await fetch(API_BASE, {
       method: 'POST',
-      body: JSON.stringify({ action: 'guesses', token: AUTH.token })
+      body: JSON.stringify({ action: 'guesses', token: AUTH.token, tournamentId: ACTIVE_TOURNAMENT.id, leagueId: LEAGUE })
     });
     const data = await res.json();
     const live = data.ok ? (data.guesses || []) : [];
@@ -1542,74 +1628,35 @@
     });
   }
 
-  // Player-tab dropdown handler: a returning player must enter their password
-  // (shown here) before they're logged in — see login().
-  function onPlayerChosen() {
-    clearMsg('addMsg');
-    const name = document.getElementById('player').value;
-    const loginRow = document.getElementById('loginRow');
-    if (!name) { loginRow.style.display = 'none'; return; }
-    document.getElementById('loginUser').value = name;   // ties the saved password to this player
-    loginRow.style.display = '';
-    const pw = document.getElementById('loginPw');
-    pw.value = '';
-    pw.type = 'password';                                 // reset reveal state
-    const tog = loginRow.querySelector('.pw-toggle');
-    if (tog) setPwToggle(tog, false);
-    pw.focus();
-  }
-
-  // The "You play as …" badge. When the account is linked across leagues, the
-  // linked players are listed as extra rows (their picks save together).
+  // The "You play as …" badge. The league portion becomes a live switcher when the
+  // user is in more than one league of the tournament — picks are shared across
+  // leagues, so switching only changes which pool's standings/schedule you view.
   function updatePlayerBadge() {
     const badge = document.getElementById('playerBadge');
     const lo = document.getElementById('logoutBtn');
     if (AUTH) {
-      const leagueOf = id => escapeHtml((findLeague(id) || {}).name || id);
-      const league = LEAGUE_NAME ? ' <span class="badge-league">· ' + escapeHtml(LEAGUE_NAME) + '</span>' : '';
-      let html = '<div class="badge-main">' + t('playAs')(escapeHtml(AUTH.name)) + league + '</div>';
-      // Linked accounts are clickable: switch into them without their password.
-      (AUTH.links || []).forEach(l => {
-        html += '<div class="badge-link badge-switch" data-league="' + escapeHtml(l.league) +
-          '" data-name="' + escapeHtml(l.name) + '" title="' + escapeHtml(t('switchRole')) + '">🔗 ' +
-          escapeHtml(l.name) + ' <span class="badge-league">(' + leagueOf(l.league) + ')</span></div>';
-      });
-      badge.innerHTML = html;
+      const ls = AUTH.leagues || [];
+      let leagueHtml = '';
+      if (ls.length > 1) {
+        const opts = ls.map(l => '<option value="' + escapeHtml(l.id) + '"' +
+          (String(l.id).toLowerCase() === String(LEAGUE || '').toLowerCase() ? ' selected' : '') +
+          '>' + escapeHtml(l.name) + '</option>').join('');
+        leagueHtml = ' <span class="badge-league">· </span>' +
+          '<select class="badge-league-select" title="' + escapeHtml(t('switchLeagueTitle')) +
+          '" onchange="onBadgeLeagueChange(this.value)">' + opts + '</select>';
+      } else if (LEAGUE_NAME) {
+        leagueHtml = ' <span class="badge-league">· ' + escapeHtml(LEAGUE_NAME) + '</span>';
+      }
+      badge.innerHTML = '<span class="badge-name" onclick="showTab(\'who\')">' +
+        t('playAs')(escapeHtml(AUTH.name)) + '</span>' + leagueHtml;
       badge.style.display = ''; if (lo) lo.style.display = '';
-    } else { badge.textContent = ''; badge.style.display = 'none'; if (lo) lo.style.display = 'none'; }
+    } else { badge.innerHTML = ''; badge.style.display = 'none'; if (lo) lo.style.display = 'none'; }
     updateLoginNotice();
   }
 
-  // Badge click: a linked row switches into that account; the rest opens Login.
-  function onBadgeClick(e) {
-    const sw = e.target.closest('.badge-switch');
-    if (sw) { switchToLink(sw.dataset.league, sw.dataset.name); return; }
-    showTab('who');
-  }
-
-  // Log into a linked account (same person, another league) without its password.
-  async function switchToLink(league, name) {
-    if (!AUTH || SCRIPT_URL.startsWith('PASTE')) return;
-    try {
-      const res = await fetch(API_BASE, { method: 'POST',
-        body: JSON.stringify({ action: 'switchLink', token: AUTH.token, league: league, name: name }) });
-      const data = await res.json();
-      if (!data.ok) { msg(t('switchFailed'), 'err'); showTab('predict'); return; }
-      const lg = findLeague(data.league);
-      if (lg) { LEAGUE = lg.id; LEAGUE_NAME = lg.name; }
-      AUTH = { name: data.name, token: data.token, links: data.links || [] };
-      saveToken(data.league, data.token);
-      saveLastLeague(data.league);
-      guessesLoaded = false; playersLoaded = false;
-      document.getElementById('leagueSelect').value = LEAGUE;
-      try { setPlayers(await loadPlayers(true)); } catch (e) { /* keep last list */ }
-      document.getElementById('player').value = data.name;
-      document.getElementById('submitBtn').disabled = false;
-      await syncPlayer();                 // badge + this account's prefilled picks
-      renderMatches();                    // re-render the pick tab for the new account
-      const tab = visibleDataTab(); if (tab) await tab.onShow();
-      showTab('predict');
-    } catch (e) { msg(t('switchFailed'), 'err'); }
+  // Badge league switcher → view another of the user's leagues.
+  function onBadgeLeagueChange(id) {
+    if (id && String(id).toLowerCase() !== String(LEAGUE || '').toLowerCase()) selectLeague(id);
   }
 
   // Notice on the pick tab when logged out: you can browse games/odds, but you
@@ -2007,17 +2054,16 @@
     try {
       const res = await fetch(API_BASE, {
         method: 'POST',
-        body: JSON.stringify({ token: AUTH.token, guesses: guesses }) // text/plain → no CORS preflight
+        body: JSON.stringify({ token: AUTH.token, tournamentId: ACTIVE_TOURNAMENT.id, guesses: guesses }) // text/plain → no CORS preflight
       });
       const data = await res.json();
       if (data.ok) {
         updateCacheGuesses(player, guesses);
-        const extra = data.linked ? ' ' + t('alsoSavedForN')(data.linked) : '';
-        msg(t('saved')(data.saved) + extra, 'ok');
+        msg(t('saved')(data.saved), 'ok');
         if (ONLY_NOPICK) renderMatches();
       }
       else if (data.error === 'bad_password' || data.error === 'unauthorized') { logout(); addMsg(t('loginFirst'), 'err'); }
-      else if (data.error === 'not_joined') msg(t('submitErrNotJoined'), 'err');
+      else if (data.error === 'not_member') msg(t('submitErrNotJoined'), 'err');
       else msg(t('errorPrefix')(data.error || t('unknown')), 'err');
     } catch (e) {
       msg(t('networkError'), 'err');

@@ -1,0 +1,23 @@
+# LOCAL-TEST config for the v2 Worker (worker_v2.js). NOT for production — the prod
+# cutover reuses the main wrangler.toml with `main` flipped to src/worker_v2.js and
+# the real database_id kept. This uses a DISTINCT local D1 namespace (via a made-up
+# database_id) so it never touches the old worker's local data.
+name = "wc26-api-v2-local"
+main = "src/worker_v2.js"
+compatibility_date = "2025-01-01"
+
+[vars]
+# The Worker resolves each tournament's fixtures + snapshot from the committed
+# manifest (data/tournaments.json) under this raw repo root — so ONE Worker serves
+# every tournament, and adding one needs no Worker/config change. wrangler dev can't
+# fetch loopback, so this points at the live raw repo. For wc2026 the snapshot holds
+# every game, so `active` is empty and reads return nothing (correct for an archived
+# tournament; the client shows standings from the committed snapshot).
+REPO_BASE = "https://raw.githubusercontent.com/Timo-PFF/wc26/main/"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "wc26"
+database_id = "local-wc26-v2"   # ignored when connecting; keys the LOCAL namespace
+
+# SESSION_SECRET comes from .dev.vars (same as the old worker).

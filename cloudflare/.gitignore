@@ -9,9 +9,10 @@ node_modules/
 .dev.vars
 
 # Seed data holds password hashes + league join passwords: keep it OUT of the
-# public repo. Export CSVs and the generated seed.sql stay local only.
+# public repo. Export CSV/JSON dumps and the generated seed*.sql stay local only.
 seed/*.csv
-seed/seed.sql
+seed/*.json
+seed/*.sql
 
 # Local D1 backups (wrangler d1 export) — same secrets; keep out of the repo.
 backup-*.sql
