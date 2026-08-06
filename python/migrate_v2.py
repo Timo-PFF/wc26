@@ -23,6 +23,9 @@ DATA = os.path.join(HERE, "..", "data", "wc2026")
 TID = "wc2026"                              # primary tournament (drives the dry-run validation)
 SEED_TIDS = ["wc2026", "test_tournament"]   # tournaments to seed — both share wc2026's global
                                             # users + data (test_tournament = alternate scoring)
+# tid -> the tid its leagues inherit (same league ids). A member of the inherited
+# league may join the inheriting league code-free. test_tournament inherits wc2026.
+INHERITS = {"test_tournament": "wc2026"}
 
 def norm(s): return str(s or "").strip().lower()
 
@@ -184,9 +187,13 @@ if ok and not any("COLLISION" in w for w in warnings):
     # leagues / memberships / guesses are per-tournament — emit for each target tid.
     for tid in SEED_TIDS:
         out.append("")
+        inh = INHERITS.get(tid)   # inherit the SAME league id from the parent tournament
         for l in leagues:
             if not l["id"].strip(): continue
-            out.append(f"INSERT INTO leagues (tournamentId,id,name,password,inheritsTournamentId,inheritsLeagueId) VALUES ({q(tid)},{q(norm(l['id']))},{q(l['name'])},{q(l['password'])},NULL,NULL);")
+            lid = norm(l["id"])
+            it = q(inh) if inh else "NULL"
+            il = q(lid) if inh else "NULL"
+            out.append(f"INSERT INTO leagues (tournamentId,id,name,password,inheritsTournamentId,inheritsLeagueId) VALUES ({q(tid)},{q(lid)},{q(l['name'])},{q(l['password'])},{it},{il});")
         for u in users:
             for (lg, nm) in u["keys"]:
                 out.append(f"INSERT INTO memberships (userId,tournamentId,leagueId) VALUES ({q(u['id'])},{q(tid)},{q(norm(lg))});")

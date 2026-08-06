@@ -15,6 +15,7 @@ import {
   createUser,
   setPassword,
   getLeague,
+  getLeaguesFull,
   getUserLeagues,
   isMember,
   addMembership,
@@ -101,6 +102,37 @@ export async function joinLeague(env, body) {
 
   await addMembership(env, t.userId, tid, lg.id);
   return { ok: true, joined: lg.id };
+}
+
+// ---- Leagues the caller can join CODE-FREE via inheritance ----------------
+// Leagues in the tournament they're not yet in that declare inheritsLeagueId AND
+// whose inherited league they DO belong to. Powers the one-click join buttons.
+export async function joinableLeagues(env, body) {
+  const tk = await verifyToken(env, body && body.token);
+  if (!tk) return { ok: false, error: 'expired' };
+  const tid = String((body && body.tournamentId) || '');
+  const out = [];
+  for (const lg of await getLeaguesFull(env, tid)) {
+    if (!lg.inheritsLeagueId) continue;
+    if (await isMember(env, tk.userId, tid, lg.id)) continue;
+    if (await isMember(env, tk.userId, lg.inheritsTournamentId || tid, lg.inheritsLeagueId)) {
+      out.push({ id: lg.id, name: lg.name });
+    }
+  }
+  return { ok: true, leagues: out };
+}
+
+// ---- Validate an invitation link (t + league + join_code) WITHOUT joining --
+// Lets the frontend show an "accept invitation" banner only for a valid, joinable
+// league. Optional token → also filters out leagues the caller already belongs to.
+export async function checkInvite(env, body) {
+  const tid = String((body && body.tournamentId) || '');
+  const lg = await getLeague(env, tid, body && body.leagueId);
+  if (!lg) return { ok: true, valid: false };
+  if (String((body && body.joinCode) || '') !== String(lg.password)) return { ok: true, valid: false };
+  const tk = body && body.token ? await verifyToken(env, body.token) : null;
+  if (tk && (await isMember(env, tk.userId, tid, lg.id))) return { ok: true, valid: false, already: true };
+  return { ok: true, valid: true, leagueId: lg.id, leagueName: lg.name };
 }
 
 // ---- Read the caller's (privacy-filtered) guesses for a league ------------

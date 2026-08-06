@@ -12,6 +12,8 @@
  *   POST { action:'resume',    token }
  *   POST { action:'changePassword', token, oldPassword, newPassword }
  *   POST { action:'myLeagues', token, tournamentId }
+ *   POST { action:'joinableLeagues', token, tournamentId }        (inheritance-joinable)
+ *   POST { action:'checkInvite', tournamentId, leagueId, joinCode, token? }  (validate link)
  *   POST { action:'joinLeague',token, tournamentId, leagueId, joinCode? }
  *   POST { action:'guesses',   token, tournamentId, leagueId }   (read, privacy-filtered)
  *   POST { token, tournamentId, guesses:[...] }                  (default = save picks)
@@ -30,6 +32,8 @@ import {
   resume,
   changePassword,
   myLeagues,
+  joinableLeagues,
+  checkInvite,
   joinLeague,
   readGuesses,
   save,
@@ -78,6 +82,8 @@ export default {
           case 'resume': return json(await resume(env, body.token));
           case 'changePassword': return json(await changePassword(env, body));
           case 'myLeagues': return json(await myLeagues(env, body));
+          case 'joinableLeagues': return json(await joinableLeagues(env, body));
+          case 'checkInvite': return json(await checkInvite(env, body));
           case 'joinLeague': return json(await joinLeague(env, body));
           case 'guesses': return json(await readGuesses(env, body));
           default: return json(await save(env, body)); // no action → save picks

@@ -92,6 +92,25 @@ export async function getLeague(env, tid, lid) {
   return null;
 }
 
+// Full league records for a tournament (incl. password + inheritance) — for the
+// invite/inheritance join flows.
+export async function getLeaguesFull(env, tid) {
+  const t = normalize(tid);
+  if (!t) return [];
+  const { results } = await env.DB
+    .prepare('SELECT tournamentId, id, name, password, inheritsTournamentId, inheritsLeagueId FROM leagues')
+    .all();
+  return results
+    .filter((r) => normalize(r.tournamentId) === t && String(r.id).trim())
+    .map((r) => ({
+      id: String(r.id).trim(),
+      name: String(r.name).trim(),
+      password: String(r.password || ''),
+      inheritsTournamentId: r.inheritsTournamentId ? String(r.inheritsTournamentId).trim() : '',
+      inheritsLeagueId: r.inheritsLeagueId ? String(r.inheritsLeagueId).trim() : '',
+    }));
+}
+
 // --- Memberships -----------------------------------------------------------
 
 // The leagues (id + name) a user belongs to in a tournament.

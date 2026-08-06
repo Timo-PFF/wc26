@@ -74,6 +74,9 @@
   .badge .badge-league-select { font: inherit; color: var(--accent); background: var(--card);
     border: 1px solid var(--accent); border-radius: 8px; padding: 1px 4px; cursor: pointer; }
   .pw-mismatch { color: var(--bad); }
+  .join-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 6px 0; }
+  .invite-banner { display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    margin: 8px 0; padding: 10px 12px; border: 1px solid var(--accent); border-radius: 10px; background: var(--card); }
   .reload-btn {
     padding: 5px 11px; border: 1px solid var(--line); background: var(--card); color: var(--muted);
     border-radius: 8px; cursor: pointer; font-size: .78rem;
@@ -405,6 +408,8 @@
     <div class="card">
       <label for="tournamentSelect" data-i18n="chooseTournament">Tournament</label>
       <select id="tournamentSelect" onchange="onTournamentChosen()"></select>
+      <!-- Invitation banner (?t=&league=&join_code=) — shown logged-in OR logged-out. -->
+      <div id="inviteBanner" style="display:none"></div>
       <!-- GLOBAL login / register — shown when logged out. Identity is global (one
            account across every tournament); a league is chosen AFTER logging in. -->
       <div id="authGate">
@@ -430,16 +435,10 @@
 
       <!-- League chooser + join + change-password — shown when logged in. -->
       <div id="leagueArea" style="display:none">
-        <div id="noLeaguesHint" class="sub" style="display:none" data-i18n="noLeaguesHint">You haven't joined a league in this tournament yet — join one below.</div>
-        <div class="addlabel" data-i18n="joinLeagueLabel">Join another league</div>
-        <form class="addrow" id="joinForm" onsubmit="joinLeagueSubmit(); return false;">
-          <select id="joinLeagueSelect"></select>
-          <span class="pw-wrap">
-            <input id="joinCode" type="password" maxlength="64" autocomplete="off" data-i18n-ph="joinCodePlaceholder" placeholder="Join code" />
-            <button type="button" class="pw-toggle" onclick="togglePw('joinCode', this)"></button>
-          </span>
-          <button id="joinBtn" type="submit" data-i18n="joinBtn">Join</button>
-        </form>
+        <div id="noLeaguesHint" class="sub" style="display:none" data-i18n="noLeaguesHint">You haven't joined a league in this tournament yet. You can only join leagues you're invited to (via link) or eligible for through a previous tournament.</div>
+        <!-- Invite/inheritance join options are rendered here (renderJoinOptions).
+             There is deliberately NO list of all joinable leagues. -->
+        <div id="joinOptions"></div>
         <div class="addlabel" data-i18n="changePwLabel">Change your password</div>
         <form class="addrow" id="changePwForm" onsubmit="changePasswordSubmit(); return false;">
           <span class="pw-wrap">
@@ -1251,6 +1250,7 @@
       }
     }
     showAuthState();
+    if (!AUTH) await renderInvite();   // logged-out invite banner (the logged-in one is drawn by afterLogin)
     setupPenListeners();       // delegated handlers for the knockout penalty picker
     updateLiveButton();
     // Auto-pull live scores on load when a game is in progress — this also makes
@@ -1280,15 +1280,25 @@
     showAuthState();
     updatePlayerBadge();
     await loadMyLeagues();
-    populateJoinDropdown();
+    await renderJoinOptions();
     document.getElementById('noLeaguesHint').style.display = AUTH.leagues.length ? 'none' : '';
     const prefs = [new URLSearchParams(location.search).get('league'), loadLastLeague()]
       .filter(Boolean).map(s => s.toLowerCase());
     let startId = null;
     for (const p of prefs) { const m = AUTH.leagues.find(l => l.id.toLowerCase() === p); if (m) { startId = m.id; break; } }
     if (!startId && AUTH.leagues[0]) startId = AUTH.leagues[0].id;
-    if (startId) { await selectLeague(startId); showTab('predict'); }
-    else { LEAGUE = null; LEAGUE_NAME = ''; updatePlayerBadge(); }   // no leagues yet → stay on Who to join
+
+    // Invite disposition drives where we land. A valid link to a league you're
+    // ALREADY in → open that league and consume the link (no banner). A joinable
+    // invite → banner on the Player tab. Otherwise → your default league's picks.
+    const inv = inviteParams();
+    const invStatus = await renderInvite();
+    if (invStatus === 'already' && inv) { clearInviteParams(); startId = inv.league; }
+
+    if (startId) await selectLeague(startId);
+    else { LEAGUE = null; LEAGUE_NAME = ''; updatePlayerBadge(); }
+    if (invStatus === 'shown') showTab('who');
+    else if (startId) showTab('predict');
   }
 
   // The leagues the logged-in user belongs to in the active tournament.
@@ -1302,18 +1312,92 @@
     } catch (e) { AUTH.leagues = AUTH.leagues || []; }
   }
 
-  // "Join another league" dropdown — leagues the user hasn't joined yet. The whole
-  // join form hides when there's nothing left to join.
-  function populateJoinDropdown() {
-    const sel = document.getElementById('joinLeagueSelect');
-    if (!sel) return;
-    const mine = new Set((AUTH ? AUTH.leagues : []).map(l => l.id.toLowerCase()));
-    sel.innerHTML = '';
-    LEAGUES.filter(l => !mine.has(l.id.toLowerCase())).forEach(l => {
-      const o = document.createElement('option'); o.value = l.id; o.textContent = l.name; sel.appendChild(o);
-    });
-    const form = document.getElementById('joinForm');
-    if (form) form.style.display = sel.options.length ? '' : 'none';
+  // Render "leagues you can join" into #joinOptions: one-click buttons for
+  // inheritance-eligible leagues + an "accept invitation" banner for a valid
+  // ?t=&league=&join_code= link. There is deliberately NO list of all leagues —
+  // joining is invitation/inheritance only.
+  async function renderJoinOptions() {
+    const box = document.getElementById('joinOptions');
+    if (!box) return;
+    box.innerHTML = '';
+    if (!AUTH || SCRIPT_URL.startsWith('PASTE')) return;
+
+    // 1) inheritance-eligible leagues (join with no code)
+    let inh = [];
+    try {
+      const res = await fetch(API_BASE, { method: 'POST',
+        body: JSON.stringify({ action: 'joinableLeagues', token: AUTH.token, tournamentId: ACTIVE_TOURNAMENT.id }) });
+      const data = await res.json();
+      inh = data.ok ? (data.leagues || []) : [];
+    } catch (e) { /* ignore — no inheritance options shown */ }
+    if (inh.length) {
+      const label = document.createElement('div'); label.className = 'addlabel';
+      label.textContent = t('canJoinLabel'); box.appendChild(label);
+      inh.forEach(l => {
+        const row = document.createElement('div'); row.className = 'join-row';
+        const name = document.createElement('span'); name.textContent = l.name;
+        const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'primary';
+        btn.textContent = t('joinBtn'); btn.onclick = () => joinLeagueById(l.id, '');
+        row.append(name, btn); box.appendChild(row);
+      });
+    }
+
+  }
+
+  // The invitation banner for a ?t=&league=&join_code= link. Shown in BOTH auth
+  // states, at the top of the Player card: logged in → an Accept button; logged out
+  // → a prompt to log in / register (joining needs a session). Hidden if the link is
+  // absent, for another tournament, invalid, or you're already a member.
+  // Returns the invite disposition: 'shown' (banner drawn), 'already' (valid link but
+  // caller is already in the league), or 'none' (no/invalid/other-tournament link).
+  async function renderInvite() {
+    const box = document.getElementById('inviteBanner');
+    if (!box) return 'none';
+    box.style.display = 'none'; box.innerHTML = '';
+    const inv = inviteParams();
+    if (!inv || SCRIPT_URL.startsWith('PASTE')) return 'none';
+    if (!ACTIVE_TOURNAMENT || inv.tid.toLowerCase() !== ACTIVE_TOURNAMENT.id.toLowerCase()) return 'none';
+    let data;
+    try {
+      const req = { action: 'checkInvite', tournamentId: inv.tid, leagueId: inv.league, joinCode: inv.code };
+      if (AUTH) req.token = AUTH.token;   // token → also reports "already a member"
+      data = await (await fetch(API_BASE, { method: 'POST', body: JSON.stringify(req) })).json();
+    } catch (e) { return 'none'; }
+    if (data && data.ok && data.already) return 'already';   // valid link, but you're already in the league
+    if (!data || !data.ok || !data.valid) return 'none';     // wrong code / bad link → nothing
+
+    const banner = document.createElement('div'); banner.className = 'invite-banner';
+    const txt = document.createElement('span');
+    txt.textContent = t('invitedTo')(data.leagueName, ACTIVE_TOURNAMENT.name);
+    banner.appendChild(txt);
+    if (AUTH) {
+      const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'primary';
+      btn.textContent = t('acceptInvite'); btn.onclick = () => joinLeagueById(inv.league, inv.code);
+      banner.appendChild(btn);
+    } else {
+      const note = document.createElement('span'); note.className = 'sub';
+      note.textContent = t('inviteLoginHint'); banner.appendChild(note);
+    }
+    box.appendChild(banner); box.style.display = '';
+    return 'shown';
+  }
+
+  // Invite params from the URL — league AND join_code must BOTH be present (league
+  // alone is the deep-link-to-a-joined-league param afterLogin uses).
+  function inviteParams() {
+    const p = new URLSearchParams(location.search);
+    const league = p.get('league'), code = p.get('join_code');
+    if (!league || !code) return null;
+    return { tid: (p.get('t') || (ACTIVE_TOURNAMENT ? ACTIVE_TOURNAMENT.id : '')), league, code };
+  }
+
+  // Drop league/join_code from the URL after a join so a refresh doesn't re-prompt.
+  function clearInviteParams() {
+    const p = new URLSearchParams(location.search);
+    if (!p.has('league') && !p.has('join_code')) return;
+    p.delete('league'); p.delete('join_code');
+    const qs = p.toString();
+    history.replaceState(null, '', location.pathname + (qs ? '?' + qs : ''));
   }
 
   // View one of the user's joined leagues: set it current, load its member list +
@@ -1333,30 +1417,28 @@
   }
 
   // Join a league by code (or code-free if eligible via inheritance).
-  async function joinLeagueSubmit() {
-    if (!AUTH) return;
-    const id = document.getElementById('joinLeagueSelect').value;
-    const code = document.getElementById('joinCode').value;
-    if (!id) return;
-    if (SCRIPT_URL.startsWith('PASTE')) { addMsg(t('setScriptUrl'), 'err'); return; }
-    const btn = document.getElementById('joinBtn'); btn.disabled = true;
+  // Join a league — inheritance = empty code; invitation = the link's code. On
+  // success: refresh memberships + the badge switcher + join options, then open it.
+  async function joinLeagueById(id, code) {
+    if (!AUTH || SCRIPT_URL.startsWith('PASTE')) return;
     try {
       const res = await fetch(API_BASE, { method: 'POST',
-        body: JSON.stringify({ action: 'joinLeague', token: AUTH.token, tournamentId: ACTIVE_TOURNAMENT.id, leagueId: id, joinCode: code }) });
+        body: JSON.stringify({ action: 'joinLeague', token: AUTH.token, tournamentId: ACTIVE_TOURNAMENT.id, leagueId: id, joinCode: code || '' }) });
       const data = await res.json();
       if (data.ok) {
-        document.getElementById('joinCode').value = '';
         clearMsg('addMsg');
+        clearInviteParams();
+        await renderInvite();    // invite consumed → hide the banner
         await loadMyLeagues();
-        populateJoinDropdown();
+        updatePlayerBadge();     // rebuild the league switcher with the new membership
         document.getElementById('noLeaguesHint').style.display = 'none';
+        await renderJoinOptions();
         await selectLeague(data.joined);
         showTab('predict');
       } else {
         addMsg(t(data.error === 'bad_join_code' ? 'badJoinCode' : 'joinFailed'), 'err');
       }
     } catch (e) { addMsg(t('joinFailed'), 'err'); }
-    btn.disabled = false;
   }
 
   // Live check that the two new-password fields match; gate the Change button and
@@ -1498,6 +1580,7 @@
     applyUserPicks(null, []);   // clear inputs
     showAuthState();
     updatePlayerBadge();        // hide badge + logout button
+    renderInvite();             // re-render any pending invite in its logged-out form
     showTab('who');
   }
 
@@ -1647,8 +1730,9 @@
       } else if (LEAGUE_NAME) {
         leagueHtml = ' <span class="badge-league">· ' + escapeHtml(LEAGUE_NAME) + '</span>';
       }
+      const tour = ACTIVE_TOURNAMENT ? ' <span class="badge-league">· ' + escapeHtml(ACTIVE_TOURNAMENT.name) + '</span>' : '';
       badge.innerHTML = '<span class="badge-name" onclick="showTab(\'who\')">' +
-        t('playAs')(escapeHtml(AUTH.name)) + '</span>' + leagueHtml;
+        t('playAs')(escapeHtml(AUTH.name)) + '</span>' + tour + leagueHtml;
       badge.style.display = ''; if (lo) lo.style.display = '';
     } else { badge.innerHTML = ''; badge.style.display = 'none'; if (lo) lo.style.display = 'none'; }
     updateLoginNotice();
