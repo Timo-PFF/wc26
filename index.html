@@ -246,6 +246,10 @@
   .modal-body .dhead { color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .03em; position: sticky; top: 0; background: var(--card); }
   .modal-body .dhead .dpts, .modal-body .dhead .dratio { color: var(--muted); }
   .modal-body .dnone { color: var(--muted); padding: 6px 0; }
+  /* Tercile shading in the detail popup: agreement (with the pool) → average → contrarian. */
+  .modal-body .drow-agree  { background: rgba(61, 220, 151, 0.13); }
+  .modal-body .drow-avg    { background: rgba(159, 176, 208, 0.07); }
+  .modal-body .drow-contra { background: rgba(255, 107, 107, 0.13); }
   .dsub { color: var(--muted); font-weight: 400; font-size: .82rem; }
   .pager { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 12px; }
   .pg-btn { background: var(--card); border: 1px solid var(--line); color: var(--ink);
@@ -2478,6 +2482,7 @@
       renderFreqChart(SHEET.players, SHEET.guesses);   // real players only (no benchmark)
       renderFavStrategy();                             // favourite-following table
       PGCONS = computePerGuessConsensus();             // powers the row-click detail popups
+      computeConsTerciles();                           // league ⅓/⅔ thresholds (buckets + popup shading)
       renderConsensusStrategy();                       // consensus (contrarian/avg/agreement) table
       renderGameConsensus();                           // per-game consensus table
       wireDetailClicks();
@@ -3094,6 +3099,20 @@
   let CONS_MODE = 'count';   // 'count' | 'ppg' — what the bucket cells show
   let consTipsWired = false;
 
+  // ⅓ / ⅔ quantiles of every per-guess consensus ratio in the league, computed once
+  // from PGCONS. Shared by the consensus table's buckets AND the detail popups.
+  let CONS_Q1 = 0, CONS_Q2 = 0;
+  function quantile(sorted, p) {
+    if (!sorted.length) return 0;
+    const i = (sorted.length - 1) * p, lo = Math.floor(i), hi = Math.ceil(i);
+    return lo === hi ? sorted[lo] : sorted[lo] + (sorted[hi] - sorted[lo]) * (i - lo);
+  }
+  function computeConsTerciles() {
+    const sorted = PGCONS.map(r => r.ratio).sort((x, y) => x - y);
+    CONS_Q1 = quantile(sorted, 1 / 3); CONS_Q2 = quantile(sorted, 2 / 3);
+  }
+  const consBucketOf = r => r < CONS_Q1 ? 'contra' : (r < CONS_Q2 ? 'avg' : 'agree');
+
   // Per REAL player, over FINISHED games they guessed: each guess's per-game
   // consensus ratio (their guess scored against every OTHER player's guess for that
   // game ÷ max) is bucketed by the ⅓ / ⅔ QUANTILES of ALL such per-guess ratios
@@ -3121,20 +3140,12 @@
                   pts: (ptsMap[g.player] && ptsMap[g.player][mid]) || 0,   // real scoring
                   correct: Math.sign(g.home - g.away) === Math.sign(homeScore(m) - awayScore(m)) ? 1 : 0 });
     });
-    // ⅓ and ⅔ quantiles of every per-guess consensus ratio in the league.
-    const sorted = recs.map(r => r.ratio).sort((x, y) => x - y);
-    const quantile = p => {
-      if (!sorted.length) return 0;
-      const i = (sorted.length - 1) * p, lo = Math.floor(i), hi = Math.ceil(i);
-      return lo === hi ? sorted[lo] : sorted[lo] + (sorted[hi] - sorted[lo]) * (i - lo);
-    };
-    const q1 = quantile(1 / 3), q2 = quantile(2 / 3);
-    const bucketOf = r => r < q1 ? 'contra' : (r < q2 ? 'avg' : 'agree');
+    // Bucketed by the league-wide ⅓/⅔ quantiles (CONS_Q1/CONS_Q2, set from PGCONS).
     const blank = () => ({ n: 0, correct: 0, pts: 0 });
     const acc = {};
     recs.forEach(r => {
       const a = acc[r.player] || (acc[r.player] = { contra: blank(), avg: blank(), agree: blank() });
-      const s = a[bucketOf(r.ratio)];
+      const s = a[consBucketOf(r.ratio)];
       s.n++; s.pts += r.pts; s.correct += r.correct;
     });
     return SHEET.players.map(p => {
@@ -3291,7 +3302,7 @@
     document.getElementById('detailModal').style.display = 'flex';
   }
   function closeDetail() { const el = document.getElementById('detailModal'); if (el) el.style.display = 'none'; }
-  const drow = (labelHtml, pts, ratio) => '<div class="drow"><span class="dlabel">' + labelHtml +
+  const drow = (labelHtml, pts, ratio) => '<div class="drow drow-' + consBucketOf(ratio) + '"><span class="dlabel">' + labelHtml +
     '</span><span class="dpts">' + fmtPts(pts) + '</span><span class="dratio">' + ratio.toFixed(2) + '</span></div>';
   const detailHeader = firstCol => '<div class="drow dhead"><span class="dlabel">' + escapeHtml(firstCol) +
     '</span><span class="dpts">' + escapeHtml(t('thPts')) + '</span><span class="dratio">' + escapeHtml(t('detailRatioCol')) + '</span></div>';
