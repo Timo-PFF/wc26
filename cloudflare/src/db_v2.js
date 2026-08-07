@@ -160,11 +160,21 @@ export async function getLeagueGuessesByMatches(env, tid, memberIds, matchIds) {
   if (!memberIds.length || !matchIds.length) return [];
   const names = await namesByIds(env, memberIds);
   const memberset = new Set(memberIds.map(String));
-  const placeholders = matchIds.map(() => '?').join(', ');
-  const { results } = await env.DB
-    .prepare(`SELECT userId, matchId, guessHome, guessAway, penaltyWinner FROM guesses WHERE tournamentId = ? AND matchId IN (${placeholders})`)
-    .bind(normalize(tid), ...matchIds.map(String)).all();
-  return results
+  const t = normalize(tid);
+  // D1 caps bound parameters at 100 per query, so batch the matchId IN-list
+  // (≤90 + the tournamentId bind). Otherwise a large active set (an early live
+  // tournament, or a mis-cached snapshot) throws "too many SQL variables".
+  const CHUNK = 90;
+  const rows = [];
+  for (let i = 0; i < matchIds.length; i += CHUNK) {
+    const batch = matchIds.slice(i, i + CHUNK).map(String);
+    const placeholders = batch.map(() => '?').join(', ');
+    const r = await env.DB
+      .prepare(`SELECT userId, matchId, guessHome, guessAway, penaltyWinner FROM guesses WHERE tournamentId = ? AND matchId IN (${placeholders})`)
+      .bind(t, ...batch).all();
+    rows.push(...(r.results || []));
+  }
+  return rows
     .filter((r) => memberset.has(String(r.userId)) && names[String(r.userId)])
     .map((r) => ({
       userId: String(r.userId),
