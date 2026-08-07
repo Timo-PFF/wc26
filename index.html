@@ -1608,10 +1608,12 @@
     });
     const data = await res.json();
     const live = data.ok ? (data.guesses || []) : [];
-    // Finished matches come from the committed static snapshot (public); the API
-    // only returns the live matches. Merge them (disjoint match sets).
-    const lg = String(LEAGUE || '').toLowerCase();
-    const history = (await loadHistoricalGuesses()).filter(g => g.league.toLowerCase() === lg);
+    // Finished matches come from the committed static snapshot (public, per-player).
+    // Picks are global, so filter the snapshot to the CURRENT league's members — a
+    // user's picks then show in every league they belong to, with no duplication.
+    // The API only returns the live matches; merge (disjoint match sets).
+    const members = new Set((await loadPlayers()).map(p => String(p).toLowerCase()));
+    const history = (await loadHistoricalGuesses()).filter(g => members.has(String(g.player).toLowerCase()));
     SHEET.guesses = mergeGuesses(history, live);
     guessesLoaded = !!data.ok;
     return SHEET.guesses;
@@ -1631,17 +1633,18 @@
     return HIST_GUESSES;
   }
 
-  // Parse the snapshot CSV — unquoted columns league,player,matchId,home,away,penaltyWinner
-  // (build_historical.mjs guarantees no field needs escaping), so a plain split is safe.
+  // Parse the snapshot CSV — unquoted per-player columns player,matchId,home,away,penaltyWinner
+  // (no field needs escaping), so a plain split is safe. Picks are global; the caller
+  // filters to the current league's members.
   function parseGuessCsv(text) {
     const lines = text.replace(/^﻿/, '').split(/\r?\n/);
     const out = [];
     for (let i = 1; i < lines.length; i++) {         // skip header
       const c = lines[i].split(',');
-      if (c.length < 5 || !c[1] || !c[2]) continue;
-      out.push({ league: c[0], player: c[1], matchId: c[2],
-                 home: parseInt(c[3], 10), away: parseInt(c[4], 10),
-                 penaltyWinner: (c[5] || '').trim() });
+      if (c.length < 4 || !c[0] || !c[1]) continue;
+      out.push({ player: c[0], matchId: c[1],
+                 home: parseInt(c[2], 10), away: parseInt(c[3], 10),
+                 penaltyWinner: (c[4] || '').trim() });
     }
     return out;
   }
@@ -3029,7 +3032,12 @@
     } else {
       // Both halves share one leaf-unit grid (Round-of-32 count) so every round
       // aligns: a match sits centred between its two feeders in the round below.
-      const leaves = (b.topRows['round-of-32'] || []).length || (b.bottomRows['round-of-32'] || []).length;
+      // Leaf-unit count = the WIDEST (first) knockout round present in a half —
+      // round-of-32 for a World Cup, round-of-16 for a Euro. Hardcoding R32 gave 0
+      // units for a Euros, collapsing the tree into a flat vertical stack.
+      const halfRounds = ['round-of-32', 'round-of-16', 'quarterfinals', 'semifinals'];
+      const leafSlug = halfRounds.find(s => (b.topRows[s] || []).length || (b.bottomRows[s] || []).length) || 'round-of-16';
+      const leaves = (b.topRows[leafSlug] || []).length || (b.bottomRows[leafSlug] || []).length;
       ['round-of-32', 'round-of-16', 'quarterfinals', 'semifinals']
         .forEach(slug => { if (b.topRows[slug].length) inner += koRoundHtml(b.topRows[slug], leaves); });
       // Centre row on the same leaf grid: the final spans the full width and

@@ -27,6 +27,20 @@
         "koBracket": "data/test_tournament/wc2026_knockout_bracket.json",
         "historicalGuesses": "data/test_tournament/wc2026_historical_guesses.csv"
       }
+    },
+    {
+      "id": "euro2024",
+      "name": "Euro 2024",
+      "default": 0,
+      "api": "https://wc26-api.pool-riske.workers.dev",
+      "scoring": "scoring.js",
+      "files": {
+        "fixtures": "data/euro2024/euro2024_fixtures.json",
+        "favPicks": "data/euro2024/euro2024_fav_by_1.json",
+        "r32Bracket": "data/euro2024/euro2024_r32_bracket.json",
+        "koBracket": "data/euro2024/euro2024_knockout_bracket.json",
+        "historicalGuesses": "data/euro2024/euro2024_historical_guesses.csv"
+      }
     }
   ]
 }

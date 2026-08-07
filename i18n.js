@@ -250,6 +250,10 @@ const DE_NAMES = {
   QAT: 'Katar', RSA: 'Südafrika', SCO: 'Schottland', SEN: 'Senegal',
   SUI: 'Schweiz', SWE: 'Schweden', TUN: 'Tunesien', TUR: 'Türkei',
   URU: 'Uruguay', USA: 'USA', UZB: 'Usbekistan',
+  // Nations in the Euro 2024 field that weren't in the WC2026 field:
+  ALB: 'Albanien', DEN: 'Dänemark', GEO: 'Georgien', HUN: 'Ungarn', ITA: 'Italien',
+  POL: 'Polen', ROU: 'Rumänien', SRB: 'Serbien', SVK: 'Slowakei', SVN: 'Slowenien',
+  UKR: 'Ukraine',
 };
 
 // Knockout slots arrive as English placeholders ("Group A Winner", "Round of

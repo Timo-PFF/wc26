@@ -26,6 +26,9 @@ SEED_TIDS = ["wc2026", "test_tournament"]   # tournaments to seed — both share
 # tid -> the tid its leagues inherit (same league ids). A member of the inherited
 # league may join the inheriting league code-free. test_tournament inherits wc2026.
 INHERITS = {"test_tournament": "wc2026"}
+# Empty tournaments seeded with LEAGUES ONLY (no members/guesses) — people join via
+# inheritance. tid -> the tid it inherits (same league ids). euro2024 = framework test.
+LEAGUES_ONLY = {"euro2024": "wc2026"}
 
 def norm(s): return str(s or "").strip().lower()
 
@@ -202,25 +205,31 @@ if ok and not any("COLLISION" in w for w in warnings):
                 hh = "NULL" if h in (None, "") else int(h)
                 aa = "NULL" if a in (None, "") else int(a)
                 out.append(f"INSERT INTO guesses (userId,tournamentId,matchId,guessHome,guessAway,penaltyWinner,ts) VALUES ({q(uid)},{q(tid)},{q(mid)},{hh},{aa},{q(p)},{q('2026-migrated')});")
+    # Leagues-only (empty) tournaments — inheriting leagues, no members/guesses.
+    for tid, inh in LEAGUES_ONLY.items():
+        out.append("")
+        for l in leagues:
+            if not l["id"].strip(): continue
+            lid = norm(l["id"])
+            out.append(f"INSERT INTO leagues (tournamentId,id,name,password,inheritsTournamentId,inheritsLeagueId) VALUES ({q(tid)},{q(lid)},{q(l['name'])},{q(l['password'])},{q(inh)},{q(lid)});")
     open(os.path.join(SEED, "seed_v2.sql"), "w", encoding="utf-8").write("\n".join(out) + "\n")
-    print(f"\nWrote {SEED}/seed_v2.sql  (tournaments: {', '.join(SEED_TIDS)})")
+    print(f"\nWrote {SEED}/seed_v2.sql  (data: {', '.join(SEED_TIDS)} | leagues-only: {', '.join(LEAGUES_ONLY)})")
 
-    # ---- regenerate the finished-guesses snapshot (per-league, from v2 data) ----
-    # Re-expands the de-mirrored guesses back to one row per (league, player) for
-    # every COMPLETED match, matching the committed CSV's columns exactly. Written
-    # to gitignored staging; the cutover copies it to data/wc2026/. Once it's on
-    # main, all games are in the snapshot -> the API's active set is empty.
+    # ---- regenerate the finished-guesses snapshot (PER-PLAYER, from v2 data) ----
+    # Picks are global (per user), so the snapshot is one row per (player, match) —
+    # no league column. The frontend filters it to the current league's members, so a
+    # user's picks show in every league they're in, with no duplication. Written to
+    # gitignored staging; the cutover copies it to data/wc2026/ (+ test_tournament).
     snap_rows = []
     for u in users:
-        for (lg, nm) in u["keys"]:                     # lg normalized ('family'/'oppenheimer')
-            for mid, (h, a, p) in user_g[u["id"]].items():
-                if mid in MATCH:                        # completed games only
-                    snap_rows.append((lg, u["name"], mid, int(h), int(a), p))
-    snap = ["league,player,matchId,home,away,penaltyWinner"]
-    for lg, nm, mid, h, a, p in sorted(snap_rows, key=lambda r: (r[0], r[1].lower(), int(r[2]))):
-        snap.append(f"{lg},{nm},{mid},{h},{a},{p}")
+        for mid, (h, a, p) in user_g[u["id"]].items():
+            if mid in MATCH:                            # completed games only
+                snap_rows.append((u["name"], mid, int(h), int(a), p))
+    snap = ["player,matchId,home,away,penaltyWinner"]
+    for nm, mid, h, a, p in sorted(snap_rows, key=lambda r: (r[0].lower(), int(r[1]))):
+        snap.append(f"{nm},{mid},{h},{a},{p}")
     snap_path = os.path.join(SEED, "wc2026_historical_guesses.csv")
     open(snap_path, "w", encoding="utf-8", newline="\n").write("\n".join(snap) + "\n")
-    print(f"Wrote {snap_path} ({len(snap_rows)} rows, {len(set(r[2] for r in snap_rows))} finished matches)")
+    print(f"Wrote {snap_path} ({len(snap_rows)} rows, {len(set(r[1] for r in snap_rows))} finished matches)")
 else:
     print("\nDry-run did NOT pass cleanly — seed_v2.sql not written.")

@@ -38,12 +38,20 @@ import os
 import sys
 import time
 
-import requests
+# Prefer curl_cffi (impersonates a real browser's TLS fingerprint, which defeats
+# ESPN's Akamai bot protection); fall back to plain requests if absent.
+try:
+    from curl_cffi import requests as http_client
+    IMPERSONATE = "chrome"
+except ImportError:
+    import requests as http_client
+    IMPERSONATE = None
 
 SCOREBOARD = "https://site.api.espn.com/apis/site/v2/sports/soccer/{league}/scoreboard"
 CORE_ODDS = ("https://sports.core.api.espn.com/v2/sports/soccer/leagues/{league}"
              "/events/{event}/competitions/{event}/odds")
-HEADERS = {"User-Agent": "wc2026-pool/1.0 (personal use)"}
+HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                         "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"}
 
 # Sportsbooks to prefer when a game has lines from several, most-trusted first.
 # We take the first preferred book that has a complete 3-way moneyline + total;
@@ -70,7 +78,7 @@ KNOCKOUT_SLUGS = {
 }
 
 CSV_COLUMNS = [
-    "league", "season", "date", "stage", "knockout", "decided_by",
+    "league", "season", "date", "stage", "knockout", "decided_by", "state", "winner",
     "event_id", "home", "away", "home_id", "away_id",
     "home_score", "away_score",
     "provider", "home_ml", "draw_ml", "away_ml",
@@ -109,7 +117,7 @@ def daterange_chunks(start, end, days):
 def get_json(session, url, params=None, retries=3):
     for attempt in range(1, retries + 1):
         try:
-            r = session.get(url, params=params, headers=HEADERS, timeout=30)
+            r = session.get(url, params=params, timeout=30)
             r.raise_for_status()
             return r.json()
         except Exception as exc:  # noqa: BLE001
@@ -166,6 +174,8 @@ def _parse_scoreboard_event(ev):
         "stage": slug,
         "knockout": slug in KNOCKOUT_SLUGS,
         "decided_by": DECIDED_BY.get(status.get("name"), "regulation"),
+        "state": status.get("state"),   # "post" for finished games
+        "winner": "home" if home.get("winner") else ("away" if away.get("winner") else ""),
         "home": (home.get("team") or {}).get("abbreviation"),
         "away": (away.get("team") or {}).get("abbreviation"),
         "home_id": (home.get("team") or {}).get("id"),
@@ -270,7 +280,14 @@ def main():
     leagues = [s.strip() for s in args.leagues.split(",") if s.strip()]
     os.makedirs(args.cache_dir, exist_ok=True)
 
-    session = requests.Session()
+    # curl_cffi's impersonation supplies browser headers + TLS; plain requests needs
+    # HEADERS set on the session.
+    if IMPERSONATE:
+        session = http_client.Session(impersonate=IMPERSONATE)
+    else:
+        session = http_client.Session()
+        session.headers.update(HEADERS)
+    print(f"[http backend: {'curl_cffi/'+IMPERSONATE if IMPERSONATE else 'requests'}]")
     rows = load_existing(args.out)
     n_start = len(rows)
     added = no_odds = 0

@@ -25,10 +25,28 @@ import sys
 import time
 from collections import Counter
 
-import requests
+# Prefer curl_cffi (impersonates a real browser's TLS fingerprint, which is what
+# defeats ESPN's Akamai bot protection); fall back to plain requests if absent.
+try:
+    from curl_cffi import requests as http_client
+    IMPERSONATE = "chrome"
+except ImportError:
+    import requests as http_client
+    IMPERSONATE = None
 
-BASE = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard"
-HEADERS = {"User-Agent": "wc2026-pool/1.0 (personal use)"}
+# ESPN scoreboard endpoint, per competition slug (fifa.world = World Cup,
+# uefa.euro = European Championship, …). Set via --competition.
+SCOREBOARD_TMPL = "https://site.api.espn.com/apis/site/v2/sports/soccer/{comp}/scoreboard"
+# ESPN blocks non-browser clients (403 / non-JSON body), so send a full browser
+# header set (UA alone is no longer enough).
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                  "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Referer": "https://www.espn.com/soccer/",
+    "Origin": "https://www.espn.com",
+}
 
 # ESPN carries the stage on each event under `season.slug` / `season.type`.
 # Map the slug -> a friendly label; "group-stage" is the only non-knockout one.
@@ -209,29 +227,34 @@ def extract_match(event):
 # garbled API response (e.g. a transient ESPN hiccup during an automated refresh)
 # can never overwrite the good fixtures file with junk.
 
-EXPECTED_STAGE_COUNTS = {
-    "group-stage": 72,
-    "round-of-32": 16,
-    "round-of-16": 8,
-    "quarterfinals": 4,
-    "semifinals": 2,
-    "3rd-place-match": 1,
-    "final": 1,
+# Per-competition full-schedule shape. A fetch must reproduce this exactly or we
+# refuse to write (a partial/garbled response can't overwrite a good file). Unknown
+# competitions skip validation (with a note).
+EXPECTED_STAGE_COUNTS_BY_COMP = {
+    "fifa.world": {   # 2026: 48 teams, 104 matches
+        "group-stage": 72, "round-of-32": 16, "round-of-16": 8,
+        "quarterfinals": 4, "semifinals": 2, "3rd-place-match": 1, "final": 1,
+    },
+    "uefa.euro": {    # 24 teams, 51 matches (no R32, no 3rd-place match)
+        "group-stage": 36, "round-of-16": 8,
+        "quarterfinals": 4, "semifinals": 2, "final": 1,
+    },
 }
-EXPECTED_TOTAL = sum(EXPECTED_STAGE_COUNTS.values())  # 104
 
 
 class FixturesValidationError(Exception):
-    """Raised when a fetched schedule doesn't look like the full WC2026 fixture set."""
+    """Raised when a fetched schedule doesn't match the competition's expected shape."""
 
 
-def validate_matches(matches):
+def validate_matches(matches, expected):
     """Raise FixturesValidationError unless `matches` is the complete, well-formed
-    WC2026 schedule. Collects every problem so one run reports them all."""
+    schedule for the given per-stage `expected` counts. Collects every problem so one
+    run reports them all."""
     problems = []
+    expected_total = sum(expected.values())
 
-    if len(matches) != EXPECTED_TOTAL:
-        problems.append(f"expected {EXPECTED_TOTAL} matches, got {len(matches)}")
+    if len(matches) != expected_total:
+        problems.append(f"expected {expected_total} matches, got {len(matches)}")
 
     ids = [m.get("id") for m in matches]
     if any(not i for i in ids):
@@ -240,10 +263,10 @@ def validate_matches(matches):
         problems.append("duplicate match ids")
 
     counts = Counter((m.get("stage") or {}).get("slug") for m in matches)
-    for slug, want in EXPECTED_STAGE_COUNTS.items():
+    for slug, want in expected.items():
         if counts.get(slug, 0) != want:
             problems.append(f"stage {slug!r}: expected {want}, got {counts.get(slug, 0)}")
-    unknown = sorted(s for s in counts if s not in EXPECTED_STAGE_COUNTS)
+    unknown = sorted(s for s in counts if s not in expected)
     if unknown:
         problems.append(f"unexpected stage(s): {unknown}")
 
@@ -269,11 +292,11 @@ def daterange(start, end):
         d += one
 
 
-def fetch_day(day, session, retries=3):
+def fetch_day(day, session, base, headers, retries=3):
     params = {"dates": day.strftime("%Y%m%d"), "limit": 950}
     for attempt in range(1, retries + 1):
         try:
-            r = session.get(BASE, params=params, headers=HEADERS, timeout=30)
+            r = session.get(base, params=params, headers=headers or {}, timeout=30)
             r.raise_for_status()
             return r.json().get("events", [])
         except Exception as exc:  # noqa: BLE001
@@ -289,22 +312,33 @@ def main():
     ap.add_argument("--start", default="20260611")
     ap.add_argument("--end", default="20260719")
     ap.add_argument("--out", default="../data/wc2026_fixtures.json")
+    ap.add_argument("--competition", default="fifa.world",
+                    help="ESPN competition slug (fifa.world, uefa.euro, …)")
     ap.add_argument("--delay", type=float, default=0.4,
                     help="seconds to wait between daily requests (be polite)")
     ap.add_argument("--no-validate", action="store_true",
                     help="skip the full-schedule sanity check (e.g. for a partial date range)")
     args = ap.parse_args()
 
+    base = SCOREBOARD_TMPL.format(comp=args.competition)
     start = dt.datetime.strptime(args.start, "%Y%m%d").date()
     end = dt.datetime.strptime(args.end, "%Y%m%d").date()
 
-    session = requests.Session()
+    # curl_cffi's impersonation supplies a consistent browser header set + TLS, so
+    # don't override with our own headers there; plain requests still needs HEADERS.
+    if IMPERSONATE:
+        session = http_client.Session(impersonate=IMPERSONATE)
+        req_headers = None
+    else:
+        session = http_client.Session()
+        req_headers = HEADERS
     by_id = {}
     days = list(daterange(start, end))
-    print(f"Fetching {len(days)} day(s): {start} -> {end}")
+    backend = f"curl_cffi/{IMPERSONATE}" if IMPERSONATE else "requests"
+    print(f"Fetching {len(days)} day(s): {start} -> {end}  [{backend}]")
 
     for day in days:
-        events = fetch_day(day, session)
+        events = fetch_day(day, session, base, req_headers)
         added = 0
         for ev in events:
             m = extract_match(ev)
@@ -320,18 +354,23 @@ def main():
     matches = sorted(by_id.values(), key=lambda m: (m["date"] or "", m["id"]))
 
     # Sanity-check before writing — a bad fetch must not overwrite a good file.
+    expected = EXPECTED_STAGE_COUNTS_BY_COMP.get(args.competition)
     if not args.no_validate:
-        try:
-            validate_matches(matches)
-        except FixturesValidationError as exc:
-            print(f"\n! Refusing to write {args.out} — schedule failed validation:\n  {exc}",
+        if expected is None:
+            print(f"  (no expected-stage counts for {args.competition!r} — skipping validation)",
                   file=sys.stderr)
-            print("  (re-run when ESPN is healthy, or pass --no-validate for a partial fetch)",
-                  file=sys.stderr)
-            sys.exit(1)
+        else:
+            try:
+                validate_matches(matches, expected)
+            except FixturesValidationError as exc:
+                print(f"\n! Refusing to write {args.out} — schedule failed validation:\n  {exc}",
+                      file=sys.stderr)
+                print("  (re-run when ESPN is healthy, or pass --no-validate for a partial fetch)",
+                      file=sys.stderr)
+                sys.exit(1)
 
     payload = {
-        "source": "ESPN site.api scoreboard (fifa.world)",
+        "source": f"ESPN site.api scoreboard ({args.competition})",
         "generatedAt": dt.datetime.utcnow().isoformat() + "Z",
         "range": {"start": args.start, "end": args.end},
         "count": len(matches),

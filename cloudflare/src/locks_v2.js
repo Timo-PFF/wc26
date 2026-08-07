@@ -75,8 +75,8 @@ async function fetchFixtureMatches(env, tid) {
 }
 
 // Distinct matchIds in the tournament's finished-guesses snapshot CSV, or null if
-// unreachable. Columns: league,player,matchId,home,away,penaltyWinner (unquoted —
-// see build_historical.mjs — so matchId is split index 2).
+// unreachable. Columns: player,matchId,home,away,penaltyWinner (per-player, unquoted),
+// so matchId is split index 1.
 async function snapshotMatchIds(env, tid) {
   const key = normalize(tid);
   if (snapshotIdsMemo[key]) return snapshotIdsMemo[key];
@@ -91,7 +91,7 @@ async function snapshotMatchIds(env, tid) {
     const ids = new Set();
     const lines = text.split('\n');
     for (let i = 1; i < lines.length; i += 1) { // skip header row
-      const matchId = (lines[i].split(',')[2] || '').trim();
+      const matchId = (lines[i].split(',')[1] || '').trim();
       if (matchId) ids.add(matchId);
     }
     snapshotIdsMemo[key] = ids; // only memoise on success

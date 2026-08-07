@@ -1,0 +1,2561 @@
+{
+  "source": "ESPN site.api scoreboard (uefa.euro)",
+  "generatedAt": "2026-08-06T21:21:20.105360Z",
+  "range": {
+    "start": "20240614",
+    "end": "20240714"
+  },
+  "count": 51,
+  "matches": [
+    {
+      "id": "690573",
+      "date": "2024-06-14T19:00Z",
+      "name": "Scotland at Germany",
+      "shortName": "SCO @ GER",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Allianz Arena",
+        "city": "München",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "481",
+        "displayName": "Germany",
+        "shortDisplayName": "Germany",
+        "name": "Germany",
+        "abbreviation": "GER",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ger.png",
+        "score": 5,
+        "shootout": null,
+        "winner": true
+      },
+      "away": {
+        "id": "580",
+        "displayName": "Scotland",
+        "shortDisplayName": "Scotland",
+        "name": "Scotland",
+        "abbreviation": "SCO",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sco.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "A"
+    },
+    {
+      "id": "690574",
+      "date": "2024-06-15T13:00Z",
+      "name": "Switzerland at Hungary",
+      "shortName": "SUI @ HUN",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "RheinEnergieStadion",
+        "city": "Cologne",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "480",
+        "displayName": "Hungary",
+        "shortDisplayName": "Hungary",
+        "name": "Hungary",
+        "abbreviation": "HUN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/hun.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "475",
+        "displayName": "Switzerland",
+        "shortDisplayName": "Switzerland",
+        "name": "Switzerland",
+        "abbreviation": "SUI",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sui.png",
+        "score": 3,
+        "shootout": null,
+        "winner": true
+      },
+      "winner": "away",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "A"
+    },
+    {
+      "id": "690575",
+      "date": "2024-06-15T16:00Z",
+      "name": "Croatia at Spain",
+      "shortName": "CRO @ ESP",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Olympiastadion Berlin",
+        "city": "Berlin",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "164",
+        "displayName": "Spain",
+        "shortDisplayName": "Spain",
+        "name": "Spain",
+        "abbreviation": "ESP",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/esp.png",
+        "score": 3,
+        "shootout": null,
+        "winner": true
+      },
+      "away": {
+        "id": "477",
+        "displayName": "Croatia",
+        "shortDisplayName": "Croatia",
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cro.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "B"
+    },
+    {
+      "id": "690576",
+      "date": "2024-06-15T19:00Z",
+      "name": "Albania at Italy",
+      "shortName": "ALB @ ITA",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "SIGNAL IDUNA PARK",
+        "city": "Aue",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "162",
+        "displayName": "Italy",
+        "shortDisplayName": "Italy",
+        "name": "Italy",
+        "abbreviation": "ITA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ita.png",
+        "score": 2,
+        "shootout": null,
+        "winner": true
+      },
+      "away": {
+        "id": "585",
+        "displayName": "Albania",
+        "shortDisplayName": "Albania",
+        "name": "Albania",
+        "abbreviation": "ALB",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/alb.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "B"
+    },
+    {
+      "id": "690579",
+      "date": "2024-06-16T13:00Z",
+      "name": "Netherlands at Poland",
+      "shortName": "NED @ POL",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Volksparkstadion",
+        "city": "Hamburg Norderstedt",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "471",
+        "displayName": "Poland",
+        "shortDisplayName": "Poland",
+        "name": "Poland",
+        "abbreviation": "POL",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/pol.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "449",
+        "displayName": "Netherlands",
+        "shortDisplayName": "Netherlands",
+        "name": "Netherlands",
+        "abbreviation": "NED",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ned.png",
+        "score": 2,
+        "shootout": null,
+        "winner": true
+      },
+      "winner": "away",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "D"
+    },
+    {
+      "id": "690577",
+      "date": "2024-06-16T16:00Z",
+      "name": "Denmark at Slovenia",
+      "shortName": "DEN @ SVN",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "MHPArena",
+        "city": "Stuttgart",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "472",
+        "displayName": "Slovenia",
+        "shortDisplayName": "Slovenia",
+        "name": "Slovenia",
+        "abbreviation": "SVN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/svn.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "479",
+        "displayName": "Denmark",
+        "shortDisplayName": "Denmark",
+        "name": "Denmark",
+        "abbreviation": "DEN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/den.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "draw",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "C"
+    },
+    {
+      "id": "690578",
+      "date": "2024-06-16T19:00Z",
+      "name": "England at Serbia",
+      "shortName": "ENG @ SRB",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "VELTINS-Arena",
+        "city": "Gelsenkirchen",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "6757",
+        "displayName": "Serbia",
+        "shortDisplayName": "Serbia",
+        "name": "Serbia",
+        "abbreviation": "SRB",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sba.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "448",
+        "displayName": "England",
+        "shortDisplayName": "England",
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png",
+        "score": 1,
+        "shootout": null,
+        "winner": true
+      },
+      "winner": "away",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "C"
+    },
+    {
+      "id": "690582",
+      "date": "2024-06-17T13:00Z",
+      "name": "Ukraine at Romania",
+      "shortName": "UKR @ ROU",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Allianz Arena",
+        "city": "München",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "473",
+        "displayName": "Romania",
+        "shortDisplayName": "Romania",
+        "name": "Romania",
+        "abbreviation": "ROU",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/rom.png",
+        "score": 3,
+        "shootout": null,
+        "winner": true
+      },
+      "away": {
+        "id": "457",
+        "displayName": "Ukraine",
+        "shortDisplayName": "Ukraine",
+        "name": "Ukraine",
+        "abbreviation": "UKR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ukr.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "E"
+    },
+    {
+      "id": "690581",
+      "date": "2024-06-17T16:00Z",
+      "name": "Slovakia at Belgium",
+      "shortName": "SVK @ BEL",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Deutsche Bank Park",
+        "city": "Frankfurt",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "459",
+        "displayName": "Belgium",
+        "shortDisplayName": "Belgium",
+        "name": "Belgium",
+        "abbreviation": "BEL",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bel.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "468",
+        "displayName": "Slovakia",
+        "shortDisplayName": "Slovakia",
+        "name": "Slovakia",
+        "abbreviation": "SVK",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/svk.png",
+        "score": 1,
+        "shootout": null,
+        "winner": true
+      },
+      "winner": "away",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "E"
+    },
+    {
+      "id": "690580",
+      "date": "2024-06-17T19:00Z",
+      "name": "France at Austria",
+      "shortName": "FRA @ AUT",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Merkur Spiel-Arena",
+        "city": "Düsseldorf",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "474",
+        "displayName": "Austria",
+        "shortDisplayName": "Austria",
+        "name": "Austria",
+        "abbreviation": "AUT",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/aut.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "478",
+        "displayName": "France",
+        "shortDisplayName": "France",
+        "name": "France",
+        "abbreviation": "FRA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/fra.png",
+        "score": 1,
+        "shootout": null,
+        "winner": true
+      },
+      "winner": "away",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "D"
+    },
+    {
+      "id": "690583",
+      "date": "2024-06-18T16:00Z",
+      "name": "Georgia at Türkiye",
+      "shortName": "GEO @ TUR",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "SIGNAL IDUNA PARK",
+        "city": "Aue",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "465",
+        "displayName": "Türkiye",
+        "shortDisplayName": "Türkiye",
+        "name": "Türkiye",
+        "abbreviation": "TUR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/tur.png",
+        "score": 3,
+        "shootout": null,
+        "winner": true
+      },
+      "away": {
+        "id": "584",
+        "displayName": "Georgia",
+        "shortDisplayName": "Georgia",
+        "name": "Georgia",
+        "abbreviation": "GEO",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/geo.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "F"
+    },
+    {
+      "id": "690584",
+      "date": "2024-06-18T19:00Z",
+      "name": "Czechia at Portugal",
+      "shortName": "CZE @ POR",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Red Bull Arena",
+        "city": "Leipzig",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "482",
+        "displayName": "Portugal",
+        "shortDisplayName": "Portugal",
+        "name": "Portugal",
+        "abbreviation": "POR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/por.png",
+        "score": 2,
+        "shootout": null,
+        "winner": true
+      },
+      "away": {
+        "id": "450",
+        "displayName": "Czechia",
+        "shortDisplayName": "Czechia",
+        "name": "Czechia",
+        "abbreviation": "CZE",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cze.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "F"
+    },
+    {
+      "id": "690586",
+      "date": "2024-06-19T13:00Z",
+      "name": "Albania at Croatia",
+      "shortName": "ALB @ CRO",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Volksparkstadion",
+        "city": "Hamburg Norderstedt",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "477",
+        "displayName": "Croatia",
+        "shortDisplayName": "Croatia",
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cro.png",
+        "score": 2,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "585",
+        "displayName": "Albania",
+        "shortDisplayName": "Albania",
+        "name": "Albania",
+        "abbreviation": "ALB",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/alb.png",
+        "score": 2,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "draw",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "B"
+    },
+    {
+      "id": "690587",
+      "date": "2024-06-19T16:00Z",
+      "name": "Hungary at Germany",
+      "shortName": "HUN @ GER",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "MHPArena",
+        "city": "Stuttgart",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "481",
+        "displayName": "Germany",
+        "shortDisplayName": "Germany",
+        "name": "Germany",
+        "abbreviation": "GER",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ger.png",
+        "score": 2,
+        "shootout": null,
+        "winner": true
+      },
+      "away": {
+        "id": "480",
+        "displayName": "Hungary",
+        "shortDisplayName": "Hungary",
+        "name": "Hungary",
+        "abbreviation": "HUN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/hun.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "A"
+    },
+    {
+      "id": "690585",
+      "date": "2024-06-19T19:00Z",
+      "name": "Switzerland at Scotland",
+      "shortName": "SUI @ SCO",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "RheinEnergieStadion",
+        "city": "Cologne",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "580",
+        "displayName": "Scotland",
+        "shortDisplayName": "Scotland",
+        "name": "Scotland",
+        "abbreviation": "SCO",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sco.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "475",
+        "displayName": "Switzerland",
+        "shortDisplayName": "Switzerland",
+        "name": "Switzerland",
+        "abbreviation": "SUI",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sui.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "draw",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "A"
+    },
+    {
+      "id": "690589",
+      "date": "2024-06-20T13:00Z",
+      "name": "Serbia at Slovenia",
+      "shortName": "SRB @ SVN",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Allianz Arena",
+        "city": "München",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "472",
+        "displayName": "Slovenia",
+        "shortDisplayName": "Slovenia",
+        "name": "Slovenia",
+        "abbreviation": "SVN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/svn.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "6757",
+        "displayName": "Serbia",
+        "shortDisplayName": "Serbia",
+        "name": "Serbia",
+        "abbreviation": "SRB",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sba.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "draw",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "C"
+    },
+    {
+      "id": "690590",
+      "date": "2024-06-20T16:00Z",
+      "name": "England at Denmark",
+      "shortName": "ENG @ DEN",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Deutsche Bank Park",
+        "city": "Frankfurt",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "479",
+        "displayName": "Denmark",
+        "shortDisplayName": "Denmark",
+        "name": "Denmark",
+        "abbreviation": "DEN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/den.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "448",
+        "displayName": "England",
+        "shortDisplayName": "England",
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "draw",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "C"
+    },
+    {
+      "id": "690588",
+      "date": "2024-06-20T19:00Z",
+      "name": "Italy at Spain",
+      "shortName": "ITA @ ESP",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "VELTINS-Arena",
+        "city": "Gelsenkirchen",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "164",
+        "displayName": "Spain",
+        "shortDisplayName": "Spain",
+        "name": "Spain",
+        "abbreviation": "ESP",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/esp.png",
+        "score": 1,
+        "shootout": null,
+        "winner": true
+      },
+      "away": {
+        "id": "162",
+        "displayName": "Italy",
+        "shortDisplayName": "Italy",
+        "name": "Italy",
+        "abbreviation": "ITA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ita.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "B"
+    },
+    {
+      "id": "690593",
+      "date": "2024-06-21T13:00Z",
+      "name": "Ukraine at Slovakia",
+      "shortName": "UKR @ SVK",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Merkur Spiel-Arena",
+        "city": "Düsseldorf",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "468",
+        "displayName": "Slovakia",
+        "shortDisplayName": "Slovakia",
+        "name": "Slovakia",
+        "abbreviation": "SVK",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/svk.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "457",
+        "displayName": "Ukraine",
+        "shortDisplayName": "Ukraine",
+        "name": "Ukraine",
+        "abbreviation": "UKR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ukr.png",
+        "score": 2,
+        "shootout": null,
+        "winner": true
+      },
+      "winner": "away",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "E"
+    },
+    {
+      "id": "690591",
+      "date": "2024-06-21T16:00Z",
+      "name": "Austria at Poland",
+      "shortName": "AUT @ POL",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Olympiastadion Berlin",
+        "city": "Berlin",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "471",
+        "displayName": "Poland",
+        "shortDisplayName": "Poland",
+        "name": "Poland",
+        "abbreviation": "POL",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/pol.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "474",
+        "displayName": "Austria",
+        "shortDisplayName": "Austria",
+        "name": "Austria",
+        "abbreviation": "AUT",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/aut.png",
+        "score": 3,
+        "shootout": null,
+        "winner": true
+      },
+      "winner": "away",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "D"
+    },
+    {
+      "id": "690592",
+      "date": "2024-06-21T19:00Z",
+      "name": "France at Netherlands",
+      "shortName": "FRA @ NED",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Red Bull Arena",
+        "city": "Leipzig",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "449",
+        "displayName": "Netherlands",
+        "shortDisplayName": "Netherlands",
+        "name": "Netherlands",
+        "abbreviation": "NED",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ned.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "478",
+        "displayName": "France",
+        "shortDisplayName": "France",
+        "name": "France",
+        "abbreviation": "FRA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/fra.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "draw",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "D"
+    },
+    {
+      "id": "690596",
+      "date": "2024-06-22T13:00Z",
+      "name": "Czechia at Georgia",
+      "shortName": "CZE @ GEO",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Volksparkstadion",
+        "city": "Hamburg Norderstedt",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "584",
+        "displayName": "Georgia",
+        "shortDisplayName": "Georgia",
+        "name": "Georgia",
+        "abbreviation": "GEO",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/geo.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "450",
+        "displayName": "Czechia",
+        "shortDisplayName": "Czechia",
+        "name": "Czechia",
+        "abbreviation": "CZE",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cze.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "draw",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "F"
+    },
+    {
+      "id": "690595",
+      "date": "2024-06-22T16:00Z",
+      "name": "Portugal at Türkiye",
+      "shortName": "POR @ TUR",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "SIGNAL IDUNA PARK",
+        "city": "Aue",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "465",
+        "displayName": "Türkiye",
+        "shortDisplayName": "Türkiye",
+        "name": "Türkiye",
+        "abbreviation": "TUR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/tur.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "482",
+        "displayName": "Portugal",
+        "shortDisplayName": "Portugal",
+        "name": "Portugal",
+        "abbreviation": "POR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/por.png",
+        "score": 3,
+        "shootout": null,
+        "winner": true
+      },
+      "winner": "away",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "F"
+    },
+    {
+      "id": "690594",
+      "date": "2024-06-22T19:00Z",
+      "name": "Romania at Belgium",
+      "shortName": "ROU @ BEL",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "RheinEnergieStadion",
+        "city": "Cologne",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "459",
+        "displayName": "Belgium",
+        "shortDisplayName": "Belgium",
+        "name": "Belgium",
+        "abbreviation": "BEL",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bel.png",
+        "score": 2,
+        "shootout": null,
+        "winner": true
+      },
+      "away": {
+        "id": "473",
+        "displayName": "Romania",
+        "shortDisplayName": "Romania",
+        "name": "Romania",
+        "abbreviation": "ROU",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/rom.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "E"
+    },
+    {
+      "id": "690597",
+      "date": "2024-06-23T19:00Z",
+      "name": "Hungary at Scotland",
+      "shortName": "HUN @ SCO",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "MHPArena",
+        "city": "Stuttgart",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "580",
+        "displayName": "Scotland",
+        "shortDisplayName": "Scotland",
+        "name": "Scotland",
+        "abbreviation": "SCO",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sco.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "480",
+        "displayName": "Hungary",
+        "shortDisplayName": "Hungary",
+        "name": "Hungary",
+        "abbreviation": "HUN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/hun.png",
+        "score": 1,
+        "shootout": null,
+        "winner": true
+      },
+      "winner": "away",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "A"
+    },
+    {
+      "id": "690598",
+      "date": "2024-06-23T19:00Z",
+      "name": "Germany at Switzerland",
+      "shortName": "GER @ SUI",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Deutsche Bank Park",
+        "city": "Frankfurt",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "475",
+        "displayName": "Switzerland",
+        "shortDisplayName": "Switzerland",
+        "name": "Switzerland",
+        "abbreviation": "SUI",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sui.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "481",
+        "displayName": "Germany",
+        "shortDisplayName": "Germany",
+        "name": "Germany",
+        "abbreviation": "GER",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ger.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "draw",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "A"
+    },
+    {
+      "id": "690599",
+      "date": "2024-06-24T19:00Z",
+      "name": "Italy at Croatia",
+      "shortName": "ITA @ CRO",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Red Bull Arena",
+        "city": "Leipzig",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "477",
+        "displayName": "Croatia",
+        "shortDisplayName": "Croatia",
+        "name": "Croatia",
+        "abbreviation": "CRO",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cro.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "162",
+        "displayName": "Italy",
+        "shortDisplayName": "Italy",
+        "name": "Italy",
+        "abbreviation": "ITA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ita.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "draw",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "B"
+    },
+    {
+      "id": "690600",
+      "date": "2024-06-24T19:00Z",
+      "name": "Spain at Albania",
+      "shortName": "ESP @ ALB",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Merkur Spiel-Arena",
+        "city": "Düsseldorf",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "585",
+        "displayName": "Albania",
+        "shortDisplayName": "Albania",
+        "name": "Albania",
+        "abbreviation": "ALB",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/alb.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "164",
+        "displayName": "Spain",
+        "shortDisplayName": "Spain",
+        "name": "Spain",
+        "abbreviation": "ESP",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/esp.png",
+        "score": 1,
+        "shootout": null,
+        "winner": true
+      },
+      "winner": "away",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "B"
+    },
+    {
+      "id": "690603",
+      "date": "2024-06-25T16:00Z",
+      "name": "Austria at Netherlands",
+      "shortName": "AUT @ NED",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Olympiastadion Berlin",
+        "city": "Berlin",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "449",
+        "displayName": "Netherlands",
+        "shortDisplayName": "Netherlands",
+        "name": "Netherlands",
+        "abbreviation": "NED",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ned.png",
+        "score": 2,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "474",
+        "displayName": "Austria",
+        "shortDisplayName": "Austria",
+        "name": "Austria",
+        "abbreviation": "AUT",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/aut.png",
+        "score": 3,
+        "shootout": null,
+        "winner": true
+      },
+      "winner": "away",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "D"
+    },
+    {
+      "id": "690604",
+      "date": "2024-06-25T16:00Z",
+      "name": "Poland at France",
+      "shortName": "POL @ FRA",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "SIGNAL IDUNA PARK",
+        "city": "Aue",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "478",
+        "displayName": "France",
+        "shortDisplayName": "France",
+        "name": "France",
+        "abbreviation": "FRA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/fra.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "471",
+        "displayName": "Poland",
+        "shortDisplayName": "Poland",
+        "name": "Poland",
+        "abbreviation": "POL",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/pol.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "draw",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "D"
+    },
+    {
+      "id": "690601",
+      "date": "2024-06-25T19:00Z",
+      "name": "Serbia at Denmark",
+      "shortName": "SRB @ DEN",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Allianz Arena",
+        "city": "München",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "479",
+        "displayName": "Denmark",
+        "shortDisplayName": "Denmark",
+        "name": "Denmark",
+        "abbreviation": "DEN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/den.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "6757",
+        "displayName": "Serbia",
+        "shortDisplayName": "Serbia",
+        "name": "Serbia",
+        "abbreviation": "SRB",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sba.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "draw",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "C"
+    },
+    {
+      "id": "690602",
+      "date": "2024-06-25T19:00Z",
+      "name": "Slovenia at England",
+      "shortName": "SVN @ ENG",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "RheinEnergieStadion",
+        "city": "Cologne",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "448",
+        "displayName": "England",
+        "shortDisplayName": "England",
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "472",
+        "displayName": "Slovenia",
+        "shortDisplayName": "Slovenia",
+        "name": "Slovenia",
+        "abbreviation": "SVN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/svn.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "draw",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "C"
+    },
+    {
+      "id": "690605",
+      "date": "2024-06-26T16:00Z",
+      "name": "Romania at Slovakia",
+      "shortName": "ROU @ SVK",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Deutsche Bank Park",
+        "city": "Frankfurt",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "468",
+        "displayName": "Slovakia",
+        "shortDisplayName": "Slovakia",
+        "name": "Slovakia",
+        "abbreviation": "SVK",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/svk.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "473",
+        "displayName": "Romania",
+        "shortDisplayName": "Romania",
+        "name": "Romania",
+        "abbreviation": "ROU",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/rom.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "draw",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "E"
+    },
+    {
+      "id": "690606",
+      "date": "2024-06-26T16:00Z",
+      "name": "Belgium at Ukraine",
+      "shortName": "BEL @ UKR",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "MHPArena",
+        "city": "Stuttgart",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "457",
+        "displayName": "Ukraine",
+        "shortDisplayName": "Ukraine",
+        "name": "Ukraine",
+        "abbreviation": "UKR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ukr.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "459",
+        "displayName": "Belgium",
+        "shortDisplayName": "Belgium",
+        "name": "Belgium",
+        "abbreviation": "BEL",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bel.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "draw",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "E"
+    },
+    {
+      "id": "690607",
+      "date": "2024-06-26T19:00Z",
+      "name": "Portugal at Georgia",
+      "shortName": "POR @ GEO",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "VELTINS-Arena",
+        "city": "Gelsenkirchen",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "584",
+        "displayName": "Georgia",
+        "shortDisplayName": "Georgia",
+        "name": "Georgia",
+        "abbreviation": "GEO",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/geo.png",
+        "score": 2,
+        "shootout": null,
+        "winner": true
+      },
+      "away": {
+        "id": "482",
+        "displayName": "Portugal",
+        "shortDisplayName": "Portugal",
+        "name": "Portugal",
+        "abbreviation": "POR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/por.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "F"
+    },
+    {
+      "id": "690608",
+      "date": "2024-06-26T19:00Z",
+      "name": "Türkiye at Czechia",
+      "shortName": "TUR @ CZE",
+      "stage": {
+        "slug": "group-stage",
+        "type": 12238,
+        "label": "Group Stage",
+        "knockout": false
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Volksparkstadion",
+        "city": "Hamburg Norderstedt",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "450",
+        "displayName": "Czechia",
+        "shortDisplayName": "Czechia",
+        "name": "Czechia",
+        "abbreviation": "CZE",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/cze.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "465",
+        "displayName": "Türkiye",
+        "shortDisplayName": "Türkiye",
+        "name": "Türkiye",
+        "abbreviation": "TUR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/tur.png",
+        "score": 2,
+        "shootout": null,
+        "winner": true
+      },
+      "winner": "away",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": "F"
+    },
+    {
+      "id": "703931",
+      "date": "2024-06-29T16:00Z",
+      "name": "Italy at Switzerland",
+      "shortName": "ITA @ SUI",
+      "stage": {
+        "slug": "round-of-16",
+        "type": 12237,
+        "label": "Round of 16",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Olympiastadion Berlin",
+        "city": "Berlin",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "475",
+        "displayName": "Switzerland",
+        "shortDisplayName": "Switzerland",
+        "name": "Switzerland",
+        "abbreviation": "SUI",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sui.png",
+        "score": 2,
+        "shootout": null,
+        "winner": true
+      },
+      "away": {
+        "id": "162",
+        "displayName": "Italy",
+        "shortDisplayName": "Italy",
+        "name": "Italy",
+        "abbreviation": "ITA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ita.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "703932",
+      "date": "2024-06-29T19:00Z",
+      "name": "Denmark at Germany",
+      "shortName": "DEN @ GER",
+      "stage": {
+        "slug": "round-of-16",
+        "type": 12237,
+        "label": "Round of 16",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "SIGNAL IDUNA PARK",
+        "city": "Aue",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "481",
+        "displayName": "Germany",
+        "shortDisplayName": "Germany",
+        "name": "Germany",
+        "abbreviation": "GER",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ger.png",
+        "score": 2,
+        "shootout": null,
+        "winner": true
+      },
+      "away": {
+        "id": "479",
+        "displayName": "Denmark",
+        "shortDisplayName": "Denmark",
+        "name": "Denmark",
+        "abbreviation": "DEN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/den.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "703933",
+      "date": "2024-06-30T16:00Z",
+      "name": "Slovakia at England",
+      "shortName": "SVK @ ENG",
+      "stage": {
+        "slug": "round-of-16",
+        "type": 12237,
+        "label": "Round of 16",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_FINAL_AET",
+        "state": "post",
+        "completed": true,
+        "detail": "AET",
+        "shortDetail": "AET"
+      },
+      "venue": {
+        "fullName": "VELTINS-Arena",
+        "city": "Gelsenkirchen",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "448",
+        "displayName": "England",
+        "shortDisplayName": "England",
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png",
+        "score": 2,
+        "shootout": null,
+        "winner": true
+      },
+      "away": {
+        "id": "468",
+        "displayName": "Slovakia",
+        "shortDisplayName": "Slovakia",
+        "name": "Slovakia",
+        "abbreviation": "SVK",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/svk.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "home",
+      "decidedBy": "extra_time",
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "703934",
+      "date": "2024-06-30T19:00Z",
+      "name": "Georgia at Spain",
+      "shortName": "GEO @ ESP",
+      "stage": {
+        "slug": "round-of-16",
+        "type": 12237,
+        "label": "Round of 16",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "RheinEnergieStadion",
+        "city": "Cologne",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "164",
+        "displayName": "Spain",
+        "shortDisplayName": "Spain",
+        "name": "Spain",
+        "abbreviation": "ESP",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/esp.png",
+        "score": 4,
+        "shootout": null,
+        "winner": true
+      },
+      "away": {
+        "id": "584",
+        "displayName": "Georgia",
+        "shortDisplayName": "Georgia",
+        "name": "Georgia",
+        "abbreviation": "GEO",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/geo.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "703935",
+      "date": "2024-07-01T16:00Z",
+      "name": "Belgium at France",
+      "shortName": "BEL @ FRA",
+      "stage": {
+        "slug": "round-of-16",
+        "type": 12237,
+        "label": "Round of 16",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Merkur Spiel-Arena",
+        "city": "Düsseldorf",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "478",
+        "displayName": "France",
+        "shortDisplayName": "France",
+        "name": "France",
+        "abbreviation": "FRA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/fra.png",
+        "score": 1,
+        "shootout": null,
+        "winner": true
+      },
+      "away": {
+        "id": "459",
+        "displayName": "Belgium",
+        "shortDisplayName": "Belgium",
+        "name": "Belgium",
+        "abbreviation": "BEL",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/bel.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "703936",
+      "date": "2024-07-01T19:00Z",
+      "name": "Slovenia at Portugal",
+      "shortName": "SVN @ POR",
+      "stage": {
+        "slug": "round-of-16",
+        "type": 12237,
+        "label": "Round of 16",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_FINAL_PEN",
+        "state": "post",
+        "completed": true,
+        "detail": "FT-Pens",
+        "shortDetail": "FT-Pens"
+      },
+      "venue": {
+        "fullName": "Deutsche Bank Park",
+        "city": "Frankfurt",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "482",
+        "displayName": "Portugal",
+        "shortDisplayName": "Portugal",
+        "name": "Portugal",
+        "abbreviation": "POR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/por.png",
+        "score": 0,
+        "shootout": 3,
+        "winner": true
+      },
+      "away": {
+        "id": "472",
+        "displayName": "Slovenia",
+        "shortDisplayName": "Slovenia",
+        "name": "Slovenia",
+        "abbreviation": "SVN",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/svn.png",
+        "score": 0,
+        "shootout": 0,
+        "winner": false
+      },
+      "winner": "home",
+      "decidedBy": "penalties",
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "703937",
+      "date": "2024-07-02T16:00Z",
+      "name": "Netherlands at Romania",
+      "shortName": "NED @ ROU",
+      "stage": {
+        "slug": "round-of-16",
+        "type": 12237,
+        "label": "Round of 16",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Allianz Arena",
+        "city": "München",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "473",
+        "displayName": "Romania",
+        "shortDisplayName": "Romania",
+        "name": "Romania",
+        "abbreviation": "ROU",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/rom.png",
+        "score": 0,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "449",
+        "displayName": "Netherlands",
+        "shortDisplayName": "Netherlands",
+        "name": "Netherlands",
+        "abbreviation": "NED",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ned.png",
+        "score": 3,
+        "shootout": null,
+        "winner": true
+      },
+      "winner": "away",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "703938",
+      "date": "2024-07-02T19:00Z",
+      "name": "Türkiye at Austria",
+      "shortName": "TUR @ AUT",
+      "stage": {
+        "slug": "round-of-16",
+        "type": 12237,
+        "label": "Round of 16",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Red Bull Arena",
+        "city": "Leipzig",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "474",
+        "displayName": "Austria",
+        "shortDisplayName": "Austria",
+        "name": "Austria",
+        "abbreviation": "AUT",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/aut.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "465",
+        "displayName": "Türkiye",
+        "shortDisplayName": "Türkiye",
+        "name": "Türkiye",
+        "abbreviation": "TUR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/tur.png",
+        "score": 2,
+        "shootout": null,
+        "winner": true
+      },
+      "winner": "away",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "703939",
+      "date": "2024-07-05T16:00Z",
+      "name": "Germany at Spain",
+      "shortName": "GER @ ESP",
+      "stage": {
+        "slug": "quarterfinals",
+        "type": 12236,
+        "label": "Quarterfinals",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_FINAL_AET",
+        "state": "post",
+        "completed": true,
+        "detail": "AET",
+        "shortDetail": "AET"
+      },
+      "venue": {
+        "fullName": "MHPArena",
+        "city": "Stuttgart",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "164",
+        "displayName": "Spain",
+        "shortDisplayName": "Spain",
+        "name": "Spain",
+        "abbreviation": "ESP",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/esp.png",
+        "score": 2,
+        "shootout": null,
+        "winner": true
+      },
+      "away": {
+        "id": "481",
+        "displayName": "Germany",
+        "shortDisplayName": "Germany",
+        "name": "Germany",
+        "abbreviation": "GER",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ger.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "home",
+      "decidedBy": "extra_time",
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "703940",
+      "date": "2024-07-05T19:00Z",
+      "name": "France at Portugal",
+      "shortName": "FRA @ POR",
+      "stage": {
+        "slug": "quarterfinals",
+        "type": 12236,
+        "label": "Quarterfinals",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_FINAL_PEN",
+        "state": "post",
+        "completed": true,
+        "detail": "FT-Pens",
+        "shortDetail": "FT-Pens"
+      },
+      "venue": {
+        "fullName": "Volksparkstadion",
+        "city": "Hamburg Norderstedt",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "482",
+        "displayName": "Portugal",
+        "shortDisplayName": "Portugal",
+        "name": "Portugal",
+        "abbreviation": "POR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/por.png",
+        "score": 0,
+        "shootout": 3,
+        "winner": false
+      },
+      "away": {
+        "id": "478",
+        "displayName": "France",
+        "shortDisplayName": "France",
+        "name": "France",
+        "abbreviation": "FRA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/fra.png",
+        "score": 0,
+        "shootout": 5,
+        "winner": true
+      },
+      "winner": "away",
+      "decidedBy": "penalties",
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "703941",
+      "date": "2024-07-06T16:00Z",
+      "name": "Switzerland at England",
+      "shortName": "SUI @ ENG",
+      "stage": {
+        "slug": "quarterfinals",
+        "type": 12236,
+        "label": "Quarterfinals",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_FINAL_PEN",
+        "state": "post",
+        "completed": true,
+        "detail": "FT-Pens",
+        "shortDetail": "FT-Pens"
+      },
+      "venue": {
+        "fullName": "Merkur Spiel-Arena",
+        "city": "Düsseldorf",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "448",
+        "displayName": "England",
+        "shortDisplayName": "England",
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png",
+        "score": 1,
+        "shootout": 5,
+        "winner": true
+      },
+      "away": {
+        "id": "475",
+        "displayName": "Switzerland",
+        "shortDisplayName": "Switzerland",
+        "name": "Switzerland",
+        "abbreviation": "SUI",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/sui.png",
+        "score": 1,
+        "shootout": 3,
+        "winner": false
+      },
+      "winner": "home",
+      "decidedBy": "penalties",
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "703942",
+      "date": "2024-07-06T19:00Z",
+      "name": "Türkiye at Netherlands",
+      "shortName": "TUR @ NED",
+      "stage": {
+        "slug": "quarterfinals",
+        "type": 12236,
+        "label": "Quarterfinals",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Olympiastadion Berlin",
+        "city": "Berlin",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "449",
+        "displayName": "Netherlands",
+        "shortDisplayName": "Netherlands",
+        "name": "Netherlands",
+        "abbreviation": "NED",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ned.png",
+        "score": 2,
+        "shootout": null,
+        "winner": true
+      },
+      "away": {
+        "id": "465",
+        "displayName": "Türkiye",
+        "shortDisplayName": "Türkiye",
+        "name": "Türkiye",
+        "abbreviation": "TUR",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/tur.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "703943",
+      "date": "2024-07-09T19:00Z",
+      "name": "France at Spain",
+      "shortName": "FRA @ ESP",
+      "stage": {
+        "slug": "semifinals",
+        "type": 12235,
+        "label": "Semifinals",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Allianz Arena",
+        "city": "München",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "164",
+        "displayName": "Spain",
+        "shortDisplayName": "Spain",
+        "name": "Spain",
+        "abbreviation": "ESP",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/esp.png",
+        "score": 2,
+        "shootout": null,
+        "winner": true
+      },
+      "away": {
+        "id": "478",
+        "displayName": "France",
+        "shortDisplayName": "France",
+        "name": "France",
+        "abbreviation": "FRA",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/fra.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "703944",
+      "date": "2024-07-10T19:00Z",
+      "name": "England at Netherlands",
+      "shortName": "ENG @ NED",
+      "stage": {
+        "slug": "semifinals",
+        "type": 12235,
+        "label": "Semifinals",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "SIGNAL IDUNA PARK",
+        "city": "Aue",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "449",
+        "displayName": "Netherlands",
+        "shortDisplayName": "Netherlands",
+        "name": "Netherlands",
+        "abbreviation": "NED",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/ned.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "away": {
+        "id": "448",
+        "displayName": "England",
+        "shortDisplayName": "England",
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png",
+        "score": 2,
+        "shootout": null,
+        "winner": true
+      },
+      "winner": "away",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": null
+    },
+    {
+      "id": "703945",
+      "date": "2024-07-14T19:00Z",
+      "name": "England at Spain",
+      "shortName": "ENG @ ESP",
+      "stage": {
+        "slug": "final",
+        "type": 12234,
+        "label": "Final",
+        "knockout": true
+      },
+      "status": {
+        "name": "STATUS_FULL_TIME",
+        "state": "post",
+        "completed": true,
+        "detail": "FT",
+        "shortDetail": "FT"
+      },
+      "venue": {
+        "fullName": "Olympiastadion Berlin",
+        "city": "Berlin",
+        "country": "Germany"
+      },
+      "home": {
+        "id": "164",
+        "displayName": "Spain",
+        "shortDisplayName": "Spain",
+        "name": "Spain",
+        "abbreviation": "ESP",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/esp.png",
+        "score": 2,
+        "shootout": null,
+        "winner": true
+      },
+      "away": {
+        "id": "448",
+        "displayName": "England",
+        "shortDisplayName": "England",
+        "name": "England",
+        "abbreviation": "ENG",
+        "logo": "https://a.espncdn.com/i/teamlogos/countries/500/eng.png",
+        "score": 1,
+        "shootout": null,
+        "winner": false
+      },
+      "winner": "home",
+      "decidedBy": "regulation",
+      "odds": null,
+      "group": null
+    }
+  ]
+}

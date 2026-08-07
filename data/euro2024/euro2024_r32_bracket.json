@@ -1,0 +1,5 @@
+{
+  "round": "round-of-16",
+  "note": "Euro 2024 goes straight from groups to the round of 16 (no round-of-32). Group-seed clinch detection is unused for a finished tournament, so this is intentionally empty; the frontend degrades gracefully.",
+  "matches": []
+}
