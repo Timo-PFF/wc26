@@ -17,7 +17,8 @@ import { normalize } from './db_v2.js';
 
 const MANIFEST_CACHE_TTL_SECONDS = 300;
 const FIXTURES_CACHE_TTL_SECONDS = 120; // matches the old 2-minute TTL
-const SNAPSHOT_CACHE_TTL_SECONDS = 3600; // snapshot is immutable, cache hard
+const SNAPSHOT_CACHE_TTL_SECONDS = 120; // the snapshot is re-frozen periodically (live
+                                        // tournaments), so don't cache it for long
 
 let manifestMemo = null; // [{ id, files }] — immutable within an isolate
 const snapshotIdsMemo = {}; // tid -> Set(matchId)
@@ -83,7 +84,10 @@ async function snapshotMatchIds(env, tid) {
   const urls = await tournamentUrls(env, tid);
   if (!urls || !urls.snapshotUrl) return null;
   try {
-    const resp = await fetch(urls.snapshotUrl, {
+    // ?cb= busts the edge cache once to escape a snapshot cached in the old
+    // (league-based) format from before Option B; the short TTL keeps it fresh after.
+    const url = urls.snapshotUrl + (urls.snapshotUrl.includes('?') ? '&' : '?') + 'cb=2';
+    const resp = await fetch(url, {
       cf: { cacheTtl: SNAPSHOT_CACHE_TTL_SECONDS, cacheEverything: true },
     });
     if (!resp.ok) return null;
