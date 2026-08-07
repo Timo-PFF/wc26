@@ -46,15 +46,13 @@ npm run db:seed:local     # load the data
 > `seed/*.csv` and `seed/seed.sql` are gitignored — they hold password hashes and
 > league join secrets. Keep them off the public repo.
 
-Then build the public finished-match snapshot (safe to commit — completed-game
-picks are already visible to pool members):
-
-```bash
-npm run historical:build  # fixtures + seed/guesses.csv -> data/wc2026/wc2026_historical_guesses.csv
-```
+The public finished-match snapshot (safe to commit — completed-game picks are
+already visible to pool members) is built under v2 by `python/migrate_v2.py`, which
+writes the per-player `data/<tid>/<tid>_historical_guesses.csv` (columns
+`player,matchId,home,away,penaltyWinner`, no league column).
 
 Commit that CSV; the Worker (and frontend) read it from the repo's raw URL. Re-run
-it only if you want to freeze more matches at a later point.
+the migration only if you want to freeze more matches at a later point.
 
 ## 2. Local dev server
 
@@ -147,9 +145,10 @@ stays the top-level default, so its `npm run *` scripts keep working unchanged.
    new URL, `files` under `data/wc2028/…`) and set `"default": "wc2028"`. No frontend
    code change — that's the whole point of the manifest.
 
-Caveat: the `import/` tooling (`build_historical.mjs`, `csv_to_sql.mjs`) currently
-hardcodes `data/wc2026/` + `seed/` paths — repoint those at the new tournament's
-`data/wc2028/` / seed when you get there (or parameterize them by an env var).
+Caveat: under v2 the seed + finished-guesses snapshot are (re)built by
+`python/migrate_v2.py`, not the old `import/` tooling. The remaining `csv_to_sql.mjs`
+still hardcodes `seed/` paths — repoint it (or, better, extend `migrate_v2.py`) when
+you spin up the next tournament.
 
 ### Notes
 
