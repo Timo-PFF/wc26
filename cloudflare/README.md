@@ -111,6 +111,27 @@ committed changes:
 
 That's it — the Worker resolves the new tournament from the manifest at runtime.
 
+## Refreshing the finished-guesses snapshot (during a tournament)
+
+The snapshot (`data/<tid>/<tid>_historical_guesses.csv`) is what keeps D1 reads low —
+the Worker only serves games that are **not** in it. `python/refresh_historical.py`
+rebuilds a tournament's snapshot from the live D1: it reads the fixtures, finds the
+finished games (final score present), pulls those guesses from D1, and rewrites the
+CSV in the per-player format.
+
+```bash
+python python/refresh_historical.py <tid>            # rebuild from the remote D1
+python python/refresh_historical.py <tid> --dry-run  # show counts, write nothing
+python python/refresh_historical.py <tid> --local    # against the local D1 (wrangler.v2.toml)
+```
+
+Run it where `npx wrangler` is available (WSL). **Commit + push the CSV afterwards** —
+the Worker/frontend read it from the raw repo URL, not from D1. Run it periodically as
+games finish; each finished game it freezes drops out of D1 read traffic. With no
+finished games it writes a header-only CSV, so it also **initializes** the snapshot for
+a not-yet-started tournament (needs only the manifest entry + the fixtures file — no
+D1 access).
+
 ## Admin
 
 `admin.html` is a standalone console (English-only) for one or more users flagged
