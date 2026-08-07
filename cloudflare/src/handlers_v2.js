@@ -23,6 +23,12 @@ import {
   getLeagueGuessesByMatches,
   getOwnGuesses,
   saveGuesses,
+  isAdmin,
+  getAllUsers,
+  getAllMemberships,
+  getAllLeaguesFull,
+  removeMembership,
+  deleteUser,
   normalize,
 } from './db_v2.js';
 
@@ -36,7 +42,7 @@ export async function register(env, body) {
 
   const id = crypto.randomUUID();
   await createUser(env, id, name, md5(pw));
-  return { ok: true, userId: id, name, token: await issueToken(env, id, name) };
+  return { ok: true, userId: id, name, token: await issueToken(env, id, name), admin: false };
 }
 
 // ---- Log in a returning user (global name + password) ---------------------
@@ -46,7 +52,7 @@ export async function login(env, body) {
   const u = await getUserByName(env, String((body && body.name) || '').trim());
   if (!u) return { ok: false, error: 'no_user' };
   if (u.hash !== md5(pw)) return { ok: false, error: 'bad_password' };
-  return { ok: true, userId: u.id, name: u.name, token: await issueToken(env, u.id, u.name) };
+  return { ok: true, userId: u.id, name: u.name, token: await issueToken(env, u.id, u.name), admin: u.admin };
 }
 
 // ---- Resume a saved session (sliding expiry) ------------------------------
@@ -55,7 +61,7 @@ export async function resume(env, token) {
   if (!t) return { ok: false, error: 'expired' };
   const u = await getUserById(env, t.userId);
   if (!u) return { ok: false, error: 'no_user' };
-  return { ok: true, userId: u.id, name: u.name, token: await issueToken(env, u.id, u.name) };
+  return { ok: true, userId: u.id, name: u.name, token: await issueToken(env, u.id, u.name), admin: u.admin };
 }
 
 // ---- Change own password (verify the old one first) -----------------------
@@ -187,4 +193,88 @@ export async function save(env, body) {
 
   await saveGuesses(env, u.id, tid, clean);
   return { ok: true, saved: clean.length, rejected };
+}
+
+// ---- Admin (every handler gated by the caller's users.admin flag) ---------
+
+// Resolve an ADMIN caller from a token → their userId, or null if not an admin.
+async function adminUserId(env, token) {
+  const t = await verifyToken(env, token);
+  if (!t) return null;
+  return (await isAdmin(env, t.userId)) ? t.userId : null;
+}
+
+// Every user with their memberships (tournament→league) and the leagues they're
+// eligible to join via inheritance (across all tournaments).
+export async function adminUsers(env, body) {
+  const me = await adminUserId(env, body && body.token);
+  if (!me) return { ok: false, error: 'not_admin' };
+
+  const users = await getAllUsers(env);
+  const memberships = await getAllMemberships(env);
+  const leagues = await getAllLeaguesFull(env);
+  const key = (tid, lid) => normalize(tid) + '|' + normalize(lid);
+  const leagueName = {};
+  leagues.forEach((l) => { leagueName[key(l.tournamentId, l.id)] = l.name; });
+  const memberKeys = {};   // userId -> Set("tid|lid")
+  memberships.forEach((m) => {
+    (memberKeys[m.userId] = memberKeys[m.userId] || new Set()).add(key(m.tournamentId, m.leagueId));
+  });
+
+  const out = users.map((u) => {
+    const mine = memberKeys[u.id] || new Set();
+    const mems = memberships
+      .filter((m) => m.userId === u.id)
+      .map((m) => ({ tournamentId: m.tournamentId, leagueId: m.leagueId,
+                     leagueName: leagueName[key(m.tournamentId, m.leagueId)] || m.leagueId }));
+    // Inheritance-eligible: declares inheritsLeagueId, not yet a member, but IS a
+    // member of the inherited league.
+    const joinable = leagues
+      .filter((l) => l.inheritsLeagueId
+        && !mine.has(key(l.tournamentId, l.id))
+        && mine.has(key(l.inheritsTournamentId || l.tournamentId, l.inheritsLeagueId)))
+      .map((l) => ({ tournamentId: l.tournamentId, leagueId: l.id, leagueName: l.name }));
+    return { id: u.id, name: u.name, admin: u.admin, memberships: mems, joinable };
+  });
+  const allLeagues = leagues.map((l) => ({ tournamentId: l.tournamentId, id: l.id, name: l.name }));
+  return { ok: true, me, users: out, leagues: allLeagues };
+}
+
+export async function adminRemoveMembership(env, body) {
+  const me = await adminUserId(env, body && body.token);
+  if (!me) return { ok: false, error: 'not_admin' };
+  if (!(body && body.userId && body.tournamentId && body.leagueId)) return { ok: false, error: 'bad_request' };
+  await removeMembership(env, body.userId, body.tournamentId, body.leagueId);
+  return { ok: true };
+}
+
+// Add a user to a league they're not in. Validates both the user and the league
+// exist so we never create an orphan membership row.
+export async function adminAddMembership(env, body) {
+  const me = await adminUserId(env, body && body.token);
+  if (!me) return { ok: false, error: 'not_admin' };
+  if (!(body && body.userId && body.tournamentId && body.leagueId)) return { ok: false, error: 'bad_request' };
+  if (!(await getUserById(env, body.userId))) return { ok: false, error: 'no_user' };
+  if (!(await getLeague(env, body.tournamentId, body.leagueId))) return { ok: false, error: 'bad_league' };
+  await addMembership(env, body.userId, body.tournamentId, body.leagueId);
+  return { ok: true };
+}
+
+export async function adminDeleteUser(env, body) {
+  const me = await adminUserId(env, body && body.token);
+  if (!me) return { ok: false, error: 'not_admin' };
+  if (!(body && body.userId)) return { ok: false, error: 'bad_request' };
+  if (String(body.userId) === String(me)) return { ok: false, error: 'cannot_delete_self' };
+  await deleteUser(env, body.userId);
+  return { ok: true };
+}
+
+export async function adminResetPassword(env, body) {
+  const me = await adminUserId(env, body && body.token);
+  if (!me) return { ok: false, error: 'not_admin' };
+  if (!(body && body.userId)) return { ok: false, error: 'bad_request' };
+  const pw = String((body && body.newPassword) || '');
+  if (!pw) return { ok: false, error: 'no_password' };
+  await setPassword(env, body.userId, md5(pw));
+  return { ok: true };
 }

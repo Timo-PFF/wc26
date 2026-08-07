@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
   id       TEXT PRIMARY KEY,       -- stable global id (e.g. u001)
   name     TEXT NOT NULL UNIQUE,   -- global login handle + display name
   passHash TEXT NOT NULL DEFAULT '',
+  admin    INTEGER NOT NULL DEFAULT 0,  -- 1 = pool admin (admin.html console access)
   created  TEXT
 );
 

@@ -379,6 +379,7 @@
   <div class="topbar">
     <div class="topbar-row">
       <div id="playerBadge" class="badge" style="display:none"></div>
+      <a id="adminLink" class="reload-btn" href="admin.html" style="display:none">⚙ Admin</a>
       <button id="logoutBtn" class="reload-btn" onclick="logout()" data-i18n="logout" style="display:none">Log out</button>
     </div>
     <div class="topbar-row">
@@ -1500,7 +1501,7 @@
       });
       const data = await res.json();
       if (data.ok) {
-        AUTH = { userId: data.userId, name: data.name, token: data.token, leagues: [] };
+        AUTH = { userId: data.userId, name: data.name, token: data.token, leagues: [], admin: !!data.admin };
         saveToken(data.token);
         guessesLoaded = false;
         clearMsg('addMsg');
@@ -1533,7 +1534,7 @@
       });
       const data = await res.json();
       if (data.ok) {
-        AUTH = { userId: data.userId, name: data.name, token: data.token, leagues: [] };
+        AUTH = { userId: data.userId, name: data.name, token: data.token, leagues: [], admin: !!data.admin };
         saveToken(data.token);
         guessesLoaded = false;
         clearMsg('addMsg');
@@ -1557,7 +1558,7 @@
       const res = await fetch(API_BASE, { method: 'POST', body: JSON.stringify({ action: 'resume', token: tok }) });
       const data = await res.json();
       if (data.ok) {
-        AUTH = { userId: data.userId, name: data.name, token: data.token, leagues: [] };
+        AUTH = { userId: data.userId, name: data.name, token: data.token, leagues: [], admin: !!data.admin };
         saveToken(data.token);   // sliding expiry
         guessesLoaded = false;
         await afterLogin();
@@ -1738,6 +1739,15 @@
         t('playAs')(escapeHtml(AUTH.name)) + '</span>' + tour + leagueHtml;
       badge.style.display = ''; if (lo) lo.style.display = '';
     } else { badge.innerHTML = ''; badge.style.display = 'none'; if (lo) lo.style.display = 'none'; }
+    // Admin console link — only for admins; carries the ?api override for local dev.
+    const adminLink = document.getElementById('adminLink');
+    if (adminLink) {
+      if (AUTH && AUTH.admin) {
+        const apiParam = new URLSearchParams(location.search).get('api');
+        adminLink.href = 'admin.html' + (apiParam ? '?api=' + encodeURIComponent(apiParam) : '');
+        adminLink.style.display = '';
+      } else { adminLink.style.display = 'none'; }
+    }
     updateLoginNotice();
   }
 

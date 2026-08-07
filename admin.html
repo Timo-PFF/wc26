@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pool Admin</title>
+<style>
+  :root {
+    --bg: #0e1524; --card: #16203a; --ink: #e8eefc; --muted: #8fa0c0;
+    --accent: #4ea1ff; --accent2: #7ee0a0; --bad: #ff6b6b; --line: #26324f;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px; background: var(--bg); color: var(--ink);
+    font: 15px/1.45 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+  h1 { font-size: 1.2rem; margin: 0 0 16px; }
+  .sub { color: var(--muted); }
+  .msg { min-height: 1.2em; margin: 8px 0; }
+  .msg.err { color: var(--bad); } .msg.ok { color: var(--accent2); }
+  input { background: var(--card); border: 1px solid var(--line); color: var(--ink);
+    border-radius: 8px; padding: 8px 10px; font: inherit; margin: 4px 6px 4px 0; }
+  button { background: var(--card); border: 1px solid var(--accent); color: var(--accent);
+    border-radius: 8px; padding: 6px 12px; font: inherit; cursor: pointer; }
+  button:hover { background: var(--accent); color: #06122a; }
+  button.danger { border-color: var(--bad); color: var(--bad); }
+  button.danger:hover { background: var(--bad); color: #240606; }
+  button.x { padding: 0 6px; margin-left: 4px; border-radius: 6px; line-height: 1.4; }
+  .topbar { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; font-size: .8rem; text-transform: uppercase; letter-spacing: .03em; }
+  .badge { background: var(--accent); color: #06122a; border-radius: 6px; padding: 1px 6px; font-size: .72rem; margin-left: 6px; }
+  .tgroup { margin: 2px 0; }
+  .tname { color: var(--muted); font-size: .82rem; margin-right: 4px; }
+  .chip { display: inline-block; background: #1d294a; border: 1px solid var(--line); border-radius: 999px;
+    padding: 1px 8px; margin: 2px 2px; font-size: .85rem; }
+  .chip.join { border-color: var(--accent2); color: var(--accent2); }
+  .muted { color: var(--muted); }
+  .actions { white-space: nowrap; }
+  .actions button { margin: 2px 4px 2px 0; }
+  a.btnlink { text-decoration: none; }
+  .filters { margin: 4px 0 14px; }
+  #search { width: 260px; max-width: 100%; }
+  .filterbtns { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; }
+  .filterbtns button { padding: 4px 10px; font-size: .85rem; }
+  .filterbtns button.active { background: var(--accent); color: #06122a; }
+  .filterbtns .tsep { color: var(--muted); font-size: .82rem; margin: 0 2px 0 8px; }
+  select { background: var(--card); border: 1px solid var(--line); color: var(--ink);
+    border-radius: 8px; padding: 4px 6px; font: inherit; font-size: .85rem; }
+  .addrow { margin-top: 6px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  button.add { padding: 3px 8px; font-size: .82rem; }
+</style>
+</head>
+<body>
+  <h1>⚽ Pool Admin</h1>
+
+  <div id="loginView">
+    <p class="sub">Admin login</p>
+    <form id="loginForm">
+      <input id="loginName" placeholder="Name" autocomplete="username" />
+      <input id="loginPw" type="password" placeholder="Password" autocomplete="current-password" />
+      <button type="submit">Log in</button>
+    </form>
+    <div id="loginMsg" class="msg"></div>
+  </div>
+
+  <div id="adminView" style="display:none">
+    <div class="topbar">
+      <a id="backLink" class="btnlink" href="index.html"><button>← Back to app</button></a>
+      <span id="whoami" class="sub"></span>
+      <button id="refreshBtn">Refresh</button>
+      <button id="logoutBtn">Log out</button>
+    </div>
+    <div class="filters">
+      <input id="search" placeholder="Search users…" autocomplete="off" />
+      <div id="filterBtns" class="filterbtns"></div>
+    </div>
+    <div id="msg" class="msg"></div>
+    <table>
+      <thead><tr><th>User</th><th>Member of</th><th>Can join (inheritance)</th><th>Actions</th></tr></thead>
+      <tbody id="usersBody"></tbody>
+    </table>
+  </div>
+
+<script>
+  let API_BASE = '', TOKEN = null, ME = null, USERS = [], LEAGUES = [];
+  let FILTER = { mode: 'all', leagueKey: null }; // mode: 'all' | 'empty' | 'league'
+  const $ = (id) => document.getElementById(id);
+  const keyOf = (tid, lid) => String(tid).trim().toLowerCase() + '|' + String(lid).trim().toLowerCase();
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  function tokenKey() { return 'wc26_admin_tok_' + API_BASE; }
+  function loginMsg(t, ok) { const el = $('loginMsg'); el.textContent = t || ''; el.className = 'msg' + (ok ? ' ok' : t ? ' err' : ''); }
+  function msg(t, ok) { const el = $('msg'); el.textContent = t || ''; el.className = 'msg' + (ok ? ' ok' : t ? ' err' : ''); }
+  function showLogin() { $('loginView').style.display = ''; $('adminView').style.display = 'none'; }
+  function showAdmin() { $('loginView').style.display = 'none'; $('adminView').style.display = ''; }
+
+  async function post(body) {
+    const r = await fetch(API_BASE, { method: 'POST', body: JSON.stringify(body) });
+    return r.json();
+  }
+
+  // API base from the tournament manifest (all tournaments share the one Worker);
+  // ?api=<url> override for local dev.
+  async function initApi() {
+    const override = new URLSearchParams(location.search).get('api');
+    if (override) { API_BASE = override; return; }
+    try {
+      const cfg = await (await fetch('data/tournaments.json', { cache: 'no-store' })).json();
+      API_BASE = (cfg.tournaments && cfg.tournaments[0] && cfg.tournaments[0].api) || '';
+    } catch (e) { API_BASE = ''; }
+  }
+
+  async function login() {
+    const name = $('loginName').value.trim(), pw = $('loginPw').value;
+    if (!name || !pw) { loginMsg('Enter name and password.'); return; }
+    loginMsg('…');
+    try {
+      const d = await post({ action: 'login', name, password: pw });
+      if (!d.ok) { loginMsg('Login failed.'); return; }
+      TOKEN = d.token; try { sessionStorage.setItem(tokenKey(), TOKEN); } catch (e) {}
+      $('loginPw').value = '';
+      await loadUsers();
+    } catch (e) { loginMsg('Network error.'); }
+  }
+
+  async function loadUsers() {
+    const d = await post({ action: 'adminUsers', token: TOKEN });
+    if (!d.ok) {
+      if (d.error === 'not_admin') { loginMsg('That account is not an admin.'); logout(true); }
+      else loginMsg('Error: ' + (d.error || 'unknown'));
+      return;
+    }
+    ME = d.me; USERS = d.users || []; LEAGUES = d.leagues || [];
+    applyView();
+    showAdmin();
+  }
+
+  function groupByTournament(list) {
+    const by = {};
+    (list || []).forEach((x) => { (by[x.tournamentId] = by[x.tournamentId] || []).push(x); });
+    return by;
+  }
+
+  // Users matching the active filter (league / empty / all) AND the search text.
+  function visibleUsers() {
+    let list = USERS;
+    if (FILTER.mode === 'league') {
+      list = list.filter((u) => u.memberships.some((m) => keyOf(m.tournamentId, m.leagueId) === FILTER.leagueKey));
+    } else if (FILTER.mode === 'empty') {
+      list = list.filter((u) => !u.memberships.length);
+    }
+    const q = $('search').value.trim().toLowerCase();
+    if (q) list = list.filter((u) => u.name.toLowerCase().includes(q));
+    return list;
+  }
+
+  // Filter chips: All / No league, then one button per league grouped by tournament
+  // (each with its member count). Counts are over ALL users, not the search subset.
+  function buildFilters() {
+    const total = USERS.length;
+    const empty = USERS.filter((u) => !u.memberships.length).length;
+    const countByLeague = {};
+    USERS.forEach((u) => u.memberships.forEach((m) => {
+      const k = keyOf(m.tournamentId, m.leagueId);
+      countByLeague[k] = (countByLeague[k] || 0) + 1;
+    }));
+    const byT = groupByTournament(LEAGUES);
+    let html = '<button data-f="all"' + (FILTER.mode === 'all' ? ' class="active"' : '') + '>All (' + total + ')</button>' +
+      '<button data-f="empty"' + (FILTER.mode === 'empty' ? ' class="active"' : '') + '>No league (' + empty + ')</button>';
+    Object.keys(byT).sort().forEach((tid) => {
+      html += '<span class="tsep">' + esc(tid) + '</span>';
+      byT[tid].forEach((l) => {
+        const k = keyOf(l.tournamentId, l.id);
+        const active = FILTER.mode === 'league' && FILTER.leagueKey === k;
+        html += '<button data-f="league" data-k="' + esc(k) + '"' + (active ? ' class="active"' : '') +
+          '>' + esc(l.name) + ' (' + (countByLeague[k] || 0) + ')</button>';
+      });
+    });
+    $('filterBtns').innerHTML = html;
+  }
+
+  function applyView() { buildFilters(); render(); }
+
+  function render() {
+    const list = visibleUsers();
+    $('whoami').textContent = list.length === USERS.length
+      ? USERS.length + ' user(s)'
+      : list.length + ' of ' + USERS.length + ' user(s)';
+    $('usersBody').innerHTML = list.map((u) => {
+      const badge = u.admin ? '<span class="badge">admin</span>' : '';
+      const memBy = groupByTournament(u.memberships);
+      const mem = Object.keys(memBy).sort().map((tid) =>
+        '<div class="tgroup"><span class="tname">' + esc(tid) + '</span>' +
+        memBy[tid].map((m) => '<span class="chip">' + esc(m.leagueName) +
+          '<button class="x" data-action="removemem" data-uid="' + esc(u.id) + '" data-tid="' + esc(m.tournamentId) +
+          '" data-lid="' + esc(m.leagueId) + '" title="Remove from this league">×</button></span>').join('') +
+        '</div>').join('') || '<span class="muted">—</span>';
+      // Add-to-league: leagues (across all tournaments) the user is NOT already in.
+      const inSet = new Set(u.memberships.map((m) => keyOf(m.tournamentId, m.leagueId)));
+      const addable = LEAGUES.filter((l) => !inSet.has(keyOf(l.tournamentId, l.id)));
+      const addBy = groupByTournament(addable);
+      const opts = Object.keys(addBy).sort().map((tid) =>
+        '<optgroup label="' + esc(tid) + '">' +
+        addBy[tid].map((l) => '<option value="' + esc(l.tournamentId) + '|' + esc(l.id) + '">' + esc(l.name) + '</option>').join('') +
+        '</optgroup>').join('');
+      const addCtl = addable.length
+        ? '<div class="addrow"><select class="addsel">' + opts + '</select>' +
+          '<button class="add" data-action="addmem" data-uid="' + esc(u.id) + '">+ add</button></div>'
+        : '';
+      const joinBy = groupByTournament(u.joinable);
+      const join = Object.keys(joinBy).sort().map((tid) =>
+        '<div class="tgroup"><span class="tname">' + esc(tid) + '</span>' +
+        joinBy[tid].map((j) => '<span class="chip join">' + esc(j.leagueName) + '</span>').join('') +
+        '</div>').join('') || '<span class="muted">—</span>';
+      const del = u.id === ME ? '<span class="muted">(you)</span>'
+        : '<button class="danger" data-action="delete" data-uid="' + esc(u.id) + '">delete</button>';
+      return '<tr><td><b>' + esc(u.name) + '</b> ' + badge + '</td><td>' + mem + addCtl + '</td><td>' + join +
+        '</td><td class="actions"><button data-action="resetpw" data-uid="' + esc(u.id) + '">reset pw</button> ' + del + '</td></tr>';
+    }).join('');
+  }
+
+  // Delegated actions (avoids inline-onclick quoting issues with names).
+  $('usersBody').addEventListener('click', async (e) => {
+    const btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+    const { action, uid, tid, lid } = btn.dataset;
+    const u = USERS.find((x) => x.id === uid);
+    if (!u) return;
+    if (action === 'resetpw') {
+      const pw = prompt('New password for ' + u.name + ':');
+      if (!pw) return;
+      const d = await post({ action: 'adminResetPassword', token: TOKEN, userId: uid, newPassword: pw });
+      msg(d.ok ? ('Password reset for ' + u.name + '.') : ('Failed: ' + (d.error || '')), d.ok);
+    } else if (action === 'delete') {
+      if (!confirm('Delete ' + u.name + ' entirely — their memberships AND all guesses across every tournament? This cannot be undone.')) return;
+      const d = await post({ action: 'adminDeleteUser', token: TOKEN, userId: uid });
+      if (!d.ok) { msg('Failed: ' + (d.error === 'cannot_delete_self' ? 'you cannot delete yourself' : d.error), false); return; }
+      msg('Deleted ' + u.name + '.', true); await loadUsers();
+    } else if (action === 'removemem') {
+      const m = u.memberships.find((x) => x.tournamentId === tid && x.leagueId === lid) || {};
+      if (!confirm('Remove ' + u.name + ' from ' + (m.leagueName || lid) + ' (' + tid + ')?')) return;
+      const d = await post({ action: 'adminRemoveMembership', token: TOKEN, userId: uid, tournamentId: tid, leagueId: lid });
+      if (!d.ok) { msg('Failed: ' + (d.error || ''), false); return; }
+      msg('Removed ' + u.name + ' from ' + (m.leagueName || lid) + '.', true); await loadUsers();
+    } else if (action === 'addmem') {
+      const sel = btn.closest('.addrow') && btn.closest('.addrow').querySelector('.addsel');
+      if (!sel || !sel.value) return;
+      const [atid, alid] = sel.value.split('|');
+      const lname = sel.options[sel.selectedIndex].text;
+      if (!confirm('Add ' + u.name + ' to ' + lname + ' (' + atid + ')?')) return;
+      const d = await post({ action: 'adminAddMembership', token: TOKEN, userId: uid, tournamentId: atid, leagueId: alid });
+      if (!d.ok) { msg('Failed: ' + (d.error || ''), false); return; }
+      msg('Added ' + u.name + ' to ' + lname + '.', true); await loadUsers();
+    }
+  });
+
+  function logout(keepMsg) {
+    TOKEN = null; try { sessionStorage.removeItem(tokenKey()); } catch (e) {}
+    USERS = []; if (!keepMsg) loginMsg('');
+    showLogin();
+  }
+
+  $('loginForm').addEventListener('submit', (e) => { e.preventDefault(); login(); });
+  $('refreshBtn').addEventListener('click', loadUsers);
+  $('logoutBtn').addEventListener('click', () => logout());
+  $('search').addEventListener('input', render);
+  $('filterBtns').addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-f]');
+    if (!btn) return;
+    FILTER = btn.dataset.f === 'league'
+      ? { mode: 'league', leagueKey: btn.dataset.k }
+      : { mode: btn.dataset.f, leagueKey: null };
+    applyView();
+  });
+
+  (async function init() {
+    await initApi();
+    // Carry the ?api override back to the app for local dev.
+    const apiParam = new URLSearchParams(location.search).get('api');
+    if (apiParam) $('backLink').href = 'index.html?api=' + encodeURIComponent(apiParam);
+    try { TOKEN = sessionStorage.getItem(tokenKey()); } catch (e) {}
+    // SSO from the main app: reuse its saved session (same origin + same API_BASE),
+    // so clicking "Admin" in the app lands here already authenticated.
+    if (!TOKEN) { try { TOKEN = localStorage.getItem('wc26_tok_' + API_BASE); } catch (e) {} }
+    if (TOKEN) await loadUsers(); else showLogin();
+  })();
+</script>
+</body>
+</html>

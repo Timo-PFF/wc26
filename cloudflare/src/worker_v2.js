@@ -17,6 +17,8 @@
  *   POST { action:'joinLeague',token, tournamentId, leagueId, joinCode? }
  *   POST { action:'guesses',   token, tournamentId, leagueId }   (read, privacy-filtered)
  *   POST { token, tournamentId, guesses:[...] }                  (default = save picks)
+ *   POST { action:'adminUsers'|'adminRemoveMembership'|'adminAddMembership'|'adminDeleteUser'|'adminResetPassword', token, … }
+ *          — all gated by the caller's users.admin flag (see handlers_v2 / admin.html)
  *
  * Bindings (wrangler.toml / secrets):
  *   env.DB             — D1 database (v2 schema)
@@ -37,6 +39,11 @@ import {
   joinLeague,
   readGuesses,
   save,
+  adminUsers,
+  adminRemoveMembership,
+  adminAddMembership,
+  adminDeleteUser,
+  adminResetPassword,
 } from './handlers_v2.js';
 
 // Frontend is a different origin (GitHub Pages); the token travels in the body
@@ -86,6 +93,11 @@ export default {
           case 'checkInvite': return json(await checkInvite(env, body));
           case 'joinLeague': return json(await joinLeague(env, body));
           case 'guesses': return json(await readGuesses(env, body));
+          case 'adminUsers': return json(await adminUsers(env, body));
+          case 'adminRemoveMembership': return json(await adminRemoveMembership(env, body));
+          case 'adminAddMembership': return json(await adminAddMembership(env, body));
+          case 'adminDeleteUser': return json(await adminDeleteUser(env, body));
+          case 'adminResetPassword': return json(await adminResetPassword(env, body));
           default: return json(await save(env, body)); // no action → save picks
         }
       }

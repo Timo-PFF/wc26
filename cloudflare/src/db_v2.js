@@ -23,20 +23,20 @@ export function normalize(s) {
 export async function getUserByName(env, name) {
   const n = normalize(name);
   if (!n) return null;
-  const { results } = await env.DB.prepare('SELECT id, name, passHash FROM users').all();
+  const { results } = await env.DB.prepare('SELECT id, name, passHash, admin FROM users').all();
   for (const r of results) {
     if (normalize(r.name) === n) {
-      return { id: String(r.id), name: String(r.name).trim(), hash: String(r.passHash || '').trim() };
+      return { id: String(r.id), name: String(r.name).trim(), hash: String(r.passHash || '').trim(), admin: Number(r.admin) === 1 };
     }
   }
   return null;
 }
 
 export async function getUserById(env, id) {
-  const { results } = await env.DB.prepare('SELECT id, name, passHash FROM users WHERE id = ?')
+  const { results } = await env.DB.prepare('SELECT id, name, passHash, admin FROM users WHERE id = ?')
     .bind(String(id)).all();
   const r = results[0];
-  return r ? { id: String(r.id), name: String(r.name).trim(), hash: String(r.passHash || '').trim() } : null;
+  return r ? { id: String(r.id), name: String(r.name).trim(), hash: String(r.passHash || '').trim(), admin: Number(r.admin) === 1 } : null;
 }
 
 export async function createUser(env, id, name, hash) {
@@ -210,4 +210,50 @@ export async function saveGuesses(env, userId, tid, clean) {
   );
   const batch = clean.map((g) => stmt.bind(String(userId), normalize(tid), g.matchId, g.home, g.away, g.pen, now));
   if (batch.length) await env.DB.batch(batch);
+}
+
+// --- Admin ------------------------------------------------------------------
+
+export async function isAdmin(env, userId) {
+  const { results } = await env.DB.prepare('SELECT admin FROM users WHERE id = ?').bind(String(userId)).all();
+  return !!(results[0] && Number(results[0].admin) === 1);
+}
+
+// Every user (id, name, admin flag) — for the admin console.
+export async function getAllUsers(env) {
+  const { results } = await env.DB.prepare('SELECT id, name, admin FROM users').all();
+  return results.map((r) => ({ id: String(r.id), name: String(r.name).trim(), admin: Number(r.admin) === 1 }));
+}
+
+export async function getAllMemberships(env) {
+  const { results } = await env.DB.prepare('SELECT userId, tournamentId, leagueId FROM memberships').all();
+  return results.map((r) => ({
+    userId: String(r.userId), tournamentId: String(r.tournamentId).trim(), leagueId: String(r.leagueId).trim(),
+  }));
+}
+
+// All leagues across all tournaments (id, name, inheritance) — for the admin view.
+export async function getAllLeaguesFull(env) {
+  const { results } = await env.DB
+    .prepare('SELECT tournamentId, id, name, inheritsTournamentId, inheritsLeagueId FROM leagues').all();
+  return results.map((r) => ({
+    tournamentId: String(r.tournamentId).trim(), id: String(r.id).trim(), name: String(r.name).trim(),
+    inheritsTournamentId: r.inheritsTournamentId ? String(r.inheritsTournamentId).trim() : '',
+    inheritsLeagueId: r.inheritsLeagueId ? String(r.inheritsLeagueId).trim() : '',
+  }));
+}
+
+export async function removeMembership(env, userId, tid, lid) {
+  await env.DB.prepare('DELETE FROM memberships WHERE userId = ? AND tournamentId = ? AND leagueId = ?')
+    .bind(String(userId), normalize(tid), normalize(lid)).run();
+}
+
+// Delete a user + cascade their memberships and guesses (one atomic batch).
+export async function deleteUser(env, userId) {
+  const id = String(userId);
+  await env.DB.batch([
+    env.DB.prepare('DELETE FROM guesses WHERE userId = ?').bind(id),
+    env.DB.prepare('DELETE FROM memberships WHERE userId = ?').bind(id),
+    env.DB.prepare('DELETE FROM users WHERE id = ?').bind(id),
+  ]);
 }
