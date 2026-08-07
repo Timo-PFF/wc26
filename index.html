@@ -31,6 +31,8 @@
   }
   .tabs button:hover { color: var(--ink); }
   .tabs button.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+  .tabs button:disabled { opacity: .4; cursor: not-allowed; }
+  .tabs button:disabled:hover { color: var(--muted); }
   .viewtoggle { display: flex; align-items: center; gap: 8px; }
   .pickbar { display: flex; justify-content: space-between; align-items: center;
     gap: 8px 14px; flex-wrap: wrap; margin: 0 2px 12px; font-size: .85rem; color: var(--muted); }
@@ -70,13 +72,20 @@
     gap: 8px 14px; flex-wrap: wrap; background: var(--card); border: 1px solid var(--accent);
     border-radius: 12px; padding: 8px 14px; }
   .player-bar-actions { display: flex; align-items: center; gap: 10px; }
-  .badge { color: var(--ink); font-size: .85rem; line-height: 1.35; text-align: left; }
+  .badge { color: var(--ink); font-size: .85rem; line-height: 1.35; text-align: left;
+    display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; }
   .badge b { color: var(--accent); }
   .badge .badge-name { cursor: pointer; }
   .badge .badge-name:hover { text-decoration: underline; }
   .badge .badge-league { color: var(--muted); font-weight: 400; }
-  .badge .badge-league-select { font: inherit; color: var(--accent); background: var(--card);
-    border: 1px solid var(--accent); border-radius: 8px; padding: 1px 4px; cursor: pointer; }
+  .badge .badge-sep { color: var(--muted); }
+  .badge .badge-tournament-select { font: inherit; color: var(--accent); background: var(--card);
+    border: 1px solid var(--accent); border-radius: 8px; padding: 1px 6px; cursor: pointer; }
+  .badge .badge-league-btns { display: inline-flex; gap: 6px; flex-wrap: wrap; }
+  .badge .league-btn { font: inherit; font-size: .82rem; color: var(--muted); background: var(--card);
+    border: 1px solid var(--line); border-radius: 8px; padding: 2px 9px; cursor: pointer; }
+  .badge .league-btn:hover { color: var(--ink); }
+  .badge .league-btn.active { color: #06122a; background: var(--accent); border-color: var(--accent); }
   .pw-mismatch { color: var(--bad); }
   .join-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 6px 0; }
   .invite-banner { display: flex; align-items: center; justify-content: space-between; gap: 10px;
@@ -351,7 +360,7 @@
 <body>
 <header>
   <div class="header-inner">
-    <h1 id="title" data-i18n="appTitle">⚽ World Cup Prediction Pool</h1>
+    <h1 id="title" data-i18n="appTitle">⚽ Prediction Pool</h1>
     <div class="viewtoggle lang-toggle">
       <button id="lgEn" class="active lang-btn" onclick="setLang('en')" aria-label="English" title="English">
         <svg width="26" height="13" viewBox="0 0 60 30" aria-hidden="true">
@@ -403,18 +412,16 @@
 
   <div class="tabs">
     <button id="tabWho" class="active" onclick="showTab('who')" data-i18n="tabWho">Player</button>
-    <button id="tabPredict" onclick="showTab('predict')" data-i18n="tabPredict">Make picks</button>
-    <button id="tabSchedule" onclick="showTab('schedule')" data-i18n="tabSchedule">Schedule</button>
-    <button id="tabGroups" onclick="showTab('groups')" data-i18n="tabGroups">Groups</button>
-    <button id="tabKnockout" onclick="showTab('knockout')" data-i18n="tabKnockout">Knockout</button>
-    <button id="tabStandings" onclick="showTab('standings')" data-i18n="tabStandings">Standings</button>
+    <button id="tabPredict" onclick="showTab('predict')" data-i18n="tabPredict" disabled>Make picks</button>
+    <button id="tabSchedule" onclick="showTab('schedule')" data-i18n="tabSchedule" disabled>Schedule</button>
+    <button id="tabGroups" onclick="showTab('groups')" data-i18n="tabGroups" disabled>Groups</button>
+    <button id="tabKnockout" onclick="showTab('knockout')" data-i18n="tabKnockout" disabled>Knockout</button>
+    <button id="tabStandings" onclick="showTab('standings')" data-i18n="tabStandings" disabled>Standings</button>
   </div>
 
   <!-- WHO ARE YOU (pick your league, then your name) — the landing tab -->
   <section id="who">
     <div class="card">
-      <label for="tournamentSelect" data-i18n="chooseTournament">Tournament</label>
-      <select id="tournamentSelect" onchange="onTournamentChosen()"></select>
       <!-- Invitation banner (?t=&league=&join_code=) — shown logged-in OR logged-out. -->
       <div id="inviteBanner" style="display:none"></div>
       <!-- GLOBAL login / register — shown when logged out. Identity is global (one
@@ -582,23 +589,11 @@
     HISTORICAL_URL = t.files.historicalGuesses;
   }
 
-  // Fill the login-page tournament dropdown and select the active one.
-  function populateTournaments() {
-    const sel = document.getElementById('tournamentSelect');
-    if (!sel) return;
-    sel.innerHTML = '';
-    TOURNAMENTS.forEach(t => {
-      const o = document.createElement('option');
-      o.value = t.id; o.textContent = t.name;
-      sel.appendChild(o);
-    });
-    if (ACTIVE_TOURNAMENT) sel.value = ACTIVE_TOURNAMENT.id;
-  }
-
   // Switch tournaments by reloading with ?t=<id>: a full reload resets ALL state
-  // (backend URL, fixtures, leagues, login) cleanly. Other query params are kept.
-  function onTournamentChosen() {
-    const id = document.getElementById('tournamentSelect').value;
+  // (backend URL, fixtures, leagues) cleanly, while the global session and other
+  // query params (?api, ?lang) are preserved. Driven by the tournament dropdown in
+  // the player banner.
+  function onBadgeTournamentChange(id) {
     if (!id || (ACTIVE_TOURNAMENT && id === ACTIVE_TOURNAMENT.id)) return;
     const params = new URLSearchParams(location.search);
     params.set('t', id);
@@ -892,6 +887,7 @@
   ];
 
   function showTab(which) {
+    if (!AUTH && which !== 'who') which = 'who';   // logged-out users are locked to the login tab
     TABS.forEach(tab => {
       const active = tab.name === which;
       document.getElementById(tab.name).style.display = active ? '' : 'none';
@@ -899,6 +895,15 @@
     });
     const tab = TABS.find(t => t.name === which);
     if (tab && tab.onShow) tab.onShow();
+  }
+
+  // Logged-out users can only use the login (who) tab — grey out (disable) the rest.
+  function updateTabAccess() {
+    TABS.forEach(tab => {
+      if (tab.name === 'who') return;
+      const btn = document.getElementById(tab.btn);
+      if (btn) btn.disabled = !AUTH;
+    });
   }
 
   // The data tab currently on screen (schedule/standings), if any — used to
@@ -1228,7 +1233,6 @@
         '<div class="card" style="color:var(--bad)">Could not load the tournament configuration.</div>';
       return;
     }
-    populateTournaments();
     // ?fav — prefill picks with 2-1 for the betting favourite (gimmick).
     FAV_GUESS = new URLSearchParams(location.search).has('fav');
     // Optional ?lang=de / ?lang=en to start in a given language.
@@ -1743,20 +1747,29 @@
     const bar = document.getElementById('playerBar');
     if (AUTH) {
       const ls = AUTH.leagues || [];
-      let leagueHtml = '';
-      if (ls.length > 1) {
-        const opts = ls.map(l => '<option value="' + escapeHtml(l.id) + '"' +
-          (String(l.id).toLowerCase() === String(LEAGUE || '').toLowerCase() ? ' selected' : '') +
-          '>' + escapeHtml(l.name) + '</option>').join('');
-        leagueHtml = ' <span class="badge-league">· </span>' +
-          '<select class="badge-league-select" title="' + escapeHtml(t('switchLeagueTitle')) +
-          '" onchange="onBadgeLeagueChange(this.value)">' + opts + '</select>';
-      } else if (LEAGUE_NAME) {
-        leagueHtml = ' <span class="badge-league">· ' + escapeHtml(LEAGUE_NAME) + '</span>';
+      const sep = '<span class="badge-sep">·</span>';
+      const parts = ['<span class="badge-name" onclick="showTab(\'who\')">' +
+        t('playAs')(escapeHtml(AUTH.name)) + '</span>'];
+      // Tournament → a dropdown (only if there's more than one to switch to).
+      if (TOURNAMENTS.length > 1) {
+        const opts = TOURNAMENTS.map(tt => '<option value="' + escapeHtml(tt.id) + '"' +
+          (ACTIVE_TOURNAMENT && tt.id === ACTIVE_TOURNAMENT.id ? ' selected' : '') +
+          '>' + escapeHtml(tt.name) + '</option>').join('');
+        parts.push(sep, '<select class="badge-tournament-select" title="' + escapeHtml(t('switchTournamentTitle')) +
+          '" onchange="onBadgeTournamentChange(this.value)">' + opts + '</select>');
+      } else if (ACTIVE_TOURNAMENT) {
+        parts.push(sep, '<span class="badge-league">' + escapeHtml(ACTIVE_TOURNAMENT.name) + '</span>');
       }
-      const tour = ACTIVE_TOURNAMENT ? ' <span class="badge-league">· ' + escapeHtml(ACTIVE_TOURNAMENT.name) + '</span>' : '';
-      badge.innerHTML = '<span class="badge-name" onclick="showTab(\'who\')">' +
-        t('playAs')(escapeHtml(AUTH.name)) + '</span>' + tour + leagueHtml;
+      // League → toggle buttons (only if the user is in more than one this tournament).
+      if (ls.length > 1) {
+        const btns = ls.map(l => '<button type="button" class="league-btn' +
+          (String(l.id).toLowerCase() === String(LEAGUE || '').toLowerCase() ? ' active' : '') +
+          '" onclick="onBadgeLeagueChange(\'' + escapeHtml(l.id) + '\')">' + escapeHtml(l.name) + '</button>').join('');
+        parts.push(sep, '<span class="badge-league-btns">' + btns + '</span>');
+      } else if (LEAGUE_NAME) {
+        parts.push(sep, '<span class="badge-league">' + escapeHtml(LEAGUE_NAME) + '</span>');
+      }
+      badge.innerHTML = parts.join('');
       badge.style.display = ''; if (lo) lo.style.display = '';
       if (bar) bar.style.display = '';
     } else { badge.innerHTML = ''; badge.style.display = 'none'; if (lo) lo.style.display = 'none';
@@ -1767,6 +1780,7 @@
       if (AUTH && AUTH.admin) { updateAdminLinkHref(); adminLink.style.display = ''; }
       else { adminLink.style.display = 'none'; }
     }
+    updateTabAccess();   // logged out → only the login tab is usable
     updateLoginNotice();
   }
 

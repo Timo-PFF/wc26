@@ -21,7 +21,7 @@
 
 const I18N = {
   en: {
-    appTitle: '⚽ World Cup Prediction Pool', docTitle: 'World Cup Prediction Pool',
+    appTitle: '⚽ Prediction Pool', docTitle: 'Prediction Pool',
     tabWho: 'Login', tabPredict: 'Make picks', tabSchedule: 'Results', tabGroups: 'Groups', tabKnockout: 'Knockout', tabStandings: 'Standings',
     svTable: 'Table', svGame: 'By game', filtered: 'Filtered', clearFilter: 'Clear filter',
     todayOnly: "Show only today's games",
@@ -58,6 +58,7 @@ const I18N = {
     newPasswordPlaceholder: 'New password', changePwBtn: 'Change',
     passwordChanged: 'Password changed.', badOldPassword: 'Current password is wrong.',
     switchLeagueTitle: 'Switch league',
+    switchTournamentTitle: 'Switch tournament',
     confirmPasswordPlaceholder: 'Repeat new password', pwMismatch: "Passwords don't match.",
     switchRole: 'Switch to this account (no password needed)', switchFailed: 'Could not switch accounts.',
     addErrEmpty: 'Please enter a name.',
@@ -124,7 +125,7 @@ const I18N = {
     group: 'Group', groupStageTBD: 'Group Stage (TBD)', dateTBD: 'Date TBD',
   },
   de: {
-    appTitle: '⚽ WM-Tippspiel', docTitle: 'WM-Tippspiel',
+    appTitle: '⚽ Tippspiel', docTitle: 'Tippspiel',
     tabWho: 'Login', tabPredict: 'Tippen', tabSchedule: 'Ergebnisse', tabGroups: 'Gruppen', tabKnockout: 'K.-o.-Runde', tabStandings: 'Tabelle',
     svTable: 'Tabelle', svGame: 'Nach Spiel', filtered: 'Gefiltert', clearFilter: 'Filter entfernen',
     todayOnly: 'Nur heutige Spiele',
@@ -161,6 +162,7 @@ const I18N = {
     newPasswordPlaceholder: 'Neues Passwort', changePwBtn: 'Ändern',
     passwordChanged: 'Passwort geändert.', badOldPassword: 'Aktuelles Passwort ist falsch.',
     switchLeagueTitle: 'Liga wechseln',
+    switchTournamentTitle: 'Turnier wechseln',
     confirmPasswordPlaceholder: 'Neues Passwort wiederholen', pwMismatch: 'Passwörter stimmen nicht überein.',
     switchRole: 'Zu diesem Konto wechseln (kein Passwort nötig)', switchFailed: 'Konto konnte nicht gewechselt werden.',
     addErrEmpty: 'Bitte einen Namen eingeben.',
