@@ -1,58 +1,56 @@
-# wc26 backend — Cloudflare Worker + D1
+# wc26 backend — Cloudflare Worker + D1 (v2, global-users monolith)
 
-Drop-in replacement for the Google Apps Script backend. Same request/response
-shapes, so the static frontend is unchanged — it just points at this Worker's URL
-(via `?api=` while testing, then `SCRIPT_URL` at cutover).
+**One** Worker + **one** D1 serve **every** tournament. A user is a global identity
+(one login across all tournaments); they join per-tournament *leagues*; their picks
+are one set per tournament, shared across the leagues they joined. Each tournament's
+fixtures + finished-guesses snapshot are resolved at runtime from the committed
+manifest `data/tournaments.json` — so adding a tournament needs **no** Worker or
+config change.
 
-- **Runtime:** `src/worker.js` (router) → `handlers.js` → `db.js` / `auth.js` /
-  `locks.js` / `md5.js`.
-- **Store:** D1 (SQLite), tables mirror the old Sheet tabs (`schema.sql`).
-- **Auth:** same HMAC-SHA256 token format + legacy MD5 password hashes preserved.
-- **Reads:** picks for finished matches are frozen in a committed static file
-  (`data/wc2026/wc2026_historical_guesses.csv`); the Worker serves only the **live**
-  matches (fixture ids not in that file) and the frontend merges the two. This
-  keeps the D1 read volume tiny (a handful of rows per request instead of the whole
-  guesses table). The split is derived from the snapshot at runtime — no hardcoded
-  ids — so it needs no maintenance and works for a future tournament unchanged.
+- **Runtime:** `src/worker_v2.js` (router) → `handlers_v2.js` →
+  `db_v2.js` / `auth_v2.js` (→ `hmac.js`) / `locks_v2.js` / `md5.js`.
+- **Store:** D1 (SQLite), `schema_v2.sql` — `users`, `leagues`, `memberships`,
+  `guesses` (see the file for columns; users carry an `admin` flag).
+- **Auth:** global HMAC-SHA256 session token (`{u: userId, n: name}`); legacy MD5
+  password hashes preserved. `SESSION_SECRET` signs the token.
+- **Reads (D1 stays tiny):** picks for finished matches are frozen in a committed
+  per-tournament snapshot `data/<tid>/<tid>_historical_guesses.csv` (per-player:
+  `player,matchId,home,away,penaltyWinner`). The Worker serves only the **live**
+  matches — fixture ids **not** in that snapshot — and the frontend merges the two.
+  The split is derived from the snapshot at runtime (no hardcoded ids), so an
+  archived tournament (snapshot covers every game) does **zero** D1 reads.
+- **Config var:** `REPO_BASE` (in `wrangler.toml`) — the raw repo root the Worker
+  fetches the manifest + per-tournament files from. (This replaced the old
+  `FIXTURES_URL` / `SNAPSHOT_URL` pair.)
+- **Admin console:** `admin.html` (a separate page) drives the `admin*` endpoints,
+  gated by `users.admin`. See "Admin" below.
 
-Everything below works **locally with no Cloudflare account**; you only need the
-(free) account for the deploy step at the end.
+Everything below **local** works with no Cloudflare account; you only need the (free)
+account for the deploy step.
 
 ## 0. Prereqs
 
 - Node 18+ and npm.
 - `cd cloudflare && npm install` (installs `wrangler` locally).
 
-## 1. Export the Sheet → seed the local DB
+## 1. Seed a local D1
 
-In the Google Sheet, for each tab do **File → Download → Comma Separated Values**,
-and save into `cloudflare/seed/` (create the folder) with these exact names:
-
-| Tab | File | Columns (header row kept) |
-|---|---|---|
-| Leagues | `seed/leagues.csv` | id, name, password |
-| Players | `seed/players.csv` | league, name, passHash |
-| Guesses | `seed/guesses.csv` | league, timestamp, player, matchId, guessHome, guessAway, penaltyWinner |
-| Links | `seed/links.csv` | linkId, league, name *(optional)* |
-
-Then build the SQL and load it into a **local** D1:
+The seed SQL (`seed/seed_v2.sql`) and the per-tournament snapshot CSVs are (re)built
+by `python/migrate_v2.py` from the D1 JSON exports in `seed/`. Then:
 
 ```bash
-npm run seed:build        # seed/*.csv  ->  seed/seed.sql (dedups guesses)
-npm run db:init:local     # create tables + indexes
-npm run db:seed:local     # load the data
+npm run db:init:local     # apply schema_v2.sql   (local D1, via wrangler.v2.toml)
+npm run db:seed:local     # load seed/seed_v2.sql
 ```
 
-> `seed/*.csv` and `seed/seed.sql` are gitignored — they hold password hashes and
-> league join secrets. Keep them off the public repo.
+> `seed/*.csv`, `seed/*.json`, `seed/*.sql`, and `backup-*.sql` are gitignored — they
+> hold password hashes and league join codes. Keep them off the public repo. Only the
+> per-tournament **finished-guesses** snapshot under `data/<tid>/…` is committed
+> (completed-game picks are already visible to pool members).
 
-The public finished-match snapshot (safe to commit — completed-game picks are
-already visible to pool members) is built under v2 by `python/migrate_v2.py`, which
-writes the per-player `data/<tid>/<tid>_historical_guesses.csv` (columns
-`player,matchId,home,away,penaltyWinner`, no league column).
-
-Commit that CSV; the Worker (and frontend) read it from the repo's raw URL. Re-run
-the migration only if you want to freeze more matches at a later point.
+Local dev uses `wrangler.v2.toml`, which keys its own local D1 namespace and points
+`REPO_BASE` at the live raw repo (so `wrangler dev` — which can't fetch loopback —
+still resolves the manifest + snapshots).
 
 ## 2. Local dev server
 
@@ -61,103 +59,81 @@ cp .dev.vars.example .dev.vars     # set SESSION_SECRET (any string for dev)
 npm run dev                        # wrangler dev → http://localhost:8787
 ```
 
-`.dev.vars` also sets `SNAPSHOT_URL`. Note: `wrangler dev`'s runtime **can't reach
-your loopback** static server (`fetch` to `127.0.0.1` fails with "Network
-connection lost"), so point it at the committed **raw GitHub URL** instead — the
-Worker reaches the public internet fine (same as it fetches fixtures):
-
-```
-SNAPSHOT_URL=https://raw.githubusercontent.com/Timo-PFF/wc26/main/data/wc2026/wc2026_historical_guesses.csv
-```
-
-Smoke test:
+Smoke test (a tournament id is required — `t=`):
 
 ```bash
-curl "http://localhost:8787/?action=leagues"
-curl "http://localhost:8787/?league=family"
+curl "http://localhost:8787/?action=leagues&t=wc2026"
+curl "http://localhost:8787/?action=members&t=wc2026&league=family"
 ```
 
 ## 3. Test the real frontend against local D1
 
-Open the site with an `?api=` override pointing at the local Worker — no file edit,
-no impact on the live Apps Script backend:
+Open the site with an `?api=` override pointing at the local Worker — no file edit:
 
 ```
 index.html?api=http://localhost:8787
 ```
 
-Log in, make picks, check standings — all reads/writes now hit local D1.
+Log in, make picks, check standings — all reads/writes now hit local D1. The admin
+console is `admin.html?api=http://localhost:8787` (it also reuses the app's session).
 
 ## 4. Deploy (needs a free Cloudflare account)
 
 ```bash
 npx wrangler login
 npx wrangler d1 create wc26          # first time only; paste database_id into wrangler.toml
-npm run db:init:remote               # create/refresh tables + indexes (idempotent)
-npm run db:seed:remote               # first time only; re-export CSVs + npm run seed:build first
+npm run db:init:remote               # apply schema_v2.sql (idempotent)
+npm run db:seed:remote               # first time only; loads seed/seed_v2.sql
 npx wrangler secret put SESSION_SECRET
 npm run deploy                       # prints the Worker URL
 ```
 
-Cutover / updates ordering (important):
+Frontend deploys separately (GitHub Pages). Ordering only matters when a change spans
+both: push the frontend first (a still-old Worker keeps working — the frontend merges
+the committed snapshot), then `npm run deploy` the Worker. Schema changes that the new
+Worker code reads (e.g. adding the `admin` column) must be applied to the remote D1
+**before** deploying that Worker.
 
-1. **Commit + push** the frontend, `cloudflare/` code, and the snapshot CSV. Pages
-   serves the new frontend; the still-deployed old Worker keeps working (the new
-   frontend merges + dedups, so standings stay correct).
-2. **`npm run deploy`** the Worker — **only after** the frontend is pushed. The
-   reverse (new Worker + old frontend) breaks standings, because the old frontend
-   doesn't load the snapshot and would see only the live matches from the API.
+## Adding a tournament (the v2 way)
 
-`SCRIPT_URL` in `index.html` already points at the Worker; the prod `SNAPSHOT_URL`
-in `wrangler.toml` already points at the committed CSV.
+No new Worker, D1, or wrangler environment — the monolith already serves it. Three
+committed changes:
 
-## Reusing this backend for a future tournament
+1. **Data files** under `data/<tid>/`: fixtures JSON, the finished-guesses snapshot
+   CSV, and whatever the frontend reads (fav picks, brackets, groups). See an existing
+   tournament (`data/wc2026/`, `data/euro2024/`) for the shape.
+2. **Manifest** `data/tournaments.json`: add an entry — `id`, `name`, `default`,
+   `api` (the one Worker URL — same for every tournament), `scoring`, and `files`
+   pointing at the `data/<tid>/…` files above.
+3. **Leagues** in D1: insert rows into `leagues` for the tournament (optionally with
+   `inheritsTournamentId` / `inheritsLeagueId` so members of a prior league join
+   code-free). `python/migrate_v2.py` can emit these alongside the seed.
 
-The Worker **code** (`src/`, `schema.sql`, `import/`) is tournament-agnostic — only
-config + data change. Stand up a new tournament as an **isolated instance** (its own
-D1 + Worker + `SCRIPT_URL`) via a wrangler *environment*, no code touched. `wc2026`
-stays the top-level default, so its `npm run *` scripts keep working unchanged.
+That's it — the Worker resolves the new tournament from the manifest at runtime.
 
-1. **New D1:** `npx wrangler d1 create wc2028` — note the printed `database_id`.
-2. **Add an env to `wrangler.toml`:**
-   ```toml
-   [env.wc2028]
-   name = "wc2028-api"                        # unique worker name → its own URL
+## Admin
 
-   [env.wc2028.vars]
-   FIXTURES_URL = "https://raw.githubusercontent.com/Timo-PFF/wc26/main/data/wc2028/wc2028_fixtures.json"
-   SNAPSHOT_URL = "https://raw.githubusercontent.com/Timo-PFF/wc26/main/data/wc2028/wc2028_historical_guesses.csv"
+`admin.html` is a standalone console (English-only) for one or more users flagged
+`admin = 1` in `users`. It calls the admin-gated endpoints
+(`adminUsers`, `adminAddMembership`, `adminRemoveMembership`, `adminResetPassword`,
+`adminDeleteUser`) and lets you see every user's memberships + inheritance-eligible
+leagues, search/filter, add/remove league memberships, reset passwords, and delete
+users. The app shows an **⚙ Admin** link (by the login badge) only to admins, and the
+console reuses the app's session (same-origin token) so there's no second login.
 
-   [[env.wc2028.d1_databases]]
-   binding = "DB"
-   database_name = "wc2028"
-   database_id = "<the id from step 1>"
-   ```
-3. **Secret + schema + seed** (target the env / new DB explicitly):
-   ```bash
-   npx wrangler secret put SESSION_SECRET --env wc2028
-   npx wrangler d1 execute wc2028 --remote --file=schema.sql
-   # export the new pool's Sheet → seed/ → build seed.sql, then:
-   npx wrangler d1 execute wc2028 --remote --file=seed/seed.sql
-   ```
-4. **Deploy:** `npx wrangler deploy --env wc2028` → prints the new Worker URL.
-5. **Frontend:** add an entry to `data/tournaments.json` (`id`, `name`, `api` = the
-   new URL, `files` under `data/wc2028/…`) and set `"default": "wc2028"`. No frontend
-   code change — that's the whole point of the manifest.
+Grant admin with SQL:
 
-Caveat: under v2 the seed + finished-guesses snapshot are (re)built by
-`python/migrate_v2.py`, not the old `import/` tooling. The remaining `csv_to_sql.mjs`
-still hardcodes `seed/` paths — repoint it (or, better, extend `migrate_v2.py`) when
-you spin up the next tournament.
+```bash
+npx wrangler d1 execute wc26 --remote --command "UPDATE users SET admin=1 WHERE name='Timo';"
+```
 
 ### Notes
 
-- To keep existing logins valid after cutover, set `SESSION_SECRET` to the old
-  Apps Script value (editor → Project Settings → Script Properties). Otherwise
-  everyone just logs in once.
-- `FIXTURES_URL` (in `wrangler.toml`) is used for locked-game state and the full
-  fixture id list; `SNAPSHOT_URL` points at the committed finished-guesses CSV.
-  Together they define the live set (`fixtures − snapshot`). If either is
-  unreachable the Worker falls back to serving the caller's own picks only.
-- Admin edits (add a league, link two players) are now SQL, e.g.:
-  `npx wrangler d1 execute wc26 --remote --command "INSERT INTO leagues VALUES ('friends','Friends','joinpw');"`
+- `REPO_BASE` (in `wrangler.toml`) is the raw repo root the Worker fetches the
+  manifest + per-tournament fixtures/snapshot from. Each tournament's live set is
+  `fixtures − snapshot`; if either file is unreachable the Worker falls back to
+  serving the caller's own picks only.
+- Keep `SESSION_SECRET` stable — changing it invalidates every existing session
+  (everyone just logs in once more).
+- Other admin edits are plain SQL, e.g. add a league:
+  `npx wrangler d1 execute wc26 --remote --command "INSERT INTO leagues (tournamentId,id,name,password) VALUES ('wc2026','friends','Friends','joinpw');"`
