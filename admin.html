@@ -276,9 +276,13 @@
 
   (async function init() {
     await initApi();
-    // Carry the ?api override back to the app for local dev.
-    const apiParam = new URLSearchParams(location.search).get('api');
-    if (apiParam) $('backLink').href = 'index.html?api=' + encodeURIComponent(apiParam);
+    // Admin is English-only, but forward ?api (local dev) and ?lang back to the app
+    // so the app's language survives the round-trip.
+    const here = new URLSearchParams(location.search);
+    const back = new URLSearchParams();
+    if (here.get('api')) back.set('api', here.get('api'));
+    if (here.get('lang')) back.set('lang', here.get('lang'));
+    $('backLink').href = 'index.html' + (back.toString() ? '?' + back.toString() : '');
     try { TOKEN = sessionStorage.getItem(tokenKey()); } catch (e) {}
     // SSO from the main app: reuse its saved session (same origin + same API_BASE),
     // so clicking "Admin" in the app lands here already authenticated.

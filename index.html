@@ -860,6 +860,19 @@
     // and meta line come back in the new language.
     const tab = visibleDataTab();
     if (tab) tab.onShow();
+    updateAdminLinkHref();   // keep the admin link's ?lang in sync with the toggle
+  }
+
+  // Build the admin-console link, forwarding ?api (local dev) and the current
+  // language so admin.html can round-trip ?lang back on its "Back to app" link.
+  function updateAdminLinkHref() {
+    const adminLink = document.getElementById('adminLink');
+    if (!adminLink) return;
+    const params = new URLSearchParams();
+    const apiParam = new URLSearchParams(location.search).get('api');
+    if (apiParam) params.set('api', apiParam);
+    params.set('lang', LANG);
+    adminLink.href = 'admin.html?' + params.toString();
   }
 
   // Tabs: section id, its button id, and an optional loader run when shown.
@@ -1739,14 +1752,11 @@
         t('playAs')(escapeHtml(AUTH.name)) + '</span>' + tour + leagueHtml;
       badge.style.display = ''; if (lo) lo.style.display = '';
     } else { badge.innerHTML = ''; badge.style.display = 'none'; if (lo) lo.style.display = 'none'; }
-    // Admin console link — only for admins; carries the ?api override for local dev.
+    // Admin console link — only for admins; href built by updateAdminLinkHref().
     const adminLink = document.getElementById('adminLink');
     if (adminLink) {
-      if (AUTH && AUTH.admin) {
-        const apiParam = new URLSearchParams(location.search).get('api');
-        adminLink.href = 'admin.html' + (apiParam ? '?api=' + encodeURIComponent(apiParam) : '');
-        adminLink.style.display = '';
-      } else { adminLink.style.display = 'none'; }
+      if (AUTH && AUTH.admin) { updateAdminLinkHref(); adminLink.style.display = ''; }
+      else { adminLink.style.display = 'none'; }
     }
     updateLoginNotice();
   }
