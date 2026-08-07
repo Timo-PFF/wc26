@@ -217,6 +217,25 @@
   .chart-title { margin: 0 0 10px; font-size: 1.05rem; }
   .chart-wrap { position: relative; height: 280px; }
   .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 12px; font-size: .82rem; color: var(--muted); }
+  .freq-controls { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: .85rem; color: var(--muted); }
+  .freq-controls select { font: inherit; color: var(--accent); background: var(--card);
+    border: 1px solid var(--accent); border-radius: 8px; padding: 3px 8px; cursor: pointer; }
+  th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
+  th.sortable:hover { color: var(--ink); }
+  .sort-ind { color: var(--accent); font-size: .8em; }
+  td.tip { cursor: help; }
+  tr.foot td { border-top: 2px solid var(--line); color: var(--muted); font-size: .82rem; font-style: italic; }
+  .strat-toggle { display: inline-flex; gap: 2px; margin-bottom: 12px; }
+  .strat-toggle button { padding: 4px 10px; border: 1px solid var(--line); background: var(--card);
+    color: var(--muted); border-radius: 8px; cursor: pointer; font-size: .8rem; }
+  .strat-toggle button.active { background: var(--accent); color: #06122a; border-color: var(--accent); font-weight: 600; }
+  .pager { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 12px; }
+  .pg-btn { background: var(--card); border: 1px solid var(--line); color: var(--ink);
+    border-radius: 8px; padding: 3px 12px; cursor: pointer; font-size: 1rem; line-height: 1; }
+  .pg-btn:disabled { opacity: .4; cursor: default; }
+  .pg-label { color: var(--muted); font-size: .85rem; }
+  td.gc-game { white-space: nowrap; }
+  td.gc-game img.flag { width: 18px; height: 18px; object-fit: contain; vertical-align: middle; margin: 0 4px; border-radius: 2px; background: #0d1426; }
   .leg { display: inline-flex; align-items: center; gap: 5px; cursor: pointer; transition: opacity .1s; }
   .leg.dim { opacity: .35; }
   .leg.sel { color: var(--ink); font-weight: 700; }
@@ -536,6 +555,61 @@
       </table>
     </div>
     <div id="pointsChart"></div>
+    <div id="freqChart"></div>
+    <!-- Favourite-following overview — how much each player backed the favourite. -->
+    <div id="favTable" class="card" style="display:none">
+      <div class="sub" data-i18n="favTableHint" style="margin-bottom:10px"></div>
+      <div class="strat-toggle" id="favModeToggle">
+        <button data-mode="count" class="active" onclick="setFavMode('count')" data-i18n="showCounts">Counts</button>
+        <button data-mode="ppg" onclick="setFavMode('ppg')" data-i18n="showPpg">Pts/game</button>
+        <button data-mode="pctpts" onclick="setFavMode('pctpts')" data-i18n="showPctPts">% of points</button>
+      </div>
+      <table>
+        <thead><tr>
+          <th class="sortable" data-sort="player" onclick="sortFav('player')"><span data-i18n="thPlayer">Player</span><span class="sort-ind"></span></th>
+          <th class="num sortable" data-sort="fav" onclick="sortFav('fav')" data-i18n-title="ttFav"><span data-i18n="thFav">Favs</span><span class="sort-ind"></span></th>
+          <th class="num sortable" data-sort="draw" onclick="sortFav('draw')" data-i18n-title="ttDraw"><span data-i18n="thDraw">Draws</span><span class="sort-ind"></span></th>
+          <th class="num sortable" data-sort="under" onclick="sortFav('under')" data-i18n-title="ttUnderdog"><span data-i18n="thUnderdog">Underdogs</span><span class="sort-ind"></span></th>
+          <th class="num sortable" data-sort="ratio" onclick="sortFav('ratio')" data-i18n-title="ttFavRatio"><span data-i18n="thFavRatio">Fav ratio</span><span class="sort-ind"></span></th>
+        </tr></thead>
+        <tbody id="favBody"></tbody>
+        <tfoot id="favFoot"></tfoot>
+      </table>
+    </div>
+    <!-- Consensus strategy — how often each player went with / against the pool. -->
+    <div id="consTable" class="card" style="display:none">
+      <div class="sub" data-i18n="consTableHint" style="margin-bottom:10px"></div>
+      <div class="strat-toggle" id="consModeToggle">
+        <button data-mode="count" class="active" onclick="setConsMode('count')" data-i18n="showCounts">Counts</button>
+        <button data-mode="ppg" onclick="setConsMode('ppg')" data-i18n="showPpg">Pts/game</button>
+        <button data-mode="pctpts" onclick="setConsMode('pctpts')" data-i18n="showPctPts">% of points</button>
+      </div>
+      <table>
+        <thead><tr>
+          <th class="sortable" data-sort="player" onclick="sortCons('player')"><span data-i18n="thPlayer">Player</span><span class="sort-ind"></span></th>
+          <th class="num sortable" data-sort="contra" onclick="sortCons('contra')" data-i18n-title="ttContrarian"><span data-i18n="thContrarian">Contrarian</span><span class="sort-ind"></span></th>
+          <th class="num sortable" data-sort="avg" onclick="sortCons('avg')" data-i18n-title="ttAverage"><span data-i18n="thAverage">Average</span><span class="sort-ind"></span></th>
+          <th class="num sortable" data-sort="agree" onclick="sortCons('agree')" data-i18n-title="ttAgreement"><span data-i18n="thAgreement">Agreement</span><span class="sort-ind"></span></th>
+          <th class="num sortable" data-sort="consensus" onclick="sortCons('consensus')" data-i18n-title="ttConsensus"><span data-i18n="thConsensus">Consensus ratio</span><span class="sort-ind"></span></th>
+        </tr></thead>
+        <tbody id="consBody"></tbody>
+        <tfoot id="consFoot"></tfoot>
+      </table>
+    </div>
+    <!-- Per-game consensus — how much the pool agreed on each game (sortable, paged). -->
+    <div id="gameConsensus" class="card" style="display:none">
+      <div class="sub" data-i18n="gameConsHint" style="margin-bottom:10px"></div>
+      <table>
+        <thead><tr>
+          <th class="sortable" data-sort="date" onclick="sortGameCons('date')"><span data-i18n="thGame">Game</span><span class="sort-ind"></span></th>
+          <th data-i18n="thStage">Stage</th>
+          <th class="num sortable" data-sort="n" onclick="sortGameCons('n')" data-i18n-title="ttGuessers"><span data-i18n="thGuessers">Guessers</span><span class="sort-ind"></span></th>
+          <th class="num sortable" data-sort="consensus" onclick="sortGameCons('consensus')" data-i18n-title="ttGameConsensus"><span data-i18n="thConsensus">Consensus ratio</span><span class="sort-ind"></span></th>
+        </tr></thead>
+        <tbody id="gameConsBody"></tbody>
+      </table>
+      <div id="gameConsPager" class="pager"></div>
+    </div>
   </section>
 </main>
 
@@ -2298,6 +2372,11 @@
     const body = document.getElementById('standingsBody');
     if (pointsChart) { pointsChart.destroy(); pointsChart = null; }
     document.getElementById('pointsChart').innerHTML = '';   // cleared unless we render below
+    if (freqChart) { freqChart.destroy(); freqChart = null; }
+    document.getElementById('freqChart').innerHTML = '';
+    document.getElementById('favTable').style.display = 'none';   // shown by renderFavStrategy
+    document.getElementById('consTable').style.display = 'none';
+    document.getElementById('gameConsensus').style.display = 'none';
     if (SCRIPT_URL.startsWith('PASTE')) {
       body.innerHTML = '<tr><td colspan="6" style="color:var(--bad)">' + escapeHtml(t('setScriptUrlFirst')) + '</td></tr>';
       return;
@@ -2370,6 +2449,10 @@
         body.appendChild(tr);
       });
       renderPointsChart(allPlayers, allGuesses);
+      renderFreqChart(SHEET.players, SHEET.guesses);   // real players only (no benchmark)
+      renderFavStrategy();                             // favourite-following table
+      renderConsensusStrategy();                       // consensus (contrarian/avg/agreement) table
+      renderGameConsensus();                           // per-game consensus table
     } catch (e) {
       body.innerHTML = '<tr><td colspan="6" style="color:var(--bad)">' + escapeHtml(t('couldNotLoadStandings')) + '</td></tr>';
     }
@@ -2442,6 +2525,8 @@
 
   let pointsChart = null;          // Chart.js instance for the cumulative-points line chart
   let CHART_SELECTED = new Set();  // pinned players (click to toggle); empty = all lines equal
+  let freqChart = null;            // Chart.js instance for the points-per-game frequency chart
+  let FREQ = null;                 // { buckets, freqByPlayer, avg } — cached for the dropdown
 
   function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
   const chartColor = (hue, alpha) => 'hsla(' + hue + ',70%,60%,' + (alpha == null ? 1 : alpha) + ')';
@@ -2611,6 +2696,546 @@
       el.classList.toggle('dim', focus && !isLit(el.dataset.player)));
   }
 
+  // ---- Points-per-game frequency chart (one player vs the league average) ----
+
+  // player -> array of { id, pts } (one per FINISHED game they guessed), scored the
+  // same way the standings / cumulative chart do (game-level pool if the active
+  // module defines gamePoints, else per-pick scorePick). The id lets the frequency
+  // chart drill from a bar back to the games behind it.
+  function perGamePoints(cfgPlayers, guesses) {
+    const byId = {}; MATCHES.forEach(m => { byId[m.id] = m; });
+    const dist = {};
+    (cfgPlayers || []).forEach(p => { dist[p] = []; });
+    if (typeof gamePoints === 'function') {
+      const byMatch = {};
+      guesses.forEach(g => { const m = byId[g.matchId]; if (m && isFinished(m)) (byMatch[g.matchId] = byMatch[g.matchId] || []).push(g); });
+      MATCHES.filter(isFinished).forEach(m => {
+        const gp = gamePoints(m, byMatch[m.id] || [], cfgPlayers || []);
+        // A game-level pool only lists players who scored (>0); a player who guessed
+        // but got nothing isn't in gp. Count them as a real 0 so every guessed game
+        // is represented (otherwise the 0 bin stays empty and positive bins inflate).
+        (byMatch[m.id] || []).forEach(g => { (dist[g.player] = dist[g.player] || []).push({ id: g.matchId, pts: gp[g.player] || 0 }); });
+      });
+    } else {
+      guesses.forEach(g => {
+        const m = byId[g.matchId];
+        if (m && isFinished(m) && homeScore(m) != null && awayScore(m) != null) {
+          (dist[g.player] = dist[g.player] || []).push({ id: g.matchId, pts: scorePick(g, m) });
+        }
+      });
+    }
+    return dist;
+  }
+
+  // Smallest "nice" step ≥ x, from 1/1.5/2/2.5/3/4/5 × 10ⁿ — for readable bins with
+  // enough granularity to land ~7 positive bins across a typical points range.
+  function niceStep(x) {
+    if (!isFinite(x) || x <= 0) return 1;
+    const base = Math.pow(10, Math.floor(Math.log10(x)));
+    const f = x / base;
+    return ([1, 1.5, 2, 2.5, 3, 4, 5].find(s => f <= s) || 10) * base;
+  }
+  function fmtBin(x) { return (Math.round(x * 100) / 100).toString(); }
+
+  // Bins for the frequency chart. Integer scoring → one bin per value (0..max, a
+  // clean discrete axis). Fractional scoring → 0 kept as its OWN bin (scoring
+  // nothing is a discrete event in every system), positive values grouped into
+  // equal-width "nice" range bins. Returns { labels, index(v) } where index maps a
+  // value to its bin position (or -1 if it falls outside).
+  function buildBinning(all) {
+    const max = Math.max(0, ...all);
+    if (all.every(v => Number.isInteger(v))) {
+      const labels = [];
+      for (let i = 0; i <= max; i++) labels.push(String(i));
+      return { labels, index: v => (Number.isInteger(v) && v >= 0 && v <= max) ? v : -1 };
+    }
+    const TARGET_BINS = 8;
+    const width = niceStep((max / TARGET_BINS) || 1);
+    const nPos = Math.max(1, Math.ceil(max / width - 1e-9));   // number of positive range bins
+    const labels = ['0'];
+    for (let k = 0; k < nPos; k++) labels.push(fmtBin(k * width) + '–' + fmtBin((k + 1) * width));
+    return {
+      labels,
+      // 0 → bin 0; v>0 → its range bin (bins are (0,w], (w,2w], …), offset past the 0 bin.
+      index: v => v <= 0 ? (v === 0 ? 0 : -1) : 1 + Math.min(nPos - 1, Math.ceil(v / width) - 1),
+    };
+  }
+
+  // Share of a player's scored games in each bin (sums to 1, or all 0).
+  function binFreq(values, binning) {
+    const c = binning.labels.map(() => 0);
+    values.forEach(v => { const i = binning.index(v); if (i >= 0) c[i]++; });
+    const n = values.length || 1;
+    return c.map(x => x / n);
+  }
+
+  // Grouped bar chart: the selected player's point-value frequencies vs the league
+  // average (the pooled rate across all scored picks). Bars are % of scored games.
+  function renderFreqChart(cfgPlayers, guesses) {
+    const el = document.getElementById('freqChart');
+    if (freqChart) { freqChart.destroy(); freqChart = null; }
+    if (typeof Chart === 'undefined') { el.innerHTML = ''; return; }
+    const dist = perGamePoints(cfgPlayers, guesses);
+    const players = (cfgPlayers || []).filter(p => (dist[p] || []).length > 0).sort((a, b) => a.localeCompare(b));
+    if (!players.length) { el.innerHTML = ''; return; }
+
+    // Bin the point values (see buildBinning): discrete integer scoring → one bin per
+    // value; continuous scoring → a "0" bin plus equal-width range bins.
+    const all = players.flatMap(p => dist[p].map(x => x.pts));
+    const binning = buildBinning(all);
+    const freqByPlayer = {};
+    players.forEach(p => { freqByPlayer[p] = binFreq(dist[p].map(x => x.pts), binning); });
+    // League average = POOLED rate over every scored pick in the league (weighted by
+    // pick count), not a mean of per-player frequencies — so players who guess only a
+    // handful of games early and stop don't skew it.
+    const avg = binFreq(all, binning);
+    FREQ = { binning, dist, freqByPlayer, avg };
+
+    const sel = (AUTH && players.includes(AUTH.name)) ? AUTH.name : players[0];
+    const options = players.map(p =>
+      '<option value="' + escapeHtml(p) + '"' + (p === sel ? ' selected' : '') + '>' + escapeHtml(p) + '</option>').join('');
+    el.innerHTML = '<div class="card"><h2 class="chart-title">' + escapeHtml(t('freqChartTitle')) + '</h2>' +
+      '<div class="freq-controls"><label for="freqPlayerSelect">' + escapeHtml(t('freqPlayerLabel')) + '</label>' +
+      '<select id="freqPlayerSelect" onchange="onFreqPlayerChange(this.value)">' + options + '</select></div>' +
+      '<div class="chart-wrap"><canvas id="freqCanvas"></canvas></div></div>';
+
+    const grid = cssVar('--line'), tick = cssVar('--muted');
+    const pct = arr => arr.map(x => x * 100);
+    freqChart = new Chart(document.getElementById('freqCanvas'), {
+      type: 'bar',
+      data: {
+        labels: binning.labels,
+        datasets: [
+          { label: sel, data: pct(freqByPlayer[sel]), backgroundColor: cssVar('--accent') },
+          { label: t('leagueAverage'), data: pct(avg), backgroundColor: cssVar('--accent2') },
+        ],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        // 'index' → hovering anywhere in a bin shows BOTH bars (player + league avg).
+        interaction: { mode: 'index', intersect: false },
+        onClick: (evt, els) => { if (els && els.length) drillFreqBin(els[0].index); },
+        onHover: (evt, els) => { const c = evt.native && evt.native.target; if (c) c.style.cursor = els.length ? 'pointer' : 'default'; },
+        plugins: {
+          legend: { labels: { color: tick } },
+          tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(1) + '%' } },
+        },
+        scales: {
+          x: { grid: { color: grid }, ticks: { color: tick }, title: { display: true, text: t('freqXAxis'), color: tick } },
+          y: { beginAtZero: true, grid: { color: grid }, title: { display: true, text: t('freqYAxis'), color: tick },
+               ticks: { color: tick, callback: v => Math.round(v) + '%' } },
+        },
+      },
+    });
+  }
+
+  // Dropdown → swap in the chosen player's bars (the league-average series stays).
+  function onFreqPlayerChange(name) {
+    if (!freqChart || !FREQ || !FREQ.freqByPlayer[name]) return;
+    freqChart.data.datasets[0].label = name;
+    freqChart.data.datasets[0].data = FREQ.freqByPlayer[name].map(x => x * 100);
+    freqChart.update();
+  }
+
+  // Click a bar → jump to the schedule filtered to the selected player's games that
+  // scored in that point-bin (either bar in a bin drills into the current player).
+  function drillFreqBin(binIndex) {
+    if (!FREQ) return;
+    const sel = document.getElementById('freqPlayerSelect');
+    const player = sel ? sel.value : null;
+    const ids = (FREQ.dist[player] || []).filter(x => FREQ.binning.index(x.pts) === binIndex).map(x => x.id);
+    if (!ids.length) return;
+    showPlayerBinInSchedule(player, ids, player + ' · ' + FREQ.binning.labels[binIndex] + ' ' + t('freqPtsUnit'));
+  }
+
+  // ---- Favourite-following overview -----------------------------------------
+
+  // "Agreement" score of guess `a` against guess `r` (as the hypothetical result),
+  // used ONLY for the fav/consensus RATIOS — deliberately decoupled from the
+  // tournament's real scoring (which still drives every displayed point total). It's
+  // always 0/1/2/3/4 so a matching tendency is worth relatively more, and any two
+  // draws count as the same goal difference (a draw-with-a-draw is a strong signal):
+  //   4 same exact guess (win or draw) · 3 same tendency + same GD (or two draws) ·
+  //   2 same tendency, different GD · 1 knockout only: one win + one draw where the
+  //   draw's penalty pick equals the win's winner · 0 otherwise. Max is always 4.
+  const ART_MAX = 4;
+  function artScore(a, r, ko) {
+    const ta = Math.sign(a.home - a.away), tr = Math.sign(r.home - r.away);
+    if (ta === tr) {
+      if (a.home === r.home && a.away === r.away) return 4;
+      if ((a.home - a.away) === (r.home - r.away)) return 3;   // same GD (draws: always)
+      return 2;
+    }
+    if (ko && (ta === 0) !== (tr === 0)) {                     // exactly one is a draw
+      const draw = ta === 0 ? a : r, win = ta === 0 ? r : a;
+      return draw.penaltyWinner === (win.home > win.away ? 'home' : 'away') ? 1 : 0;
+    }
+    return 0;
+  }
+  // Real players' guesses per FINISHED game = the consensus pool. { matchId: [guess] }
+  function guessesByFinishedMatch() {
+    const byId = {}; MATCHES.forEach(m => { byId[m.id] = m; });
+    const by = {};
+    SHEET.guesses.forEach(g => {
+      const m = byId[String(g.matchId)];
+      if (m && isFinished(m)) (by[String(g.matchId)] = by[String(g.matchId)] || []).push(g);
+    });
+    return by;
+  }
+
+  // Actual points each player earned per finished game, under the tournament's REAL
+  // scoring (game-level pool if the module defines gamePoints, else per-pick) — so
+  // the strategy tables' point totals match the standings even under experimental
+  // scoring. The Fav-by-1 bot isn't in the pool, so it's scored per-pick. Returns
+  // { player: { matchId: pts } }.
+  function actualPtsMap() {
+    const map = {};
+    const real = perGamePoints(SHEET.players, SHEET.guesses);   // pool-correct, real players only
+    Object.keys(real).forEach(p => { map[p] = {}; real[p].forEach(x => { map[p][String(x.id)] = x.pts; }); });
+    const byId = {}; MATCHES.forEach(m => { byId[m.id] = m; });
+    const fav = favName();
+    map[fav] = map[fav] || {};
+    favGuesses().forEach(g => { const m = byId[String(g.matchId)]; if (m && isFinished(m)) map[fav][String(g.matchId)] = scorePick(g, m); });
+    return map;
+  }
+
+  // Per player, over FINISHED games with a Fav-by-1 pick: how many guesses backed
+  // the favourite / were draws / backed the underdog, plus a ratio = points if every
+  // game had ended exactly as the bot predicted ÷ the all-exact maximum. Uses base
+  // per-pick scoring (scorePick), so it's a pure strategy measure even under a pool
+  // scheme; the bot itself scores 1.00. Finished-only so every player is comparable
+  // (others' picks are only visible once a game locks).
+  function favStrategyRows() {
+    const bot = {};   // matchId -> { home, away, favSide }
+    (FAV_PICKS || []).forEach(p => {
+      const favSide = p.home > p.away ? 'home' : (p.away > p.home ? 'away' : null);
+      if (favSide) bot[String(p.matchId)] = { home: p.home, away: p.away, favSide };
+    });
+    const byId = {}; MATCHES.forEach(m => { byId[m.id] = m; });
+    // Per category we also track ACTUAL performance (vs the real result): correct
+    // tendencies (1/X/2 direction), total points, points/game.
+    const blank = () => ({ n: 0, correct: 0, pts: 0 });
+    const ptsMap = actualPtsMap();   // real-scoring points (pool or per-pick)
+    const acc = {};
+    const players = SHEET.players.concat([favName()]);
+    SHEET.guesses.concat(favGuesses()).forEach(g => {
+      const mid = String(g.matchId), m = byId[mid], b = bot[mid];
+      if (!b || !m || !isFinished(m)) return;   // fav columns need a favourite (a bot pick)
+      const a = acc[g.player] || (acc[g.player] = { fav: blank(), draw: blank(), under: blank(), num: 0, den: 0 });
+      const cat = g.home === g.away ? 'draw' : ((g.home > g.away ? 'home' : 'away') === b.favSide ? 'fav' : 'under');
+      const s = a[cat];
+      s.n++;
+      s.pts += (ptsMap[g.player] && ptsMap[g.player][mid]) || 0;   // points under the tournament's real scoring
+      if (Math.sign(g.home - g.away) === Math.sign(homeScore(m) - awayScore(m))) s.correct++;
+      a.num += artScore(g, { home: b.home, away: b.away }, isKnockout(m));   // ratio: agreement scoring
+      a.den += ART_MAX;
+    });
+    return players.map(p => {
+      const a = acc[p] || { fav: blank(), draw: blank(), under: blank(), num: 0, den: 0 };
+      return { player: p, fav: a.fav.n, draw: a.draw.n, under: a.under.n,
+               ratio: a.den > 0 ? a.num / a.den : null,
+               stats: { fav: a.fav, draw: a.draw, under: a.under }, isFav: p === favName() };
+    }).filter(r => r.fav || r.draw || r.under);
+  }
+
+  let FAV_ROWS = [];
+  let FAV_SORT = { key: 'ratio', dir: 'desc' };   // default: most favourite-following first
+  let FAV_MODE = 'count';   // 'count' | 'ppg' — what the bucket cells show
+
+  // Compute + show the favourite table under the standings charts (data is already
+  // loaded by loadStandings). Hidden when the tournament has no fav benchmark.
+  let favTipsWired = false;
+  function renderFavStrategy() {
+    const wrap = document.getElementById('favTable');
+    if (!wrap) return;
+    FAV_ROWS = (FAV_PICKS && FAV_PICKS.length) ? favStrategyRows() : [];
+    if (!FAV_ROWS.length) { wrap.style.display = 'none'; return; }
+    wrap.style.display = '';
+    renderFavTable();
+    if (!favTipsWired) { wireStrategyTips('favBody', p => FAV_ROWS.find(r => r.player === p), c => t(FAV_CAT_KEY[c]), FAV_CATS); favTipsWired = true; }
+  }
+
+  // Category names for the count-cell tooltips (per strategy table).
+  const FAV_CAT_KEY = { fav: 'favCatFav', draw: 'favCatDraw', under: 'favCatUnder' };
+  const CONS_CAT_KEY = { contra: 'consCatContra', avg: 'consCatAvg', agree: 'consCatAgree' };
+
+  // Tooltip body: how a player actually did on the guesses in one category (correct
+  // tendency, total points, points/game, and this bucket's share of their total
+  // points). `s` is a { n, correct, pts } bucket; `total` is the row's total points.
+  function strategyCellTip(player, catTitle, s, total) {
+    if (!s || !s.n) return '';
+    return '<div class="tt-title">' + escapeHtml(player) + ' · ' + escapeHtml(catTitle) + '</div>' +
+      '<div class="tt-row">' + escapeHtml(t('correctTendency')) + ': ' + s.correct + ' / ' + s.n + '</div>' +
+      '<div class="tt-row">' + escapeHtml(t('totalPoints')) + ': ' + fmtPts(s.pts) + '</div>' +
+      '<div class="tt-row">' + escapeHtml(t('pointsPerGame')) + ': ' + (s.pts / s.n).toFixed(2) + '</div>' +
+      '<div class="tt-row">' + escapeHtml(t('pctOfPoints')) + ': ' + (total ? Math.round(s.pts / total * 100) + '%' : '—') + '</div>';
+  }
+  // Delegated hover tooltips for a strategy table's count cells (td.tip carrying
+  // data-player + data-cat). getRow(player) → its row; catTitle(cat) → category name;
+  // cats → the bucket list (for the row's total-points denominator).
+  function wireStrategyTips(bodyId, getRow, catTitle, cats) {
+    const body = document.getElementById(bodyId);
+    if (!body) return;
+    body.addEventListener('mousemove', e => {
+      const tip = chartTooltipEl();
+      const td = e.target.closest && e.target.closest('td.tip');
+      const row = td && getRow(td.dataset.player);
+      const html = row ? strategyCellTip(row.player, catTitle(td.dataset.cat), row.stats[td.dataset.cat], rowTotalPts(row, cats)) : '';
+      if (!html) { tip.style.opacity = 0; return; }
+      tip.innerHTML = html;
+      tip.style.opacity = 1;
+      tip.style.left = (window.scrollX + e.clientX + 12) + 'px';
+      tip.style.top = (window.scrollY + e.clientY + 12) + 'px';
+    });
+    body.addEventListener('mouseleave', () => { chartTooltipEl().style.opacity = 0; });
+  }
+
+  // Footer row (real players only — the Fav-by-1 bot is excluded), matching the
+  // active cell mode: league total counts / avg points-per-game / league-wide share
+  // of points per bucket. One value per category, then a blank ratio cell.
+  function strategyFooterHtml(rows, cats, mode) {
+    const tot = cats.map(() => ({ n: 0, pts: 0 }));
+    rows.forEach(r => { if (r.isFav) return; cats.forEach((c, i) => { tot[i].n += r.stats[c].n; tot[i].pts += r.stats[c].pts; }); });
+    const grandPts = tot.reduce((sum, tt) => sum + tt.pts, 0);
+    let label, cell;
+    if (mode === 'count') {
+      label = t('leagueTotal');
+      cell = tt => '<td class="num">' + tt.n + '</td>';
+    } else if (mode === 'pctpts') {
+      label = t('leaguePctPts');
+      cell = tt => '<td class="num">' + (grandPts ? Math.round(tt.pts / grandPts * 100) + '%' : '—') + '</td>';
+    } else {
+      label = t('leagueAvgPpg');
+      cell = tt => '<td class="num">' + (tt.n ? (tt.pts / tt.n).toFixed(2) : '—') + '</td>';
+    }
+    return '<tr class="foot"><td>' + escapeHtml(label) + '</td>' + tot.map(cell).join('') + '<td></td></tr>';
+  }
+
+  // Bucket categories per table + a row's total points over them.
+  const FAV_CATS = ['fav', 'draw', 'under'];
+  const CONS_CATS = ['contra', 'avg', 'agree'];
+  const rowTotalPts = (r, cats) => cats.reduce((sum, c) => sum + r.stats[c].pts, 0);
+  // Bucket cell display / sort value for the active mode: integer count, points/game,
+  // or the bucket's share of the player's total points (over that table's games).
+  const bucketDisp = (s, mode, total) =>
+    mode === 'ppg' ? (s.n ? (s.pts / s.n).toFixed(2) : '—')
+    : mode === 'pctpts' ? (total ? Math.round(s.pts / total * 100) + '%' : '—')
+    : s.n;
+  const bucketSortVal = (s, mode, total) =>
+    mode === 'ppg' ? (s.n ? s.pts / s.n : -Infinity)
+    : mode === 'pctpts' ? (total ? s.pts / total : -Infinity)
+    : s.n;
+  function markModeToggle(id, mode) {
+    document.querySelectorAll('#' + id + ' button').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+  }
+
+  const favSortVal = (r, key) => key === 'player' ? r.player
+    : key === 'ratio' ? (r.ratio == null ? -Infinity : r.ratio) : bucketSortVal(r.stats[key], FAV_MODE, rowTotalPts(r, FAV_CATS));
+
+  function renderFavTable() {
+    const key = FAV_SORT.key, dir = FAV_SORT.dir === 'asc' ? 1 : -1;
+    const rows = FAV_ROWS.slice().sort((a, b) => {
+      const av = favSortVal(a, key), bv = favSortVal(b, key);
+      const d = key === 'player' ? av.localeCompare(bv) : av - bv;
+      return d !== 0 ? d * dir : a.player.localeCompare(b.player);   // player tiebreak, always A–Z
+    });
+    const cell = (cat, r, total) => '<td class="num tip" data-cat="' + cat + '" data-player="' + escapeHtml(r.player) + '">' + bucketDisp(r.stats[cat], FAV_MODE, total) + '</td>';
+    document.getElementById('favBody').innerHTML = rows.map(r => {
+      const total = rowTotalPts(r, FAV_CATS);
+      return '<tr' + (r.isFav ? ' class="fav-row"' : '') + '><td>' + escapeHtml(r.player) + '</td>' +
+        cell('fav', r, total) + cell('draw', r, total) + cell('under', r, total) +
+        '<td class="num">' + (r.ratio == null ? '—' : r.ratio.toFixed(2)) + '</td></tr>';
+    }).join('');
+    document.getElementById('favFoot').innerHTML = strategyFooterHtml(FAV_ROWS, FAV_CATS, FAV_MODE);
+    document.querySelectorAll('#favTable th[data-sort]').forEach(th => {
+      const ind = th.querySelector('.sort-ind');
+      if (ind) ind.textContent = th.dataset.sort === key ? (dir === 1 ? ' ▲' : ' ▼') : '';
+    });
+  }
+
+  // Header click → sort by that column (numbers default high→low, name A→Z; click
+  // again to reverse).
+  function sortFav(key) {
+    if (FAV_SORT.key === key) FAV_SORT.dir = FAV_SORT.dir === 'asc' ? 'desc' : 'asc';
+    else FAV_SORT = { key: key, dir: key === 'player' ? 'asc' : 'desc' };
+    renderFavTable();
+  }
+  function setFavMode(mode) { FAV_MODE = mode; markModeToggle('favModeToggle', mode); renderFavTable(); }
+
+  // ---- Consensus strategy (contrarian / average / agreement buckets) --------
+  let CONS_ROWS = [];
+  let CONS_SORT = { key: 'consensus', dir: 'desc' };
+  let CONS_MODE = 'count';   // 'count' | 'ppg' — what the bucket cells show
+  let consTipsWired = false;
+
+  // Per REAL player, over FINISHED games they guessed: each guess's per-game
+  // consensus ratio (their guess scored against every OTHER player's guess for that
+  // game ÷ max) is bucketed by the ⅓ / ⅔ QUANTILES of ALL such per-guess ratios
+  // across the league — contrarian (below the ⅓ quantile), average, agreement (above
+  // the ⅔). Bucket counts + actual performance (for tooltips) + the aggregate ratio.
+  function consensusStrategyRows() {
+    const byId = {}; MATCHES.forEach(m => { byId[m.id] = m; });
+    const byMatch = guessesByFinishedMatch();
+    const recs = [];   // one per guess (with ≥1 other guesser): { player, ratio, pts, correct }
+    const agg = {};    // player -> { cNum, cDen }
+    const ptsMap = actualPtsMap();   // real-scoring points (pool or per-pick)
+    SHEET.guesses.forEach(g => {
+      const mid = String(g.matchId), m = byId[mid];
+      if (!m || !isFinished(m)) return;
+      const ko = isKnockout(m);
+      let num = 0, den = 0;
+      (byMatch[mid] || []).forEach(o => {
+        if (o.player === g.player) return;
+        num += artScore(g, o, ko); den += ART_MAX;
+      });
+      if (den <= 0) return;   // nobody else guessed this game
+      const ag = agg[g.player] || (agg[g.player] = { cNum: 0, cDen: 0 });
+      ag.cNum += num; ag.cDen += den;
+      recs.push({ player: g.player, ratio: num / den,
+                  pts: (ptsMap[g.player] && ptsMap[g.player][mid]) || 0,   // real scoring
+                  correct: Math.sign(g.home - g.away) === Math.sign(homeScore(m) - awayScore(m)) ? 1 : 0 });
+    });
+    // ⅓ and ⅔ quantiles of every per-guess consensus ratio in the league.
+    const sorted = recs.map(r => r.ratio).sort((x, y) => x - y);
+    const quantile = p => {
+      if (!sorted.length) return 0;
+      const i = (sorted.length - 1) * p, lo = Math.floor(i), hi = Math.ceil(i);
+      return lo === hi ? sorted[lo] : sorted[lo] + (sorted[hi] - sorted[lo]) * (i - lo);
+    };
+    const q1 = quantile(1 / 3), q2 = quantile(2 / 3);
+    const bucketOf = r => r < q1 ? 'contra' : (r < q2 ? 'avg' : 'agree');
+    const blank = () => ({ n: 0, correct: 0, pts: 0 });
+    const acc = {};
+    recs.forEach(r => {
+      const a = acc[r.player] || (acc[r.player] = { contra: blank(), avg: blank(), agree: blank() });
+      const s = a[bucketOf(r.ratio)];
+      s.n++; s.pts += r.pts; s.correct += r.correct;
+    });
+    return SHEET.players.map(p => {
+      const a = acc[p] || { contra: blank(), avg: blank(), agree: blank() };
+      const ag = agg[p] || { cNum: 0, cDen: 0 };
+      return { player: p, contra: a.contra.n, avg: a.avg.n, agree: a.agree.n,
+               consensus: ag.cDen > 0 ? ag.cNum / ag.cDen : null,
+               stats: { contra: a.contra, avg: a.avg, agree: a.agree } };
+    }).filter(r => r.contra || r.avg || r.agree);
+  }
+
+  function renderConsensusStrategy() {
+    const wrap = document.getElementById('consTable');
+    if (!wrap) return;
+    CONS_ROWS = consensusStrategyRows();
+    if (!CONS_ROWS.length) { wrap.style.display = 'none'; return; }
+    wrap.style.display = '';
+    renderConsTable();
+    if (!consTipsWired) { wireStrategyTips('consBody', p => CONS_ROWS.find(r => r.player === p), c => t(CONS_CAT_KEY[c]), CONS_CATS); consTipsWired = true; }
+  }
+
+  const consSortVal = (r, key) => key === 'player' ? r.player
+    : key === 'consensus' ? (r.consensus == null ? -Infinity : r.consensus) : bucketSortVal(r.stats[key], CONS_MODE, rowTotalPts(r, CONS_CATS));
+
+  function renderConsTable() {
+    const key = CONS_SORT.key, dir = CONS_SORT.dir === 'asc' ? 1 : -1;
+    const rows = CONS_ROWS.slice().sort((a, b) => {
+      const av = consSortVal(a, key), bv = consSortVal(b, key);
+      const d = key === 'player' ? av.localeCompare(bv) : av - bv;
+      return d !== 0 ? d * dir : a.player.localeCompare(b.player);
+    });
+    const cell = (cat, r, total) => '<td class="num tip" data-cat="' + cat + '" data-player="' + escapeHtml(r.player) + '">' + bucketDisp(r.stats[cat], CONS_MODE, total) + '</td>';
+    document.getElementById('consBody').innerHTML = rows.map(r => {
+      const total = rowTotalPts(r, CONS_CATS);
+      return '<tr><td>' + escapeHtml(r.player) + '</td>' +
+        cell('contra', r, total) + cell('avg', r, total) + cell('agree', r, total) +
+        '<td class="num">' + (r.consensus == null ? '—' : r.consensus.toFixed(2)) + '</td></tr>';
+    }).join('');
+    document.getElementById('consFoot').innerHTML = strategyFooterHtml(CONS_ROWS, CONS_CATS, CONS_MODE);
+    document.querySelectorAll('#consTable th[data-sort]').forEach(th => {
+      const ind = th.querySelector('.sort-ind');
+      if (ind) ind.textContent = th.dataset.sort === key ? (dir === 1 ? ' ▲' : ' ▼') : '';
+    });
+  }
+
+  function sortCons(key) {
+    if (CONS_SORT.key === key) CONS_SORT.dir = CONS_SORT.dir === 'asc' ? 'desc' : 'asc';
+    else CONS_SORT = { key: key, dir: key === 'player' ? 'asc' : 'desc' };
+    renderConsTable();
+  }
+  function setConsMode(mode) { CONS_MODE = mode; markModeToggle('consModeToggle', mode); renderConsTable(); }
+
+  // ---- Per-game consensus (how much the pool agreed on each game) -----------
+  let GAMECONS_ROWS = [];
+  let GAMECONS_SORT = { key: 'consensus', dir: 'desc' };
+  let GAMECONS_PAGE = 0;
+  const GAMECONS_PAGE_SIZE = 20;
+
+  const gcFlag = side => { const l = teamLogo(side); return l ? '<img class="flag" src="' + escapeHtml(l) + '" alt="" loading="lazy" />' : ''; };
+  // Safe HTML (flags + escaped abbreviations) — rendered un-escaped in the table.
+  const gameLabel = m => gcFlag(m.home) + escapeHtml(teamAbbr(m.home)) + ' ' + homeScore(m) + '–' + awayScore(m) +
+    ' ' + gcFlag(m.away) + escapeHtml(teamAbbr(m.away));
+
+  // Consensus ratio for each finished game: Σ(points) ÷ Σ(max) over every ORDERED
+  // pair of real players who guessed it. High = the pool agreed; low = scattered.
+  function gameConsensusRows() {
+    const byId = {}; MATCHES.forEach(m => { byId[m.id] = m; });
+    const byMatch = guessesByFinishedMatch();
+    const rows = [];
+    Object.keys(byMatch).forEach(mid => {
+      const gs = byMatch[mid], m = byId[mid];
+      if (!m || gs.length < 2) return;
+      const ko = isKnockout(m);
+      let num = 0, den = 0;
+      for (let i = 0; i < gs.length; i++) for (let j = 0; j < gs.length; j++) {
+        if (i === j) continue;
+        num += artScore(gs[i], gs[j], ko); den += ART_MAX;
+      }
+      rows.push({ label: gameLabel(m), stage: stageLabel(m.stage), date: m.date || '',
+                  n: gs.length, consensus: den > 0 ? num / den : null });
+    });
+    return rows;
+  }
+
+  function renderGameConsensus() {
+    const wrap = document.getElementById('gameConsensus');
+    if (!wrap) return;
+    GAMECONS_ROWS = gameConsensusRows();
+    if (!GAMECONS_ROWS.length) { wrap.style.display = 'none'; return; }
+    wrap.style.display = '';
+    renderGameConsTable();
+  }
+
+  const gameConsVal = (r, key) => key === 'date' ? r.date
+    : key === 'consensus' ? (r.consensus == null ? -Infinity : r.consensus) : r[key];
+
+  function renderGameConsTable() {
+    const key = GAMECONS_SORT.key, dir = GAMECONS_SORT.dir === 'asc' ? 1 : -1;
+    const sorted = GAMECONS_ROWS.slice().sort((a, b) => {
+      const av = gameConsVal(a, key), bv = gameConsVal(b, key);
+      const d = key === 'date' ? String(av).localeCompare(String(bv)) : av - bv;
+      return d !== 0 ? d * dir : String(a.date).localeCompare(String(b.date));
+    });
+    const pages = Math.max(1, Math.ceil(sorted.length / GAMECONS_PAGE_SIZE));
+    GAMECONS_PAGE = Math.max(0, Math.min(GAMECONS_PAGE, pages - 1));
+    const start = GAMECONS_PAGE * GAMECONS_PAGE_SIZE;
+    document.getElementById('gameConsBody').innerHTML = sorted.slice(start, start + GAMECONS_PAGE_SIZE).map(r =>
+      '<tr><td class="gc-game">' + r.label + '</td><td>' + escapeHtml(r.stage) + '</td>' +
+      '<td class="num">' + r.n + '</td><td class="num">' + (r.consensus == null ? '—' : r.consensus.toFixed(2)) + '</td></tr>').join('');
+    document.getElementById('gameConsPager').innerHTML =
+      '<button class="pg-btn"' + (GAMECONS_PAGE === 0 ? ' disabled' : '') + ' onclick="gameConsPage(-1)">‹</button>' +
+      '<span class="pg-label">' + (GAMECONS_PAGE + 1) + ' / ' + pages + '</span>' +
+      '<button class="pg-btn"' + (GAMECONS_PAGE >= pages - 1 ? ' disabled' : '') + ' onclick="gameConsPage(1)">›</button>';
+    document.querySelectorAll('#gameConsensus th[data-sort]').forEach(th => {
+      const ind = th.querySelector('.sort-ind');
+      if (ind) ind.textContent = th.dataset.sort === key ? (dir === 1 ? ' ▲' : ' ▼') : '';
+    });
+  }
+
+  function sortGameCons(key) {
+    if (GAMECONS_SORT.key === key) GAMECONS_SORT.dir = GAMECONS_SORT.dir === 'asc' ? 'desc' : 'asc';
+    else GAMECONS_SORT = { key: key, dir: key === 'date' ? 'asc' : 'desc' };
+    GAMECONS_PAGE = 0;
+    renderGameConsTable();
+  }
+  function gameConsPage(delta) { GAMECONS_PAGE += delta; renderGameConsTable(); }
+
   // ---- Schedule tab: completed games, grouped by day, with every guess ------
   function markScheduleViewButtons() {
     document.getElementById('svTable').classList.toggle('active', SCHEDULE_VIEW === 'table');
@@ -2649,6 +3274,17 @@
     markScheduleViewButtons();
     showTab('schedule');
   }
+  // From the frequency chart: show a specific SET of games (a player's picks that
+  // scored in one point-bin). Clears the "today only" narrowing so older games show.
+  function showPlayerBinInSchedule(player, ids, label) {
+    if (!ids || !ids.length) return;
+    SCHEDULE_FILTER = { type: 'matches', ids: ids, label: label };
+    SCHEDULE_VIEW = 'game';
+    SCHEDULE_TODAY_ONLY = false;
+    const cb = document.getElementById('scheduleTodayOnly'); if (cb) cb.checked = false;
+    markScheduleViewButtons();
+    showTab('schedule');
+  }
   function clearScheduleFilter() { SCHEDULE_FILTER = null; loadSchedule(); }
 
   function scheduleFilterLabel() {
@@ -2657,6 +3293,7 @@
       const m = MATCHES.find(x => x.id === SCHEDULE_FILTER.id);
       return m ? teamAbbr(m.home) + '–' + teamAbbr(m.away) : '';
     }
+    if (SCHEDULE_FILTER.type === 'matches') return SCHEDULE_FILTER.label || '';
     const m = MATCHES.find(x => teamAbbr(x.home) === SCHEDULE_FILTER.abbr || teamAbbr(x.away) === SCHEDULE_FILTER.abbr);
     if (m) return teamName(teamAbbr(m.home) === SCHEDULE_FILTER.abbr ? m.home : m.away);
     return SCHEDULE_FILTER.abbr;
@@ -2720,6 +3357,8 @@
     if (SCHEDULE_FILTER) {
       if (SCHEDULE_FILTER.type === 'match') {
         games = completed.filter(m => m.id === SCHEDULE_FILTER.id);
+      } else if (SCHEDULE_FILTER.type === 'matches') {
+        games = completed.filter(m => SCHEDULE_FILTER.ids.includes(m.id));
       } else {
         games = completed.filter(m => teamAbbr(m.home) === SCHEDULE_FILTER.abbr || teamAbbr(m.away) === SCHEDULE_FILTER.abbr);
       }
@@ -2728,6 +3367,11 @@
         escapeHtml(scheduleFilterLabel()) + ' ✕</button></div>';
     }
     if (!games.length) return chip + '<div class="card">' + escapeHtml(t('noCompleted')) + '</div>';
+
+    // Auto-expand each game's picks only for a small filtered set — a drill-down that
+    // matches many games shouldn't force dozens of panels open.
+    const FILTER_AUTOEXPAND_MAX = 3;
+    const autoExpand = !!SCHEDULE_FILTER && games.length <= FILTER_AUTOEXPAND_MAX;
 
     const sections = VIEW_MODE === 'date' ? sectionizeByDate(games) : sectionize(games);
     return chip + sections.map(section => {
@@ -2757,9 +3401,9 @@
           scoreBlock +
           teamCell(m.away, 'away') +
           resultNote(m) +
-          '<details class="reveal"' + (SCHEDULE_FILTER ? ' open' : '') + ' ontoggle="revealPicks(this, \'' + escapeHtml(m.id) + '\')">' +
+          '<details class="reveal"' + (autoExpand ? ' open' : '') + ' ontoggle="revealPicks(this, \'' + escapeHtml(m.id) + '\')">' +
             '<summary>' + escapeHtml(t('showPicks')) + '</summary>' +
-            '<div class="reveal-body">' + (SCHEDULE_FILTER ? buildPicksList(m) : '') + '</div></details>' +
+            '<div class="reveal-body">' + (autoExpand ? buildPicksList(m) : '') + '</div></details>' +
           '</div>';
       }).join('');
       return head + cards;
